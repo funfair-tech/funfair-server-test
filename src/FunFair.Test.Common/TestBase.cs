@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Xunit;
 
 namespace FunFair.Test.Common
 {
@@ -13,6 +14,7 @@ namespace FunFair.Test.Common
         protected TestBase()
         {
             // Nothing to do here!
+            Assert.False(false, "Because");
         }
 
         /// <summary>

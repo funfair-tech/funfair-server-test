@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
@@ -77,7 +78,7 @@ namespace FunFair.Test.Common.Helpers
                 // Buffer the message into a single string in order to avoid shearing the message when running across multiple threads.
                 StringBuilder messageBuilder = new StringBuilder();
 
-                string timestamp = this._logStart.HasValue ? $"{(DateTimeOffset.UtcNow - this._logStart.Value).TotalSeconds:N3}s" : DateTimeOffset.UtcNow.ToString(format: "s");
+                string timestamp = this._logStart.HasValue ? $"{(DateTimeOffset.UtcNow - this._logStart.Value).TotalSeconds:N3}s" : DateTimeOffset.UtcNow.ToString( format: "s", CultureInfo.InvariantCulture);
 
                 string firstLinePrefix = $"| [{timestamp}] {this._category} {logLevel}: ";
                 string[] lines = formatter(state, exception)
@@ -112,6 +113,12 @@ namespace FunFair.Test.Common.Helpers
                     message = message.Substring(startIndex: 0, message.Length - Environment.NewLine.Length);
                 }
 
+                this.LogToOutput(message);
+            }
+
+            [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Unit Test")]
+            private void LogToOutput(string message)
+            {
                 try
                 {
                     this._output.WriteLine(message);
