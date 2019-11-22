@@ -43,7 +43,7 @@ namespace FunFair.Test.Common
         ///     Gets the service from Dependency injection.
         /// </summary>
         /// <typeparam name="T">The service </typeparam>
-        /// <returns></returns>
+        /// <returns>The service that was registered with dependency injection.</returns>
         protected T GetService<T>()
         {
             return this.GetServiceFromDependencyInjection<T>();
