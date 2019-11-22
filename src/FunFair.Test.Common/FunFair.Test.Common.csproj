@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+        <WarningsAsErrors />
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <LangVersion>latest</LangVersion>
+        <Features>strict;flow-analysis</Features>
+        <Nullable>enable</Nullable>
+        <NoWarn>1701;1702;1705;1591</NoWarn>
+        <LangVersion>latest</LangVersion>
+        <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+        <IsPackable>True</IsPackable>
+    </PropertyGroup>
+    <PropertyGroup>
+        <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DocumentationFile>bin\Debug\netcoreapp3.0\FunFair.Test.Common.xml</DocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DocumentationFile>bin\Release\netcoreapp3.0\FunFair.Test.Common.xml</DocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="AsyncFixer" Version="1.1.6" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
+        <PackageReference Include="NSubstitute" Version="4.2.1" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+        <PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.11" PrivateAssets="All" />
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.0.0.9566" PrivateAssets="All" />
+        <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
+        <PackageReference Include="TeamCity.VSTest.TestAdapter" Version="1.0.17" />
+        <PackageReference Include="xunit.analyzers" Version="0.10.0" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.7" PrivateAssets="All" />
+        <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+    </ItemGroup>
+</Project>
