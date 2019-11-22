@@ -1,5 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Sdk;
 
 namespace FunFair.Test.Common
 {
@@ -38,6 +40,26 @@ namespace FunFair.Test.Common
             where T : class
         {
             return FromOptionalResult((T?) null);
+        }
+
+        /// <summary>
+        /// Assert that the item is not null and return the non-null value.
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <typeparam name="T">The item type</typeparam>
+        /// <returns>The non null value.</returns>
+        protected static T AssertReallyNotNull<T>([NotNull] T? value)
+            where T : class
+        {
+            Assert.NotNull(value);
+
+            if (value == null)
+            {
+                // Shouldn't need this, but when Assert.NotNull is capable of meaning the same!
+                throw new NullException(nameof(value));
+            }
+
+            return value;
         }
     }
 }
