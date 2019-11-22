@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 namespace FunFair.Test.Common
 {
     /// <summary>
-    ///     Simple base class for unit tests.
+    ///     Simple base class for tests.
     /// </summary>
-    public abstract class UnitTestBase
+    public abstract class TestBase
     {
         /// <summary>
         ///     Extracts the result as a task with an optional nullable return.
