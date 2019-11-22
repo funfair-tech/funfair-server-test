@@ -16,6 +16,12 @@
     <PropertyGroup>
         <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
+    <PropertyGroup>
+        <NeutralLanguage>en</NeutralLanguage>
+        <Company>FunFair</Company>
+        <Authors>$(Company)</Authors>
+        <Description>Common Test Infrastructure.</Description>
+    </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DocumentationFile>bin\Debug\netcoreapp3.0\FunFair.Test.Common.xml</DocumentationFile>
     </PropertyGroup>
