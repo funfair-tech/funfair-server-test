@@ -8,6 +8,14 @@ namespace FunFair.Test.Common
     public abstract class TestBase
     {
         /// <summary>
+        /// Constructor.
+        /// </summary>
+        protected TestBase()
+        {
+            // Nothing to do here!
+        }
+
+        /// <summary>
         ///     Extracts the result as a task with an optional nullable return.
         /// </summary>
         /// <param name="value">The value to return.</param>
