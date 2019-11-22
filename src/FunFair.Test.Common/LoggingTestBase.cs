@@ -88,6 +88,7 @@ namespace FunFair.Test.Common
         /// </summary>
         protected ITestOutputHelper Output => new LogOutput(this.Logger);
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             this.Dispose(disposing: true);
@@ -104,6 +105,10 @@ namespace FunFair.Test.Common
             // Nothing to do
         }
 
+        /// <summary>
+        /// Disposes of any managed resources
+        /// </summary>
+        /// <param name="disposing">true, when the object is being disposed; otherwise, false.</param>
         protected virtual void Dispose(bool disposing)
         {
             IDisposable? disposableLogger = this._logger;
