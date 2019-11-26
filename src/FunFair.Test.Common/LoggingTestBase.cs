@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Threading.Tasks;
+using FunFair.Test.Common.Logging;
 using FunFair.Test.Common.Startup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -134,6 +135,8 @@ namespace FunFair.Test.Common
             return service;
         }
 
+        protected internal IServiceProvider RetrieveDependencyInjectionServiceProvider() => this._serviceProvider;
+
         /// <summary>
         ///     Gets a typed logger.
         /// </summary>
@@ -171,58 +174,6 @@ namespace FunFair.Test.Common
         private void ReportUnhandledException(object? sender, UnobservedTaskExceptionEventArgs args)
         {
             this.Output.WriteLine("Unhandled Exception: " + args.Exception?.Message);
-        }
-
-        private sealed class DisposableLogger : ILogger, IDisposable
-        {
-            private readonly ILogger _logger;
-            private readonly IDisposable _scope;
-
-            public DisposableLogger(ILogger logger)
-            {
-                this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
-                this._scope = this._logger.BeginScope(state: "Test");
-            }
-
-            public void Dispose()
-            {
-                this._scope.Dispose();
-            }
-
-            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
-            {
-                this._logger.Log(logLevel, eventId, state, exception, formatter);
-            }
-
-            public bool IsEnabled(LogLevel logLevel)
-            {
-                return this._logger.IsEnabled(logLevel);
-            }
-
-            public IDisposable BeginScope<TState>(TState state)
-            {
-                return this._logger.BeginScope(state);
-            }
-        }
-
-        private sealed class LogOutput : ITestOutputHelper
-        {
-            private readonly ILogger _logger;
-
-            public LogOutput(ILogger logger)
-            {
-                this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            }
-
-            public void WriteLine(string message)
-            {
-                this._logger.LogDebug(message);
-            }
-
-            public void WriteLine(string format, params object[] args)
-            {
-                this._logger.LogDebug(format, args);
-            }
         }
     }
 }
