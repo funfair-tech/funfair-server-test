@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Threading.Tasks;
 using FunFair.Test.Common.Logging;
 using FunFair.Test.Common.Startup;
@@ -89,7 +88,7 @@ namespace FunFair.Test.Common
         /// </summary>
         protected ITestOutputHelper Output => new LogOutput(this.Logger);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(disposing: true);
@@ -107,7 +106,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Disposes of any managed resources
+        ///     Disposes of any managed resources
         /// </summary>
         /// <param name="disposing">true, when the object is being disposed; otherwise, false.</param>
         protected virtual void Dispose(bool disposing)
@@ -135,7 +134,14 @@ namespace FunFair.Test.Common
             return service;
         }
 
-        protected internal IServiceProvider RetrieveDependencyInjectionServiceProvider() => this._serviceProvider;
+        /// <summary>
+        ///     Gets the Service provider that's registstered.
+        /// </summary>
+        /// <returns></returns>
+        protected internal IServiceProvider RetrieveDependencyInjectionServiceProvider()
+        {
+            return this._serviceProvider;
+        }
 
         /// <summary>
         ///     Gets a typed logger.
@@ -144,31 +150,12 @@ namespace FunFair.Test.Common
         /// <returns>A logger.</returns>
         protected ILogger<T> GetTypedLogger<T>()
         {
-            ILogger<T> logger = this._loggerFactory.CreateLogger<T>();
-
-            if (logger == null)
-            {
-                throw new NullException($"ILogger<{typeof(T).FullName}> could not be loaded from DI container");
-            }
-
-            return logger;
+            return this._loggerFactory.CreateLogger<T>() ?? throw new NullException($"ILogger<{typeof(T).FullName}> could not be loaded from DI container");
         }
 
         private DisposableLogger BuildLogger()
         {
-            MethodInfo method = typeof(LoggingTestBase).GetMethod(nameof(this.GetTypedLogger), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance) ??
-                                throw new MissingMethodException();
-
-            MethodInfo genericMethod = method.MakeGenericMethod(this.GetType());
-
-            ILogger? logger = genericMethod.Invoke(this, Array.Empty<object>()) as ILogger;
-
-            if (logger == null)
-            {
-                throw new MissingMethodException();
-            }
-
-            return new DisposableLogger(logger);
+            return new DisposableLogger(this.GetTypedLogger<LoggingTestBase>());
         }
 
         private void ReportUnhandledException(object? sender, UnobservedTaskExceptionEventArgs args)
