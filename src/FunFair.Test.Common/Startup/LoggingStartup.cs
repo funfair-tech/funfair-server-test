@@ -1,4 +1,5 @@
 using FunFair.Test.Common.Helpers;
+using FunFair.Test.Common.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
