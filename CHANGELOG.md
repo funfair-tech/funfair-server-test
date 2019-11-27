@@ -8,6 +8,9 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+* Made ValidatorTestBase expose a Validate method rather than exposing the validator itself
+* Added a ServiceProvider method to IntegrationTest base to allow access to the registered service provider
+* Simplified the LoggingTestBase class so that it no longer makes gratuitous use of reflection.
 
 <!-- 
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch

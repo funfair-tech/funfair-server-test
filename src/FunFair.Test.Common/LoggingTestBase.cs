@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Threading.Tasks;
+using FunFair.Test.Common.Logging;
 using FunFair.Test.Common.Startup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -88,7 +88,7 @@ namespace FunFair.Test.Common
         /// </summary>
         protected ITestOutputHelper Output => new LogOutput(this.Logger);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(disposing: true);
@@ -106,7 +106,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Disposes of any managed resources
+        ///     Disposes of any managed resources
         /// </summary>
         /// <param name="disposing">true, when the object is being disposed; otherwise, false.</param>
         protected virtual void Dispose(bool disposing)
@@ -135,94 +135,32 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
+        ///     Gets the Service provider that's registstered.
+        /// </summary>
+        /// <returns></returns>
+        protected internal IServiceProvider RetrieveDependencyInjectionServiceProvider()
+        {
+            return this._serviceProvider;
+        }
+
+        /// <summary>
         ///     Gets a typed logger.
         /// </summary>
         /// <typeparam name="T">The logger type.</typeparam>
         /// <returns>A logger.</returns>
         protected ILogger<T> GetTypedLogger<T>()
         {
-            ILogger<T> logger = this._loggerFactory.CreateLogger<T>();
-
-            if (logger == null)
-            {
-                throw new NullException($"ILogger<{typeof(T).FullName}> could not be loaded from DI container");
-            }
-
-            return logger;
+            return this._loggerFactory.CreateLogger<T>() ?? throw new NullException($"ILogger<{typeof(T).FullName}> could not be loaded from DI container");
         }
 
         private DisposableLogger BuildLogger()
         {
-            MethodInfo method = typeof(LoggingTestBase).GetMethod(nameof(this.GetTypedLogger), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance) ??
-                                throw new MissingMethodException();
-
-            MethodInfo genericMethod = method.MakeGenericMethod(this.GetType());
-
-            ILogger? logger = genericMethod.Invoke(this, Array.Empty<object>()) as ILogger;
-
-            if (logger == null)
-            {
-                throw new MissingMethodException();
-            }
-
-            return new DisposableLogger(logger);
+            return new DisposableLogger(this.GetTypedLogger<LoggingTestBase>());
         }
 
         private void ReportUnhandledException(object? sender, UnobservedTaskExceptionEventArgs args)
         {
             this.Output.WriteLine("Unhandled Exception: " + args.Exception?.Message);
-        }
-
-        private sealed class DisposableLogger : ILogger, IDisposable
-        {
-            private readonly ILogger _logger;
-            private readonly IDisposable _scope;
-
-            public DisposableLogger(ILogger logger)
-            {
-                this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
-                this._scope = this._logger.BeginScope(state: "Test");
-            }
-
-            public void Dispose()
-            {
-                this._scope.Dispose();
-            }
-
-            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
-            {
-                this._logger.Log(logLevel, eventId, state, exception, formatter);
-            }
-
-            public bool IsEnabled(LogLevel logLevel)
-            {
-                return this._logger.IsEnabled(logLevel);
-            }
-
-            public IDisposable BeginScope<TState>(TState state)
-            {
-                return this._logger.BeginScope(state);
-            }
-        }
-
-        private sealed class LogOutput : ITestOutputHelper
-        {
-            private readonly ILogger _logger;
-
-            public LogOutput(ILogger logger)
-            {
-                this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            }
-
-            public void WriteLine(string message)
-            {
-                this._logger.LogDebug(message);
-            }
-
-            public void WriteLine(string format, params object[] args)
-            {
-                this._logger.LogDebug(format, args);
-            }
         }
     }
 }

@@ -40,6 +40,11 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
+        ///     Gets the Dependency Injection Service Provider.
+        /// </summary>
+        protected internal IServiceProvider ServiceProvider => this.RetrieveDependencyInjectionServiceProvider();
+
+        /// <summary>
         ///     Gets the service from Dependency injection.
         /// </summary>
         /// <typeparam name="T">The service </typeparam>

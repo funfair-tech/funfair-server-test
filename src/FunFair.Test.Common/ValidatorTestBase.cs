@@ -14,19 +14,27 @@ namespace FunFair.Test.Common
     public abstract class ValidatorTestBase<TValidator, TObject> : LoggingTestBase
         where TValidator : AbstractValidator<TObject>, new()
     {
+        private readonly TValidator _validator;
+
         /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
         /// <param name="output">Test output.</param>
         protected ValidatorTestBase(ITestOutputHelper output)
             : base(output)
         {
+            this._validator = new TValidator();
         }
 
         /// <summary>
-        ///     Gets the validator
+        ///     Validates the object.
         /// </summary>
-        protected TValidator Validator { get; } = new TValidator();
+        /// <param name="instance">The object to validate</param>
+        /// <returns>Validation result.</returns>
+        public ValidationResult Validate(TObject instance)
+        {
+            return this._validator.Validate(instance);
+        }
 
         /// <summary>
         ///     Outputs the validation results.
@@ -60,13 +68,13 @@ namespace FunFair.Test.Common
         protected abstract void EverythingValid();
 
         /// <summary>
-        /// Tests that all properties in the object pass validation.
+        ///     Tests that all properties in the object pass validation.
         /// </summary>
         protected void TestEverythingValid()
         {
             TObject itemToValidate = this.CreateAValidObject();
 
-            ValidationResult result = this.Validator.Validate(itemToValidate);
+            ValidationResult result = this.Validate(itemToValidate);
 
             this.Dump(result);
 
@@ -74,7 +82,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Check that only the named property has errors.
+        ///     Check that only the named property has errors.
         /// </summary>
         /// <param name="result">The validation result.</param>
         /// <param name="erroringProperty">The property expected to have errors.</param>
@@ -85,7 +93,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Builds the property name from a succession of parts.
+        ///     Builds the property name from a succession of parts.
         /// </summary>
         /// <param name="parts">The parts.</param>
         /// <returns>The property name.</returns>
