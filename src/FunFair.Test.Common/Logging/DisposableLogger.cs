@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.Logging;
 
-namespace FunFair.Test.Common
+namespace FunFair.Test.Common.Logging
 {
     internal sealed class DisposableLogger : ILogger, IDisposable
     {
