@@ -14,8 +14,6 @@ namespace FunFair.Test.Common
     public abstract class ValidatorTestBase<TValidator, TObject> : LoggingTestBase
         where TValidator : AbstractValidator<TObject>, new()
     {
-        private readonly TValidator _validator;
-
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -26,6 +24,8 @@ namespace FunFair.Test.Common
             this._validator = new TValidator();
         }
 
+        private readonly TValidator _validator;
+
         /// <summary>
         ///     Validates the object.
         /// </summary>
@@ -33,7 +33,11 @@ namespace FunFair.Test.Common
         /// <returns>Validation result.</returns>
         public ValidationResult Validate(TObject instance)
         {
-            return this._validator.Validate(instance);
+            ValidationResult result = this._validator.Validate(instance);
+
+            this.Dump(result);
+
+            return result;
         }
 
         /// <summary>
@@ -45,8 +49,6 @@ namespace FunFair.Test.Common
         public ValidationResult Validate(TObject instance, int expectedErrorCount)
         {
             ValidationResult result = this.Validate(instance);
-
-            this.Dump(result);
 
             Assert.Equal(expectedErrorCount, result.Errors.Count);
 
@@ -73,7 +75,7 @@ namespace FunFair.Test.Common
         ///     Outputs the validation results.
         /// </summary>
         /// <param name="result">The validation results</param>
-        protected void Dump(ValidationResult result)
+        private void Dump(ValidationResult result)
         {
             if (!result.Errors.Any())
             {
@@ -83,7 +85,7 @@ namespace FunFair.Test.Common
             this.Output.WriteLine($"Found {result.Errors.Count} errors:");
 
             foreach (ValidationFailure error in result.Errors.OrderBy(keySelector: e => e.PropertyName)
-                .ThenBy(keySelector: e => e.ErrorMessage))
+                                                      .ThenBy(keySelector: e => e.ErrorMessage))
             {
                 this.Output.WriteLine($" * {error.PropertyName} : {error.ErrorMessage}");
             }
@@ -94,12 +96,6 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <returns>A valid object instance.</returns>
         protected abstract TObject CreateAValidObject();
-
-        /// <summary>
-        ///     Checks that everything is valid
-        /// </summary>
-        [Fact]
-        protected abstract void EverythingValid();
 
         /// <summary>
         ///     Tests that all properties in the object pass validation.
@@ -142,5 +138,11 @@ namespace FunFair.Test.Common
         {
             return string.Join(separator: ".", parts);
         }
+
+        /// <summary>
+        ///     Checks that everything is valid
+        /// </summary>
+        [Fact]
+        protected abstract void EverythingValid();
     }
 }
