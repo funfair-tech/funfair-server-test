@@ -2,9 +2,10 @@ name: .NET Core
 
 on:
   push:
-    branches: 
-      - '*'
-  pull_request:
+    branches-ignore:
+     - 'release/*'
+     - 'hotfix/*'
+    pull_request:
      - opened
      - edited
      - synchronize
