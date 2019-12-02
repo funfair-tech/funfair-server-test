@@ -14,8 +14,6 @@ namespace FunFair.Test.Common
     public abstract class ValidatorTestBase<TValidator, TObject> : LoggingTestBase
         where TValidator : AbstractValidator<TObject>, new()
     {
-        private readonly TValidator _validator;
-
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -26,6 +24,8 @@ namespace FunFair.Test.Common
             this._validator = new TValidator();
         }
 
+        private readonly TValidator _validator;
+
         /// <summary>
         ///     Validates the object.
         /// </summary>
@@ -33,27 +33,58 @@ namespace FunFair.Test.Common
         /// <returns>Validation result.</returns>
         public ValidationResult Validate(TObject instance)
         {
-            return this._validator.Validate(instance);
+            ValidationResult result = this._validator.Validate(instance);
+
+            this.Dump(result);
+
+            return result;
         }
 
         /// <summary>
-        ///     Outputs the validation results.
+        ///     Validates the object.
         /// </summary>
-        /// <param name="result">The validation results</param>
-        protected void Dump(ValidationResult result)
+        /// <param name="instance">The object to validate</param>
+        /// <param name="expectedErrorCount">The expected number of errors.</param>
+        /// <returns>Validation result.</returns>
+        public ValidationResult Validate(TObject instance, int expectedErrorCount)
         {
-            if (!result.Errors.Any())
-            {
-                return;
-            }
+            ValidationResult result = this.Validate(instance);
 
-            this.Output.WriteLine($"Found {result.Errors.Count} errors:");
+            Assert.Equal(expectedErrorCount, result.Errors.Count);
 
-            foreach (ValidationFailure error in result.Errors.OrderBy(keySelector: e => e.PropertyName)
-                .ThenBy(keySelector: e => e.ErrorMessage))
-            {
-                this.Output.WriteLine($" * {error.PropertyName} : {error.ErrorMessage}");
-            }
+            return result;
+        }
+
+        /// <summary>
+        ///     Validates the object.
+        /// </summary>
+        /// <param name="instance">The object to validate</param>
+        /// <param name="expectedErrorCount">The expected number of errors.</param>
+        /// <param name="erroringProperty">The property expected to have errors.</param>
+        /// <returns>Validation result.</returns>
+        public ValidationResult Validate(TObject instance, int expectedErrorCount, string erroringProperty)
+        {
+            ValidationResult result = this.Validate(instance, expectedErrorCount);
+
+            AssertOnlyNamedPropertyHasErrors(result, erroringProperty);
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Validates the object.
+        /// </summary>
+        /// <param name="instance">The object to validate</param>
+        /// <param name="expectedErrorCount">The expected number of errors.</param>
+        /// <param name="erroringProperties">The properties expected to have errors.</param>
+        /// <returns>Validation result.</returns>
+        public ValidationResult Validate(TObject instance, int expectedErrorCount, params string[] erroringProperties)
+        {
+            ValidationResult result = this.Validate(instance, expectedErrorCount);
+
+            AssertNamedPropertiesHaveErrors(result, erroringProperties);
+
+            return result;
         }
 
         /// <summary>
@@ -63,22 +94,13 @@ namespace FunFair.Test.Common
         protected abstract TObject CreateAValidObject();
 
         /// <summary>
-        ///     Checks that everything is valid
-        /// </summary>
-        protected abstract void EverythingValid();
-
-        /// <summary>
         ///     Tests that all properties in the object pass validation.
         /// </summary>
         protected void TestEverythingValid()
         {
             TObject itemToValidate = this.CreateAValidObject();
 
-            ValidationResult result = this.Validate(itemToValidate);
-
-            this.Dump(result);
-
-            Assert.Equal(expected: 0, result.Errors.Count);
+            this.Validate(itemToValidate, expectedErrorCount: 0);
         }
 
         /// <summary>
@@ -93,6 +115,30 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
+        ///     Check that only the named property has errors.
+        /// </summary>
+        /// <param name="result">The validation result.</param>
+        /// <param name="erroringProperty">The property expected to have errors.</param>
+        protected static void AssertNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
+        {
+            Assert.True(result.Errors.Any(predicate: e => e.PropertyName == erroringProperty),
+                        $"Should have had errors in {erroringProperty}, but not found found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
+        }
+
+        /// <summary>
+        ///     Check that only the named property has errors.
+        /// </summary>
+        /// <param name="result">The validation result.</param>
+        /// <param name="erroringProperties">The property expected to have errors.</param>
+        protected static void AssertNamedPropertiesHaveErrors(ValidationResult result, params string[] erroringProperties)
+        {
+            Assert.NotEmpty(erroringProperties);
+
+            Assert.True(result.Errors.Any(predicate: e => !erroringProperties.Contains(e.PropertyName)),
+                        $"Should have had errors in {string.Join(separator: ",", erroringProperties.Distinct())}, but not found found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
+        }
+
+        /// <summary>
         ///     Builds the property name from a succession of parts.
         /// </summary>
         /// <param name="parts">The parts.</param>
@@ -101,5 +147,33 @@ namespace FunFair.Test.Common
         {
             return string.Join(separator: ".", parts);
         }
+
+        /// <summary>
+        ///     Outputs the validation results.
+        /// </summary>
+        /// <param name="result">The validation results</param>
+        private void Dump(ValidationResult result)
+        {
+            if (!result.Errors.Any())
+            {
+                this.Output.WriteLine(message: "Validation Success");
+
+                return;
+            }
+
+            this.Output.WriteLine($"Found {result.Errors.Count} errors:");
+
+            foreach (ValidationFailure error in result.Errors.OrderBy(keySelector: e => e.PropertyName)
+                                                      .ThenBy(keySelector: e => e.ErrorMessage))
+            {
+                this.Output.WriteLine($" * {error.PropertyName} : {error.ErrorMessage}");
+            }
+        }
+
+        /// <summary>
+        ///     Checks that everything is valid
+        /// </summary>
+        [Fact]
+        protected abstract void EverythingValid();
     }
 }
