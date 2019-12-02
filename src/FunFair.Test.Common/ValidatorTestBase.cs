@@ -122,7 +122,7 @@ namespace FunFair.Test.Common
         protected static void AssertNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
         {
             Assert.True(result.Errors.Any(predicate: e => e.PropertyName == erroringProperty),
-                        $"Should have had errors in {erroringProperty}, but not found found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
+                        $"Should have had errors in {erroringProperty}, but not found found errors in {DumpPropertiesInError(result)}");
         }
 
         /// <summary>
@@ -138,10 +138,10 @@ namespace FunFair.Test.Common
             bool hasAllExpectedErrors = erroringProperties.All(predicate: error => result.Errors.Any(predicate: p => p.PropertyName == error));
 
             Assert.True(hasUnexpectedErrors,
-                        $"Should have had errors in {string.Join(separator: ",", erroringProperties.Distinct())}, but not found found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
+                        $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
 
             Assert.True(hasAllExpectedErrors,
-                        $"Should have had errors in {string.Join(separator: ",", erroringProperties.Distinct())}, but not found found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
+                        $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
         }
 
         /// <summary>
@@ -174,6 +174,21 @@ namespace FunFair.Test.Common
             {
                 this.Output.WriteLine($" * {error.PropertyName} : {error.ErrorMessage}");
             }
+        }
+
+        private static string DumpPropertiesInError(ValidationResult result)
+        {
+            return string.Join(separator: ", ",
+                               result.Errors.Select(selector: e => e.PropertyName)
+                                     .Distinct()
+                                     .OrderBy(keySelector: x => x.ToUpperInvariant()));
+        }
+
+        private static string DumpExpectedPropertiesInError(string[] erroringProperties)
+        {
+            return string.Join(separator: ", ",
+                               erroringProperties.Distinct()
+                                                 .OrderBy(keySelector: x => x.ToUpperInvariant()));
         }
 
         /// <summary>
