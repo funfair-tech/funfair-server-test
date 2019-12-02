@@ -14,10 +14,11 @@ namespace FunFair.Test.Common.Startup
 
         private static void AddFilters(ILoggingBuilder builder, ITestOutputHelper output)
         {
-            builder.ClearProviders();
-            builder.AddXUnit(output);
-            builder.AddFilter(category: @"Microsoft", LogLevel.Warning)
-                .AddFilter(category: @"System.Net.Http.HttpClient", LogLevel.Warning);
+            builder.ClearProviders()
+                .AddXUnit(output)
+                .AddFilter(category: @"Microsoft", LogLevel.Warning)
+                .AddFilter(category: @"System.Net.Http.HttpClient", LogLevel.Warning)
+                .SetMinimumLevel(LogLevel.Trace);
         }
     }
 }
