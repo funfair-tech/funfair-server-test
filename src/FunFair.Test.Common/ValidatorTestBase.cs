@@ -72,6 +72,22 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
+        ///     Validates the object.
+        /// </summary>
+        /// <param name="instance">The object to validate</param>
+        /// <param name="expectedErrorCount">The expected number of errors.</param>
+        /// <param name="erroringProperties">The properties expected to have errors.</param>
+        /// <returns>Validation result.</returns>
+        public ValidationResult Validate(TObject instance, int expectedErrorCount, params string[] erroringProperties)
+        {
+            ValidationResult result = this.Validate(instance, expectedErrorCount);
+
+            AssertNamedPropertiesHaveErrors(result, erroringProperties);
+
+            return result;
+        }
+
+        /// <summary>
         ///     Creates an instance of an object that is valid.
         /// </summary>
         /// <returns>A valid object instance.</returns>
@@ -110,6 +126,19 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
+        ///     Check that only the named property has errors.
+        /// </summary>
+        /// <param name="result">The validation result.</param>
+        /// <param name="erroringProperties">The property expected to have errors.</param>
+        protected static void AssertNamedPropertiesHaveErrors(ValidationResult result, params string[] erroringProperties)
+        {
+            Assert.NotEmpty(erroringProperties);
+
+            Assert.True(result.Errors.Any(predicate: e => !erroringProperties.Contains(e.PropertyName)),
+                        $"Should have had errors in {string.Join(separator: ",", erroringProperties.Distinct())}, but not found found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
+        }
+
+        /// <summary>
         ///     Builds the property name from a succession of parts.
         /// </summary>
         /// <param name="parts">The parts.</param>
@@ -118,12 +147,6 @@ namespace FunFair.Test.Common
         {
             return string.Join(separator: ".", parts);
         }
-
-        /// <summary>
-        ///     Checks that everything is valid
-        /// </summary>
-        [Fact]
-        protected abstract void EverythingValid();
 
         /// <summary>
         ///     Outputs the validation results.
@@ -146,5 +169,11 @@ namespace FunFair.Test.Common
                 this.Output.WriteLine($" * {error.PropertyName} : {error.ErrorMessage}");
             }
         }
+
+        /// <summary>
+        ///     Checks that everything is valid
+        /// </summary>
+        [Fact]
+        protected abstract void EverythingValid();
     }
 }
