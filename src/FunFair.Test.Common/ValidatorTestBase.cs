@@ -72,26 +72,6 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        ///     Outputs the validation results.
-        /// </summary>
-        /// <param name="result">The validation results</param>
-        private void Dump(ValidationResult result)
-        {
-            if (!result.Errors.Any())
-            {
-                return;
-            }
-
-            this.Output.WriteLine($"Found {result.Errors.Count} errors:");
-
-            foreach (ValidationFailure error in result.Errors.OrderBy(keySelector: e => e.PropertyName)
-                                                      .ThenBy(keySelector: e => e.ErrorMessage))
-            {
-                this.Output.WriteLine($" * {error.PropertyName} : {error.ErrorMessage}");
-            }
-        }
-
-        /// <summary>
         ///     Creates an instance of an object that is valid.
         /// </summary>
         /// <returns>A valid object instance.</returns>
@@ -144,5 +124,27 @@ namespace FunFair.Test.Common
         /// </summary>
         [Fact]
         protected abstract void EverythingValid();
+
+        /// <summary>
+        ///     Outputs the validation results.
+        /// </summary>
+        /// <param name="result">The validation results</param>
+        private void Dump(ValidationResult result)
+        {
+            if (!result.Errors.Any())
+            {
+                this.Output.WriteLine(message: "Validation Success");
+
+                return;
+            }
+
+            this.Output.WriteLine($"Found {result.Errors.Count} errors:");
+
+            foreach (ValidationFailure error in result.Errors.OrderBy(keySelector: e => e.PropertyName)
+                                                      .ThenBy(keySelector: e => e.ErrorMessage))
+            {
+                this.Output.WriteLine($" * {error.PropertyName} : {error.ErrorMessage}");
+            }
+        }
     }
 }
