@@ -134,7 +134,13 @@ namespace FunFair.Test.Common
         {
             Assert.NotEmpty(erroringProperties);
 
-            Assert.True(result.Errors.Any(predicate: e => !erroringProperties.Contains(e.PropertyName)),
+            bool hasUnexpectedErrors = result.Errors.All(predicate: error => erroringProperties.Contains(error.PropertyName));
+            bool hasAllExpectedErrors = erroringProperties.All(predicate: error => result.Errors.Any(predicate: p => p.PropertyName == error));
+
+            Assert.True(hasUnexpectedErrors,
+                        $"Should have had errors in {string.Join(separator: ",", erroringProperties.Distinct())}, but not found found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
+
+            Assert.True(hasAllExpectedErrors,
                         $"Should have had errors in {string.Join(separator: ",", erroringProperties.Distinct())}, but not found found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
         }
 
