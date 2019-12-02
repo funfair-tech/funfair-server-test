@@ -37,6 +37,39 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
+        ///     Validates the object.
+        /// </summary>
+        /// <param name="instance">The object to validate</param>
+        /// <param name="expectedErrorCount">The expected number of errors.</param>
+        /// <returns>Validation result.</returns>
+        public ValidationResult Validate(TObject instance, int expectedErrorCount)
+        {
+            ValidationResult result = this.Validate(instance);
+
+            this.Dump(result);
+
+            Assert.Equal(expectedErrorCount, result.Errors.Count);
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Validates the object.
+        /// </summary>
+        /// <param name="instance">The object to validate</param>
+        /// <param name="expectedErrorCount">The expected number of errors.</param>
+        /// <param name="erroringProperty">The property expected to have errors.</param>
+        /// <returns>Validation result.</returns>
+        public ValidationResult Validate(TObject instance, int expectedErrorCount, string erroringProperty)
+        {
+            ValidationResult result = this.Validate(instance, expectedErrorCount);
+
+            AssertOnlyNamedPropertyHasErrors(result, erroringProperty);
+
+            return result;
+        }
+
+        /// <summary>
         ///     Outputs the validation results.
         /// </summary>
         /// <param name="result">The validation results</param>
@@ -65,6 +98,7 @@ namespace FunFair.Test.Common
         /// <summary>
         ///     Checks that everything is valid
         /// </summary>
+        [Fact]
         protected abstract void EverythingValid();
 
         /// <summary>
@@ -74,11 +108,7 @@ namespace FunFair.Test.Common
         {
             TObject itemToValidate = this.CreateAValidObject();
 
-            ValidationResult result = this.Validate(itemToValidate);
-
-            this.Dump(result);
-
-            Assert.Equal(expected: 0, result.Errors.Count);
+            this.Validate(itemToValidate, expectedErrorCount: 0);
         }
 
         /// <summary>
@@ -90,6 +120,17 @@ namespace FunFair.Test.Common
         {
             Assert.True(result.Errors.All(predicate: e => e.PropertyName == erroringProperty),
                         $"Should only have had errors in {erroringProperty}, but found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
+        }
+
+        /// <summary>
+        ///     Check that only the named property has errors.
+        /// </summary>
+        /// <param name="result">The validation result.</param>
+        /// <param name="erroringProperty">The property expected to have errors.</param>
+        protected static void AssertNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
+        {
+            Assert.True(result.Errors.Any(predicate: e => e.PropertyName == erroringProperty),
+                        $"Should have had errors in {erroringProperty}, but not found found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
         }
 
         /// <summary>
