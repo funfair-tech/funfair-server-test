@@ -5,6 +5,7 @@
         <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
         <WarningsAsErrors />
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <NoWarn>1591</NoWarn>
         <LangVersion>latest</LangVersion>
         <Features>strict;flow-analysis</Features>
         <Nullable>enable</Nullable>
@@ -15,14 +16,10 @@
         <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DocumentationFile>bin\Debug\netcoreapp3.0\FunFair.Random.Tests.xml</DocumentationFile>
-        <NoWarn>1701;1702;1705;1591</NoWarn>
-        <LangVersion>latest</LangVersion>
+        <DocumentationFile>bin\Debug\netcoreapp3.0\FunFair.Test.Common.Tests.xml</DocumentationFile>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DocumentationFile>bin\Release\netcoreapp3.0\FunFair.Random.Tests.xml</DocumentationFile>
-        <NoWarn>1701;1702;1705;1591</NoWarn>
-        <LangVersion>latest</LangVersion>
+        <DocumentationFile>bin\Release\netcoreapp3.0\FunFair.Test.Common.Tests.xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="AsyncFixer" Version="1.1.6" PrivateAssets="All" />
