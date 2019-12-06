@@ -22,8 +22,8 @@ jobs:
       run: |
         cd src
         echo ::set-output name=version::`grep -Po '"version":.*?[^\]",' global.json`
-	dotnetcoreversion=`grep -Po '"version":.*?[^\]",' global.json`
-    - name: Setup .NET Core version: ${dotnetcoreversion}
+	echo .NET Core Version: `grep -Po '"version":.*?[^\]",' global.json`
+    - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ coreversion.version }}
