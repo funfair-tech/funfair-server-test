@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
     <WarningsAsErrors />
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
@@ -23,10 +23,10 @@
     <Description>Common Test Infrastructure.</Description>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp3.0\FunFair.Test.Common.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp3.1\FunFair.Test.Common.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netcoreapp3.0\FunFair.Test.Common.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netcoreapp3.1\FunFair.Test.Common.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AsyncFixer" Version="1.1.6" PrivateAssets="All" />
