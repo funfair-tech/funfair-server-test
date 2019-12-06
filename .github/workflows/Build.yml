@@ -20,7 +20,7 @@ jobs:
     - name: Find .net core version
       id: coreversion
       run: |
-	cd src
+        cd src
         echo ::set-env name=version::`grep -Po '"text":.*?[^\]",' global.json`	
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
