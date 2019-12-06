@@ -26,7 +26,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{coreversion.version}}
+        dotnet-version: ${{coreversion}}
     - name: Build with dotnet
       run: |
         cd src
