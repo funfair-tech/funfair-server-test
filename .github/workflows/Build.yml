@@ -17,10 +17,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Find .net core version
+      id: coreversion
+      run:
+	cd src
+        echo ::set-env name=version::`grep -Po '"text":.*?[^\]",' global.json`	
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.100
+        dotnet-version: ${{ coreversion.version}}
     - name: Build with dotnet
       run: |
         cd src
