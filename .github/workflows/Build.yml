@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Find .net core version
       id: coreversion
-      run:
+      run: |
 	cd src
         echo ::set-env name=version::`grep -Po '"text":.*?[^\]",' global.json`	
     - name: Setup .NET Core
