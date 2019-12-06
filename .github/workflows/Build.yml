@@ -21,11 +21,11 @@ jobs:
       id: coreversion
       run: |
         cd src
-        echo ::set-env name=version::`grep -Po '"text":.*?[^\]",' global.json`	
+        echo ::set-output name=version::`grep -Po '"text":.*?[^\]",' global.json`	
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ coreversion.version}}
+        dotnet-version: ${{ coreversion.version }}
     - name: Build with dotnet
       run: |
         cd src
