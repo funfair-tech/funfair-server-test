@@ -12,6 +12,9 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 <!-- 
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.2.0] 2019-12-06
+- FF-1258 - Updated to .net core 3.1.100
+
 ## [1.1.0] 2019-12-02
 ### Changed
 - ValidatorTestBase to expose more validate methods and deprecate the Dump method, as that is embedded in all validates.
