@@ -7,7 +7,6 @@ using Xunit.Abstractions;
 
 namespace FunFair.Test.Common
 {
-#nullable enable
     public abstract class JsonConverterTestBase<TConverter, TObject> : LoggingTestBase
         where TConverter : JsonConverter<TObject>, new() where TObject : class, IEquatable<TObject>
     {
@@ -27,6 +26,8 @@ namespace FunFair.Test.Common
         private readonly JsonSerializerOptions _options;
 
         protected abstract TObject CreateInstance();
+
+        protected virtual string InvalidValue { get; } = Guid.NewGuid().ToString();
 
         private sealed class Model : IEquatable<Model>
         {
@@ -103,7 +104,7 @@ namespace FunFair.Test.Common
         [Fact]
         public void ShouldNotDeserialize()
         {
-            const string doc = "{\"value\": \"banana\"}";
+            string doc = JsonSerializer.Serialize(new { value = this.InvalidValue }, this._options);
 
             this.Output.WriteLine($"Serialized model as: {doc}");
 
