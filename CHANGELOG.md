@@ -6,13 +6,16 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-- FF-1679 - Move common test base classes and infrastructure into Test.Common
 ### Fixed
 ### Changed
 
 <!-- 
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.3.0] 2019-12-10
+### Added
+- FF-1679 - Move common test base classes and infrastructure into Test.Common
+
 ## [1.2.0] 2019-12-06
 - FF-1258 - Updated to .net core 3.1.100
 
