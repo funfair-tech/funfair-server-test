@@ -1,4 +1,4 @@
-﻿# Changelog
+# Changelog
 All notable changes to this project will be documented in this file.
 
 <!--
@@ -6,6 +6,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+- FF-1679 - Move common test base classes and infrastructure into Test.Common
 ### Fixed
 ### Changed
 
