@@ -15,7 +15,7 @@ namespace FunFair.Test.Common.Tests
 
         protected override Model CreateInstance()
         {
-            return new Model() { Value = ModelColor.Blue };
+            return new Model() { Value = ModelColor.BLUE };
         }
     }
 }
