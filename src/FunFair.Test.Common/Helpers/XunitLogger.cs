@@ -24,6 +24,7 @@ namespace FunFair.Test.Common.Helpers
             this._logStart = logStart;
         }
 
+        [SuppressMessage("FunFair.CodeAnalysis", "FFS0005:Avoid DateTimeOffset.UtcNow", Justification = "Unit test")]
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             if (!this.IsEnabled(logLevel))
