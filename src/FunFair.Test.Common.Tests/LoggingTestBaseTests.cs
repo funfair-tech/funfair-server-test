@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -13,7 +14,9 @@ namespace FunFair.Test.Common.Tests
         [Fact]
         public void OutputOutputs()
         {
-            this.Output.WriteLine(message: "Hello World.");
+            DateTimeOffset now = DateTimeOffset.Now;
+
+            this.Output.WriteLine($"Hello World. It's {now}");
         }
     }
 }
