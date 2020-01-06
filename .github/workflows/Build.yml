@@ -30,4 +30,5 @@ jobs:
     - name: Build with dotnet
       run: |
         cd src
-        dotnet build --configuration Release
+        dotnet restore --source ${{ secrets.FUNFAIR_NUGET }} --source https://api.nuget.org/v3/index.json
+        dotnet build --configuration Release  --no-restore
