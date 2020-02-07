@@ -7,6 +7,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ## [Unreleased]
 ### Added
 ### Fixed
+- Untimely disposal of Logging infrastructure... before its actually finished being used.
 ### Changed
 
 <!-- 
