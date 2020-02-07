@@ -14,6 +14,7 @@ namespace FunFair.Test.Common
     /// <summary>
     ///     Simple base class for tests that need logging or output to the test logs.
     /// </summary>
+    [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "_loggerFactory", Justification = "If Disposed then tests can and will report errors")]
     public abstract class LoggingTestBase : TestBase, IDisposable
     {
         private readonly ILoggerFactory _loggerFactory;
@@ -114,8 +115,7 @@ namespace FunFair.Test.Common
             IDisposable? disposableLogger = this._logger;
             disposableLogger?.Dispose();
 
-            // This forces the constructor to be executed once per test!
-            this._loggerFactory?.Dispose();
+            // note do not dispose _loggerFactory in this method
 
             TaskScheduler.UnobservedTaskException -= this.ReportUnhandledException;
         }
