@@ -12,6 +12,10 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 <!-- 
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.4.0] 2020-02-11
+### Added
+- Enforcement of Microsoft.VisualStudio.Threading.Analyzers
+
 ## [1.3.2] 2020-02-07
 ### Fixed
 - Untimely disposal of Logging infrastructure... before its actually finished being used.
