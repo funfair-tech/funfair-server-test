@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Sdk;
@@ -60,6 +61,18 @@ namespace FunFair.Test.Common
             }
 
             return value;
+        }
+
+        /// <summary>
+        ///     Suppress that the variable
+        /// </summary>
+        /// <param name="value"></param>
+        /// <typeparam name="T"></typeparam>
+        [SuppressMessage(category: "Microsoft.Usage", checkId: "CA1801:ReviewUnusedParameters", Justification = "Needed for Unit Test")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected static void UnusedVariable<T>(T value)
+        {
+            // Marking that the variable is unused.
         }
     }
 }

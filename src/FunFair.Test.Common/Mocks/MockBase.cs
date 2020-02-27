@@ -5,7 +5,7 @@ namespace FunFair.Test.Common.Mocks
     /// </summary>
     /// <typeparam name="T">The type of the mock.</typeparam>
     public abstract class MockBase<T>
-        where T: notnull
+        where T : notnull
     {
         private readonly T _value;
 

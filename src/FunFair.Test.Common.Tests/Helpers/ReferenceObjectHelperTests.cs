@@ -12,21 +12,21 @@ namespace FunFair.Test.Common.Tests.Helpers
         private readonly Func<MockGenericModel<int>, MockGenericModel<int>, bool> _equals = (left, right) => left.Equals(right);
 
         [Fact]
-        public void ObjectsAreEqualIfTheyAreSameReference()
-        {
-            MockGenericModel<int> obj = new MockGenericModel<int>(value: 1);
-
-            Assert.True(condition: ReferenceObjectHelpers.AreEqual<MockGenericModel<int>>(obj, obj, this._equals));
-        }
-
-        [Fact]
         public void ObjectsAreEqualIfTheirNonReferencePartsAreEquals()
         {
             const int value = 1;
             MockGenericModel<int> left = new MockGenericModel<int>(value);
             MockGenericModel<int> right = new MockGenericModel<int>(value);
 
-            Assert.True(ReferenceObjectHelpers.AreEqual<MockGenericModel<int>>(left, right, (l, r) => l.Value.Equals(r.Value)));
+            Assert.True(ReferenceObjectHelpers.AreEqual(left, right, eq: (l, r) => l.Value.Equals(r.Value)));
+        }
+
+        [Fact]
+        public void ObjectsAreEqualIfTheyAreSameReference()
+        {
+            MockGenericModel<int> obj = new MockGenericModel<int>(value: 1);
+
+            Assert.True(ReferenceObjectHelpers.AreEqual(obj, obj, this._equals));
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace FunFair.Test.Common.Tests.Helpers
         {
             MockGenericModel<int> right = new MockGenericModel<int>(value: 1);
 
-            Assert.False(ReferenceObjectHelpers.AreEqual<MockGenericModel<int>>(left: null, right, this._equals));
+            Assert.False(ReferenceObjectHelpers.AreEqual(left: null, right, this._equals));
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace FunFair.Test.Common.Tests.Helpers
         {
             MockGenericModel<int> left = new MockGenericModel<int>(value: 1);
 
-            Assert.False(ReferenceObjectHelpers.AreEqual<MockGenericModel<int>>(left, right: null, this._equals));
+            Assert.False(ReferenceObjectHelpers.AreEqual(left, right: null, this._equals));
         }
 
         [Fact]
@@ -51,16 +51,41 @@ namespace FunFair.Test.Common.Tests.Helpers
             MockGenericModel<int> left = new MockGenericModel<int>(value: 1);
             MockGenericModel<int> right = new MockGenericModel<int>(value: 2);
 
-            Assert.False(ReferenceObjectHelpers.AreEqual<MockGenericModel<int>>(left, right, this._equals));
+            Assert.False(ReferenceObjectHelpers.AreEqual(left, right, this._equals));
         }
 
         [Fact]
-        public void ObjectsAreSameIfTheyAreSameReference()
+        public void ObjectsAreNotSameIfLeftIsNull()
         {
-            MockGenericModel<int> obj = new MockGenericModel<int>(value: 1);
+            MockGenericModel<int> right = new MockGenericModel<int>(value: 1);
 
+            Assert.Equal(expected: 1, ReferenceObjectHelpers.Compare(left: null, right, this._compare));
+        }
 
-            Assert.Equal(expected: 0, actual: ReferenceObjectHelpers.Compare<MockGenericModel<int>>(obj, obj, this._compare));
+        [Fact]
+        public void ObjectsAreNotSameIfLeftNonReferenceIsBigger()
+        {
+            MockGenericModel<int> left = new MockGenericModel<int>(value: 2);
+            MockGenericModel<int> right = new MockGenericModel<int>(value: 1);
+
+            Assert.Equal(expected: 1, ReferenceObjectHelpers.Compare(left, right, this._compare));
+        }
+
+        [Fact]
+        public void ObjectsAreNotSameIfLeftNonReferenceIsLess()
+        {
+            MockGenericModel<int> left = new MockGenericModel<int>(value: 1);
+            MockGenericModel<int> right = new MockGenericModel<int>(value: 2);
+
+            Assert.Equal(expected: -1, ReferenceObjectHelpers.Compare(left, right, this._compare));
+        }
+
+        [Fact]
+        public void ObjectsAreNotSameIfRightIsNull()
+        {
+            MockGenericModel<int> left = new MockGenericModel<int>(value: 1);
+
+            Assert.Equal(expected: -1, ReferenceObjectHelpers.Compare(left, right: null, this._compare));
         }
 
         [Fact]
@@ -70,41 +95,15 @@ namespace FunFair.Test.Common.Tests.Helpers
             MockGenericModel<int> left = new MockGenericModel<int>(value);
             MockGenericModel<int> right = new MockGenericModel<int>(value);
 
-            Assert.Equal(expected: 0, actual: ReferenceObjectHelpers.Compare<MockGenericModel<int>>(left, right, this._compare));
+            Assert.Equal(expected: 0, ReferenceObjectHelpers.Compare(left, right, this._compare));
         }
 
         [Fact]
-        public void ObjectsAreNotSameIfLeftIsNull()
+        public void ObjectsAreSameIfTheyAreSameReference()
         {
-            MockGenericModel<int> right = new MockGenericModel<int>(value: 1);
+            MockGenericModel<int> obj = new MockGenericModel<int>(value: 1);
 
-            Assert.Equal(expected: 1, actual: ReferenceObjectHelpers.Compare<MockGenericModel<int>>(left: null, right, this._compare));
-        }
-
-        [Fact]
-        public void ObjectsAreNotSameIfRightIsNull()
-        {
-            MockGenericModel<int> left = new MockGenericModel<int>(value: 1);
-
-            Assert.Equal(expected: -1, actual: ReferenceObjectHelpers.Compare<MockGenericModel<int>>(left, right: null, this._compare));
-        }
-
-        [Fact]
-        public void ObjectsAreNotSameIfLeftNonReferenceIsLess()
-        {
-            MockGenericModel<int> left = new MockGenericModel<int>(value: 1);
-            MockGenericModel<int> right = new MockGenericModel<int>(value: 2);
-
-            Assert.Equal(expected: -1, actual: ReferenceObjectHelpers.Compare<MockGenericModel<int>>(left, right, this._compare));
-        }
-
-        [Fact]
-        public void ObjectsAreNotSameIfLeftNonReferenceIsBigger()
-        {
-            MockGenericModel<int> left = new MockGenericModel<int>(value: 2);
-            MockGenericModel<int> right = new MockGenericModel<int>(value: 1);
-
-            Assert.Equal(expected: 1, actual: ReferenceObjectHelpers.Compare<MockGenericModel<int>>(left, right, this._compare));
+            Assert.Equal(expected: 0, ReferenceObjectHelpers.Compare(obj, obj, this._compare));
         }
     }
 }

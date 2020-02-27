@@ -24,7 +24,7 @@ namespace FunFair.Test.Common.Helpers
             this._logStart = logStart;
         }
 
-        [SuppressMessage("FunFair.CodeAnalysis", "FFS0005:Avoid DateTimeOffset.UtcNow", Justification = "Unit test")]
+        [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0005:Avoid DateTimeOffset.UtcNow", Justification = "Unit test")]
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             if (!this.IsEnabled(logLevel))
@@ -35,7 +35,9 @@ namespace FunFair.Test.Common.Helpers
             // Buffer the message into a single string in order to avoid shearing the message when running across multiple threads.
             StringBuilder messageBuilder = new StringBuilder();
 
-            string timestamp = this._logStart.HasValue ? $"{(DateTimeOffset.UtcNow - this._logStart.Value).TotalSeconds:N3}s" : DateTimeOffset.UtcNow.ToString( format: "s", CultureInfo.InvariantCulture);
+            string timestamp = this._logStart.HasValue
+                ? $"{(DateTimeOffset.UtcNow - this._logStart.Value).TotalSeconds:N3}s"
+                : DateTimeOffset.UtcNow.ToString(format: "s", CultureInfo.InvariantCulture);
 
             string firstLinePrefix = $"| [{timestamp}] {this._category} {logLevel}: ";
             string[] lines = formatter(state, exception)
@@ -53,7 +55,7 @@ namespace FunFair.Test.Common.Helpers
             if (exception != null)
             {
                 lines = exception.ToString()
-                    .Split(NewLineChars, StringSplitOptions.RemoveEmptyEntries);
+                                 .Split(NewLineChars, StringSplitOptions.RemoveEmptyEntries);
                 additionalLinePrefix = "| ";
 
                 foreach (string line in lines)
@@ -73,7 +75,17 @@ namespace FunFair.Test.Common.Helpers
             this.LogToOutput(message);
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Unit Test")]
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            return logLevel >= this._minLogLevel;
+        }
+
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            return new NullScope();
+        }
+
+        [SuppressMessage(category: "Microsoft.Design", checkId: "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Unit Test")]
         private void LogToOutput(string message)
         {
             try
@@ -87,16 +99,6 @@ namespace FunFair.Test.Common.Helpers
                 // So, ignore this. There isn't really anything we can do but hope the
                 // caller has additional loggers registered
             }
-        }
-
-        public bool IsEnabled(LogLevel logLevel)
-        {
-            return logLevel >= this._minLogLevel;
-        }
-
-        public IDisposable BeginScope<TState>(TState state)
-        {
-            return new NullScope();
         }
 
         private sealed class NullScope : IDisposable

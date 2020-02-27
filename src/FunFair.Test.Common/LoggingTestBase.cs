@@ -14,7 +14,10 @@ namespace FunFair.Test.Common
     /// <summary>
     ///     Simple base class for tests that need logging or output to the test logs.
     /// </summary>
-    [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "_loggerFactory", Justification = "If Disposed then tests can and will report errors")]
+    [SuppressMessage(category: "Microsoft.Usage",
+                     checkId: "CA2213:DisposableFieldsShouldBeDisposed",
+                     MessageId = "_loggerFactory",
+                     Justification = "If Disposed then tests can and will report errors")]
     public abstract class LoggingTestBase : TestBase, IDisposable
     {
         private readonly ILoggerFactory _loggerFactory;

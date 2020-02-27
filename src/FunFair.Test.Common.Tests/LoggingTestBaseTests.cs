@@ -13,7 +13,7 @@ namespace FunFair.Test.Common.Tests
         }
 
         [Fact]
-        [SuppressMessage("FunFair.CodeAnalysis", "FFS0005:Avoid DateTimeOffset.UtcNow", Justification = "Unit test")]
+        [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0005:Avoid DateTimeOffset.UtcNow", Justification = "Unit test")]
         public void OutputOutputs()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
