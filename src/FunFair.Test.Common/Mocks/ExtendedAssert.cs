@@ -18,7 +18,6 @@ namespace FunFair.Test.Common.Mocks
             Assert.Equal(expectedString, actualString);
         }
 
-
         /// <summary>
         ///     Assert if two objects are deep equal by.
         /// </summary>

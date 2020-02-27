@@ -5,30 +5,30 @@ using Xunit.Abstractions;
 namespace FunFair.Test.Common
 {
     /// <summary>
-    /// Base class that automatically cleans up temp folders.
+    ///     Base class that automatically cleans up temp folders.
     /// </summary>
     public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
     {
         /// <summary>
-        /// Constructor,s
+        ///     Constructor,s
         /// </summary>
         /// <param name="output"></param>
         protected LoggingFolderCleanupTestBase(ITestOutputHelper output)
             : base(output)
         {
             this.TempFolder = Path.Combine(Path.GetTempPath(),
-                                              Guid.NewGuid()
-                                                  .ToString());
+                                           Guid.NewGuid()
+                                               .ToString());
 
             Directory.CreateDirectory(this.TempFolder);
         }
 
         /// <summary>
-        /// The temporary folder that was created.
+        ///     The temporary folder that was created.
         /// </summary>
         protected string TempFolder { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
             MurderTempFolder(this.TempFolder);

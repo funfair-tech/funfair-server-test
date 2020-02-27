@@ -15,19 +15,17 @@ namespace FunFair.Test.Common
         {
             JsonConverter converter = new TConverter();
             this._options = new JsonSerializerOptions
-            {
-                IgnoreNullValues = false,
-                PropertyNameCaseInsensitive = false,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                Converters = { converter }
-            };
+                            {
+                                IgnoreNullValues = false, PropertyNameCaseInsensitive = false, PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = {converter}
+                            };
         }
 
         private readonly JsonSerializerOptions _options;
 
         protected abstract TObject CreateInstance();
 
-        protected virtual string InvalidValue { get; } = Guid.NewGuid().ToString();
+        protected virtual string InvalidValue { get; } = Guid.NewGuid()
+                                                             .ToString();
 
         private sealed class Model : IEquatable<Model>
         {
@@ -74,7 +72,7 @@ namespace FunFair.Test.Common
         {
             TObject instance = this.CreateInstance();
 
-            Model sourceModel = new Model { Value = instance };
+            Model sourceModel = new Model {Value = instance};
 
             // banana!
             string doc = JsonSerializer.Serialize(sourceModel, this._options);
@@ -93,7 +91,7 @@ namespace FunFair.Test.Common
         {
             TObject instance = this.CreateInstance();
 
-            Model sourceModel = new Model { Value = instance };
+            Model sourceModel = new Model {Value = instance};
 
             string doc = JsonSerializer.Serialize(sourceModel, this._options);
             Assert.NotEmpty(doc);
@@ -104,7 +102,7 @@ namespace FunFair.Test.Common
         [Fact]
         public void ShouldNotDeserialize()
         {
-            string doc = JsonSerializer.Serialize(new { value = this.InvalidValue }, this._options);
+            string doc = JsonSerializer.Serialize(new {value = this.InvalidValue}, this._options);
 
             this.Output.WriteLine($"Serialized model as: {doc}");
 
