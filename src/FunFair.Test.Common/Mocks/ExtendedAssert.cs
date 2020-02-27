@@ -4,6 +4,9 @@ using Xunit;
 
 namespace FunFair.Test.Common.Mocks
 {
+    /// <summary>
+    ///     Extended assert routines.
+    /// </summary>
     public static class ExtendedAssert
     {
         /// <summary>
