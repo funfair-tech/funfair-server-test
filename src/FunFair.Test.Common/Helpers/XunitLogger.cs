@@ -86,6 +86,7 @@ namespace FunFair.Test.Common.Helpers
         }
 
         [SuppressMessage(category: "Microsoft.Design", checkId: "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Unit Test")]
+        [SuppressMessage(category: "Roslynator.Analyzers", checkId: "RCS1075:DoNotCatchGeneralExceptionTypes", Justification = "Unit Test")]
         private void LogToOutput(string message)
         {
             try
