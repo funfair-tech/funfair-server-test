@@ -91,7 +91,7 @@ namespace FunFair.Test.Common.Tests.Helpers
         [Fact]
         public void ObjectsAreSameIfTheirNonReferencePartsAreEquals()
         {
-            int value = 1;
+            const int value = 1;
             MockGenericModel<int> left = new MockGenericModel<int>(value);
             MockGenericModel<int> right = new MockGenericModel<int>(value);
 
