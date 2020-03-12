@@ -138,7 +138,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        ///     Gets the Service provider that's registstered.
+        ///     Gets the Service provider that's registered.
         /// </summary>
         /// <returns></returns>
         protected internal IServiceProvider RetrieveDependencyInjectionServiceProvider()
