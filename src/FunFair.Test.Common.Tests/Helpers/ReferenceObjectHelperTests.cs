@@ -18,7 +18,7 @@ namespace FunFair.Test.Common.Tests.Helpers
             MockGenericModel<int> left = new MockGenericModel<int>(value);
             MockGenericModel<int> right = new MockGenericModel<int>(value);
 
-            Assert.True(ReferenceObjectHelpers.AreEqual(left, right, eq: (l, r) => l.Value.Equals(r.Value)));
+            Assert.True(ReferenceObjectHelpers.AreEqual(left, right, eq: (l, r) => l.Value.Equals(r.Value)), userMessage: "Should be same");
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace FunFair.Test.Common.Tests.Helpers
         {
             MockGenericModel<int> obj = new MockGenericModel<int>(value: 1);
 
-            Assert.True(ReferenceObjectHelpers.AreEqual(obj, obj, this._equals));
+            Assert.True(ReferenceObjectHelpers.AreEqual(obj, obj, this._equals), userMessage: "Should be same");
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace FunFair.Test.Common.Tests.Helpers
         {
             MockGenericModel<int> right = new MockGenericModel<int>(value: 1);
 
-            Assert.False(ReferenceObjectHelpers.AreEqual(left: null, right, this._equals));
+            Assert.False(ReferenceObjectHelpers.AreEqual(left: null, right, this._equals), userMessage: "Should be different");
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace FunFair.Test.Common.Tests.Helpers
         {
             MockGenericModel<int> left = new MockGenericModel<int>(value: 1);
 
-            Assert.False(ReferenceObjectHelpers.AreEqual(left, right: null, this._equals));
+            Assert.False(ReferenceObjectHelpers.AreEqual(left, right: null, this._equals), userMessage: "Should be different");
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace FunFair.Test.Common.Tests.Helpers
             MockGenericModel<int> left = new MockGenericModel<int>(value: 1);
             MockGenericModel<int> right = new MockGenericModel<int>(value: 2);
 
-            Assert.False(ReferenceObjectHelpers.AreEqual(left, right, this._equals));
+            Assert.False(ReferenceObjectHelpers.AreEqual(left, right, this._equals), userMessage: "Should be different");
         }
 
         [Fact]
