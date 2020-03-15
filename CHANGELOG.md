@@ -13,6 +13,10 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
 
+## [1.5.2] 2020-03-15
+### Added
+- Base classes for IComparable and IEquatable objects
+
 ## [1.5.1] 2020-02-27
 ### Added
 - FF-821 - Support for ignoring unused variables in tests that are there to make the test work (e.g. when testing properties are accessed when using NSubstitute.
