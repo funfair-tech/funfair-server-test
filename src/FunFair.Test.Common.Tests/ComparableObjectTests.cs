@@ -1,0 +1,48 @@
+﻿using System;
+using System.Linq;
+using FunFair.Test.Common.Helpers;
+
+namespace FunFair.Test.Common.Tests
+{
+    public sealed class ComparableObjectTests : ComparableObjectTestBase<string>
+    {
+        public ComparableObjectTests()
+            : base(value1: "Hello",
+                   equivalentToValue1: new string("olleH".Reverse()
+                                                         .ToArray()),
+                   value2: "World",
+                   zeroObject: string.Empty)
+        {
+        }
+
+        protected override bool OperatorEquals(string? x, string? y)
+        {
+            return ReferenceObjectHelpers.AreEqual(x, y, (left, right) => StringComparer.Ordinal.Equals(left, right));
+        }
+
+        protected override bool OperatorNotEquals(string? x, string? y)
+        {
+            return !ReferenceObjectHelpers.AreEqual(x, y, (left, right) => StringComparer.Ordinal.Equals(left, right));
+        }
+
+        protected override bool OperatorGreaterThanOrEqualTo(string? l, string? r)
+        {
+            return ReferenceObjectHelpers.Compare(l, r, (left, right) => StringComparer.Ordinal.Compare(left, right)) >= 0;
+        }
+
+        protected override bool OperatorLessThanOrEqualTo(string? l, string? r)
+        {
+            return ReferenceObjectHelpers.Compare(l, r, (left, right) => StringComparer.Ordinal.Compare(left, right)) <= 0;
+        }
+
+        protected override bool OperatorGreaterThan(string? l, string? r)
+        {
+            return ReferenceObjectHelpers.Compare(l, r, (left, right) => StringComparer.Ordinal.Compare(left, right)) > 0;
+        }
+
+        protected override bool OperatorLessThan(string? l, string? r)
+        {
+            return ReferenceObjectHelpers.Compare(l, r, (left, right) => StringComparer.Ordinal.Compare(left, right)) < 0;
+        }
+    }
+}

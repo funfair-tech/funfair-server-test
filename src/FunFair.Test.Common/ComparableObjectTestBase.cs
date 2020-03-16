@@ -354,9 +354,9 @@ namespace FunFair.Test.Common
         /// Compares Value1 with NullObject.
         /// </summary>
         [Fact]
-        public void TypedCompareToValue1EqualToNullObject()
+        public void TypedCompareToValue1GreaterThanNullObject()
         {
-            Assert.True(TypedCompareTo(this.Value1, this.NullObject) < 0, "Should be less than 0");
+            Assert.True(TypedCompareTo(this.Value1, this.NullObject) > 0, "Should be greater than 0");
         }
 
         /// <summary>
@@ -399,18 +399,9 @@ namespace FunFair.Test.Common
         /// Compares Value1 with NullObject.
         /// </summary>
         [Fact]
-        public void UntypedCompareToValue1LessThanOtherTypedObject()
+        public void UntypedCompareToValue1GreaterThanToNullObject()
         {
-            Assert.True(UntypedCompareTo(this.Value1, "Banana") < 0, "Should be less than 0");
-        }
-
-        /// <summary>
-        /// Compares Value1 with NullObject.
-        /// </summary>
-        [Fact]
-        public void UntypedCompareToValue1LessThanToNullObject()
-        {
-            Assert.True(UntypedCompareTo(this.Value1, this.NullObject) < 0, "Should be less than 0");
+            Assert.True(UntypedCompareTo(this.Value1, this.NullObject) > 0, "Should be greater than 0");
         }
 
         /// <summary>
@@ -420,6 +411,15 @@ namespace FunFair.Test.Common
         public void UntypedCompareToValue1LessThanValue2()
         {
             Assert.True(UntypedCompareTo(this.Value1, this.Value2) < 0, "Should be less than 0");
+        }
+
+        /// <summary>
+        /// Compares Value1 with a different typed object.
+        /// </summary>
+        [Fact]
+        public void UntypedCompareToValue1ToOtherTypedObjectThrowsArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => UntypedCompareTo(this.Value1, Guid.NewGuid()));
         }
 
         /// <summary>

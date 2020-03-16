@@ -355,7 +355,7 @@ namespace FunFair.Test.Common
         [Fact]
         public void UntypedEqualsZeroObjectDifferentToAnotherTypeOfObject()
         {
-            Assert.False(UntypedEquals(this.ZeroObject, y: "Banana"), userMessage: "Should Be different");
+            Assert.False(UntypedEquals(this.ZeroObject, Guid.NewGuid()), userMessage: "Should Be different");
         }
 
         /// <summary>
