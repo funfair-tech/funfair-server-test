@@ -21,6 +21,7 @@ namespace FunFair.Test.Common
                                                .ToString());
 
             Directory.CreateDirectory(this.TempFolder);
+            this.Output.WriteLine($"Using Temp folder: {this.TempFolder}");
         }
 
         /// <summary>
