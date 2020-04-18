@@ -5,18 +5,18 @@ using Xunit;
 namespace FunFair.Test.Common
 {
     /// <summary>
-    /// Base class for test objects that are equality comparable.
+    ///     Base class for test objects that are equality comparable.
     /// </summary>
     /// <typeparam name="TObject">The object to compare.</typeparam>
     public abstract class EquatableObjectTestBase<TObject> : TestBase
         where TObject : class, IEquatable<TObject>
     {
         /// <summary>
-        /// Constructor.
+        ///     Constructor.
         /// </summary>
         /// <param name="zeroObject">The object that's equivalent to zero or null.</param>
         /// <param name="value1">The a value to use for comparisons.</param>
-        /// <param name="equivalentToValue1">An equivalent value to <paramref name="value1"/> that is not ReferenceEqual to <paramref name="value1"/>.</param>
+        /// <param name="equivalentToValue1">An equivalent value to <paramref name="value1" /> that is not ReferenceEqual to <paramref name="value1" />.</param>
         protected EquatableObjectTestBase(TObject zeroObject, TObject value1, TObject equivalentToValue1)
         {
             this.ZeroObject = zeroObject;
@@ -28,32 +28,32 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// An object that is equivalent or as near as possible to zero
+        ///     An object that is equivalent or as near as possible to zero
         /// </summary>
         protected internal TObject ZeroObject { get; }
 
         /// <summary>
-        /// The Value.
+        ///     The Value.
         /// </summary>
         protected internal TObject Value1 { get; }
 
         /// <summary>
-        ///  An alias of the value.
+        ///     An alias of the value.
         /// </summary>
         protected internal TObject Value1Alias { get; }
 
         /// <summary>
-        /// A value that is equivalent to value 1
+        ///     A value that is equivalent to value 1
         /// </summary>
         protected internal TObject EquivalentToValue1 { get; }
 
         /// <summary>
-        /// A value that is equivalent to value 1, but typed as an object.
+        ///     A value that is equivalent to value 1, but typed as an object.
         /// </summary>
         protected internal object EquivalentToValue1AsObject { get; }
 
         /// <summary>
-        /// A Null object.
+        ///     A Null object.
         /// </summary>
         protected internal TObject? NullObject { get; }
 
@@ -70,7 +70,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Implementation should call operator ==(x,y)
+        ///     Implementation should call operator ==(x,y)
         /// </summary>
         /// <param name="x">An item</param>
         /// <param name="y">Another item.</param>
@@ -78,7 +78,7 @@ namespace FunFair.Test.Common
         protected abstract bool OperatorEquals(TObject? x, TObject? y);
 
         /// <summary>
-        /// Implementation should call operator !=(x,y)
+        ///     Implementation should call operator !=(x,y)
         /// </summary>
         /// <param name="x">An item</param>
         /// <param name="y">Another item.</param>
@@ -86,22 +86,22 @@ namespace FunFair.Test.Common
         protected abstract bool OperatorNotEquals(TObject? x, TObject? y);
 
         /// <summary>
-        /// Checks that Get Hash Code is stable
+        ///     Checks that Get Hash Code is stable
         /// </summary>
         [Fact]
         public void GetHashCodeSameNoMatterHowManyTimesCalled()
         {
             int referenceHashCode = this.Value1.GetHashCode();
 
-            int[] selection = Enumerable.Range(0, 100)
-                                        .Select(i => this.Value1.GetHashCode())
+            int[] selection = Enumerable.Range(start: 0, count: 100)
+                                        .Select(selector: i => this.Value1.GetHashCode())
                                         .ToArray();
 
-            Assert.All(selection, hashCode => Assert.Equal(hashCode, referenceHashCode));
+            Assert.All(selection, action: hashCode => Assert.Equal(hashCode, referenceHashCode));
         }
 
         /// <summary>
-        /// Compares the hash codes of Value1 and EquivalentToValue1.
+        ///     Compares the hash codes of Value1 and EquivalentToValue1.
         /// </summary>
         [Fact]
         public void GetHashCodeValue1ObjectIsSameAsEquivalentToValue1Object()
@@ -111,7 +111,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares the hash codes of Value1 and Value1Alias.
+        ///     Compares the hash codes of Value1 and Value1Alias.
         /// </summary>
         [Fact]
         public void GetHashCodeValue1ObjectIsSameAsValue1AliasObject()
@@ -120,7 +120,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares the hash codes of Value1 and Value1.
+        ///     Compares the hash codes of Value1 and Value1.
         /// </summary>
         [Fact]
         public void GetHashCodeValue1ObjectIsSameAsValue1Object()
@@ -129,7 +129,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares the hash codes of ZeroObject and ZeroObject.
+        ///     Compares the hash codes of ZeroObject and ZeroObject.
         /// </summary>
         [Fact]
         public void GetHashCodeZeroObjectIsSameAsZeroObject()
@@ -138,7 +138,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares NullObject and ZeroObject.
+        ///     Compares NullObject and ZeroObject.
         /// </summary>
         [Fact]
         public void OperatorEqualsNullObjectDifferentToZeroObject()
@@ -147,7 +147,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares NullObject and NullObject.
+        ///     Compares NullObject and NullObject.
         /// </summary>
         [Fact]
         public void OperatorEqualsNullObjectSameAsNullObject()
@@ -156,7 +156,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and EquivalentToValue1.
+        ///     Compares Value1 and EquivalentToValue1.
         /// </summary>
         [Fact]
         public void OperatorEqualsValue1ObjectIsSameAsEquivalentToValue1Object()
@@ -166,7 +166,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and Value1Alias.
+        ///     Compares Value1 and Value1Alias.
         /// </summary>
         [Fact]
         public void OperatorEqualsValue1ObjectIsSameAsValue1AliasObject()
@@ -175,7 +175,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and Value1.
+        ///     Compares Value1 and Value1.
         /// </summary>
         [Fact]
         public void OperatorEqualsValue1ObjectIsSameAsValue1Object()
@@ -184,7 +184,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares ZeroObject and NullObject.
+        ///     Compares ZeroObject and NullObject.
         /// </summary>
         [Fact]
         public void OperatorEqualsZeroObjectDifferentToNullObject()
@@ -193,7 +193,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares ZeroObject and ZeroObject.
+        ///     Compares ZeroObject and ZeroObject.
         /// </summary>
         [Fact]
         public void OperatorEqualsZeroObjectIsSameAsZeroObject()
@@ -202,7 +202,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares NullObject and ZeroObject.
+        ///     Compares NullObject and ZeroObject.
         /// </summary>
         [Fact]
         public void OperatorNotEqualsNullObjectDifferentToZeroObject()
@@ -211,7 +211,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares NullObject and NullObject.
+        ///     Compares NullObject and NullObject.
         /// </summary>
         [Fact]
         public void OperatorNotEqualsNullObjectSameAsNullObject()
@@ -220,7 +220,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and EquivalentToValue1.
+        ///     Compares Value1 and EquivalentToValue1.
         /// </summary>
         [Fact]
         public void OperatorNotEqualsValue1ObjectIsSameAsEquivalentToValue1Object()
@@ -230,7 +230,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and Value1Alias.
+        ///     Compares Value1 and Value1Alias.
         /// </summary>
         [Fact]
         public void OperatorNotEqualsValue1ObjectIsSameAsValue1AliasObject()
@@ -239,7 +239,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and Value1.
+        ///     Compares Value1 and Value1.
         /// </summary>
         [Fact]
         public void OperatorNotEqualsValue1ObjectIsSameAsValue1Object()
@@ -248,7 +248,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares ZeroObject and NullObject.
+        ///     Compares ZeroObject and NullObject.
         /// </summary>
         [Fact]
         public void OperatorNotEqualsZeroObjectDifferentToNullObject()
@@ -257,7 +257,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares ZeroObject and ZeroObject.
+        ///     Compares ZeroObject and ZeroObject.
         /// </summary>
         [Fact]
         public void OperatorNotEqualsZeroObjectIsSameAsZeroObject()
@@ -266,7 +266,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and EquivalentToValue1.
+        ///     Compares Value1 and EquivalentToValue1.
         /// </summary>
         [Fact]
         public void TypedEqualsValue1ObjectIsSameAsEquivalentToValue1Object()
@@ -276,7 +276,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and Value1Alias.
+        ///     Compares Value1 and Value1Alias.
         /// </summary>
         [Fact]
         public void TypedEqualsValue1ObjectIsSameAsValue1AliasObject()
@@ -285,7 +285,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and Value1A.
+        ///     Compares Value1 and Value1A.
         /// </summary>
         [Fact]
         public void TypedEqualsValue1ObjectIsSameAsValue1Object()
@@ -294,7 +294,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares ZeroObject and NullObject.
+        ///     Compares ZeroObject and NullObject.
         /// </summary>
         [Fact]
         public void TypedEqualsZeroObjectDifferentToNullObject()
@@ -303,7 +303,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares ZeroObject and ZeroObject.
+        ///     Compares ZeroObject and ZeroObject.
         /// </summary>
         [Fact]
         public void TypedEqualsZeroObjectIsSameAsZeroObject()
@@ -312,7 +312,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and EquivalentToValue1.
+        ///     Compares Value1 and EquivalentToValue1.
         /// </summary>
         [Fact]
         public void UntypedEqualsValue1ObjectIsSameAsEquivalentToValue1Object()
@@ -322,7 +322,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and EquivalentToValue1AsObject.
+        ///     Compares Value1 and EquivalentToValue1AsObject.
         /// </summary>
         [Fact]
         public void UntypedEqualsValue1ObjectIsSameAsEquivalentToValue1ObjectAsObject()
@@ -332,7 +332,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and Value1Alias.
+        ///     Compares Value1 and Value1Alias.
         /// </summary>
         [Fact]
         public void UntypedEqualsValue1ObjectIsSameAsValue1AliasObject()
@@ -341,7 +341,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares Value1 and Value1.
+        ///     Compares Value1 and Value1.
         /// </summary>
         [Fact]
         public void UntypedEqualsValue1ObjectIsSameAsValue1Object()
@@ -350,7 +350,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares ZeroObject and Banana.
+        ///     Compares ZeroObject and Banana.
         /// </summary>
         [Fact]
         public void UntypedEqualsZeroObjectDifferentToAnotherTypeOfObject()
@@ -359,7 +359,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares ZeroObject and NullObject.
+        ///     Compares ZeroObject and NullObject.
         /// </summary>
         [Fact]
         public void UntypedEqualsZeroObjectDifferentToNullObject()
@@ -368,7 +368,7 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
-        /// Compares ZeroObject and ZeroObject.
+        ///     Compares ZeroObject and ZeroObject.
         /// </summary>
         [Fact]
         public void UntypedEqualsZeroObjectIsSameAsZeroObject()
