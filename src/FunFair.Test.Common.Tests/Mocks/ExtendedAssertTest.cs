@@ -6,7 +6,7 @@ using Xunit.Sdk;
 
 namespace FunFair.Test.Common.Tests.Mocks
 {
-    public sealed class ExtendedAssertTest
+    public sealed class ExtendedAssertTest : TestBase
     {
         private static MockGenericModel<string> CreateModel(string value)
         {

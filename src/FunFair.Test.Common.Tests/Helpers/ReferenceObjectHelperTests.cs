@@ -5,7 +5,7 @@ using Xunit;
 
 namespace FunFair.Test.Common.Tests.Helpers
 {
-    public sealed class ReferenceObjectHelperTests
+    public sealed class ReferenceObjectHelperTests : TestBase
     {
         private readonly Func<MockGenericModel<int>, MockGenericModel<int>, int> _compare = (left, right) => left.Value.CompareTo(right.Value);
 
