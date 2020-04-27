@@ -8,15 +8,19 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-2295 - removed iequatable from jsonconvertertestbase
+### Removed
 
 <!-- 
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
 
+## [1.6.1] 2020-04-27
+### Changed
+- FF-2295 - removed iequatable from jsonconvertertestbase
+
+### Added
 ## [1.6.0] 2020-03-30
 ### Added
-- FF-2127 - upgrade dotnet core to 3.1.201
 
 ## [1.5.2] 2020-03-15
 ### Added
