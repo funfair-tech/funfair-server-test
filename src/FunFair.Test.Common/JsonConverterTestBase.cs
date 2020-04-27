@@ -13,7 +13,7 @@ namespace FunFair.Test.Common
     /// <typeparam name="TConverter">The type of converter</typeparam>
     /// <typeparam name="TObject">The object being converted.</typeparam>
     public abstract class JsonConverterTestBase<TConverter, TObject> : LoggingTestBase
-        where TConverter : JsonConverter<TObject>, new() where TObject : class, IEquatable<TObject>
+        where TConverter : JsonConverter<TObject>, new() where TObject : class
     {
         /// <summary>
         ///     Constructor.
