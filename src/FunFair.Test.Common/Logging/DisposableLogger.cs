@@ -21,7 +21,7 @@ namespace FunFair.Test.Common.Logging
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            this._logger.Log(logLevel, eventId, state, exception, formatter);
+            this._logger.Log(logLevel: logLevel, eventId: eventId, state: state, exception: exception, formatter: formatter);
         }
 
         public bool IsEnabled(LogLevel logLevel)

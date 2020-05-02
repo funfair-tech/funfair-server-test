@@ -18,7 +18,7 @@ namespace FunFair.Test.Common.Mocks
         {
             string expectedString = JsonSerializer.Serialize(expected);
             string actualString = JsonSerializer.Serialize(actual);
-            Assert.Equal(expectedString, actualString);
+            Assert.Equal(expected: expectedString, actual: actualString);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace FunFair.Test.Common.Mocks
         {
             string expectedString = JsonSerializer.Serialize(expected);
             string actualString = JsonSerializer.Serialize(actual);
-            Assert.Equal(expectedString, actualString);
+            Assert.Equal(expected: expectedString, actual: actualString);
         }
     }
 }

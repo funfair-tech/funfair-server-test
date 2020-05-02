@@ -50,7 +50,7 @@ namespace FunFair.Test.Common
         {
             ValidationResult result = this.Validate(instance);
 
-            Assert.Equal(expectedErrorCount, result.Errors.Count);
+            Assert.Equal(expected: expectedErrorCount, actual: result.Errors.Count);
 
             return result;
         }
@@ -64,9 +64,9 @@ namespace FunFair.Test.Common
         /// <returns>Validation result.</returns>
         public ValidationResult Validate(TObject instance, int expectedErrorCount, string erroringProperty)
         {
-            ValidationResult result = this.Validate(instance, expectedErrorCount);
+            ValidationResult result = this.Validate(instance: instance, expectedErrorCount: expectedErrorCount);
 
-            AssertOnlyNamedPropertyHasErrors(result, erroringProperty);
+            AssertOnlyNamedPropertyHasErrors(result: result, erroringProperty: erroringProperty);
 
             return result;
         }
@@ -80,9 +80,9 @@ namespace FunFair.Test.Common
         /// <returns>Validation result.</returns>
         public ValidationResult Validate(TObject instance, int expectedErrorCount, params string[] erroringProperties)
         {
-            ValidationResult result = this.Validate(instance, expectedErrorCount);
+            ValidationResult result = this.Validate(instance: instance, expectedErrorCount: expectedErrorCount);
 
-            AssertNamedPropertiesHaveErrors(result, erroringProperties);
+            AssertNamedPropertiesHaveErrors(result: result, erroringProperties: erroringProperties);
 
             return result;
         }
@@ -100,7 +100,7 @@ namespace FunFair.Test.Common
         {
             TObject itemToValidate = this.CreateAValidObject();
 
-            this.Validate(itemToValidate, expectedErrorCount: 0);
+            this.Validate(instance: itemToValidate, expectedErrorCount: 0);
         }
 
         /// <summary>
@@ -137,10 +137,10 @@ namespace FunFair.Test.Common
             bool hasUnexpectedErrors = result.Errors.All(predicate: error => erroringProperties.Contains(error.PropertyName));
             bool hasAllExpectedErrors = erroringProperties.All(predicate: error => result.Errors.Any(predicate: p => p.PropertyName == error));
 
-            Assert.True(hasUnexpectedErrors,
+            Assert.True(condition: hasUnexpectedErrors,
                         $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
 
-            Assert.True(hasAllExpectedErrors,
+            Assert.True(condition: hasAllExpectedErrors,
                         $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
         }
 
@@ -151,7 +151,7 @@ namespace FunFair.Test.Common
         /// <returns>The property name.</returns>
         protected static string MakePropertyName(params string[] parts)
         {
-            return string.Join(separator: ".", parts);
+            return string.Join(separator: ".", value: parts);
         }
 
         /// <summary>

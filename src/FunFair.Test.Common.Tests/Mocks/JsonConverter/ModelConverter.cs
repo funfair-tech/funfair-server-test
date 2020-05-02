@@ -10,7 +10,7 @@ namespace FunFair.Test.Common.Tests.Mocks.JsonConverter
         {
             string source = reader.GetString();
 
-            if (!Enum.TryParse(source, out ModelColor color))
+            if (!Enum.TryParse(value: source, out ModelColor color))
             {
                 throw new JsonException(message: "Unknown Color");
             }

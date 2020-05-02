@@ -8,12 +8,12 @@ namespace FunFair.Test.Common.Tests.Mocks.JsonConverter
 
         public bool Equals(Model other)
         {
-            if (ReferenceEquals(objA: null, other))
+            if (ReferenceEquals(objA: null, objB: other))
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, other))
+            if (ReferenceEquals(this, objB: other))
             {
                 return true;
             }
@@ -23,7 +23,7 @@ namespace FunFair.Test.Common.Tests.Mocks.JsonConverter
 
         public override bool Equals(object? obj)
         {
-            return ReferenceEquals(this, obj) || obj is Model other && this.Equals(other);
+            return ReferenceEquals(this, objB: obj) || obj is Model other && this.Equals(other);
         }
 
         public override int GetHashCode()
@@ -33,12 +33,12 @@ namespace FunFair.Test.Common.Tests.Mocks.JsonConverter
 
         public static bool operator ==(Model left, Model right)
         {
-            return Equals(left, right);
+            return Equals(objA: left, objB: right);
         }
 
         public static bool operator !=(Model left, Model right)
         {
-            return !Equals(left, right);
+            return !Equals(objA: left, objB: right);
         }
     }
 }

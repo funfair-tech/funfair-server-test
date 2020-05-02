@@ -40,7 +40,7 @@ namespace FunFair.Test.Common
         {
             try
             {
-                Directory.Delete(folderToMurder, recursive: true);
+                Directory.Delete(path: folderToMurder, recursive: true);
             }
             catch
             {
