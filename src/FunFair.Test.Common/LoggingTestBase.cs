@@ -31,7 +31,7 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <param name="output">XUnit output</param>
         protected LoggingTestBase(ITestOutputHelper output)
-            : this(output, NoDependencyInjectionConfiguration, NoDependencyInjectionInitialization)
+            : this(output: output, dependencyInjectionRegistration: NoDependencyInjectionConfiguration, initializeServices: NoDependencyInjectionInitialization)
         {
         }
 
@@ -41,7 +41,7 @@ namespace FunFair.Test.Common
         /// <param name="output">XUnit output</param>
         /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
         protected LoggingTestBase(ITestOutputHelper output, Action<IServiceCollection> dependencyInjectionRegistration)
-            : this(output, dependencyInjectionRegistration, NoDependencyInjectionInitialization)
+            : this(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration, initializeServices: NoDependencyInjectionInitialization)
         {
         }
 
@@ -73,7 +73,7 @@ namespace FunFair.Test.Common
 
             IServiceCollection serviceCollection = new ServiceCollection();
 
-            LoggingStartup.AddLoggingSupport(serviceCollection, output);
+            LoggingStartup.AddLoggingSupport(services: serviceCollection, output: output);
             dependencyInjectionRegistration(serviceCollection);
 
             this._serviceProvider = serviceCollection.BuildServiceProvider();

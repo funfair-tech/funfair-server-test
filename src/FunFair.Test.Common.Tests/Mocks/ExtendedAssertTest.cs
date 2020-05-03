@@ -24,7 +24,7 @@ namespace FunFair.Test.Common.Tests.Mocks
             IReadOnlyList<MockGenericModel<string>> expected = CreateModelList(value: "expected");
             IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "expected");
 
-            ExtendedAssert.DeepEqual(expected, actual);
+            ExtendedAssert.DeepEqual(expected: expected, actual: actual);
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace FunFair.Test.Common.Tests.Mocks
             MockGenericModel<string> expected = CreateModel(value: "expected");
             MockGenericModel<string> actual = CreateModel(value: "expected");
 
-            ExtendedAssert.DeepEqual(expected, actual);
+            ExtendedAssert.DeepEqual(expected: expected, actual: actual);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace FunFair.Test.Common.Tests.Mocks
             IReadOnlyList<MockGenericModel<string>> expected = CreateModelList(value: "expected");
             IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "actual");
 
-            Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected, actual); });
+            Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace FunFair.Test.Common.Tests.Mocks
             MockGenericModel<string> expected = CreateModel(value: "expected");
             MockGenericModel<string> actual = CreateModel(value: "actual");
 
-            Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected, actual); });
+            Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace FunFair.Test.Common.Tests.Mocks
             expected.NestedValue = new[] {"new nested value"};
             MockGenericModel<string> actual = CreateModel(value: "expected");
 
-            Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected, actual); });
+            Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace FunFair.Test.Common.Tests.Mocks
             IReadOnlyList<MockGenericModel<string>> expected = new ReadOnlyCollection<MockGenericModel<string>>(new List<MockGenericModel<string>> {expectedMember});
             IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "actual");
 
-            Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected, actual); });
+            Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
         }
     }
 }

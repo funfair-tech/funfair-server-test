@@ -24,7 +24,7 @@ namespace FunFair.Test.Common
         /// <param name="output">XUnit output</param>
         /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
         protected IntegrationTestBase(ITestOutputHelper output, Action<IServiceCollection> dependencyInjectionRegistration)
-            : base(output, dependencyInjectionRegistration)
+            : base(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration)
         {
         }
 
@@ -35,7 +35,7 @@ namespace FunFair.Test.Common
         /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
         /// <param name="initializeServices">Initialises services.</param>
         protected IntegrationTestBase(ITestOutputHelper output, Action<IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
-            : base(output, dependencyInjectionRegistration, initializeServices)
+            : base(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration, initializeServices: initializeServices)
         {
         }
 

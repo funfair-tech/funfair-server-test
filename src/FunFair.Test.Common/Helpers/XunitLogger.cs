@@ -37,11 +37,11 @@ namespace FunFair.Test.Common.Helpers
 
             string timestamp = this._logStart.HasValue
                 ? $"{(DateTimeOffset.UtcNow - this._logStart.Value).TotalSeconds:N3}s"
-                : DateTimeOffset.UtcNow.ToString(format: "s", CultureInfo.InvariantCulture);
+                : DateTimeOffset.UtcNow.ToString(format: "s", formatProvider: CultureInfo.InvariantCulture);
 
             string firstLinePrefix = $"| [{timestamp}] {this._category} {logLevel}: ";
-            string[] lines = formatter(state, exception)
-                .Split(NewLineChars, StringSplitOptions.RemoveEmptyEntries);
+            string[] lines = formatter(arg1: state, arg2: exception)
+                .Split(separator: NewLineChars, options: StringSplitOptions.RemoveEmptyEntries);
             string firstLine = lines.FirstOrDefault();
             messageBuilder.AppendLine(firstLinePrefix + firstLine);
 
@@ -55,7 +55,7 @@ namespace FunFair.Test.Common.Helpers
             if (exception != null)
             {
                 lines = exception.ToString()
-                                 .Split(NewLineChars, StringSplitOptions.RemoveEmptyEntries);
+                                 .Split(separator: NewLineChars, options: StringSplitOptions.RemoveEmptyEntries);
                 additionalLinePrefix = "| ";
 
                 foreach (string line in lines)
@@ -67,7 +67,7 @@ namespace FunFair.Test.Common.Helpers
             // Remove the last line-break, because ITestOutputHelper only has WriteLine.
             string message = messageBuilder.ToString();
 
-            if (message.EndsWith(Environment.NewLine, StringComparison.Ordinal))
+            if (message.EndsWith(value: Environment.NewLine, comparisonType: StringComparison.Ordinal))
             {
                 message = message.Substring(startIndex: 0, message.Length - Environment.NewLine.Length);
             }

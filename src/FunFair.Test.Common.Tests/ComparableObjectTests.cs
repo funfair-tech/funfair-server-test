@@ -17,32 +17,32 @@ namespace FunFair.Test.Common.Tests
 
         protected override bool OperatorEquals(string? x, string? y)
         {
-            return ReferenceObjectHelpers.AreEqual(x, y, eq: (left, right) => StringComparer.Ordinal.Equals(left, right));
+            return ReferenceObjectHelpers.AreEqual(left: x, right: y, eq: (left, right) => StringComparer.Ordinal.Equals(x: left, y: right));
         }
 
         protected override bool OperatorNotEquals(string? x, string? y)
         {
-            return !ReferenceObjectHelpers.AreEqual(x, y, eq: (left, right) => StringComparer.Ordinal.Equals(left, right));
+            return !ReferenceObjectHelpers.AreEqual(left: x, right: y, eq: (left, right) => StringComparer.Ordinal.Equals(x: left, y: right));
         }
 
         protected override bool OperatorGreaterThanOrEqualTo(string? l, string? r)
         {
-            return ReferenceObjectHelpers.Compare(l, r, cmp: (left, right) => StringComparer.Ordinal.Compare(left, right)) >= 0;
+            return ReferenceObjectHelpers.Compare(left: l, right: r, cmp: (left, right) => StringComparer.Ordinal.Compare(x: left, y: right)) >= 0;
         }
 
         protected override bool OperatorLessThanOrEqualTo(string? l, string? r)
         {
-            return ReferenceObjectHelpers.Compare(l, r, cmp: (left, right) => StringComparer.Ordinal.Compare(left, right)) <= 0;
+            return ReferenceObjectHelpers.Compare(left: l, right: r, cmp: (left, right) => StringComparer.Ordinal.Compare(x: left, y: right)) <= 0;
         }
 
         protected override bool OperatorGreaterThan(string? l, string? r)
         {
-            return ReferenceObjectHelpers.Compare(l, r, cmp: (left, right) => StringComparer.Ordinal.Compare(left, right)) > 0;
+            return ReferenceObjectHelpers.Compare(left: l, right: r, cmp: (left, right) => StringComparer.Ordinal.Compare(x: left, y: right)) > 0;
         }
 
         protected override bool OperatorLessThan(string? l, string? r)
         {
-            return ReferenceObjectHelpers.Compare(l, r, cmp: (left, right) => StringComparer.Ordinal.Compare(left, right)) < 0;
+            return ReferenceObjectHelpers.Compare(left: l, right: r, cmp: (left, right) => StringComparer.Ordinal.Compare(x: left, y: right)) < 0;
         }
     }
 }

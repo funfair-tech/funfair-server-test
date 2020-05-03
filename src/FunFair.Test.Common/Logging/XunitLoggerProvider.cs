@@ -12,12 +12,12 @@ namespace FunFair.Test.Common.Logging
         private readonly ITestOutputHelper _output;
 
         public XunitLoggerProvider(ITestOutputHelper output)
-            : this(output, LogLevel.Trace)
+            : this(output: output, minLevel: LogLevel.Trace)
         {
         }
 
         public XunitLoggerProvider(ITestOutputHelper output, LogLevel minLevel)
-            : this(output, minLevel, logStart: null)
+            : this(output: output, minLevel: minLevel, logStart: null)
         {
         }
 
@@ -30,7 +30,7 @@ namespace FunFair.Test.Common.Logging
 
         public ILogger CreateLogger(string categoryName)
         {
-            return new XunitLogger(this._output, categoryName, this._minLevel, this._logStart);
+            return new XunitLogger(output: this._output, category: categoryName, minLogLevel: this._minLevel, logStart: this._logStart);
         }
 
         public void Dispose()

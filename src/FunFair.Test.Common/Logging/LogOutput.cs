@@ -20,7 +20,7 @@ namespace FunFair.Test.Common.Logging
 
         public void WriteLine(string format, params object[] args)
         {
-            this._logger.LogDebug(format, args);
+            this._logger.LogDebug(message: format, args: args);
         }
     }
 }

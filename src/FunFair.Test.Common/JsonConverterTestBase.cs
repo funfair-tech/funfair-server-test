@@ -49,7 +49,7 @@ namespace FunFair.Test.Common
 
             public bool Equals(Model? other)
             {
-                return AreEqual(this, other);
+                return AreEqual(this, m2: other);
             }
 
             public override bool Equals(object? obj)
@@ -64,22 +64,22 @@ namespace FunFair.Test.Common
 
             public static bool operator ==(Model? left, Model? right)
             {
-                return AreEqual(left, right);
+                return AreEqual(m1: left, m2: right);
             }
 
             public static bool operator !=(Model? left, Model? right)
             {
-                return !AreEqual(left, right);
+                return !AreEqual(m1: left, m2: right);
             }
 
             private static bool AreEqual(Model? m1, Model? m2)
             {
-                return ReferenceObjectHelpers.AreEqual(m1, m2, eq: (l, r) => AreValuesEqual(l.Value, r.Value));
+                return ReferenceObjectHelpers.AreEqual(left: m1, right: m2, eq: (l, r) => AreValuesEqual(o1: l.Value, o2: r.Value));
             }
 
             private static bool AreValuesEqual(TObject? o1, TObject? o2)
             {
-                return ReferenceObjectHelpers.AreEqual(o1, o2, eq: (l, r) => l.Equals(r));
+                return ReferenceObjectHelpers.AreEqual(left: o1, right: o2, eq: (l, r) => l.Equals(r));
             }
         }
 
@@ -94,15 +94,15 @@ namespace FunFair.Test.Common
             Model sourceModel = new Model {Value = instance};
 
             // banana!
-            string doc = JsonSerializer.Serialize(sourceModel, this._options);
+            string doc = JsonSerializer.Serialize(value: sourceModel, options: this._options);
             Assert.NotEmpty(doc);
 
             this.Output.WriteLine($"Serialized model as: {doc}");
 
-            Model? targetModel = JsonSerializer.Deserialize<Model>(doc, this._options);
+            Model? targetModel = JsonSerializer.Deserialize<Model>(json: doc, options: this._options);
             Model mod = AssertReallyNotNull(targetModel);
 
-            Assert.Equal(sourceModel, mod);
+            Assert.Equal(expected: sourceModel, actual: mod);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace FunFair.Test.Common
 
             Model sourceModel = new Model {Value = instance};
 
-            string doc = JsonSerializer.Serialize(sourceModel, this._options);
+            string doc = JsonSerializer.Serialize(value: sourceModel, options: this._options);
             Assert.NotEmpty(doc);
 
             this.Output.WriteLine($"Serialized model as: {doc}");
@@ -127,11 +127,11 @@ namespace FunFair.Test.Common
         [Fact]
         public void ShouldNotDeserialize()
         {
-            string doc = JsonSerializer.Serialize(new {value = this.InvalidValue}, this._options);
+            string doc = JsonSerializer.Serialize(new {value = this.InvalidValue}, options: this._options);
 
             this.Output.WriteLine($"Serialized model as: {doc}");
 
-            Assert.Throws<JsonException>(testCode: () => JsonSerializer.Deserialize<Model>(doc, this._options));
+            Assert.Throws<JsonException>(testCode: () => JsonSerializer.Deserialize<Model>(json: doc, options: this._options));
         }
     }
 }

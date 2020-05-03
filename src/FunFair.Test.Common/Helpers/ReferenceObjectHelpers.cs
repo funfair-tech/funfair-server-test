@@ -18,22 +18,22 @@ namespace FunFair.Test.Common.Helpers
         public static bool AreEqual<T>(T? left, T? right, Func<T, T, bool> eq)
             where T : class
         {
-            if (ReferenceEquals(left, right))
+            if (ReferenceEquals(objA: left, objB: right))
             {
                 return true;
             }
 
-            if (ReferenceEquals(objA: null, right))
+            if (ReferenceEquals(objA: null, objB: right))
             {
                 return false;
             }
 
-            if (ReferenceEquals(objA: null, left))
+            if (ReferenceEquals(objA: null, objB: left))
             {
                 return false;
             }
 
-            return eq(left, right);
+            return eq(arg1: left, arg2: right);
         }
 
         /// <summary>
@@ -47,22 +47,22 @@ namespace FunFair.Test.Common.Helpers
         public static int Compare<T>(T? left, T? right, Func<T, T, int> cmp)
             where T : class
         {
-            if (ReferenceEquals(left, right))
+            if (ReferenceEquals(objA: left, objB: right))
             {
                 return 0;
             }
 
-            if (ReferenceEquals(objA: null, right))
+            if (ReferenceEquals(objA: null, objB: right))
             {
                 return -1;
             }
 
-            if (ReferenceEquals(objA: null, left))
+            if (ReferenceEquals(objA: null, objB: left))
             {
                 return 1;
             }
 
-            return cmp(left, right);
+            return cmp(arg1: left, arg2: right);
         }
     }
 }

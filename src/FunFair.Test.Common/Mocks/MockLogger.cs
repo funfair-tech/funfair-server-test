@@ -59,7 +59,7 @@ namespace FunFair.Test.Common.Mocks
         /// <inheritdoc />
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            this._seen.AddOrUpdate(logLevel, addValueFactory: lvl => 1, updateValueFactory: (lvl, count) => count + 1);
+            this._seen.AddOrUpdate(key: logLevel, addValueFactory: lvl => 1, updateValueFactory: (lvl, count) => count + 1);
         }
 
         /// <inheritdoc />
