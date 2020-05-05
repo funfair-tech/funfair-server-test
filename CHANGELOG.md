@@ -6,6 +6,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+- Base class for unit testing custom SqlTypeMappers.
 ### Fixed
 ### Changed
 ### Removed
