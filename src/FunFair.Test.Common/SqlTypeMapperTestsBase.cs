@@ -33,7 +33,7 @@ namespace FunFair.Test.Common
         {
             TMappedType result = this._handler.Parse(value);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected: expected, actual: result);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace FunFair.Test.Common
         {
             IDbDataParameter parameter = Substitute.For<IDbDataParameter>();
 
-            this._handler.SetValue(parameter, value);
+            this._handler.SetValue(parameter: parameter, value: value);
 
             parameter.Received(requiredNumberOfCalls: 1)
                      .Value = expected;
