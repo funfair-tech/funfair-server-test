@@ -10,7 +10,7 @@ namespace FunFair.Test.Common
     /// </summary>
     /// <typeparam name="TTypeMapper">The type mapper to test.</typeparam>
     /// <typeparam name="TMappedType">The mapped type.</typeparam>
-    public abstract class SqlTypeMapperTestsBase<TTypeMapper, TMappedType>
+    public abstract class SqlTypeMapperTestsBase<TTypeMapper, TMappedType> : TestBase
         where TTypeMapper : SqlMapper.TypeHandler<TMappedType>, new()
     {
         private readonly TTypeMapper _handler;
