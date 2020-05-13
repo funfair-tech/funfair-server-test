@@ -8,12 +8,14 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-2386 - Update all the .NET components to .NET Core 3.1.202
 ### Removed
 
 <!-- 
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+
+## [1.7.0] 2020-05-13
+- FF-2386 - Update all the .NET components to .NET Core 3.1.202
 
 ## [1.6.2] 2020-05-05
 ### Added
