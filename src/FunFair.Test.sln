@@ -6,6 +6,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunFair.Test.Common", "FunF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunFair.Test.Common.Tests", "FunFair.Test.Common.Tests\FunFair.Test.Common.Tests.csproj", "{F77B61FD-5E00-4B9E-8268-ECF69C7BB58D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{2B2A6D38-51F7-46EC-8C86-430B25B87392}"
+ProjectSection(SolutionItems) = preProject
+	CodeAnalysis.ruleset = CodeAnalysis.ruleset
+	global.json = global.json
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
