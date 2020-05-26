@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using Dapper;
 using NSubstitute;
 using Xunit;
@@ -50,6 +51,33 @@ namespace FunFair.Test.Common
 
             parameter.Received(requiredNumberOfCalls: 1)
                      .Value = expected;
+        }
+
+        /// <summary>
+        ///     Checks that the value is set to the expected value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        /// <param name="expected">The expected typed value.</param>
+        protected void ShouldSetValue(TMappedType value, in byte[] expected)
+        {
+            IDbDataParameter parameter = Substitute.For<IDbDataParameter>();
+
+            this._handler.SetValue(parameter: parameter, value: value);
+
+            parameter.Received(requiredNumberOfCalls: 1)
+                     .Value = expected;
+        }
+
+        /// <summary>
+        ///     Checks that the value does not parse, and raises an the <typeparamref name="TExceptionType" /> exception.
+        /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <typeparam name="TExceptionType">The exception that should be raised.</typeparam>
+        /// <typeparam name="TValueType">The type of the value.</typeparam>
+        protected void ShouldNotParse<TExceptionType, TValueType>(TValueType value)
+            where TExceptionType : Exception
+        {
+            Assert.Throws<TExceptionType>(() => this._handler.Parse(value));
         }
     }
 }
