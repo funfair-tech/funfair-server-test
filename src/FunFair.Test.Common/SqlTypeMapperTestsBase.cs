@@ -14,15 +14,18 @@ namespace FunFair.Test.Common
     public abstract class SqlTypeMapperTestsBase<TTypeMapper, TMappedType> : TestBase
         where TTypeMapper : SqlMapper.TypeHandler<TMappedType>, new()
     {
-        private readonly TTypeMapper _handler;
-
         /// <summary>
         ///     Constructor.
         /// </summary>
         protected SqlTypeMapperTestsBase()
         {
-            this._handler = new TTypeMapper();
+            this.Handler = new TTypeMapper();
         }
+
+        /// <summary>
+        ///     The type handler.
+        /// </summary>
+        protected TTypeMapper Handler { get; }
 
         /// <summary>
         ///     Checks that the handler can parse the value into the mapped type.
@@ -32,7 +35,7 @@ namespace FunFair.Test.Common
         /// <typeparam name="TValueType">The type of the value.</typeparam>
         protected void ShouldParse<TValueType>(TValueType value, TMappedType expected)
         {
-            TMappedType result = this._handler.Parse(value);
+            TMappedType result = this.Handler.Parse(value);
 
             Assert.Equal(expected: expected, actual: result);
         }
@@ -47,7 +50,7 @@ namespace FunFair.Test.Common
         {
             IDbDataParameter parameter = Substitute.For<IDbDataParameter>();
 
-            this._handler.SetValue(parameter: parameter, value: value);
+            this.Handler.SetValue(parameter: parameter, value: value);
 
             parameter.Received(requiredNumberOfCalls: 1)
                      .Value = expected;
@@ -62,7 +65,7 @@ namespace FunFair.Test.Common
         {
             IDbDataParameter parameter = Substitute.For<IDbDataParameter>();
 
-            this._handler.SetValue(parameter: parameter, value: value);
+            this.Handler.SetValue(parameter: parameter, value: value);
 
             parameter.Received(requiredNumberOfCalls: 1)
                      .Value = expected;
@@ -77,7 +80,7 @@ namespace FunFair.Test.Common
         protected void ShouldNotParse<TExceptionType, TValueType>(TValueType value)
             where TExceptionType : Exception
         {
-            Assert.Throws<TExceptionType>(() => this._handler.Parse(value));
+            Assert.Throws<TExceptionType>(() => this.Handler.Parse(value));
         }
     }
 }
