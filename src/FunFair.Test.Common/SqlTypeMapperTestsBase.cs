@@ -63,12 +63,16 @@ namespace FunFair.Test.Common
         /// <param name="expected">The expected typed value.</param>
         protected void ShouldSetValue(TMappedType value, in byte[] expected)
         {
-            IDbDataParameter parameter = Substitute.For<IDbDataParameter>();
+            // note special case for byte arrays as NSubstitute whatever you give it always says it received something other than the expected
+            IDbDataParameter parameter = new MockParamerter();
 
             this.Handler.SetValue(parameter: parameter, value: value);
 
-            parameter.Received(requiredNumberOfCalls: 1)
-                     .Value = expected;
+            var result = parameter.Value;
+            Assert.NotNull(result);
+            Assert.IsType<byte[]>(result);
+
+            Assert.Equal(BitConverter.ToString(expected), BitConverter.ToString((byte[]) result));
         }
 
         /// <summary>
@@ -81,6 +85,29 @@ namespace FunFair.Test.Common
             where TExceptionType : Exception
         {
             Assert.Throws<TExceptionType>(() => this.Handler.Parse(value));
+        }
+
+        private sealed class MockParamerter : IDbDataParameter
+        {
+            public DbType DbType { get; set; }
+
+            public ParameterDirection Direction { get; set; }
+
+            public bool IsNullable { get; }
+
+            public string ParameterName { get; set; }
+
+            public string SourceColumn { get; set; }
+
+            public DataRowVersion SourceVersion { get; set; }
+
+            public object Value { get; set; }
+
+            public byte Precision { get; set; }
+
+            public byte Scale { get; set; }
+
+            public int Size { get; set; }
         }
     }
 }
