@@ -95,13 +95,13 @@ namespace FunFair.Test.Common
 
             public bool IsNullable { get; }
 
-            public string ParameterName { get; set; }
+            public string ParameterName { get; set; } = default!;
 
-            public string SourceColumn { get; set; }
+            public string SourceColumn { get; set; } = default!;
 
             public DataRowVersion SourceVersion { get; set; }
 
-            public object Value { get; set; }
+            public object Value { get; set; } = default!;
 
             public byte Precision { get; set; }
 
