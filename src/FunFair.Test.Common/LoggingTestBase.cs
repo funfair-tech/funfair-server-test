@@ -130,7 +130,7 @@ namespace FunFair.Test.Common
         /// <returns></returns>
         protected internal T GetServiceFromDependencyInjection<T>()
         {
-            T service = this._serviceProvider.GetService<T>();
+            T service = this._serviceProvider.GetRequiredService<T>();
 
             Assert.True(service != null, $"{typeof(T).FullName} could not be loaded from DI container");
 
