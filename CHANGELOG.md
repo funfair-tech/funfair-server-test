@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- FF-1429 - Updated FunFair.CodeAnalysis to 1.5.0.314
 ### Removed
 
 <!--
@@ -85,6 +86,7 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 ## [1.0.0] 2019-11-22
 ### Added
 - Initial version
+
 
 
 
