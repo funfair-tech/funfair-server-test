@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-2488 - Updated packages and global.json to net core 3.1.301
-- FF-1429 - Updated NSubstitute to 4.2.2
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+
+## [1.8.0] 2020-06-18
+### Changed
+- FF-2488 - Updated packages and global.json to net core 3.1.301
+- FF-1429 - Updated NSubstitute to 4.2.2
 
 ## [1.7.1] 2020-06-08
 ### Changed
