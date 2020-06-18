@@ -6,7 +6,7 @@ namespace FunFair.Test.Common.Tests.Mocks.JsonConverter
     {
         internal ModelColor? Value { get; set; }
 
-        public bool Equals(Model other)
+        public bool Equals(Model? other)
         {
             if (ReferenceEquals(objA: null, objB: other))
             {

@@ -68,7 +68,7 @@ namespace FunFair.Test.Common
 
             this.Handler.SetValue(parameter: parameter, value: value);
 
-            var result = parameter.Value;
+            object result = parameter.Value;
             Assert.NotNull(result);
             Assert.IsType<byte[]>(result);
 
