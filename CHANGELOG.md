@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- FF-2488 - Updated packages and global.json to net core 3.1.301
 - FF-1429 - Updated NSubstitute to 4.2.2
 ### Removed
 
