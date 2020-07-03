@@ -18,7 +18,14 @@ namespace FunFair.Test.Common.Tests
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
 
-            this.Output.WriteLine($"Hello World. It's {now}");
+            try
+            {
+                this.Output.WriteLine($"Hello World. It's {now}");
+            }
+            catch // (Exception exception)
+            {
+                throw new FormatException("Twit");
+            }
         }
     }
 }
