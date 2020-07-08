@@ -57,9 +57,7 @@ namespace FunFair.Test.Common.Helpers
 
             protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
-                HttpResponseMessage httpResponseMessage;
-
-                httpResponseMessage = new HttpResponseMessage(this._statusCode) { Content = new StringContent(this._responseMessage) };
+                HttpResponseMessage httpResponseMessage = new HttpResponseMessage(this._statusCode) { Content = new StringContent(this._responseMessage) };
 
                 return Task.FromResult(httpResponseMessage);
             }
