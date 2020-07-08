@@ -6,19 +6,23 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-- FF-2601 - Can return an HttpClient containing a fake message handler which can be configured to respond as required
 ### Fixed
+### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+
+## [1.8.1] 2020-07-08
+### Added
+- FF-2601 - Can return an HttpClient containing a fake message handler which can be configured to respond as required
 ### Changed
 - FF-1429 - Updated FunFair.CodeAnalysis to 1.7.1.352
 - FF-1429 - Updated FunFair.CodeAnalysis to 1.7.0.347
 - FF-1429 - Updated FunFair.CodeAnalysis to 1.6.0.343
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.9.0.19135
 - FF-1429 - Updated FunFair.CodeAnalysis to 1.5.0.314
-### Removed
-
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 
 ## [1.8.0] 2020-06-18
 ### Changed
