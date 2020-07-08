@@ -59,14 +59,7 @@ namespace FunFair.Test.Common.Helpers
             {
                 HttpResponseMessage httpResponseMessage;
 
-                if (!string.IsNullOrEmpty(this._responseMessage))
-                {
-                    httpResponseMessage = new HttpResponseMessage(this._statusCode) { Content = new StringContent(this._responseMessage) };
-                }
-                else
-                {
-                    httpResponseMessage = new HttpResponseMessage(this._statusCode);
-                }
+                httpResponseMessage = new HttpResponseMessage(this._statusCode) { Content = new StringContent(this._responseMessage) };
 
                 return Task.FromResult(httpResponseMessage);
             }
