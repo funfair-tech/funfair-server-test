@@ -8,12 +8,15 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated FunFair.CodeAnalysis to 1.7.2.364
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.8.2] 2020-07-15
+### Changed
+- FF-1429 - Updated FunFair.CodeAnalysis to 1.7.2.364
+- Updated Fluent Validation to 9.0.1
 
 ## [1.8.1] 2020-07-08
 ### Added
