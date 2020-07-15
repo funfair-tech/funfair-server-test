@@ -6,6 +6,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+- Overloads for the HttpClient to take serialization options
 ### Fixed
 ### Changed
 ### Removed
