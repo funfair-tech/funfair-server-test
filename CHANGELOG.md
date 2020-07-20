@@ -7,8 +7,10 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ## [Unreleased]
 ### Added
 - Overloads for the HttpClient to take serialization options
+- FF-2652 - Update all the .NET components to .NET Core 3.1.302
 ### Fixed
 ### Changed
+
 ### Removed
 
 <!--
