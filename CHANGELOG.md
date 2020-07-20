@@ -6,11 +6,8 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-- Overloads for the HttpClient to take serialization options
 ### Fixed
 ### Changed
-- FF-2652 - Update all the .NET components to .NET Core 3.1.302
-- FF-1429 - Updated FunFair.CodeAnalysis to 1.8.0.375
 ### Removed
 
 <!--
