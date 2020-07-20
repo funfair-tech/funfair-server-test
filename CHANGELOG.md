@@ -16,6 +16,15 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.9.0] 2020-07-20
+### Added
+- Overloads for the HttpClient to take serialization options
+### Fixed
+### Changed
+- FF-2652 - Update all the .NET components to .NET Core 3.1.302
+- FF-1429 - Updated FunFair.CodeAnalysis to 1.8.0.375
+### Removed
+
 ## [1.8.2] 2020-07-15
 ### Changed
 - FF-1429 - Updated FunFair.CodeAnalysis to 1.7.2.364
