@@ -8,16 +8,18 @@ namespace FunFair.Test.Common.Mocks
     /// <summary>
     ///     Mock of logging.
     /// </summary>
-    /// <typeparam name="T">The logging type.</typeparam>
-    public sealed class MockLogger<T> : ILogger<T>
+    public sealed class MockLogger : ILogger
     {
         private readonly ConcurrentDictionary<LogLevel, int> _seen;
+
+        private readonly ILogger _logger;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public MockLogger()
+        public MockLogger(ILogger logger)
         {
+            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this._seen = new ConcurrentDictionary<LogLevel, int>();
         }
 
@@ -59,19 +61,29 @@ namespace FunFair.Test.Common.Mocks
         /// <inheritdoc />
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
+            if (state != null)
+            {
+                this._logger.Log<object>(logLevel: logLevel, eventId: eventId, state: state, exception: exception, formatter: (st, ex) => "");
+            }
+            
             this._seen.AddOrUpdate(key: logLevel, addValueFactory: lvl => 1, updateValueFactory: (lvl, count) => count + 1);
         }
 
         /// <inheritdoc />
         public bool IsEnabled(LogLevel logLevel)
         {
-            return true;
+            return this._logger.IsEnabled(logLevel);
         }
 
         /// <inheritdoc />
         public IDisposable? BeginScope<TState>(TState state)
         {
-            return null;
+            if (state == null)
+            {
+                throw new ArgumentNullException(nameof(state));
+            }
+
+            return this._logger.BeginScope<object>(state);
         }
     }
 }
