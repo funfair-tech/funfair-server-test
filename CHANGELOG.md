@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- FF-2597 - Updated mock logger
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.10.0.19839
 ### Removed
 
