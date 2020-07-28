@@ -8,7 +8,7 @@ namespace FunFair.Test.Common.Mocks
     /// <summary>
     ///     Mock of logging.
     /// </summary>
-    public sealed class MockLogger : ILogger
+    public sealed class MockLogger<T> : ILogger<T>
     {
         private readonly ConcurrentDictionary<LogLevel, int> _seen;
 
