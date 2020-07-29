@@ -8,13 +8,19 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-2597 - Updated mock logger
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.10.0.19839
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.10.0] 2020-07-29
+### Added
+### Fixed
+### Changed
+- FF-2597 - Updated mock logger
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.10.0.19839
+### Removed
+
 ## [1.9.0] 2020-07-20
 ### Added
 - Overloads for the HttpClient to take serialization options
