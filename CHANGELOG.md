@@ -15,6 +15,14 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+
+## [1.10.1] 2020-07-30
+### Added
+### Fixed
+### Changed
+- FF-2597 - Added not received extension method for logger testing
+### Removed
+
 ## [1.10.0] 2020-07-29
 ### Added
 ### Fixed
