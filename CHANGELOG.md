@@ -18,6 +18,7 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 ### Changed
 - FF-1429 - Updated Microsoft.CodeAnalysis.FxCopAnalyzers to 3.3.0
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.11.0.20529
+- FF-1429 - Updated FluentValidation.AspNetCore to 9.1.2
 - FF-1429 - Updated FluentValidation.AspNetCore to 9.1.1
 - FF-1429 - Updated FluentValidation.AspNetCore to 9.1.0
 - FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.7.0
