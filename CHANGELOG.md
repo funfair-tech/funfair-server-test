@@ -15,6 +15,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 - FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.7.0
 - FF-1429 - Updated xunit.runner.visualstudio to 2.4.3
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.7.54
+- FF-2759 - Updated to .net core 3.1.401
 ### Removed
 
 <!--
@@ -22,28 +23,20 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 -->
 
 ## [1.10.1] 2020-07-30
-### Added
-### Fixed
 ### Changed
 - FF-2597 - Added not received extension method for logger testing
-### Removed
 
 ## [1.10.0] 2020-07-29
-### Added
-### Fixed
 ### Changed
 - FF-2597 - Updated mock logger
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.10.0.19839
-### Removed
 
 ## [1.9.0] 2020-07-20
 ### Added
 - Overloads for the HttpClient to take serialization options
-### Fixed
 ### Changed
 - FF-2652 - Update all the .NET components to .NET Core 3.1.302
 - FF-1429 - Updated FunFair.CodeAnalysis to 1.8.0.375
-### Removed
 
 ## [1.8.2] 2020-07-15
 ### Changed
