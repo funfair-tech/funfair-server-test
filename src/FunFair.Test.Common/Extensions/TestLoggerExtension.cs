@@ -1,6 +1,4 @@
 ﻿using System;
-using Microsoft.Extensions.Logging;
-using NSubstitute;
 
 namespace FunFair.Test.Common.Extensions
 {
@@ -21,7 +19,7 @@ namespace FunFair.Test.Common.Extensions
             logger.Received(received)
                   .Log(logLevel: logLevel, Arg.Any<EventId>(), Arg.Is<object>(o => o.ToString() == message), Arg.Any<Exception?>(), Arg.Any<Func<object, Exception, string>>());
         }
-        
+
         /// <summary>
         ///     Check if error message is not received while testing
         /// </summary>

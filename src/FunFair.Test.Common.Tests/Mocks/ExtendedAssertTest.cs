@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using FunFair.Test.Common.Mocks;
-using Xunit;
-using Xunit.Sdk;
 
 namespace FunFair.Test.Common.Tests.Mocks
 {

@@ -1,8 +1,3 @@
-using FunFair.Test.Common.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
-
 namespace FunFair.Test.Common.Startup
 {
     internal static class LoggingStartup

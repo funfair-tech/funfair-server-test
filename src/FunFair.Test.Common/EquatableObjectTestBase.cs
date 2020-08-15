@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Xunit;
 
 namespace FunFair.Test.Common
 {

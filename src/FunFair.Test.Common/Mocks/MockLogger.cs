@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
 
 namespace FunFair.Test.Common.Mocks
 {
@@ -10,9 +9,8 @@ namespace FunFair.Test.Common.Mocks
     /// </summary>
     public sealed class MockLogger<T> : ILogger<T>
     {
-        private readonly ConcurrentDictionary<LogLevel, int> _seen;
-
         private readonly ILogger _logger;
+        private readonly ConcurrentDictionary<LogLevel, int> _seen;
 
         /// <summary>
         ///     Constructor.
@@ -65,7 +63,7 @@ namespace FunFair.Test.Common.Mocks
             {
                 this._logger.Log<object>(logLevel: logLevel, eventId: eventId, state: state, exception: exception, formatter: (st, ex) => "");
             }
-            
+
             this._seen.AddOrUpdate(key: logLevel, addValueFactory: lvl => 1, updateValueFactory: (lvl, count) => count + 1);
         }
 

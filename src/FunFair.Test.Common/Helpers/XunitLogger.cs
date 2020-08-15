@@ -3,8 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
 
 namespace FunFair.Test.Common.Helpers
 {

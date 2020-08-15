@@ -3,11 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using FunFair.Test.Common.Logging;
 using FunFair.Test.Common.Startup;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Xunit;
-using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace FunFair.Test.Common
 {

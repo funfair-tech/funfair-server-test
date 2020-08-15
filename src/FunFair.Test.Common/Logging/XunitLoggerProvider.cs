@@ -1,7 +1,5 @@
 using System;
 using FunFair.Test.Common.Helpers;
-using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
 
 namespace FunFair.Test.Common.Logging
 {

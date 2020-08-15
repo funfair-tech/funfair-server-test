@@ -1,7 +1,6 @@
 using System;
 using FunFair.Test.Common.Helpers;
 using FunFair.Test.Common.Tests.Mocks;
-using Xunit;
 
 namespace FunFair.Test.Common.Tests.Helpers
 {

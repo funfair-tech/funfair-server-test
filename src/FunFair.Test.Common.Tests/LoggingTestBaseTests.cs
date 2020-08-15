@@ -1,7 +1,5 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace FunFair.Test.Common.Tests
 {

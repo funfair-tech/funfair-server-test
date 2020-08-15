@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text.Json;
-using Xunit;
 
 namespace FunFair.Test.Common.Mocks
 {

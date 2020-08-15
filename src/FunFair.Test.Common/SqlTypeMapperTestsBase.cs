@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Data;
-using Dapper;
-using NSubstitute;
-using Xunit;
 
 namespace FunFair.Test.Common
 {

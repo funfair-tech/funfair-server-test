@@ -1,5 +1,4 @@
 using FunFair.Test.Common.Tests.Mocks.JsonConverter;
-using Xunit.Abstractions;
 
 namespace FunFair.Test.Common.Tests
 {
