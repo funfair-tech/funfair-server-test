@@ -8,12 +8,15 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Converted TestHttpClient into HttpClientFactoryExtensionsTests so that we don't need to cover all the methods that needed to create a client with IDisposable suppressions
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+
+## [1.11.1] 2020-08-17
+### Changed
+- Converted TestHttpClient into HttpClientFactoryExtensionsTests so that we don't need to cover all the methods that needed to create a client with IDisposable suppressions
 
 ## [1.11.0] 2020-08-12
 ### Changed
