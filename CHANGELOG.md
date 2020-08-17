@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- Converted TestHttpClient into HttpClientFactoryExtensionsTests so that we don't need to cover all the methods that needed to create a client with IDisposable suppressions
 ### Removed
 
 <!--
