@@ -82,7 +82,7 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <typeparam name="T">The type the object should not be</typeparam>
         /// <param name="obj">The object to be evaluated</param>
-        /// <exception cref="T:Xunit.Sdk.IsAssignableFromException">Thrown when the object is not the given type</exception>
+        /// <exception cref="Xunit.Sdk.IsAssignableFromException">Thrown when the object is not the given type</exception>
         protected static void IsNotAssignableFrom<T>(object obj)
         {
             IsNotAssignableFrom(typeof(T), obj: obj);
@@ -93,7 +93,7 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <param name="expectedType">The type the object should not be</param>
         /// <param name="obj">The object to be evaluated</param>
-        /// <exception cref="T:Xunit.Sdk.IsAssignableFromException">Thrown when the object is not the given type</exception>
+        /// <exception cref="Xunit.Sdk.IsAssignableFromException">Thrown when the object is not the given type</exception>
         protected static void IsNotAssignableFrom(Type expectedType, object obj)
         {
             if (obj == null || expectedType.GetTypeInfo()
