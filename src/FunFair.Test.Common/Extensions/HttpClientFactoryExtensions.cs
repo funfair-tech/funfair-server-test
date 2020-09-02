@@ -173,7 +173,7 @@ namespace FunFair.Test.Common.Extensions
 
                 foreach (KeyValuePair<string, string> header in this._headers)
                 {
-                    httpResponseMessage.Content.Headers.Add(name: header.Key, value: header.Value);
+                    httpResponseMessage.Headers.Add(name: header.Key, value: header.Value);
                 }
 
                 return Task.FromResult(httpResponseMessage);
