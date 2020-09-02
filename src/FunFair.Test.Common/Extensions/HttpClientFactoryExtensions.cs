@@ -160,11 +160,6 @@ namespace FunFair.Test.Common.Extensions
             private readonly string _responseMessage;
             private readonly HttpStatusCode _statusCode;
 
-            public FakeHttpMessageHandler(HttpStatusCode statusCode, string responseMessage)
-                : this(statusCode: statusCode, responseMessage: responseMessage, new Dictionary<string, string>())
-            {
-            }
-
             public FakeHttpMessageHandler(HttpStatusCode statusCode, string responseMessage, IReadOnlyDictionary<string, string> headers)
             {
                 this._statusCode = statusCode;
