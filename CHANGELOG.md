@@ -13,6 +13,10 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.11.3] 2020-09-09
+### Added
+- Added overloads to MockCreateClientWithResponse that allows response headers to be specified.
+
 ## [1.11.2] 2020-08-28
 ### Added
 - Additional asserts that should really be part of xunit
