@@ -14,6 +14,8 @@ namespace FunFair.Test.Common
     public abstract class ValidatorTestBase<TValidator, TObject> : LoggingTestBase
         where TValidator : AbstractValidator<TObject>, new()
     {
+        private readonly TValidator _validator;
+
         /// <summary>
         ///     Constructor.
         /// </summary>
@@ -23,8 +25,6 @@ namespace FunFair.Test.Common
         {
             this._validator = new TValidator();
         }
-
-        private readonly TValidator _validator;
 
         /// <summary>
         ///     Validates the object.
