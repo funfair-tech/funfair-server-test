@@ -50,7 +50,7 @@ namespace FunFair.Test.Common.Tests.Extensions
             HttpResponseMessage responseMessage = await client.GetAsync(new Uri(uriString: "/test", uriKind: UriKind.Relative));
             Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
 
-            var content = await responseMessage.Content.ReadAsStringAsync();
+            string? content = await responseMessage.Content.ReadAsStringAsync();
             Assert.Equal(expected: expectedContent, actual: content);
         }
 
