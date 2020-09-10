@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace FunFair.Test.Common.Mocks
 {
     /// <summary>
@@ -35,6 +37,9 @@ namespace FunFair.Test.Common.Mocks
         public abstract T Next();
 
         /// <inheritdoc />
+        [SuppressMessage(category: "ToStringWithoutOverrideAnalyzer",
+                         checkId: "ExplicitToStringWithoutOverrideAnalyzer: Calling ToString() on object of type 'T' but it does not override ToString()",
+                         Justification = "TODO: Review")]
         public override string ToString()
         {
             return this._value.ToString() ?? string.Empty;
