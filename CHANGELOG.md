@@ -13,6 +13,11 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [1.13.0] 2020-09-10
+### Added
+- Additional analyser for checking usage of .ToString from object when it hasn't been overriden
+- Formatting helper.
+
 ## [1.12.0] 2020-09-09
 ### Changed
 - FF-2830 - Update all the .NET components to .NET Core 3.1.402
