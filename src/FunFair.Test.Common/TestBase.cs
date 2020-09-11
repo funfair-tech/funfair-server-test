@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using FunFair.Test.Common.Helpers;
 using Xunit;
 using Xunit.Sdk;
 
@@ -102,6 +103,18 @@ namespace FunFair.Test.Common
             {
                 throw new IsAssignableFromException(expected: expectedType, actual: obj);
             }
+        }
+
+        /// <summary>
+        ///     Formats the value, and checks that it isn't the name
+        /// </summary>
+        /// <param name="value"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        protected static string FormatValue<T>(T value)
+            where T : notnull
+        {
+            return Formatter.FormatValue(value);
         }
     }
 }
