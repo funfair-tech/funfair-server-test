@@ -17,7 +17,7 @@ namespace FunFair.Test.Common.Helpers
         [SuppressMessage(category: "ToStringWithoutOverrideAnalyzer",
                          checkId: "ExplicitToStringWithoutOverrideAnalyzer: Calling ToString() on object of type 'T' but it does not override ToString()",
                          Justification = "TODO: Review")]
-        public static string FormatValue<T>(T value)
+        public static string FormatValue<T>(this T value)
             where T : notnull
         {
             string rv = value.ToString() ?? string.Empty;
