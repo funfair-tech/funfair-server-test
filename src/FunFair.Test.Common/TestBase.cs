@@ -114,7 +114,7 @@ namespace FunFair.Test.Common
         protected static string FormatValue<T>(T value)
             where T : notnull
         {
-            return Formatter.FormatValue(value);
+            return value.FormatValue();
         }
     }
 }
