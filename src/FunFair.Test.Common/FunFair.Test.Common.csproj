@@ -12,7 +12,6 @@
       <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
       <IsPackable>True</IsPackable>
       <IncludeContentInPack>false</IncludeContentInPack>
-      <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
   </PropertyGroup>
     <PropertyGroup>
         <AnalysisLevel>latest</AnalysisLevel>
