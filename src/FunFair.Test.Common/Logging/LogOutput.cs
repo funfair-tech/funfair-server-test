@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
@@ -8,7 +9,8 @@ namespace FunFair.Test.Common.Logging
     {
         private readonly ILogger _logger;
 
-        public LogOutput(ILogger logger)
+        public LogOutput([SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")]
+                         ILogger logger)
         {
             this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
