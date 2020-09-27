@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 
 namespace FunFair.Test.Common.Logging
@@ -8,7 +9,8 @@ namespace FunFair.Test.Common.Logging
         private readonly ILogger _logger;
         private readonly IDisposable _scope;
 
-        public DisposableLogger(ILogger logger)
+        public DisposableLogger([SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")]
+                                ILogger logger)
         {
             this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this._scope = this._logger.BeginScope(state: "Test");
