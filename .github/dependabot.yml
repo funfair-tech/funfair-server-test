@@ -1,0 +1,15 @@
+version: 2
+updates:
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 99
+  reviewers:
+  - credfeto
+  assignees:
+  - credfeto
+  allow:
+  - dependency-type: indirect
+  commit-message:
+    prefix: "[FF-1429]"
