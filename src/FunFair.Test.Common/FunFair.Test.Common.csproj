@@ -29,13 +29,13 @@
     <Description>Common Test Infrastructure.</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.4.1" />
-    <PackageReference Include="Dapper" Version="2.0.35" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="9.2.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.8" />
-    <PackageReference Include="NSubstitute" Version="4.2.2" />
-    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="Castle.Core" Version="4.4.1"/>
+    <PackageReference Include="Dapper" Version="2.0.35"/>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.2.0"/>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.9"/>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.9"/>
+    <PackageReference Include="NSubstitute" Version="4.2.2"/>
+    <PackageReference Include="xunit" Version="2.4.1"/>
   </ItemGroup>
   <ItemGroup>
     <!-- Note in this project ONLY we need to exclude the test SDK from being packed -->
