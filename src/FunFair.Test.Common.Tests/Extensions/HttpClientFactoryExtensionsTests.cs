@@ -21,17 +21,17 @@ namespace FunFair.Test.Common.Tests.Extensions
 
         private void Dump(HttpResponseHeaders headers)
         {
-            foreach (KeyValuePair<string, IEnumerable<string>> header in headers)
+            foreach ((string key, IEnumerable<string> value) in headers)
             {
-                this.Output.WriteLine($"{header.Key}: {header.Value.FirstOrDefault() ?? string.Empty}");
+                this.Output.WriteLine($"{key}: {value.FirstOrDefault() ?? string.Empty}");
             }
         }
 
         private void Dump(HttpContentHeaders headers)
         {
-            foreach (KeyValuePair<string, IEnumerable<string>> header in headers)
+            foreach ((string key, IEnumerable<string> value) in headers)
             {
-                this.Output.WriteLine($"{header.Key}: {header.Value.FirstOrDefault() ?? string.Empty}");
+                this.Output.WriteLine($"{key}: {value.FirstOrDefault() ?? string.Empty}");
             }
         }
 
