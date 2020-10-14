@@ -32,17 +32,19 @@ namespace FunFair.Test.Common.Tests.Helpers
         [Fact]
         public void ObjectsAreNotEqualIfLeftIsNull()
         {
+            MockGenericModel<int>? left = null;
             MockGenericModel<int> right = new MockGenericModel<int>(value: 1);
 
-            Assert.False(ReferenceObjectHelpers.AreEqual(left: null, right: right, eq: this._equals), userMessage: "Should be different");
+            Assert.False(ReferenceObjectHelpers.AreEqual(left: left, right: right, eq: this._equals), userMessage: "Should be different");
         }
 
         [Fact]
         public void ObjectsAreNotEqualIfRightIsNull()
         {
             MockGenericModel<int> left = new MockGenericModel<int>(value: 1);
+            MockGenericModel<int>? right = null;
 
-            Assert.False(ReferenceObjectHelpers.AreEqual(left: left, right: null, eq: this._equals), userMessage: "Should be different");
+            Assert.False(ReferenceObjectHelpers.AreEqual(left: left, right: right, eq: this._equals), userMessage: "Should be different");
         }
 
         [Fact]
@@ -57,9 +59,10 @@ namespace FunFair.Test.Common.Tests.Helpers
         [Fact]
         public void ObjectsAreNotSameIfLeftIsNull()
         {
+            MockGenericModel<int>? left = null;
             MockGenericModel<int> right = new MockGenericModel<int>(value: 1);
 
-            Assert.Equal(expected: 1, ReferenceObjectHelpers.Compare(left: null, right: right, cmp: this._compare));
+            Assert.Equal(expected: 1, ReferenceObjectHelpers.Compare(left: left, right: right, this._compare!));
         }
 
         [Fact]
@@ -84,8 +87,9 @@ namespace FunFair.Test.Common.Tests.Helpers
         public void ObjectsAreNotSameIfRightIsNull()
         {
             MockGenericModel<int> left = new MockGenericModel<int>(value: 1);
+            MockGenericModel<int>? right = null;
 
-            Assert.Equal(expected: -1, ReferenceObjectHelpers.Compare(left: left, right: null, cmp: this._compare));
+            Assert.Equal(expected: -1, ReferenceObjectHelpers.Compare(left: left, right: right, this._compare!));
         }
 
         [Fact]
