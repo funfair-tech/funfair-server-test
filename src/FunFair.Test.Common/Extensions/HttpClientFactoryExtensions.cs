@@ -27,7 +27,11 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="responseMessage">Response message string.</param>
         public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, string responseMessage)
         {
-            MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: responseMessage, headers: NoHeaders);
+            MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
+                                         clientName: clientName,
+                                         httpStatusCode: httpStatusCode,
+                                         responseMessage: responseMessage,
+                                         headers: NoHeaders);
         }
 
         /// <summary>
@@ -45,7 +49,11 @@ namespace FunFair.Test.Common.Extensions
                                                         string responseMessage,
                                                         IReadOnlyDictionary<string, string> headers)
         {
-            HttpClient client = new HttpClient(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)) {BaseAddress = new Uri("https://localhost")};
+            HttpClient client =
+                new HttpClient(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers))
+                {
+                    BaseAddress = new Uri("https://localhost")
+                };
 
             httpClientFactory.CreateClient(clientName)
                              .Returns(client);
@@ -69,9 +77,16 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="clientName">The client name.</param>
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="headers">Headers to add to the response.</param>
-        public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, IReadOnlyDictionary<string, string> headers)
+        public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
+                                                        string clientName,
+                                                        HttpStatusCode httpStatusCode,
+                                                        IReadOnlyDictionary<string, string> headers)
         {
-            MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty, headers: headers);
+            MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
+                                         clientName: clientName,
+                                         httpStatusCode: httpStatusCode,
+                                         responseMessage: string.Empty,
+                                         headers: headers);
         }
 
         /// <summary>
