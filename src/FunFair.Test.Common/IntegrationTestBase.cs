@@ -50,6 +50,7 @@ namespace FunFair.Test.Common
         /// <typeparam name="T">The service </typeparam>
         /// <returns>The service that was registered with dependency injection.</returns>
         protected T GetService<T>()
+            where T : notnull
         {
             return this.GetServiceFromDependencyInjection<T>();
         }

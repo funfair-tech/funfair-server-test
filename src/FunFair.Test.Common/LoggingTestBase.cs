@@ -78,7 +78,7 @@ namespace FunFair.Test.Common
 
             this._serviceProvider = serviceCollection.BuildServiceProvider();
 
-            this._loggerFactory = this._serviceProvider.GetService<ILoggerFactory>();
+            this._loggerFactory = this._serviceProvider.GetRequiredService<ILoggerFactory>();
             initializeServices(this._serviceProvider);
         }
 
@@ -129,6 +129,7 @@ namespace FunFair.Test.Common
         /// <typeparam name="T">The service </typeparam>
         /// <returns></returns>
         protected internal T GetServiceFromDependencyInjection<T>()
+            where T : notnull
         {
             T service = this._serviceProvider.GetRequiredService<T>();
 
