@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- FF-1429 - Updated Dapper to 2.0.78
 - FF-1429 - Updated Microsoft.Extensions to 5.0.0
 - FF-1429 - Updated FluentValidation.AspNetCore to 9.3.0
 - FF-1429 - Updated NSubstitute.Analyzers.CSharp to 1.0.14
