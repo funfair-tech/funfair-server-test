@@ -12,9 +12,9 @@ namespace FunFair.Test.Common.Helpers
     {
         private static readonly string[] NewLineChars = {Environment.NewLine};
         private readonly string _category;
+        private readonly DateTimeOffset? _logStart;
         private readonly LogLevel _minLogLevel;
         private readonly ITestOutputHelper _output;
-        private DateTimeOffset? _logStart;
 
         public XunitLogger(ITestOutputHelper output, string category, LogLevel minLogLevel, DateTimeOffset? logStart)
         {
@@ -33,7 +33,7 @@ namespace FunFair.Test.Common.Helpers
             }
 
             // Buffer the message into a single string in order to avoid shearing the message when running across multiple threads.
-            StringBuilder messageBuilder = new StringBuilder();
+            StringBuilder messageBuilder = new();
 
             string timestamp = this._logStart.HasValue
                 ? $"{(DateTimeOffset.UtcNow - this._logStart.Value).TotalSeconds:N3}s"
@@ -42,8 +42,12 @@ namespace FunFair.Test.Common.Helpers
             string firstLinePrefix = $"| [{timestamp}] {this._category} {logLevel}: ";
             string[] lines = formatter(arg1: state, arg2: exception)
                 .Split(separator: NewLineChars, options: StringSplitOptions.RemoveEmptyEntries);
-            string firstLine = lines.FirstOrDefault();
-            messageBuilder.AppendLine(firstLinePrefix + firstLine);
+            string? firstLine = lines.FirstOrDefault();
+
+            if (firstLine != null)
+            {
+                messageBuilder.AppendLine(firstLinePrefix + firstLine);
+            }
 
             string additionalLinePrefix = "|" + new string(c: ' ', firstLinePrefix.Length - 1);
 
