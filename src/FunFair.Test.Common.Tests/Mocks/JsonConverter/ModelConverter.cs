@@ -8,7 +8,7 @@ namespace FunFair.Test.Common.Tests.Mocks.JsonConverter
     {
         public override Model Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            string source = reader.GetString();
+            string? source = reader.GetString();
 
             if (!Enum.TryParse(value: source, out ModelColor color))
             {

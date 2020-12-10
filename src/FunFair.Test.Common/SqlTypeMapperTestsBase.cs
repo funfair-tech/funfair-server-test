@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using Dapper;
 using NSubstitute;
 using Xunit;
@@ -64,15 +65,15 @@ namespace FunFair.Test.Common
         protected void ShouldSetValue(TMappedType value, in byte[] expected)
         {
             // note special case for byte arrays as NSubstitute whatever you give it always says it received something other than the expected
-            IDbDataParameter parameter = new MockParamerter();
+            IDbDataParameter parameter = new MockParameter();
 
             this.Handler.SetValue(parameter: parameter, value: value);
 
-            object result = parameter.Value;
+            object? result = parameter.Value;
             Assert.NotNull(result);
             Assert.IsType<byte[]>(result);
 
-            Assert.Equal(BitConverter.ToString(expected), BitConverter.ToString((byte[]) result));
+            Assert.Equal(BitConverter.ToString(expected), BitConverter.ToString((byte[]) result!));
         }
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace FunFair.Test.Common
             Assert.Throws<TExceptionType>(() => this.Handler.Parse(value));
         }
 
-        private sealed class MockParamerter : IDbDataParameter
+        private sealed class MockParameter : IDbDataParameter
         {
             public DbType DbType { get; set; }
 
@@ -95,13 +96,15 @@ namespace FunFair.Test.Common
 
             public bool IsNullable { get; }
 
+            [AllowNull]
             public string ParameterName { get; set; } = default!;
 
+            [AllowNull]
             public string SourceColumn { get; set; } = default!;
 
             public DataRowVersion SourceVersion { get; set; }
 
-            public object Value { get; set; } = default!;
+            public object? Value { get; set; } = default!;
 
             public byte Precision { get; set; }
 
