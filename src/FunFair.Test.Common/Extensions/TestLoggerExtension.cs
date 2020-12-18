@@ -7,6 +7,8 @@ namespace FunFair.Test.Common.Extensions
     /// <summary>
     ///     Test logger extension
     /// </summary>
+
+    // ReSharper disable once UnusedType.Global
     public static class TestLoggerExtension
     {
         /// <summary>
@@ -16,6 +18,8 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="logLevel">Log level</param>
         /// <param name="message">Message</param>
         /// <param name="received">Received amount</param>
+
+        // ReSharper disable once UnusedMember.Global
         public static void Received(this ILogger logger, LogLevel logLevel, string message, int received = 1)
         {
             logger.Received(received)
@@ -28,6 +32,8 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="logger">Logger</param>
         /// <param name="logLevel">Log level</param>
         /// <param name="message">Message</param>
+
+        // ReSharper disable once UnusedMember.Global
         public static void DidNotReceive(this ILogger logger, LogLevel logLevel, string message)
         {
             logger.DidNotReceive()

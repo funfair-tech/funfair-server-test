@@ -10,6 +10,7 @@ namespace FunFair.Test.Common.Tests.Mocks
 
         public T Value { get; }
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public T[] NestedValue { get; set; }
     }
 }

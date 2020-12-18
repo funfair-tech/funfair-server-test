@@ -40,6 +40,8 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <typeparam name="T">The type to return.</typeparam>
         /// <returns>A task with a null result.</returns>
+
+        // ReSharper disable once UnusedMember.Global
         protected static Task<T?> NullResultAsync<T>()
             where T : class
         {
@@ -73,6 +75,8 @@ namespace FunFair.Test.Common
         /// <typeparam name="T"></typeparam>
         [SuppressMessage(category: "Microsoft.Usage", checkId: "CA1801:ReviewUnusedParameters", Justification = "Needed for Unit Test")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+
+        // ReSharper disable once UnusedMember.Global
         protected static void UnusedVariable<T>(T value)
         {
             // Marking that the variable is unused.
@@ -84,6 +88,8 @@ namespace FunFair.Test.Common
         /// <typeparam name="T">The type the object should not be</typeparam>
         /// <param name="obj">The object to be evaluated</param>
         /// <exception cref="Xunit.Sdk.IsAssignableFromException">Thrown when the object is not the given type</exception>
+
+        // ReSharper disable once UnusedMember.Global
         protected static void IsNotAssignableFrom<T>(object obj)
         {
             IsNotAssignableFrom(typeof(T), obj: obj);
@@ -111,6 +117,8 @@ namespace FunFair.Test.Common
         /// <param name="value"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+
+        // ReSharper disable once UnusedMember.Global
         protected static string FormatValue<T>(T value)
             where T : notnull
         {

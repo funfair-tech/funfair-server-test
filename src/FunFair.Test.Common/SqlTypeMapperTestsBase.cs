@@ -12,6 +12,8 @@ namespace FunFair.Test.Common
     /// </summary>
     /// <typeparam name="TTypeMapper">The type mapper to test.</typeparam>
     /// <typeparam name="TMappedType">The mapped type.</typeparam>
+
+    // ReSharper disable once UnusedType.Global
     public abstract class SqlTypeMapperTestsBase<TTypeMapper, TMappedType> : TestBase
         where TTypeMapper : SqlMapper.TypeHandler<TMappedType>, new()
     {
@@ -34,6 +36,8 @@ namespace FunFair.Test.Common
         /// <param name="value">The value to parse.</param>
         /// <param name="expected">The expected value of the mapped type.</param>
         /// <typeparam name="TValueType">The type of the value.</typeparam>
+
+        // ReSharper disable once UnusedMember.Global
         protected void ShouldParse<TValueType>(TValueType value, TMappedType expected)
         {
             TMappedType result = this.Handler.Parse(value);
@@ -47,6 +51,8 @@ namespace FunFair.Test.Common
         /// <param name="value">The value to set.</param>
         /// <param name="expected">The expected typed value.</param>
         /// <typeparam name="TValueType">The type of the value.</typeparam>
+
+        // ReSharper disable once UnusedMember.Global
         protected void ShouldSetValue<TValueType>(TMappedType value, TValueType expected)
         {
             IDbDataParameter parameter = Substitute.For<IDbDataParameter>();
@@ -62,6 +68,8 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <param name="value">The value to set.</param>
         /// <param name="expected">The expected typed value.</param>
+
+        // ReSharper disable once UnusedMember.Global
         protected void ShouldSetValue(TMappedType value, in byte[] expected)
         {
             // note special case for byte arrays as NSubstitute whatever you give it always says it received something other than the expected
@@ -82,6 +90,8 @@ namespace FunFair.Test.Common
         /// <param name="value">The value to parse.</param>
         /// <typeparam name="TExceptionType">The exception that should be raised.</typeparam>
         /// <typeparam name="TValueType">The type of the value.</typeparam>
+
+        // ReSharper disable once UnusedMember.Global
         protected void ShouldNotParse<TExceptionType, TValueType>(TValueType value)
             where TExceptionType : Exception
         {

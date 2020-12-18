@@ -27,36 +27,50 @@ namespace FunFair.Test.Common.Mocks
         /// <summary>
         ///     Summary of all the items that have been seen.
         /// </summary>
+
+        // ReSharper disable once UnusedMember.Global
         public IReadOnlyDictionary<LogLevel, int> Seen => this._seen;
 
         /// <summary>
         ///     Have Critical errors been reported.
         /// </summary>
+
+        // ReSharper disable once UnusedMember.Global
         public bool CriticalReported => this._seen.ContainsKey(LogLevel.Critical);
 
         /// <summary>
         ///     Have errors been reported.
         /// </summary>
+
+        // ReSharper disable once UnusedMember.Global
         public bool ErrorsReported => this._seen.ContainsKey(LogLevel.Error);
 
         /// <summary>
         ///     Have warnings been reported.
         /// </summary>
+
+        // ReSharper disable once UnusedMember.Global
         public bool WarningsReported => this._seen.ContainsKey(LogLevel.Warning);
 
         /// <summary>
         ///     Have trace messages been reported.
         /// </summary>
+
+        // ReSharper disable once UnusedMember.Global
         public bool TraceReported => this._seen.ContainsKey(LogLevel.Trace);
 
         /// <summary>
         ///     Has Information been reported.
         /// </summary>
+
+        // ReSharper disable once UnusedMember.Global
         public bool InformationReported => this._seen.ContainsKey(LogLevel.Information);
 
         /// <summary>
         ///     Have debug messages been reported.
         /// </summary>
+
+        // ReSharper disable once UnusedMember.Global
         public bool DebugReported => this._seen.ContainsKey(LogLevel.Debug);
 
         /// <inheritdoc />
