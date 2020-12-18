@@ -4,7 +4,7 @@ namespace FunFair.Test.Common.Tests.Mocks.JsonConverter
 {
     public sealed class Model : IEquatable<Model>
     {
-        internal ModelColor? Value { get; set; }
+        internal ModelColor? Value { get; init; }
 
         public bool Equals(Model? other)
         {

@@ -7,6 +7,8 @@ namespace FunFair.Test.Common
     /// <summary>
     ///     Simple base class for integration tests..
     /// </summary>
+
+    // ReSharper disable once UnusedType.Global
     public abstract class IntegrationTestBase : LoggingTestBase
     {
         /// <summary>
@@ -42,6 +44,8 @@ namespace FunFair.Test.Common
         /// <summary>
         ///     Gets the Dependency Injection Service Provider.
         /// </summary>
+
+        // ReSharper disable once UnusedMember.Global
         protected internal IServiceProvider ServiceProvider => this.RetrieveDependencyInjectionServiceProvider();
 
         /// <summary>
@@ -49,6 +53,8 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <typeparam name="T">The service </typeparam>
         /// <returns>The service that was registered with dependency injection.</returns>
+
+        // ReSharper disable once UnusedMember.Global
         protected T GetService<T>()
             where T : notnull
         {

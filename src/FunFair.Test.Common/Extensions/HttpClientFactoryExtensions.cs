@@ -15,7 +15,7 @@ namespace FunFair.Test.Common.Extensions
     /// </summary>
     public static class HttpClientFactoryExtensions
     {
-        private static readonly JsonSerializerOptions SerializerOptions = new JsonSerializerOptions();
+        private static readonly JsonSerializerOptions SerializerOptions = new();
         private static readonly IReadOnlyDictionary<string, string> NoHeaders = new Dictionary<string, string>();
 
         /// <summary>
@@ -27,11 +27,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="responseMessage">Response message string.</param>
         public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, string responseMessage)
         {
-            MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
-                                         clientName: clientName,
-                                         httpStatusCode: httpStatusCode,
-                                         responseMessage: responseMessage,
-                                         headers: NoHeaders);
+            MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: responseMessage, headers: NoHeaders);
         }
 
         /// <summary>
@@ -49,11 +45,7 @@ namespace FunFair.Test.Common.Extensions
                                                         string responseMessage,
                                                         IReadOnlyDictionary<string, string> headers)
         {
-            HttpClient client =
-                new HttpClient(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers))
-                {
-                    BaseAddress = new Uri("https://localhost")
-                };
+            HttpClient client = new(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)) {BaseAddress = new Uri("https://localhost")};
 
             httpClientFactory.CreateClient(clientName)
                              .Returns(client);
@@ -77,16 +69,11 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="clientName">The client name.</param>
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="headers">Headers to add to the response.</param>
-        public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
-                                                        string clientName,
-                                                        HttpStatusCode httpStatusCode,
-                                                        IReadOnlyDictionary<string, string> headers)
+
+        // ReSharper disable once UnusedMember.Global
+        public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, IReadOnlyDictionary<string, string> headers)
         {
-            MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
-                                         clientName: clientName,
-                                         httpStatusCode: httpStatusCode,
-                                         responseMessage: string.Empty,
-                                         headers: headers);
+            MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty, headers: headers);
         }
 
         /// <summary>
@@ -96,6 +83,8 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="clientName">The client name.</param>
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="responseObject">Response object to return.</param>
+
+        // ReSharper disable once UnusedMember.Global
         public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, T responseObject)
         {
             MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
@@ -113,6 +102,8 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="responseObject">Response object to return.</param>
         /// <param name="headers">Headers to add to the response.</param>
+
+        // ReSharper disable once UnusedMember.Global
         public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
                                                            string clientName,
                                                            HttpStatusCode httpStatusCode,
@@ -134,6 +125,8 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="responseObject">Response object to return.</param>
         /// <param name="jsonSerializerOptions">The JSON serializer options to use.</param>
+
+        // ReSharper disable once UnusedMember.Global
         public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
                                                            string clientName,
                                                            HttpStatusCode httpStatusCode,
@@ -155,6 +148,8 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="responseObject">Response object to return.</param>
         /// <param name="jsonSerializerOptions">The JSON serializer options to use.</param>
         /// <param name="headers">Headers to add to the response.</param>
+
+        // ReSharper disable once UnusedMember.Global
         public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
                                                            string clientName,
                                                            HttpStatusCode httpStatusCode,
@@ -184,7 +179,7 @@ namespace FunFair.Test.Common.Extensions
 
             protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
-                HttpResponseMessage httpResponseMessage = new HttpResponseMessage(this._statusCode) {Content = new StringContent(this._responseMessage)};
+                HttpResponseMessage httpResponseMessage = new(this._statusCode) {Content = new StringContent(this._responseMessage)};
 
                 foreach ((string key, string value) in this._headers)
                 {

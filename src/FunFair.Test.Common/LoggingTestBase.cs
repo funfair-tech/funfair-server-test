@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace FunFair.Test.Common
 {
@@ -135,7 +134,7 @@ namespace FunFair.Test.Common
 
             Assert.True(service != null, $"{typeof(T).FullName} could not be loaded from DI container");
 
-            return service;
+            return service!;
         }
 
         /// <summary>
@@ -154,17 +153,17 @@ namespace FunFair.Test.Common
         /// <returns>A logger.</returns>
         protected ILogger<T> GetTypedLogger<T>()
         {
-            return this._loggerFactory.CreateLogger<T>() ?? throw new NullException($"ILogger<{typeof(T).FullName}> could not be loaded from DI container");
+            return this._loggerFactory.CreateLogger<T>();
         }
 
         private DisposableLogger BuildLogger()
         {
-            return new DisposableLogger(this.GetTypedLogger<LoggingTestBase>());
+            return new(this.GetTypedLogger<LoggingTestBase>());
         }
 
         private void ReportUnhandledException(object? sender, UnobservedTaskExceptionEventArgs args)
         {
-            this.Output.WriteLine("Unhandled Exception: " + args.Exception?.Message);
+            this.Output.WriteLine("Unhandled Exception: " + args.Exception.Message);
         }
     }
 }

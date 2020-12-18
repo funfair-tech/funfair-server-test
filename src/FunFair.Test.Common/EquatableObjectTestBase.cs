@@ -30,26 +30,36 @@ namespace FunFair.Test.Common
         /// <summary>
         ///     An object that is equivalent or as near as possible to zero
         /// </summary>
+
+        // ReSharper disable once MemberCanBePrivate.Global
         protected internal TObject ZeroObject { get; }
 
         /// <summary>
         ///     The Value.
         /// </summary>
+
+        // ReSharper disable once MemberCanBePrivate.Global
         protected internal TObject Value1 { get; }
 
         /// <summary>
         ///     An alias of the value.
         /// </summary>
+
+        // ReSharper disable once MemberCanBePrivate.Global
         protected internal TObject Value1Alias { get; }
 
         /// <summary>
         ///     A value that is equivalent to value 1
         /// </summary>
+
+        // ReSharper disable once MemberCanBePrivate.Global
         protected internal TObject EquivalentToValue1 { get; }
 
         /// <summary>
         ///     A value that is equivalent to value 1, but typed as an object.
         /// </summary>
+
+        // ReSharper disable once MemberCanBePrivate.Global
         protected internal object EquivalentToValue1AsObject { get; }
 
         /// <summary>
@@ -94,7 +104,7 @@ namespace FunFair.Test.Common
             int referenceHashCode = this.Value1.GetHashCode();
 
             int[] selection = Enumerable.Range(start: 0, count: 100)
-                                        .Select(selector: i => this.Value1.GetHashCode())
+                                        .Select(selector: _ => this.Value1.GetHashCode())
                                         .ToArray();
 
             Assert.All(collection: selection, action: hashCode => Assert.Equal(expected: hashCode, actual: referenceHashCode));

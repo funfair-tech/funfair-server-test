@@ -6,6 +6,8 @@ namespace FunFair.Test.Common.Mocks
     ///     Base class for value.
     /// </summary>
     /// <typeparam name="T">The type of the mock.</typeparam>
+
+    // ReSharper disable once UnusedType.Global
     public abstract class MockBase<T>
         where T : notnull
     {
@@ -34,6 +36,8 @@ namespace FunFair.Test.Common.Mocks
         ///     Gets a new T
         /// </summary>
         /// <returns></returns>
+
+        // ReSharper disable once UnusedMember.Global
         public abstract T Next();
 
         /// <inheritdoc />
