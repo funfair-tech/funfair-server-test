@@ -8,6 +8,13 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [5.0.0] - 2020-12-18
+### Changed
 - FF-1429 - Updated Dapper to 2.0.78
 - FF-1429 - Updated Microsoft.Extensions to 5.0.0
 - FF-1429 - Updated FluentValidation.AspNetCore to 9.3.0
@@ -22,11 +29,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.15.0.24505
 - FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.8.3
 - FF-3198 - Update all the .NET components to .NET 5.0.101
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [1.14.0] 2020-10-14
 ### Changed
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.14.0.22654
