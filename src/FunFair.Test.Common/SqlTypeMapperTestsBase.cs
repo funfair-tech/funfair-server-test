@@ -104,7 +104,7 @@ namespace FunFair.Test.Common
 
             public ParameterDirection Direction { get; set; }
 
-            public bool IsNullable { get; }
+            public bool IsNullable => false;
 
             [AllowNull]
             public string ParameterName { get; set; } = default!;
