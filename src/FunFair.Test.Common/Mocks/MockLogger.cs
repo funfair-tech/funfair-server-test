@@ -64,10 +64,10 @@ namespace FunFair.Test.Common.Mocks
         {
             if (state != null)
             {
-                this._logger.Log<object>(logLevel: logLevel, eventId: eventId, state: state, exception: exception, formatter: (st, ex) => "");
+                this._logger.Log<object>(logLevel: logLevel, eventId: eventId, state: state, exception: exception, formatter: (_, _) => string.Empty);
             }
 
-            this._seen.AddOrUpdate(key: logLevel, addValueFactory: lvl => 1, updateValueFactory: (lvl, count) => count + 1);
+            this._seen.AddOrUpdate(key: logLevel, addValueFactory: _ => 1, updateValueFactory: (_, count) => count + 1);
         }
 
         /// <inheritdoc />

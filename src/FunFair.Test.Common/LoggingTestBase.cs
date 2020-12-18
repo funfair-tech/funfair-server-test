@@ -163,7 +163,7 @@ namespace FunFair.Test.Common
 
         private void ReportUnhandledException(object? sender, UnobservedTaskExceptionEventArgs args)
         {
-            this.Output.WriteLine("Unhandled Exception: " + args.Exception?.Message);
+            this.Output.WriteLine("Unhandled Exception: " + args.Exception.Message);
         }
     }
 }

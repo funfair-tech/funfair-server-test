@@ -94,7 +94,7 @@ namespace FunFair.Test.Common
             int referenceHashCode = this.Value1.GetHashCode();
 
             int[] selection = Enumerable.Range(start: 0, count: 100)
-                                        .Select(selector: i => this.Value1.GetHashCode())
+                                        .Select(selector: _ => this.Value1.GetHashCode())
                                         .ToArray();
 
             Assert.All(collection: selection, action: hashCode => Assert.Equal(expected: hashCode, actual: referenceHashCode));

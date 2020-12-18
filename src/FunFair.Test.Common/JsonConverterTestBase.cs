@@ -25,10 +25,7 @@ namespace FunFair.Test.Common
             : base(output)
         {
             JsonConverter converter = new TConverter();
-            this._options = new JsonSerializerOptions
-                            {
-                                IgnoreNullValues = false, PropertyNameCaseInsensitive = false, PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = {converter}
-                            };
+            this._options = new JsonSerializerOptions {IgnoreNullValues = false, PropertyNameCaseInsensitive = false, PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = {converter}};
         }
 
         /// <summary>
@@ -51,7 +48,7 @@ namespace FunFair.Test.Common
         {
             TObject instance = this.CreateInstance();
 
-            Model sourceModel = new Model {Value = instance};
+            Model sourceModel = new() {Value = instance};
 
             // banana!
             string doc = JsonSerializer.Serialize(value: sourceModel, options: this._options);
@@ -73,7 +70,7 @@ namespace FunFair.Test.Common
         {
             TObject instance = this.CreateInstance();
 
-            Model sourceModel = new Model {Value = instance};
+            Model sourceModel = new() {Value = instance};
 
             string doc = JsonSerializer.Serialize(value: sourceModel, options: this._options);
             Assert.NotEmpty(doc);
@@ -96,7 +93,7 @@ namespace FunFair.Test.Common
 
         private sealed class Model : IEquatable<Model>
         {
-            public TObject? Value { get; set; }
+            public TObject? Value { get; init; }
 
             public bool Equals(Model? other)
             {
