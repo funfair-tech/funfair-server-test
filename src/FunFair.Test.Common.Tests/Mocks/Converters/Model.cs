@@ -1,10 +1,21 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
-namespace FunFair.Test.Common.Tests.Mocks.JsonConverter
+namespace FunFair.Test.Common.Tests.Mocks.Converters
 {
     public sealed class Model : IEquatable<Model>
     {
         internal ModelColor? Value { get; init; }
+
+        public Model()
+        {
+
+        }
+
+        public Model(ModelColor color)
+        {
+            this.Value = color;
+        }
 
         public bool Equals(Model? other)
         {
@@ -39,6 +50,25 @@ namespace FunFair.Test.Common.Tests.Mocks.JsonConverter
         public static bool operator !=(Model left, Model right)
         {
             return !Equals(objA: left, objB: right);
+        }
+
+        public static bool TryParse(string source, [NotNullWhen(returnValue: true)] out Model? value)
+        {
+            switch (source)
+            {
+                case "RED":
+                    value = new Model(ModelColor.RED);
+
+                    return true;
+                case "BLUE":
+                    value = new Model(ModelColor.BLUE);
+
+                    return true;
+                default:
+                    value = null;
+
+                    return false;
+            }
         }
     }
 }

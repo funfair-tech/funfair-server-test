@@ -2,7 +2,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace FunFair.Test.Common.Tests.Mocks.JsonConverter
+namespace FunFair.Test.Common.Tests.Mocks.Converters.JsonConverter
 {
     public sealed class ModelConverter : JsonConverter<Model>
     {

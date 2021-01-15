@@ -1,6 +1,6 @@
-namespace FunFair.Test.Common.Tests.Mocks.JsonConverter
+namespace FunFair.Test.Common.Tests.Mocks.Converters
 {
-    internal enum ModelColor
+    public enum ModelColor
     {
         // ReSharper disable once UnusedMember.Global
         RED,
