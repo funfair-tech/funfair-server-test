@@ -6,19 +6,25 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-
-- added a `TypeConverterTestBase` 
-
 ### Fixed
 ### Changed
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.16.0.25740
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.0.0.619
-- FF-1429 - Updated FluentValidation.AspNetCore to 9.4.0
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+
+## [5.1.0] - 18/01/2021
+
+### Added
+
+- added a `TypeConverterTestBase`
+
+### Changed
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.16.0.25740
+- FF-1429 - Updated FunFair.CodeAnalysis to 5.0.0.619
+- FF-1429 - Updated FluentValidation.AspNetCore to 9.4.0
+
 ## [5.0.0] - 2020-12-18
 ### Changed
 - FF-1429 - Updated Dapper to 2.0.78
