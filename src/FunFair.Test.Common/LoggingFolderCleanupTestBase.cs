@@ -7,6 +7,7 @@ namespace FunFair.Test.Common
     /// <summary>
     ///     Base class that automatically cleans up temp folders.
     /// </summary>
+    // ReSharper disable once UnusedType.Global
     public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
     {
         /// <summary>

@@ -4,6 +4,7 @@ using FunFair.Test.Common.Helpers;
 
 namespace FunFair.Test.Common.Tests
 {
+    // ReSharper disable once UnusedType.Global
     public sealed class ComparableObjectTests : ComparableObjectTestBase<string>
     {
         public ComparableObjectTests()
