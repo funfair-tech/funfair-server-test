@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit.Abstractions;
 
@@ -7,8 +8,7 @@ namespace FunFair.Test.Common
     /// <summary>
     ///     Simple base class for integration tests..
     /// </summary>
-
-    // ReSharper disable once UnusedType.Global
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
     public abstract class IntegrationTestBase : LoggingTestBase
     {
         /// <summary>

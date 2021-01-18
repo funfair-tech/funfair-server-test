@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using FunFair.Test.Common.Helpers;
@@ -12,7 +13,8 @@ namespace FunFair.Test.Common
     /// </summary>
     /// <typeparam name="TConverter">The type of converter</typeparam>
     /// <typeparam name="TObject">The object being converted.</typeparam>
-    public abstract class JsonConverterTestBase<TConverter, TObject> : LoggingTestBase
+    public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+                                                TConverter, TObject> : LoggingTestBase
         where TConverter : JsonConverter<TObject>, new() where TObject : class
     {
         private readonly JsonSerializerOptions _options;
@@ -25,10 +27,7 @@ namespace FunFair.Test.Common
             : base(output)
         {
             JsonConverter converter = new TConverter();
-            this._options = new JsonSerializerOptions
-                            {
-                                IgnoreNullValues = false, PropertyNameCaseInsensitive = false, PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = {converter}
-                            };
+            this._options = new JsonSerializerOptions {IgnoreNullValues = false, PropertyNameCaseInsensitive = false, PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = {converter}};
         }
 
         /// <summary>

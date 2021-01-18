@@ -14,7 +14,8 @@ namespace FunFair.Test.Common
     /// <typeparam name="TMappedType">The mapped type.</typeparam>
 
     // ReSharper disable once UnusedType.Global
-    public abstract class SqlTypeMapperTestsBase<TTypeMapper, TMappedType> : TestBase
+    public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+                                                 TTypeMapper, TMappedType> : TestBase
         where TTypeMapper : SqlMapper.TypeHandler<TMappedType>, new()
     {
         /// <summary>
