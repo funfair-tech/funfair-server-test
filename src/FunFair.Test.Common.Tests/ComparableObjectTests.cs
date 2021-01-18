@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using FunFair.Test.Common.Helpers;
 
 namespace FunFair.Test.Common.Tests
 {
-    // ReSharper disable once UnusedType.Global
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
     public sealed class ComparableObjectTests : ComparableObjectTestBase<string>
     {
         public ComparableObjectTests()

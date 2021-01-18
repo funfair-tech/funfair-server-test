@@ -6,8 +6,7 @@ namespace FunFair.Test.Common.Mocks
     ///     Base class for value.
     /// </summary>
     /// <typeparam name="T">The type of the mock.</typeparam>
-
-    // ReSharper disable once UnusedType.Global
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
     public abstract class MockBase<T>
         where T : notnull
     {

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Xunit.Abstractions;
 
@@ -7,7 +8,7 @@ namespace FunFair.Test.Common
     /// <summary>
     ///     Base class that automatically cleans up temp folders.
     /// </summary>
-    // ReSharper disable once UnusedType.Global
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
     public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
     {
         /// <summary>

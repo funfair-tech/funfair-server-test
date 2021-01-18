@@ -96,39 +96,10 @@ namespace FunFair.Test.Common
             return JsonSerializer.Deserialize<Model>(json: doc, options: this._options);
         }
 
-        private readonly struct Model : IEquatable<Model>
+        private readonly struct Model
         {
-            public TObject? Value { get; init; }
-
-            public bool Equals(Model other)
-            {
-                return AreEqual(this, m2: other);
-            }
-
-            public override bool Equals(object? obj)
-            {
-                return AreEqual(this, obj as Model?);
-            }
-
-            public override int GetHashCode()
-            {
-                return this.Value != null ? this.Value.GetHashCode() : 0;
-            }
-
-            public static bool operator ==(Model left, Model right)
-            {
-                return AreEqual(m1: left, m2: right);
-            }
-
-            public static bool operator !=(Model left, Model right)
-            {
-                return !AreEqual(m1: left, m2: right);
-            }
-
-            private static bool AreEqual(Model? m1, Model? m2)
-            {
-                return m1.Equals(m2);
-            }
+            [SuppressMessage(category: "ReSharper", checkId: "UnusedAutoPropertyAccessor.Local", Justification = "For unit tests")]
+            public TObject Value { get; init; }
         }
     }
 }

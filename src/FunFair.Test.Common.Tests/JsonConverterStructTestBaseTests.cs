@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using FunFair.Test.Common.Tests.Mocks.Converters;
 using FunFair.Test.Common.Tests.Mocks.Converters.JsonConverter;
 using Xunit.Abstractions;
@@ -6,9 +6,9 @@ using Xunit.Abstractions;
 namespace FunFair.Test.Common.Tests
 {
     [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
-    public sealed class JsonConverterTestBaseTests : JsonConverterTestBase<ModelConverter, Model>
+    public sealed class JsonConverterStructTestBaseTests : JsonConverterTestBase<ModelConverter, Model>
     {
-        public JsonConverterTestBaseTests(ITestOutputHelper output)
+        public JsonConverterStructTestBaseTests(ITestOutputHelper output)
             : base(output)
         {
         }
