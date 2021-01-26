@@ -45,7 +45,7 @@ namespace FunFair.Test.Common
         ///     Gets the Dependency Injection Service Provider.
         /// </summary>
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected internal IServiceProvider ServiceProvider => this.RetrieveDependencyInjectionServiceProvider();
 
         /// <summary>
@@ -53,8 +53,7 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <typeparam name="T">The service </typeparam>
         /// <returns>The service that was registered with dependency injection.</returns>
-
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected T GetService<T>()
             where T : notnull
         {

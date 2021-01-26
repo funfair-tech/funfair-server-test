@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
@@ -74,8 +74,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="clientName">The client name.</param>
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="headers">Headers to add to the response.</param>
-
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
                                                         string clientName,
                                                         HttpStatusCode httpStatusCode,
@@ -95,8 +94,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="clientName">The client name.</param>
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="responseObject">Response object to return.</param>
-
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, T responseObject)
         {
             MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
@@ -114,8 +112,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="responseObject">Response object to return.</param>
         /// <param name="headers">Headers to add to the response.</param>
-
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
                                                            string clientName,
                                                            HttpStatusCode httpStatusCode,
@@ -137,8 +134,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="responseObject">Response object to return.</param>
         /// <param name="jsonSerializerOptions">The JSON serializer options to use.</param>
-
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
                                                            string clientName,
                                                            HttpStatusCode httpStatusCode,
@@ -160,8 +156,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="responseObject">Response object to return.</param>
         /// <param name="jsonSerializerOptions">The JSON serializer options to use.</param>
         /// <param name="headers">Headers to add to the response.</param>
-
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
                                                            string clientName,
                                                            HttpStatusCode httpStatusCode,

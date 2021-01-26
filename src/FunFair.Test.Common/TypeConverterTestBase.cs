@@ -41,7 +41,6 @@ namespace FunFair.Test.Common
         /// <returns>Converter</returns>
         private TypeConverter GetConverter()
         {
-
             TypeDescriptor.AddAttributes(type: this._objectType, new TypeConverterAttribute(this._convertType));
 
             return TypeDescriptor.GetConverter(this._objectType);
