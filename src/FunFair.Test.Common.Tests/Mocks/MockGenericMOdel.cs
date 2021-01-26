@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace FunFair.Test.Common.Tests.Mocks
 {
     internal sealed class MockGenericModel<T>
@@ -10,7 +12,7 @@ namespace FunFair.Test.Common.Tests.Mocks
 
         public T Value { get; }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedAutoPropertyAccessor.Global", Justification = "TODO: Review")]
         public T[] NestedValue { get; set; }
     }
 }

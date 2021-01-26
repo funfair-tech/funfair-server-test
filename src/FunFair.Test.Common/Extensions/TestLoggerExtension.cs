@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -18,8 +18,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="logLevel">Log level</param>
         /// <param name="message">Message</param>
         /// <param name="received">Received amount</param>
-
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void Received(this ILogger logger, LogLevel logLevel, string message, int received = 1)
         {
             logger.Received(received)
@@ -32,8 +31,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="logger">Logger</param>
         /// <param name="logLevel">Log level</param>
         /// <param name="message">Message</param>
-
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void DidNotReceive(this ILogger logger, LogLevel logLevel, string message)
         {
             logger.DidNotReceive()

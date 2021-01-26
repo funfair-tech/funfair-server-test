@@ -35,8 +35,7 @@ namespace FunFair.Test.Common.Mocks
         ///     Gets a new T
         /// </summary>
         /// <returns></returns>
-
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public abstract T Next();
 
         /// <inheritdoc />

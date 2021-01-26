@@ -5,17 +5,16 @@ namespace FunFair.Test.Common.Tests.Mocks.Converters
 {
     public sealed class Model : IEquatable<Model>
     {
-        internal ModelColor? Value { get; init; }
-
         public Model()
         {
-
         }
 
         public Model(ModelColor color)
         {
             this.Value = color;
         }
+
+        internal ModelColor? Value { get; init; }
 
         public bool Equals(Model? other)
         {

@@ -29,49 +29,49 @@ namespace FunFair.Test.Common.Mocks
         ///     Summary of all the items that have been seen.
         /// </summary>
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public IReadOnlyDictionary<LogLevel, int> Seen => this._seen;
 
         /// <summary>
         ///     Have Critical errors been reported.
         /// </summary>
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public bool CriticalReported => this._seen.ContainsKey(LogLevel.Critical);
 
         /// <summary>
         ///     Have errors been reported.
         /// </summary>
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public bool ErrorsReported => this._seen.ContainsKey(LogLevel.Error);
 
         /// <summary>
         ///     Have warnings been reported.
         /// </summary>
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public bool WarningsReported => this._seen.ContainsKey(LogLevel.Warning);
 
         /// <summary>
         ///     Have trace messages been reported.
         /// </summary>
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public bool TraceReported => this._seen.ContainsKey(LogLevel.Trace);
 
         /// <summary>
         ///     Has Information been reported.
         /// </summary>
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public bool InformationReported => this._seen.ContainsKey(LogLevel.Information);
 
         /// <summary>
         ///     Have debug messages been reported.
         /// </summary>
 
-        // ReSharper disable once UnusedMember.Global
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public bool DebugReported => this._seen.ContainsKey(LogLevel.Debug);
 
         /// <inheritdoc />
