@@ -5,8 +5,7 @@ namespace FunFair.Test.Common.Mocks
     /// <summary>
     ///     Base class for value.
     /// </summary>
-    /// <typeparam name="T">The type of the mock.</typeparam>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
+    /// <typeparam name="T">The type of the mock.</typeparam>    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
     public abstract class MockBase<T>
         where T : notnull
     {
@@ -34,12 +33,10 @@ namespace FunFair.Test.Common.Mocks
         /// <summary>
         ///     Gets a new T
         /// </summary>
-        /// <returns></returns>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// <returns></returns>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public abstract T Next();
 
-        /// <inheritdoc />
-        [SuppressMessage(category: "ToStringWithoutOverrideAnalyzer",
+        /// <inheritdoc />        [SuppressMessage(category: "ToStringWithoutOverrideAnalyzer",
                          checkId: "ExplicitToStringWithoutOverrideAnalyzer: Calling ToString() on object of type 'T' but it does not override ToString()",
                          Justification = "TODO: Review")]
         public override string ToString()

@@ -13,8 +13,7 @@ namespace FunFair.Test.Common.Helpers
         /// </summary>
         /// <param name="value"></param>
         /// <typeparam name="T">The type of the value.</typeparam>
-        /// <returns>The formatted value.</returns>
-        [SuppressMessage(category: "ToStringWithoutOverrideAnalyzer",
+        /// <returns>The formatted value.</returns>        [SuppressMessage(category: "ToStringWithoutOverrideAnalyzer",
                          checkId: "ExplicitToStringWithoutOverrideAnalyzer: Calling ToString() on object of type 'T' but it does not override ToString()",
                          Justification = "TODO: Review")]
         public static string FormatValue<T>(this T value)
