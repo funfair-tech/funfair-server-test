@@ -7,8 +7,7 @@ namespace FunFair.Test.Common
 {
     /// <summary>
     ///     Simple base class for integration tests..
-    /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
+    /// </summary>    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
     public abstract class IntegrationTestBase : LoggingTestBase
     {
         /// <summary>
@@ -43,8 +42,7 @@ namespace FunFair.Test.Common
 
         /// <summary>
         ///     Gets the Dependency Injection Service Provider.
-        /// </summary>
-
+        /// </summary>
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected internal IServiceProvider ServiceProvider => this.RetrieveDependencyInjectionServiceProvider();
 
@@ -52,8 +50,7 @@ namespace FunFair.Test.Common
         ///     Gets the service from Dependency injection.
         /// </summary>
         /// <typeparam name="T">The service </typeparam>
-        /// <returns>The service that was registered with dependency injection.</returns>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// <returns>The service that was registered with dependency injection.</returns>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected T GetService<T>()
             where T : notnull
         {

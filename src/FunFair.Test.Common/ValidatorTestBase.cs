@@ -63,8 +63,7 @@ namespace FunFair.Test.Common
         /// <param name="instance">The object to validate</param>
         /// <param name="expectedErrorCount">The expected number of errors.</param>
         /// <param name="erroringProperty">The property expected to have errors.</param>
-        /// <returns>Validation result.</returns>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// <returns>Validation result.</returns>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public ValidationResult Validate(TObject instance, int expectedErrorCount, string erroringProperty)
         {
             ValidationResult result = this.Validate(instance: instance, expectedErrorCount: expectedErrorCount);
@@ -80,8 +79,7 @@ namespace FunFair.Test.Common
         /// <param name="instance">The object to validate</param>
         /// <param name="expectedErrorCount">The expected number of errors.</param>
         /// <param name="erroringProperties">The properties expected to have errors.</param>
-        /// <returns>Validation result.</returns>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// <returns>Validation result.</returns>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public ValidationResult Validate(TObject instance, int expectedErrorCount, params string[] erroringProperties)
         {
             ValidationResult result = this.Validate(instance: instance, expectedErrorCount: expectedErrorCount);
@@ -99,8 +97,7 @@ namespace FunFair.Test.Common
 
         /// <summary>
         ///     Tests that all properties in the object pass validation.
-        /// </summary>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// </summary>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected void TestEverythingValid()
         {
             TObject itemToValidate = this.CreateAValidObject();
@@ -123,8 +120,7 @@ namespace FunFair.Test.Common
         ///     Check that only the named property has errors.
         /// </summary>
         /// <param name="result">The validation result.</param>
-        /// <param name="erroringProperty">The property expected to have errors.</param>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// <param name="erroringProperty">The property expected to have errors.</param>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected static void AssertNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
         {
             Assert.True(result.Errors.Any(predicate: e => e.PropertyName == erroringProperty),
@@ -154,8 +150,7 @@ namespace FunFair.Test.Common
         ///     Builds the property name from a succession of parts.
         /// </summary>
         /// <param name="parts">The parts.</param>
-        /// <returns>The property name.</returns>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// <returns>The property name.</returns>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected static string MakePropertyName(params string[] parts)
         {
             return string.Join(separator: ".", value: parts);
