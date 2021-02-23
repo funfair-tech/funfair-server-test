@@ -17,6 +17,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.1.0.658
 - FF-1429 - Updated FluentValidation.AspNetCore to 9.5.1
 - FF-1429 - Updated coverlet to 3.0.3
+- FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.9.1
 ### Removed
 
 <!--
