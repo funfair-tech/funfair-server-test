@@ -7,7 +7,8 @@ namespace FunFair.Test.Common
 {
     /// <summary>
     ///     Base class that automatically cleans up temp folders.
-    /// </summary>    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
+    /// </summary>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
     public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
     {
         /// <summary>
@@ -50,3 +51,4 @@ namespace FunFair.Test.Common
         }
     }
 }
+
