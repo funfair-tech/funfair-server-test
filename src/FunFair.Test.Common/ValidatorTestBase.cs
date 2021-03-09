@@ -64,7 +64,6 @@ namespace FunFair.Test.Common
         /// <param name="expectedErrorCount">The expected number of errors.</param>
         /// <param name="erroringProperty">The property expected to have errors.</param>
         /// <returns>Validation result.</returns>
-
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public ValidationResult Validate(TObject instance, int expectedErrorCount, string erroringProperty)
         {
@@ -82,7 +81,6 @@ namespace FunFair.Test.Common
         /// <param name="expectedErrorCount">The expected number of errors.</param>
         /// <param name="erroringProperties">The properties expected to have errors.</param>
         /// <returns>Validation result.</returns>
-
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public ValidationResult Validate(TObject instance, int expectedErrorCount, params string[] erroringProperties)
         {
@@ -102,7 +100,6 @@ namespace FunFair.Test.Common
         /// <summary>
         ///     Tests that all properties in the object pass validation.
         /// </summary>
-
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected void TestEverythingValid()
         {
@@ -127,7 +124,6 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <param name="result">The validation result.</param>
         /// <param name="erroringProperty">The property expected to have errors.</param>
-
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected static void AssertNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
         {
@@ -159,7 +155,6 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <param name="parts">The parts.</param>
         /// <returns>The property name.</returns>
-
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected static string MakePropertyName(params string[] parts)
         {
@@ -210,5 +205,6 @@ namespace FunFair.Test.Common
         protected abstract void EverythingValid();
     }
 }
+
 
 

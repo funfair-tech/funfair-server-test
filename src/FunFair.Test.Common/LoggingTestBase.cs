@@ -13,7 +13,6 @@ namespace FunFair.Test.Common
     /// <summary>
     ///     Simple base class for tests that need logging or output to the test logs.
     /// </summary>
-
     [SuppressMessage(category: "Microsoft.Usage",
                      checkId: "CA2213:DisposableFieldsShouldBeDisposed",
                      MessageId = "_loggerFactory",
@@ -51,7 +50,6 @@ namespace FunFair.Test.Common
         /// <param name="output">XUnit output</param>
         /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
         /// <param name="initializeServices">Initialises services.</param>
-
         [SuppressMessage(category: "Major Code Smell", checkId: "S3442:\"abstract\" classes should not have \"public\" constructors", Justification = "By Design")]
         protected internal LoggingTestBase(ITestOutputHelper output, Action<IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
         {
@@ -169,5 +167,6 @@ namespace FunFair.Test.Common
         }
     }
 }
+
 
 

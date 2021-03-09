@@ -14,7 +14,6 @@ namespace FunFair.Test.Common.Helpers
         /// <param name="value"></param>
         /// <typeparam name="T">The type of the value.</typeparam>
         /// <returns>The formatted value.</returns>
-
         [SuppressMessage(category: "ToStringWithoutOverrideAnalyzer",
                          checkId: "ExplicitToStringWithoutOverrideAnalyzer: Calling ToString() on object of type 'T' but it does not override ToString()",
                          Justification = "TODO: Review")]
@@ -31,5 +30,6 @@ namespace FunFair.Test.Common.Helpers
         }
     }
 }
+
 
 
