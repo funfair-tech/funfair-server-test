@@ -7,7 +7,8 @@ namespace FunFair.Test.Common.Extensions
 {
     /// <summary>
     ///     Test logger extension
-    /// </summary>    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
+    /// </summary>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
     public static class TestLoggerExtension
     {
         /// <summary>
@@ -16,7 +17,8 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="logger">Logger</param>
         /// <param name="logLevel">Log level</param>
         /// <param name="message">Message</param>
-        /// <param name="received">Received amount</param>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// <param name="received">Received amount</param>
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void Received(this ILogger logger, LogLevel logLevel, string message, int received = 1)
         {
             logger.Received(received)
@@ -28,7 +30,8 @@ namespace FunFair.Test.Common.Extensions
         /// </summary>
         /// <param name="logger">Logger</param>
         /// <param name="logLevel">Log level</param>
-        /// <param name="message">Message</param>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// <param name="message">Message</param>
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void DidNotReceive(this ILogger logger, LogLevel logLevel, string message)
         {
             logger.DidNotReceive()
@@ -36,3 +39,4 @@ namespace FunFair.Test.Common.Extensions
         }
     }
 }
+

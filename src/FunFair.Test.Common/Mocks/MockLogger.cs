@@ -8,7 +8,8 @@ namespace FunFair.Test.Common.Mocks
 {
     /// <summary>
     ///     Mock of logging.
-    /// </summary>    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
+    /// </summary>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
     public sealed class MockLogger<T> : ILogger<T>
     {
         private readonly ILogger _logger;
@@ -26,43 +27,50 @@ namespace FunFair.Test.Common.Mocks
 
         /// <summary>
         ///     Summary of all the items that have been seen.
-        /// </summary>
+        /// </summary>
+
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public IReadOnlyDictionary<LogLevel, int> Seen => this._seen;
 
         /// <summary>
         ///     Have Critical errors been reported.
-        /// </summary>
+        /// </summary>
+
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public bool CriticalReported => this._seen.ContainsKey(LogLevel.Critical);
 
         /// <summary>
         ///     Have errors been reported.
-        /// </summary>
+        /// </summary>
+
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public bool ErrorsReported => this._seen.ContainsKey(LogLevel.Error);
 
         /// <summary>
         ///     Have warnings been reported.
-        /// </summary>
+        /// </summary>
+
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public bool WarningsReported => this._seen.ContainsKey(LogLevel.Warning);
 
         /// <summary>
         ///     Have trace messages been reported.
-        /// </summary>
+        /// </summary>
+
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public bool TraceReported => this._seen.ContainsKey(LogLevel.Trace);
 
         /// <summary>
         ///     Has Information been reported.
-        /// </summary>
+        /// </summary>
+
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public bool InformationReported => this._seen.ContainsKey(LogLevel.Information);
 
         /// <summary>
         ///     Have debug messages been reported.
-        /// </summary>
+        /// </summary>
+
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public bool DebugReported => this._seen.ContainsKey(LogLevel.Debug);
 
@@ -95,3 +103,4 @@ namespace FunFair.Test.Common.Mocks
         }
     }
 }
+

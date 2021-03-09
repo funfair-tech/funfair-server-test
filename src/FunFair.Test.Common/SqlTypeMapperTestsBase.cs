@@ -11,7 +11,8 @@ namespace FunFair.Test.Common
     ///     Base cass for SQL Type mapper tests.
     /// </summary>
     /// <typeparam name="TTypeMapper">The type mapper to test.</typeparam>
-    /// <typeparam name="TMappedType">The mapped type.</typeparam>    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
+    /// <typeparam name="TMappedType">The mapped type.</typeparam>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
     public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
                                                  TTypeMapper, TMappedType> : TestBase
         where TTypeMapper : SqlMapper.TypeHandler<TMappedType>, new()
@@ -34,7 +35,8 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <param name="value">The value to parse.</param>
         /// <param name="expected">The expected value of the mapped type.</param>
-        /// <typeparam name="TValueType">The type of the value.</typeparam>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// <typeparam name="TValueType">The type of the value.</typeparam>
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected void ShouldParse<TValueType>(TValueType value, TMappedType expected)
         {
             TMappedType result = this.Handler.Parse(value);
@@ -47,7 +49,8 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <param name="value">The value to set.</param>
         /// <param name="expected">The expected typed value.</param>
-        /// <typeparam name="TValueType">The type of the value.</typeparam>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// <typeparam name="TValueType">The type of the value.</typeparam>
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected void ShouldSetValue<TValueType>(TMappedType value, TValueType expected)
         {
             IDbDataParameter parameter = Substitute.For<IDbDataParameter>();
@@ -62,7 +65,8 @@ namespace FunFair.Test.Common
         ///     Checks that the value is set to the expected value.
         /// </summary>
         /// <param name="value">The value to set.</param>
-        /// <param name="expected">The expected typed value.</param>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// <param name="expected">The expected typed value.</param>
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected void ShouldSetValue(TMappedType value, in byte[] expected)
         {
             // note special case for byte arrays as NSubstitute whatever you give it always says it received something other than the expected
@@ -82,7 +86,8 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <param name="value">The value to parse.</param>
         /// <typeparam name="TExceptionType">The exception that should be raised.</typeparam>
-        /// <typeparam name="TValueType">The type of the value.</typeparam>        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        /// <typeparam name="TValueType">The type of the value.</typeparam>
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected void ShouldNotParse<TExceptionType, TValueType>(TValueType value)
             where TExceptionType : Exception
         {
@@ -115,3 +120,4 @@ namespace FunFair.Test.Common
         }
     }
 }
+
