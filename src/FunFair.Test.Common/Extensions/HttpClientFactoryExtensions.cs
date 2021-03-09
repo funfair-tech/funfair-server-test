@@ -42,6 +42,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="responseMessage">Response message string.</param>
         /// <param name="headers">Headers to add to the response.</param>
+
         [SuppressMessage(category: "Reliability", checkId: "CA2000:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
         public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
                                                         string clientName,
@@ -74,6 +75,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="clientName">The client name.</param>
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="headers">Headers to add to the response.</param>
+
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
                                                         string clientName,
@@ -94,6 +96,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="clientName">The client name.</param>
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="responseObject">Response object to return.</param>
+
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, T responseObject)
         {
@@ -112,6 +115,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="responseObject">Response object to return.</param>
         /// <param name="headers">Headers to add to the response.</param>
+
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
                                                            string clientName,
@@ -134,6 +138,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="httpStatusCode">HTTP status code to be returned.</param>
         /// <param name="responseObject">Response object to return.</param>
         /// <param name="jsonSerializerOptions">The JSON serializer options to use.</param>
+
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
                                                            string clientName,
@@ -156,6 +161,7 @@ namespace FunFair.Test.Common.Extensions
         /// <param name="responseObject">Response object to return.</param>
         /// <param name="jsonSerializerOptions">The JSON serializer options to use.</param>
         /// <param name="headers">Headers to add to the response.</param>
+
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
                                                            string clientName,
@@ -198,4 +204,5 @@ namespace FunFair.Test.Common.Extensions
         }
     }
 }
+
 
