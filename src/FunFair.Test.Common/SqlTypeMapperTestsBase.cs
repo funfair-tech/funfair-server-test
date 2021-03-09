@@ -12,7 +12,6 @@ namespace FunFair.Test.Common
     /// </summary>
     /// <typeparam name="TTypeMapper">The type mapper to test.</typeparam>
     /// <typeparam name="TMappedType">The mapped type.</typeparam>
-
     [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
     public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
                                                  TTypeMapper, TMappedType> : TestBase
@@ -37,7 +36,6 @@ namespace FunFair.Test.Common
         /// <param name="value">The value to parse.</param>
         /// <param name="expected">The expected value of the mapped type.</param>
         /// <typeparam name="TValueType">The type of the value.</typeparam>
-
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected void ShouldParse<TValueType>(TValueType value, TMappedType expected)
         {
@@ -52,7 +50,6 @@ namespace FunFair.Test.Common
         /// <param name="value">The value to set.</param>
         /// <param name="expected">The expected typed value.</param>
         /// <typeparam name="TValueType">The type of the value.</typeparam>
-
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected void ShouldSetValue<TValueType>(TMappedType value, TValueType expected)
         {
@@ -69,7 +66,6 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <param name="value">The value to set.</param>
         /// <param name="expected">The expected typed value.</param>
-
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected void ShouldSetValue(TMappedType value, in byte[] expected)
         {
@@ -91,7 +87,6 @@ namespace FunFair.Test.Common
         /// <param name="value">The value to parse.</param>
         /// <typeparam name="TExceptionType">The exception that should be raised.</typeparam>
         /// <typeparam name="TValueType">The type of the value.</typeparam>
-
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected void ShouldNotParse<TExceptionType, TValueType>(TValueType value)
             where TExceptionType : Exception
@@ -125,5 +120,6 @@ namespace FunFair.Test.Common
         }
     }
 }
+
 
 
