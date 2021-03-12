@@ -82,6 +82,20 @@ namespace FunFair.Test.Common
         }
 
         /// <summary>
+        ///     Checks that the value is set to the expected value.
+        /// </summary>
+        /// <param name="value">The value to set.</param>
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        protected void ShouldNotSetValue<TExceptionType>(TMappedType value)
+            where TExceptionType : Exception
+        {
+            // note special case for byte arrays as NSubstitute whatever you give it always says it received something other than the expected
+            IDbDataParameter parameter = new MockParameter();
+
+            Assert.Throws<TExceptionType>(() => this.Handler.SetValue(parameter: parameter, value: value));
+        }
+
+        /// <summary>
         ///     Checks that the value does not parse, and raises an the <typeparamref name="TExceptionType" /> exception.
         /// </summary>
         /// <param name="value">The value to parse.</param>
@@ -120,6 +134,3 @@ namespace FunFair.Test.Common
         }
     }
 }
-
-
-

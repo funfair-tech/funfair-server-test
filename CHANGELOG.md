@@ -6,6 +6,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+- Additional test method in SqlTypeMapperTestsBase
 ### Fixed
 ### Changed
 - FF-1429 - Updated AsyncFixer to 1.4.1
