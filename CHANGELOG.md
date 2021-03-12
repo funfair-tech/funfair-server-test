@@ -6,8 +6,16 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-- Additional test method in SqlTypeMapperTestsBase
 ### Fixed
+### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [5.1.2] - 2021-03-12
+### Added
+- Additional test method in SqlTypeMapperTestsBase
 ### Changed
 - FF-1429 - Updated AsyncFixer to 1.4.1
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.17.0.26580
@@ -23,11 +31,6 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.9.54
 - FF-1429 - Updated FluentValidation.AspNetCore to 9.5.2
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.9.60
-### Removed
-
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 
 ## [5.1.1] - 2021-01-18
 ### Added
