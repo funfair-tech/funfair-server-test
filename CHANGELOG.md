@@ -6,16 +6,20 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-- Added GetLogger and GetSubstitute to TestBase so can call them in the same way as GetService etc in higher level objects
 ### Fixed
 ### Changed
-- FF-1429 - Updated FluentValidation.AspNetCore to 9.5.3
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.20.0.28934
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [5.2.0] - 2021-03-19
+### Added
+- Added GetLogger and GetSubstitute to TestBase so can call them in the same way as GetService etc in higher level objects
+### Changed
+- FF-1429 - Updated FluentValidation.AspNetCore to 9.5.3
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.20.0.28934
+
 ## [5.1.2] - 2021-03-12
 ### Added
 - Additional test method in SqlTypeMapperTestsBase
