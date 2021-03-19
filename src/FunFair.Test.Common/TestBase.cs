@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using FunFair.Test.Common.Helpers;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Xunit;
 using Xunit.Sdk;
 
@@ -45,6 +47,55 @@ namespace FunFair.Test.Common
             where T : class
         {
             return FromOptionalResultAsync((T?) null);
+        }
+
+        /// <summary>
+        ///     Gets a typed logger.
+        /// </summary>
+        /// <typeparam name="T">The logger type.</typeparam>
+        /// <returns>A logger.</returns>
+        protected virtual ILogger<T> GetTypedLogger<T>()
+        {
+            return GetSubstitute<ILogger<T>>();
+        }
+
+        /// <summary>
+        ///     Produces a mock version of the class.
+        /// </summary>
+        /// <typeparam name="T">The type to mock.</typeparam>
+        /// <param name="constructorArguments">Constructor Arguments.</param>
+        /// <returns>The mock object.</returns>
+        protected static T GetSubstitute<T>(params object[] constructorArguments)
+            where T : class
+        {
+            return Substitute.For<T>(constructorArguments);
+        }
+
+        /// <summary>
+        ///     Produces a mock version of the class
+        /// </summary>
+        /// <typeparam name="T1">The type to mock.</typeparam>
+        /// <typeparam name="T2">The type to mock.</typeparam>
+        /// <param name="constructorArguments">Constructor Arguments.</param>
+        /// <returns>The mock object.</returns>
+        protected static T1 GetSubstitute<T1, T2>(params object[] constructorArguments)
+            where T1 : class where T2 : class
+        {
+            return Substitute.For<T1, T2>(constructorArguments);
+        }
+
+        /// <summary>
+        ///     Produces a mock version of the class
+        /// </summary>
+        /// <typeparam name="T1">The type to mock.</typeparam>
+        /// <typeparam name="T2">The type to mock.</typeparam>
+        /// <typeparam name="T3">The type to mock.</typeparam>
+        /// <param name="constructorArguments">Constructor Arguments.</param>
+        /// <returns>The mock object.</returns>
+        protected static T1 GetSubstitute<T1, T2, T3>(params object[] constructorArguments)
+            where T1 : class where T2 : class where T3 : class
+        {
+            return Substitute.For<T1, T2, T3>(constructorArguments);
         }
 
         /// <summary>
@@ -122,6 +173,3 @@ namespace FunFair.Test.Common
         }
     }
 }
-
-
-

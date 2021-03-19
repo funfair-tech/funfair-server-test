@@ -6,6 +6,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+- Added GetLogger and GetSubstitute to TestBase so can call them in the same way as GetService etc in higher level objects
 ### Fixed
 ### Changed
 - FF-1429 - Updated FluentValidation.AspNetCore to 9.5.3

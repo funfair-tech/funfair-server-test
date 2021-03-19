@@ -53,7 +53,7 @@ namespace FunFair.Test.Common
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected void ShouldSetValue<TValueType>(TMappedType value, TValueType expected)
         {
-            IDbDataParameter parameter = Substitute.For<IDbDataParameter>();
+            IDbDataParameter parameter = GetSubstitute<IDbDataParameter>();
 
             this.Handler.SetValue(parameter: parameter, value: value);
 

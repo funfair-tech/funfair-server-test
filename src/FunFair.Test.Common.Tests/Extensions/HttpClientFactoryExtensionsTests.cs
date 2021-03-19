@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FunFair.Test.Common.Extensions;
-using NSubstitute;
 using Xunit;
 
 namespace FunFair.Test.Common.Tests.Extensions
@@ -16,7 +15,7 @@ namespace FunFair.Test.Common.Tests.Extensions
             const string clientName = @"TestExample";
             const string expectedContent = "Hello World!";
 
-            IHttpClientFactory httpClientFactory = Substitute.For<IHttpClientFactory>();
+            IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
             httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, responseMessage: expectedContent);
 
@@ -34,7 +33,7 @@ namespace FunFair.Test.Common.Tests.Extensions
         {
             const string clientName = @"TestExample";
 
-            IHttpClientFactory httpClientFactory = Substitute.For<IHttpClientFactory>();
+            IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
             httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway);
 

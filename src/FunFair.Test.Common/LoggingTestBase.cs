@@ -146,12 +146,8 @@ namespace FunFair.Test.Common
             return this._serviceProvider;
         }
 
-        /// <summary>
-        ///     Gets a typed logger.
-        /// </summary>
-        /// <typeparam name="T">The logger type.</typeparam>
-        /// <returns>A logger.</returns>
-        protected ILogger<T> GetTypedLogger<T>()
+        /// <inheritdoc />
+        protected sealed override ILogger<T> GetTypedLogger<T>()
         {
             return this._loggerFactory.CreateLogger<T>();
         }
@@ -167,6 +163,3 @@ namespace FunFair.Test.Common
         }
     }
 }
-
-
-
