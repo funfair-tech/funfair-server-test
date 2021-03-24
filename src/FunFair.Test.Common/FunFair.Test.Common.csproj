@@ -1,56 +1,56 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
-    <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
-    <WarningsAsErrors />
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    <LangVersion>latest</LangVersion>
-    <Features>strict;flow-analysis</Features>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
-    <IsPackable>True</IsPackable>
-    <IncludeContentInPack>false</IncludeContentInPack>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
-    <NeutralLanguage>en</NeutralLanguage>
-    <Company>FunFair</Company>
-    <Authors>$(Company)</Authors>
-    <Description>Common Test Infrastructure.</Description>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.4.1" />
-    <PackageReference Include="Dapper" Version="2.0.78" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="9.5.3" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-    <PackageReference Include="NSubstitute" Version="4.2.2" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <!-- Note in this project ONLY we need to exclude the test SDK from being packed -->
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" PrivateAssets="All" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
-    <PackageReference Include="FunFair.CodeAnalysis" Version="5.1.0.658" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.9.60" PrivateAssets="All" />
-    <PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.14" PrivateAssets="All" />
-    <PackageReference Include="Roslynator.Analyzers" Version="3.1.0" PrivateAssets="All" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.20.0.28934" PrivateAssets="All" />
-    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
-    <PackageReference Include="ToStringWithoutOverrideAnalyzer" Version="0.6.0" PrivateAssets="All" />
-    <PackageReference Include="xunit.analyzers" Version="0.10.0" PrivateAssets="All" />
-  </ItemGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+        <WarningsAsErrors />
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <LangVersion>latest</LangVersion>
+        <Features>strict;flow-analysis</Features>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+        <IsPackable>True</IsPackable>
+        <IncludeContentInPack>false</IncludeContentInPack>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup>
+        <NeutralLanguage>en</NeutralLanguage>
+        <Company>FunFair</Company>
+        <Authors>$(Company)</Authors>
+        <Description>Common Test Infrastructure.</Description>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Castle.Core" Version="4.4.1" />
+        <PackageReference Include="Dapper" Version="2.0.78" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="9.5.3" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+        <PackageReference Include="NSubstitute" Version="4.2.2" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <!-- Note in this project ONLY we need to exclude the test SDK from being packed -->
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" PrivateAssets="All" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
+        <PackageReference Include="FunFair.CodeAnalysis" Version="5.1.0.658" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.9.60" PrivateAssets="All" />
+        <PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.14" PrivateAssets="All" />
+        <PackageReference Include="Roslynator.Analyzers" Version="3.1.0" PrivateAssets="All" />
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.20.0.28934" PrivateAssets="All" />
+        <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
+        <PackageReference Include="ToStringWithoutOverrideAnalyzer" Version="0.6.0" PrivateAssets="All" />
+        <PackageReference Include="xunit.analyzers" Version="0.10.0" PrivateAssets="All" />
+    </ItemGroup>
 </Project>
