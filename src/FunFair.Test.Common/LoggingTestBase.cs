@@ -132,6 +132,7 @@ namespace FunFair.Test.Common
         {
             T service = this._serviceProvider.GetRequiredService<T>();
 
+            // ReSharper disable once CompareNonConstrainedGenericWithNull
             Assert.True(service != null, $"{typeof(T).FullName} could not be loaded from DI container");
 
             return service!;

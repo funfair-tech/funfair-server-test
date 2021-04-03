@@ -115,6 +115,7 @@ namespace FunFair.Test.Common
         /// <param name="erroringProperty">The property expected to have errors.</param>
         protected static void AssertOnlyNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
         {
+            // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
             Assert.True(result.Errors.All(predicate: e => e.PropertyName == erroringProperty),
                         $"Should only have had errors in {erroringProperty}, but found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
         }
@@ -127,6 +128,7 @@ namespace FunFair.Test.Common
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
         protected static void AssertNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
         {
+            // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
             Assert.True(result.Errors.Any(predicate: e => e.PropertyName == erroringProperty),
                         $"Should have had errors in {erroringProperty}, but not found found errors in {DumpPropertiesInError(result)}");
         }
@@ -205,6 +207,3 @@ namespace FunFair.Test.Common
         protected abstract void EverythingValid();
     }
 }
-
-
-
