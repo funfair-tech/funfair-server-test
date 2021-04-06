@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.9.4
-- FF-1429 - Updated FluentValidation.AspNetCore to 9.5.4
-- FF-1429 - Updated FluentValidation.AspNetCore to 10.0.0
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [5.3.0] - 2021-04-06
+### Changed
+- FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.9.4
+- FF-1429 - Updated FluentValidation.AspNetCore to 9.5.4
+- FF-1429 - Updated FluentValidation.AspNetCore to 10.0.0
+
 ## [5.2.0] - 2021-03-19
 ### Added
 - Added GetLogger and GetSubstitute to TestBase so can call them in the same way as GetService etc in higher level objects
