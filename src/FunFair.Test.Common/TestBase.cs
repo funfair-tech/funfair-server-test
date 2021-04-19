@@ -154,6 +154,7 @@ namespace FunFair.Test.Common
         /// <exception cref="Xunit.Sdk.IsAssignableFromException">Thrown when the object is not the given type</exception>
         protected static void IsNotAssignableFrom(Type expectedType, object obj)
         {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (obj == null || expectedType.GetTypeInfo()
                                            .IsAssignableFrom(obj.GetType()
                                                                 .GetTypeInfo()))
