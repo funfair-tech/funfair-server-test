@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.0.3
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.0.4
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.21.0.30542
+- FF-1429 - Updated FluentValidation.AspNetCore to 10.1.0
 ### Removed
 
 <!--
