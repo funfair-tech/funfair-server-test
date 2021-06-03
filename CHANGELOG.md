@@ -22,6 +22,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.2.0
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.2.1
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.2.2
+- FF-1429 - Updated FluentValidation.AspNetCore to 10.2.3
 ### Removed
 
 <!--
