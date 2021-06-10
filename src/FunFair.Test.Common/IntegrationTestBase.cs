@@ -60,6 +60,3 @@ namespace FunFair.Test.Common
         }
     }
 }
-
-
-

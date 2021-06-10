@@ -51,6 +51,3 @@ namespace FunFair.Test.Common
         }
     }
 }
-
-
-
