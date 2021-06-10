@@ -30,6 +30,3 @@ namespace FunFair.Test.Common.Helpers
         }
     }
 }
-
-
-

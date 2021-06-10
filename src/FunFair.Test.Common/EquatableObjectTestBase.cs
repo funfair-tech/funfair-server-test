@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Xunit;
 
@@ -30,31 +31,31 @@ namespace FunFair.Test.Common
         /// <summary>
         ///     An object that is equivalent or as near as possible to zero
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification="TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Review")]
         protected internal TObject ZeroObject { get; }
 
         /// <summary>
         ///     The Value.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification="TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Review")]
         protected internal TObject Value1 { get; }
 
         /// <summary>
         ///     An alias of the value.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification="TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Review")]
         protected internal TObject Value1Alias { get; }
 
         /// <summary>
         ///     A value that is equivalent to value 1
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification="TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Review")]
         protected internal TObject EquivalentToValue1 { get; }
 
         /// <summary>
         ///     A value that is equivalent to value 1, but typed as an object.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification="TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Review")]
         protected internal object EquivalentToValue1AsObject { get; }
 
         /// <summary>

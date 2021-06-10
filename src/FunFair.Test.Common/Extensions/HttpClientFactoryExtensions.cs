@@ -198,6 +198,3 @@ namespace FunFair.Test.Common.Extensions
         }
     }
 }
-
-
-
