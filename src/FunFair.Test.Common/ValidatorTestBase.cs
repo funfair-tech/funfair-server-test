@@ -113,9 +113,9 @@ namespace FunFair.Test.Common
         /// </summary>
         /// <param name="result">The validation result.</param>
         /// <param name="erroringProperty">The property expected to have errors.</param>
+        [SuppressMessage(category: "ReSharper", checkId: "ParameterOnlyUsedForPreconditionCheck.Local", Justification = "Helper method")]
         protected static void AssertOnlyNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
         {
-            // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
             Assert.True(result.Errors.All(predicate: e => e.PropertyName == erroringProperty),
                         $"Should only have had errors in {erroringProperty}, but found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
         }
@@ -126,9 +126,9 @@ namespace FunFair.Test.Common
         /// <param name="result">The validation result.</param>
         /// <param name="erroringProperty">The property expected to have errors.</param>
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "ParameterOnlyUsedForPreconditionCheck.Local", Justification = "Helper method")]
         protected static void AssertNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
         {
-            // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
             Assert.True(result.Errors.Any(predicate: e => e.PropertyName == erroringProperty),
                         $"Should have had errors in {erroringProperty}, but not found found errors in {DumpPropertiesInError(result)}");
         }
