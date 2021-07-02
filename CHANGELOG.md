@@ -6,6 +6,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+- Base class for testing Model Binders
 ### Fixed
 ### Changed
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.0.2
