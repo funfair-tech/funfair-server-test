@@ -6,8 +6,16 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-- Base class for testing Model Binders
 ### Fixed
+### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [5.4.0] - 2021-07-02
+### Added
+- Base class for testing Model Binders
 ### Changed
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.0.2
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.0.3
@@ -27,11 +35,7 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.24.0.32949
 - FF-1429 - Updated Roslynator.Analyzers to 3.2.0
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.25.0.33663
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [5.3.0] - 2021-04-06
 ### Changed
 - FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.9.4
