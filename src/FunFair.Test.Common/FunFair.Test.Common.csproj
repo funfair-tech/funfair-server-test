@@ -19,27 +19,30 @@
         <AnalysisMode>AllEnabledByDefault</AnalysisMode>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
-        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-        <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+      <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+      <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
-    <PropertyGroup>
-        <NeutralLanguage>en</NeutralLanguage>
-        <Company>FunFair</Company>
-        <Authors>$(Company)</Authors>
-        <Description>Common Test Infrastructure.</Description>
-        <RepositoryUrl>https://github.com/funfair-tech/funfair-server-test</RepositoryUrl>
-    </PropertyGroup>
+  <PropertyGroup>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Company>FunFair</Company>
+    <Authors>$(Company)</Authors>
+    <Description>Common Test Infrastructure.</Description>
+    <RepositoryUrl>https://github.com/funfair-tech/funfair-server-test</RepositoryUrl>
+  </PropertyGroup>
   <Import Project="$(SolutionDir)FunFair.props"/>
-    <ItemGroup>
-        <PackageReference Include="Castle.Core" Version="4.4.1" />
-        <PackageReference Include="Dapper" Version="2.0.90" />
-        <PackageReference Include="FluentValidation.AspNetCore" Version="10.2.3" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-        <PackageReference Include="NSubstitute" Version="4.2.2" />
-        <PackageReference Include="xunit" Version="2.4.1" />
-    </ItemGroup>
-    <ItemGroup>
+  <ItemGroup>
+    <None Include="$(SolutionDir)packageicon.png" Pack="true" PackagePath="\" Condition="Exists('$(SolutionDir)packageicon.png')"/>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Castle.Core" Version="4.4.1"/>
+    <PackageReference Include="Dapper" Version="2.0.90"/>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.2.3"/>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0"/>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0"/>
+    <PackageReference Include="NSubstitute" Version="4.2.2"/>
+    <PackageReference Include="xunit" Version="2.4.1"/>
+  </ItemGroup>
+  <ItemGroup>
         <!-- Note in this project ONLY we need to exclude the test SDK from being packed -->
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" PrivateAssets="All" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" PrivateAssets="All" />
