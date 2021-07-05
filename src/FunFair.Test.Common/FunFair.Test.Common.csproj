@@ -27,7 +27,9 @@
         <Company>FunFair</Company>
         <Authors>$(Company)</Authors>
         <Description>Common Test Infrastructure.</Description>
+        <RepositoryUrl>https://github.com/funfair-tech/funfair-server-test</RepositoryUrl>
     </PropertyGroup>
+  <Import Project="$(SolutionDir)FunFair.props"/>
     <ItemGroup>
         <PackageReference Include="Castle.Core" Version="4.4.1" />
         <PackageReference Include="Dapper" Version="2.0.90" />
