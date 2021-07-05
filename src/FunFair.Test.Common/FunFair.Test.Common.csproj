@@ -24,8 +24,6 @@
     </PropertyGroup>
   <PropertyGroup>
     <NeutralLanguage>en</NeutralLanguage>
-    <Company>FunFair</Company>
-    <Authors>$(Company)</Authors>
     <Description>Common Test Infrastructure.</Description>
     <RepositoryUrl>https://github.com/funfair-tech/funfair-server-test</RepositoryUrl>
   </PropertyGroup>
