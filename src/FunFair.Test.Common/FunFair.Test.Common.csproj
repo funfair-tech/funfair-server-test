@@ -23,9 +23,10 @@
         <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <PropertyGroup>
-        <NeutralLanguage>en</NeutralLanguage>
-        <Description>Common Test Infrastructure.</Description>
-        <RepositoryUrl>https://github.com/funfair-tech/funfair-server-test</RepositoryUrl>
+      <NeutralLanguage>en</NeutralLanguage>
+      <Description>FunFair Common Test Infrastructure for building xUnit tests on top of.</Description>
+      <PackageTags>FunFair, Test Helpers, Test</PackageTags>
+      <RepositoryUrl>https://github.com/funfair-tech/funfair-server-test</RepositoryUrl>
     </PropertyGroup>
     <Import Project="$(SolutionDir)FunFair.props" />
     <ItemGroup>
