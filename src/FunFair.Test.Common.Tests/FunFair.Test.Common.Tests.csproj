@@ -5,7 +5,6 @@
         <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
         <WarningsAsErrors />
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-        <NoWarn></NoWarn>
         <LangVersion>latest</LangVersion>
         <Features>strict;flow-analysis</Features>
         <Nullable>enable</Nullable>
