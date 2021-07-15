@@ -11,7 +11,7 @@
         <LangVersion>latest</LangVersion>
         <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
         <IsPackable>True</IsPackable>
-<!--        <IncludeContentInPack>false</IncludeContentInPack>-->
+        <IsPublishable>False</IsPublishable>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
     </PropertyGroup>
     <PropertyGroup>
