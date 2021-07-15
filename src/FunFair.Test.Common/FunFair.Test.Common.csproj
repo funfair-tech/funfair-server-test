@@ -41,8 +41,8 @@
     </ItemGroup>
   <ItemGroup>
     <!-- Note in this project ONLY we need to exclude the test SDK from being packed -->
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" PrivateAssets="All" ExcludeAssets="All"/>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" PrivateAssets="All" ExcludeAssets="All"/>
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" PrivateAssets="All" ExcludeAssets="None" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" PrivateAssets="All" ExcludeAssets="All" />
   </ItemGroup>
     <ItemGroup>
       <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All"/>
