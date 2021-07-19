@@ -1,8 +1,8 @@
 using System;
-using NonBlocking;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
+using NonBlocking;
 
 namespace FunFair.Test.Common.Mocks
 {
