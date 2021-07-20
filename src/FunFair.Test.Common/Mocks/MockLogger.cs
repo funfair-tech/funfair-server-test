@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using NonBlocking;
+using FunFair.Common.Extensions;
 
 namespace FunFair.Test.Common.Mocks
 {
@@ -76,7 +77,16 @@ namespace FunFair.Test.Common.Mocks
                 this._logger.Log<object>(logLevel: logLevel, eventId: eventId, state: state, exception: exception, formatter: (_, _) => string.Empty);
             }
 
-            this._seen.AddOrUpdate(key: logLevel, addValueFactory: _ => 1, updateValueFactory: (_, count) => count + 1);
+            if(this._seen.TryGetValue(key: logLevel, value: out int count))
+            {
+                count++;
+            }
+            else
+            {
+                count =1;
+            }
+
+            this._seen.AddOrUpdate(key: logLevel, value: count);
         }
 
         /// <inheritdoc />
