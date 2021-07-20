@@ -33,6 +33,7 @@
         <PackageReference Include="Castle.Core" Version="4.4.1" />
         <PackageReference Include="Dapper" Version="2.0.90" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.0" />
+        <PackageReference Include="FunFair.Common.Extensions" Version="5.10.3.3328" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
         <PackageReference Include="NonBlocking" Version="1.1.2" />
@@ -46,7 +47,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
-        <PackageReference Include="FunFair.CodeAnalysis" Version="5.2.3.837" PrivateAssets="All" />
+        <PackageReference Include="FunFair.CodeAnalysis" Version="5.2.4.854" PrivateAssets="All" />
         <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.10.56" PrivateAssets="All" />
         <PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.14" PrivateAssets="All" />
         <PackageReference Include="Roslynator.Analyzers" Version="3.2.0" PrivateAssets="All" />
