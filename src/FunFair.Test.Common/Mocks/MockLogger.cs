@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
 using Microsoft.Extensions.Logging;
 using NonBlocking;
-using FunFair.Common.Extensions;
 
 namespace FunFair.Test.Common.Mocks
 {
@@ -14,7 +15,7 @@ namespace FunFair.Test.Common.Mocks
     public sealed class MockLogger<T> : ILogger<T>
     {
         private readonly ILogger _logger;
-        private readonly ConcurrentDictionary<LogLevel, int> _seen;
+        private readonly ConcurrentDictionary<LogLevel, LogCounter> _seen;
 
         /// <summary>
         ///     Constructor.
@@ -23,14 +24,14 @@ namespace FunFair.Test.Common.Mocks
                           ILogger logger)
         {
             this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this._seen = new ConcurrentDictionary<LogLevel, int>();
+            this._seen = new ConcurrentDictionary<LogLevel, LogCounter>();
         }
 
         /// <summary>
         ///     Summary of all the items that have been seen.
         /// </summary>
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
-        public IReadOnlyDictionary<LogLevel, int> Seen => this._seen;
+        public IReadOnlyDictionary<LogLevel, int> Seen => this._seen.ToDictionary(keySelector: k => k.Key, elementSelector: v => v.Value.Count);
 
         /// <summary>
         ///     Have Critical errors been reported.
@@ -77,16 +78,9 @@ namespace FunFair.Test.Common.Mocks
                 this._logger.Log<object>(logLevel: logLevel, eventId: eventId, state: state, exception: exception, formatter: (_, _) => string.Empty);
             }
 
-            if(this._seen.TryGetValue(key: logLevel, value: out int count))
-            {
-                count++;
-            }
-            else
-            {
-                count =1;
-            }
+            LogCounter counter = this._seen.GetOrAdd(key: logLevel, new LogCounter());
 
-            this._seen.AddOrUpdate(key: logLevel, value: count);
+            counter.Increment();
         }
 
         /// <inheritdoc />
@@ -105,6 +99,23 @@ namespace FunFair.Test.Common.Mocks
             }
 
             return this._logger.BeginScope<object>(state);
+        }
+
+        private sealed class LogCounter
+        {
+            private long _count;
+
+            public LogCounter()
+            {
+                this._count = 0;
+            }
+
+            public int Count => (int) Interlocked.Read(ref this._count);
+
+            public void Increment()
+            {
+                Interlocked.Increment(ref this._count);
+            }
         }
     }
 }
