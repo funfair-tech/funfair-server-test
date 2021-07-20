@@ -23,6 +23,7 @@ namespace FunFair.Test.Common.Tests
         [Theory]
         [InlineData("Banana")]
         [InlineData("ORANGE")]
+        [InlineData(null)]
         public Task ShouldNotConvertAsync(string value)
         {
             return this.MustNotConvertAsync(value: value);
