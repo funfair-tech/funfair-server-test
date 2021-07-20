@@ -8,17 +8,20 @@ Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [5.5.0] - 2021-07-20
+### Changed
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.2.1.809
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.3.0
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.26.0.34506
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.2.3.837
 - FF-1429 - Updated coverlet to 3.1.0
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.2.4.854
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [5.4.0] - 2021-07-02
 ### Added
 - Base class for testing Model Binders
