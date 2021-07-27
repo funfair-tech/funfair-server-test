@@ -7,6 +7,8 @@ namespace FunFair.Test.Common.Mocks
     /// </summary>
     /// <typeparam name="T">The type of the mock.</typeparam>
     [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
+    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0029: Should be internal", Justification = "Infrastructure")]
+    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0030: Should be internal", Justification = "Infrastructure")]
     public abstract class MockBase<T>
         where T : notnull
     {

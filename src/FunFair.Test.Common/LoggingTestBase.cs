@@ -23,6 +23,7 @@ namespace FunFair.Test.Common
 
         private readonly IServiceProvider _serviceProvider;
 
+        [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0035: Test classes should be immutable", Justification = "Infrastructure not a test")]
         private DisposableLogger? _logger;
 
         /// <summary>
