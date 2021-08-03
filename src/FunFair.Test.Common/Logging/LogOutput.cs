@@ -9,8 +9,11 @@ namespace FunFair.Test.Common.Logging
     {
         private readonly ILogger _logger;
 
-        public LogOutput([SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")]
-                         ILogger logger)
+        public LogOutput(
+            [SuppressMessage(category: "FunFair.CodeAnalysis",
+                             checkId: "FFS0024: Logger parameters should be ILogger<T>",
+                             Justification = "Not created through DI")]
+            ILogger logger)
         {
             this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }

@@ -50,7 +50,7 @@ namespace FunFair.Test.Common.Extensions
                                                         IReadOnlyDictionary<string, string> headers)
         {
             HttpClient client =
-                new(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)) {BaseAddress = new Uri("https://localhost")};
+                new(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)) { BaseAddress = new Uri("https://localhost") };
 
             httpClientFactory.CreateClient(clientName)
                              .Returns(client);
@@ -186,7 +186,7 @@ namespace FunFair.Test.Common.Extensions
 
             protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
-                HttpResponseMessage httpResponseMessage = new(this._statusCode) {Content = new StringContent(this._responseMessage)};
+                HttpResponseMessage httpResponseMessage = new(this._statusCode) { Content = new StringContent(this._responseMessage) };
 
                 foreach ((string key, string value) in this._headers)
                 {

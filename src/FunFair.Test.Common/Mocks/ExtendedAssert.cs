@@ -9,7 +9,7 @@ namespace FunFair.Test.Common.Mocks
     /// </summary>
     public static class ExtendedAssert
     {
-        private static readonly JsonSerializerOptions SerializerOptions = new() {WriteIndented = true};
+        private static readonly JsonSerializerOptions SerializerOptions = new() { WriteIndented = true };
 
         /// <summary>
         ///     Assert if two objects are deep equal by.

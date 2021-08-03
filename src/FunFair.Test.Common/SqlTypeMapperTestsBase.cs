@@ -13,8 +13,7 @@ namespace FunFair.Test.Common
     /// <typeparam name="TTypeMapper">The type mapper to test.</typeparam>
     /// <typeparam name="TMappedType">The mapped type.</typeparam>
     [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
-    public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
-                                                 TTypeMapper, TMappedType> : TestBase
+    public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTypeMapper, TMappedType> : TestBase
         where TTypeMapper : SqlMapper.TypeHandler<TMappedType>, new()
     {
         /// <summary>
@@ -78,7 +77,7 @@ namespace FunFair.Test.Common
             Assert.NotNull(result);
             Assert.IsType<byte[]>(result);
 
-            Assert.Equal(BitConverter.ToString(expected), BitConverter.ToString((byte[]) result!));
+            Assert.Equal(BitConverter.ToString(expected), BitConverter.ToString((byte[])result!));
         }
 
         /// <summary>
