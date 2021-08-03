@@ -36,7 +36,7 @@ namespace FunFair.Test.Common
 
         private ModelBindingContext MockBindingContext()
         {
-            ModelBindingContext bindingContext = new DefaultModelBindingContext {ModelName = "Test", ValueProvider = this._valueProvider};
+            ModelBindingContext bindingContext = new DefaultModelBindingContext { ModelName = "Test", ValueProvider = this._valueProvider };
 
             return bindingContext;
         }

@@ -12,8 +12,7 @@ namespace FunFair.Test.Common
     /// </summary>
     /// <typeparam name="TConverter">The type of converter</typeparam>
     /// <typeparam name="TObject">The object being converted.</typeparam>
-    public abstract class JsonConverterStructTestBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
-                                                      TConverter, TObject> : LoggingTestBase
+    public abstract class JsonConverterStructTestBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TConverter, TObject> : LoggingTestBase
         where TConverter : JsonConverter<TObject>, new() where TObject : struct
     {
         private readonly JsonSerializerOptions _options;
@@ -28,7 +27,7 @@ namespace FunFair.Test.Common
             JsonConverter converter = new TConverter();
             this._options = new JsonSerializerOptions
                             {
-                                IgnoreNullValues = false, PropertyNameCaseInsensitive = false, PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = {converter}
+                                IgnoreNullValues = false, PropertyNameCaseInsensitive = false, PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { converter }
                             };
         }
 
@@ -52,7 +51,7 @@ namespace FunFair.Test.Common
         {
             TObject instance = this.CreateInstance();
 
-            Model sourceModel = new() {Value = instance};
+            Model sourceModel = new() { Value = instance };
 
             // banana!
             string doc = JsonSerializer.Serialize(value: sourceModel, options: this._options);
@@ -73,7 +72,7 @@ namespace FunFair.Test.Common
         {
             TObject instance = this.CreateInstance();
 
-            Model sourceModel = new() {Value = instance};
+            Model sourceModel = new() { Value = instance };
 
             string doc = JsonSerializer.Serialize(value: sourceModel, options: this._options);
             Assert.NotEmpty(doc);
@@ -87,7 +86,7 @@ namespace FunFair.Test.Common
         [Fact]
         public void ShouldNotDeserialize()
         {
-            string doc = JsonSerializer.Serialize(new {value = this.InvalidValue}, options: this._options);
+            string doc = JsonSerializer.Serialize(new { value = this.InvalidValue }, options: this._options);
 
             this.Output.WriteLine($"Serialized model as: {doc}");
 

@@ -46,7 +46,7 @@ namespace FunFair.Test.Common
         protected static Task<T?> NullResultAsync<T>()
             where T : class
         {
-            return FromOptionalResultAsync((T?) null);
+            return FromOptionalResultAsync((T?)null);
         }
 
         /// <summary>

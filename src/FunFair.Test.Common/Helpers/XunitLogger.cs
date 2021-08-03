@@ -10,7 +10,7 @@ namespace FunFair.Test.Common.Helpers
 {
     internal sealed class XunitLogger : ILogger
     {
-        private static readonly string[] NewLineChars = {Environment.NewLine};
+        private static readonly string[] NewLineChars = { Environment.NewLine };
         private readonly string _category;
         private readonly DateTimeOffset? _logStart;
         private readonly LogLevel _minLogLevel;

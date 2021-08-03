@@ -12,8 +12,7 @@ namespace FunFair.Test.Common
     /// </summary>
     /// <typeparam name="TValidator">The validator to test.</typeparam>
     /// <typeparam name="TObject">The object the validator tests</typeparam>
-    public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
-                                            TValidator, TObject> : LoggingTestBase
+    public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TValidator, TObject> : LoggingTestBase
         where TValidator : AbstractValidator<TObject>, new()
     {
         private readonly TValidator _validator;
