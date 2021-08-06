@@ -62,7 +62,7 @@ namespace FunFair.Test.Common.Tests.Helpers
             MockGenericModel<int>? left = null;
             MockGenericModel<int> right = new(value: 1);
 
-            Assert.Equal(expected: 1, ReferenceObjectHelpers.Compare(left: left, right: right, this._compare!));
+            Assert.Equal(expected: 1, ReferenceObjectHelpers.Compare(left: left, right: right, cmp: this._compare));
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace FunFair.Test.Common.Tests.Helpers
             MockGenericModel<int> left = new(value: 1);
             MockGenericModel<int>? right = null;
 
-            Assert.Equal(expected: -1, ReferenceObjectHelpers.Compare(left: left, right: right, this._compare!));
+            Assert.Equal(expected: -1, ReferenceObjectHelpers.Compare(left: left, right: right, cmp: this._compare));
         }
 
         [Fact]
