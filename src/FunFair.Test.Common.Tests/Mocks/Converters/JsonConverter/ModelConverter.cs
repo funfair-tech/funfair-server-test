@@ -15,7 +15,7 @@ namespace FunFair.Test.Common.Tests.Mocks.Converters.JsonConverter
                 throw new JsonException(message: "Unknown Color");
             }
 
-            return new Model {Value = color};
+            return new Model { Value = color };
         }
 
         public override void Write(Utf8JsonWriter writer, Model value, JsonSerializerOptions options)
