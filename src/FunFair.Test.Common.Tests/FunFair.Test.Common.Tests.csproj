@@ -1,4 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFramework>net5.0</TargetFramework>
@@ -21,18 +23,18 @@
         <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="NSubstitute" Version="4.2.2" />
-        <PackageReference Include="xunit" Version="2.4.1" />
+        <ProjectReference Include="..\FunFair.Test.Common\FunFair.Test.Common.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" PrivateAssets="None" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" PrivateAssets="None" />
+        <PackageReference Include="NSubstitute" Version="4.2.2" />
+        <PackageReference Include="xunit" Version="2.4.1" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
         <PackageReference Include="coverlet.collector" Version="3.1.0" PrivateAssets="All" />
         <PackageReference Include="coverlet.msbuild" Version="3.1.0" PrivateAssets="All" />
         <PackageReference Include="FunFair.CodeAnalysis" Version="5.3.0.879" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" PrivateAssets="None" />
         <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.10.56" PrivateAssets="All" />
         <PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.14" PrivateAssets="All" />
         <PackageReference Include="Roslynator.Analyzers" Version="3.2.0" PrivateAssets="All" />
@@ -40,8 +42,6 @@
         <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
         <PackageReference Include="ToStringWithoutOverrideAnalyzer" Version="0.6.0" PrivateAssets="All" />
         <PackageReference Include="xunit.analyzers" Version="0.10.0" PrivateAssets="All" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\FunFair.Test.Common\FunFair.Test.Common.csproj" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" PrivateAssets="None" />
     </ItemGroup>
 </Project>
