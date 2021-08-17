@@ -56,8 +56,7 @@ namespace FunFair.Test.Common.Helpers
                 messageBuilder.AppendLine(additionalLinePrefix + line);
             }
 
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (exception != null)
+            if (HasException(exception))
             {
                 lines = exception.ToString()
                                  .Split(separator: NewLineChars, options: StringSplitOptions.RemoveEmptyEntries);
@@ -88,6 +87,11 @@ namespace FunFair.Test.Common.Helpers
         public IDisposable BeginScope<TState>(TState state)
         {
             return new NullScope();
+        }
+
+        private static bool HasException(Exception? exception)
+        {
+            return exception != null;
         }
 
         [SuppressMessage(category: "Microsoft.Design", checkId: "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Unit Test")]

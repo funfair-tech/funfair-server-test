@@ -20,11 +20,7 @@ namespace FunFair.Test.Common.Mocks
         /// <summary>
         ///     Constructor.
         /// </summary>
-        public MockLogger(
-            [SuppressMessage(category: "FunFair.CodeAnalysis",
-                             checkId: "FFS0024: Logger parameters should be ILogger<T>",
-                             Justification = "Not created through DI")]
-            ILogger logger)
+        public MockLogger([SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")] ILogger logger)
         {
             this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this._seen = new ConcurrentDictionary<LogLevel, LogCounter>();
@@ -75,8 +71,7 @@ namespace FunFair.Test.Common.Mocks
         /// <inheritdoc />
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            // ReSharper disable once CompareNonConstrainedGenericWithNull
-            if (state != null)
+            if (HasValidState(state))
             {
                 this._logger.Log<object>(logLevel: logLevel, eventId: eventId, state: state, exception: exception, formatter: (_, _) => string.Empty);
             }
@@ -95,13 +90,17 @@ namespace FunFair.Test.Common.Mocks
         /// <inheritdoc />
         public IDisposable? BeginScope<TState>(TState state)
         {
-            // ReSharper disable once CompareNonConstrainedGenericWithNull
             if (state == null)
             {
                 throw new ArgumentNullException(nameof(state));
             }
 
             return this._logger.BeginScope<object>(state);
+        }
+
+        private static bool HasValidState([NotNullWhen(true)] object? state)
+        {
+            return state != null;
         }
 
         private sealed class LogCounter

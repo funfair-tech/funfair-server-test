@@ -5,7 +5,6 @@ using FunFair.Test.Common.Logging;
 using FunFair.Test.Common.Startup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace FunFair.Test.Common
@@ -131,12 +130,7 @@ namespace FunFair.Test.Common
         protected internal T GetServiceFromDependencyInjection<T>()
             where T : notnull
         {
-            T service = this._serviceProvider.GetRequiredService<T>();
-
-            // ReSharper disable once CompareNonConstrainedGenericWithNull
-            Assert.True(service != null, $"{typeof(T).FullName} could not be loaded from DI container");
-
-            return service!;
+            return this._serviceProvider.GetRequiredService<T>();
         }
 
         /// <summary>
