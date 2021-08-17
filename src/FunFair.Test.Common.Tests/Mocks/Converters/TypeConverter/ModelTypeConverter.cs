@@ -15,8 +15,7 @@ namespace FunFair.Test.Common.Tests.Mocks.Converters.TypeConverter
         /// <inheritdoc />
         public override Model? ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            
-            if (value == null)
+            if (IsNull(value))
             {
                 return null;
             }
@@ -24,6 +23,11 @@ namespace FunFair.Test.Common.Tests.Mocks.Converters.TypeConverter
             string rawValue = value.ToString() ?? string.Empty;
 
             return Convert(rawValue);
+        }
+
+        private static bool IsNull(object? value)
+        {
+            return value == null;
         }
 
         private static Model? Convert(string value)
