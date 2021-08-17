@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 
@@ -15,7 +15,7 @@ namespace FunFair.Test.Common.Tests.Mocks.Converters.TypeConverter
         /// <inheritdoc />
         public override Model? ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            
             if (value == null)
             {
                 return null;

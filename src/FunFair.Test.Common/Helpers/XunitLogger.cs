@@ -56,7 +56,7 @@ namespace FunFair.Test.Common.Helpers
                 messageBuilder.AppendLine(additionalLinePrefix + line);
             }
 
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            
             if (exception != null)
             {
                 lines = exception.ToString()

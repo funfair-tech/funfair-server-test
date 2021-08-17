@@ -75,7 +75,7 @@ namespace FunFair.Test.Common.Mocks
         /// <inheritdoc />
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            // ReSharper disable once CompareNonConstrainedGenericWithNull
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "CompareNonConstrainedGenericWithNull", Justification="TODO: Review")]
             if (state != null)
             {
                 this._logger.Log<object>(logLevel: logLevel, eventId: eventId, state: state, exception: exception, formatter: (_, _) => string.Empty);
@@ -95,7 +95,7 @@ namespace FunFair.Test.Common.Mocks
         /// <inheritdoc />
         public IDisposable? BeginScope<TState>(TState state)
         {
-            // ReSharper disable once CompareNonConstrainedGenericWithNull
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "CompareNonConstrainedGenericWithNull", Justification="TODO: Review")]
             if (state == null)
             {
                 throw new ArgumentNullException(nameof(state));
