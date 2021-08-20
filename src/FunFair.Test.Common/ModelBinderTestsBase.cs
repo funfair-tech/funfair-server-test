@@ -48,6 +48,8 @@ namespace FunFair.Test.Common
         /// <param name="expected">The expected model.</param>
         protected async Task MustConvertAsync(string value, TDataType expected)
         {
+            Assert.NotNull(value);
+
             this.MockValueProvider(value);
 
             ModelBindingContext bindingContext = this.MockBindingContext();
@@ -64,6 +66,8 @@ namespace FunFair.Test.Common
         /// <param name="value">The value to convert.</param>
         protected async Task MustNotConvertAsync(string value)
         {
+            Assert.NotNull(value);
+
             this.MockValueProvider(value);
 
             ModelBindingContext bindingContext = this.MockBindingContext();

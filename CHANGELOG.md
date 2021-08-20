@@ -2,10 +2,13 @@
 All notable changes to this project will be documented in this file.
 
 <!--
-Please ADD ALL Changes to the UNRELASED SECTION and not a specific release
+Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+
+- Additional asserts in base classes for type converters - as it makes no sense for them to convert null - as input
+  parameters are not nullable.
 ### Fixed
 ### Changed
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.2.5.870

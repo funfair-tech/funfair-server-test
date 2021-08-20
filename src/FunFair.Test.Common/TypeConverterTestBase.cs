@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Xunit;
 
 namespace FunFair.Test.Common
 {
@@ -8,6 +9,7 @@ namespace FunFair.Test.Common
     /// </summary>
     /// <typeparam name="TConverter">The type of converter</typeparam>
     /// <typeparam name="TObject">The object being converted.</typeparam>
+    [Obsolete("2021-08-19 Use Model Binding Instead")]
     public abstract class TypeConverterTestBase<TConverter, TObject> : TestBase
         where TConverter : TypeConverter, new() where TObject : class
     {
@@ -30,6 +32,8 @@ namespace FunFair.Test.Common
         /// <returns>Convert value</returns>
         protected object? GetConvertedValue(string rawValue)
         {
+            Assert.NotNull(rawValue);
+
             TypeConverter converter = this.GetConverter();
 
             return converter.ConvertFrom(rawValue);
