@@ -6,10 +6,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+### Fixed
+### Changed
+### Removed
 
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [5.6.0] - 2021-08-24
+### Added
 - Additional asserts in base classes for type converters - as it makes no sense for them to convert null - as input
   parameters are not nullable.
-### Fixed
 ### Changed
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.2.5.870
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.3.0.879
@@ -17,11 +24,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.11.0
 - FF-1429 - Updated Roslynator.Analyzers to 3.2.2
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.3.1
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [5.5.0] - 2021-07-20
 ### Changed
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.2.1.809
