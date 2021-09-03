@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.3.3
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.4.0.915
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.28.0.36354
 ### Removed
 
 <!--
