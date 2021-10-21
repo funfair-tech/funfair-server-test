@@ -168,7 +168,7 @@ namespace FunFair.Test.Common
         /// <param name="result">The validation results</param>
         private void Dump(ValidationResult result)
         {
-            if (!result.Errors.Any())
+            if (result.Errors.Count == 0)
             {
                 this.Output.WriteLine(message: "Validation Success");
 
