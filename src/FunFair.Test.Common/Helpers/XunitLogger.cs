@@ -46,15 +46,14 @@ namespace FunFair.Test.Common.Helpers
 
             if (firstLine != null)
             {
-                messageBuilder.AppendLine(firstLinePrefix + firstLine);
+                messageBuilder = messageBuilder.Append(firstLinePrefix)
+                                               .AppendLine(firstLine);
             }
 
             string additionalLinePrefix = "|" + new string(c: ' ', firstLinePrefix.Length - 1);
 
-            foreach (string line in lines.Skip(count: 1))
-            {
-                messageBuilder.AppendLine(additionalLinePrefix + line);
-            }
+            messageBuilder = lines.Skip(count: 1)
+                                  .Aggregate(seed: messageBuilder, func: (mb, line) => AppendMessageLine(mb: mb, line: line, additionalLinePrefix: additionalLinePrefix));
 
             if (HasException(exception))
             {
@@ -62,10 +61,7 @@ namespace FunFair.Test.Common.Helpers
                                  .Split(separator: NewLineChars, options: StringSplitOptions.RemoveEmptyEntries);
                 additionalLinePrefix = "| ";
 
-                foreach (string line in lines)
-                {
-                    messageBuilder.AppendLine(additionalLinePrefix + line);
-                }
+                messageBuilder = lines.Aggregate(seed: messageBuilder, func: (mb, line) => AppendMessageLine(mb: mb, line: line, additionalLinePrefix: additionalLinePrefix));
             }
 
             // Remove the last line-break, because ITestOutputHelper only has WriteLine.
@@ -87,6 +83,12 @@ namespace FunFair.Test.Common.Helpers
         public IDisposable BeginScope<TState>(TState state)
         {
             return new NullScope();
+        }
+
+        private static StringBuilder AppendMessageLine(StringBuilder mb, string line, string additionalLinePrefix)
+        {
+            return mb.Append(additionalLinePrefix)
+                     .AppendLine(line);
         }
 
         private static bool HasException(Exception? exception)
