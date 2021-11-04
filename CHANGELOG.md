@@ -8,23 +8,20 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated FluentValidation.AspNetCore to 10.3.3
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.4.0.915
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.28.0.36354
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.29.0.36737
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.5.0.926
-- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.0.63
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.30.0.37606
-- FF-1429 - Updated FluentValidation.AspNetCore to 10.3.4
-- FF-1429 - Updated Microsoft.NET.Test.Sdk to 17.0.0
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.6.0.956
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.6.0.960
-- FF-1429 - Updated Dapper to 2.0.123
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [5.6.1] - 2021-11-04
+### Changed
+- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.0.63
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.30.0.37606
+- FF-1429 - Updated FluentValidation.AspNetCore to 10.3.4
+- FF-1429 - Updated Microsoft.NET.Test.Sdk to 17.0.0
+- FF-1429 - Updated FunFair.CodeAnalysis to 5.6.0.960
+- FF-1429 - Updated Dapper to 2.0.123
+
 ## [5.6.0] - 2021-08-24
 ### Added
 - Additional asserts in base classes for type converters - as it makes no sense for them to convert null - as input
