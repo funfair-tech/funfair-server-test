@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.0.64
 - FF-1429 - -
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.6.2.978
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.31.0.39249
 ### Removed
 
 <!--
