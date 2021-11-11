@@ -23,7 +23,7 @@ namespace FunFair.Test.Common.Logging
             this._scope.Dispose();
         }
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
             this._logger.Log(logLevel: logLevel, eventId: eventId, state: state, exception: exception, formatter: formatter);
         }
