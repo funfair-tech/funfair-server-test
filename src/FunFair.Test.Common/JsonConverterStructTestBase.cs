@@ -27,7 +27,10 @@ namespace FunFair.Test.Common
             JsonConverter converter = new TConverter();
             this._options = new JsonSerializerOptions
                             {
-                                IgnoreNullValues = false, PropertyNameCaseInsensitive = false, PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Converters = { converter }
+                                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                                PropertyNameCaseInsensitive = false,
+                                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                                Converters = { converter }
                             };
         }
 
