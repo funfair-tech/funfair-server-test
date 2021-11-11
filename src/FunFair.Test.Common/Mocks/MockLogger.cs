@@ -73,7 +73,7 @@ namespace FunFair.Test.Common.Mocks
         public bool DebugReported => this._seen.ContainsKey(LogLevel.Debug);
 
         /// <inheritdoc />
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
             if (HasValidState(state))
             {
@@ -92,7 +92,7 @@ namespace FunFair.Test.Common.Mocks
         }
 
         /// <inheritdoc />
-        public IDisposable? BeginScope<TState>(TState state)
+        public IDisposable BeginScope<TState>(TState state)
         {
             if (state == null)
             {
