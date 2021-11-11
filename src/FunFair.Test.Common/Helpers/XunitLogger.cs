@@ -95,7 +95,7 @@ namespace FunFair.Test.Common.Helpers
                      .AppendLine(line);
         }
 
-        private static bool HasException(Exception? exception)
+        private static bool HasException([NotNullWhen(true)] Exception? exception)
         {
             return exception != null;
         }
