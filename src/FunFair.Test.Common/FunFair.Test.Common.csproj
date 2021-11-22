@@ -3,16 +3,20 @@
         <OutputType>Library</OutputType>
         <TargetFramework>net5.0</TargetFramework>
         <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
-        <WarningsAsErrors />
-        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-        <LangVersion>latest</LangVersion>
-        <Features>strict;flow-analysis</Features>
-        <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
-        <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
-        <IsPackable>True</IsPackable>
-        <IsPublishable>False</IsPublishable>
-        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+      <WarningsAsErrors/>
+      <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+      <LangVersion>latest</LangVersion>
+      <Features>strict;flow-analysis</Features>
+      <Nullable>enable</Nullable>
+      <LangVersion>latest</LangVersion>
+      <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+      <IsPackable>True</IsPackable>
+      <IsPublishable>False</IsPublishable>
+      <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+      <GenerateNeutralResourcesLanguageAttribute>true</GenerateNeutralResourcesLanguageAttribute>
+      <TieredCompilation>true</TieredCompilation>
+      <ImplicitUsings>disable</ImplicitUsings>
+      <EnablePackageValidation>true</EnablePackageValidation>
     </PropertyGroup>
     <PropertyGroup>
         <AnalysisLevel>latest</AnalysisLevel>
