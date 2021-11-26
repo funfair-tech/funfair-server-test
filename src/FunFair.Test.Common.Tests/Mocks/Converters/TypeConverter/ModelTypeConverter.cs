@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace FunFair.Test.Common.Tests.Mocks.Converters.TypeConverter
@@ -25,7 +26,7 @@ namespace FunFair.Test.Common.Tests.Mocks.Converters.TypeConverter
             return Convert(rawValue);
         }
 
-        private static bool IsNull(object? value)
+        private static bool IsNull([NotNullWhen(false)] object? value)
         {
             return value == null;
         }
