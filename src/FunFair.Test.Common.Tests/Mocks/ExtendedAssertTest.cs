@@ -10,7 +10,7 @@ namespace FunFair.Test.Common.Tests.Mocks
     {
         private static MockGenericModel<string> CreateModel(string value)
         {
-            return new(value);
+            return new MockGenericModel<string>(value);
         }
 
         private static IReadOnlyList<MockGenericModel<string>> CreateModelList(string value)
