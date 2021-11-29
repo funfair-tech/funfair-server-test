@@ -7,7 +7,10 @@ namespace FunFair.Test.Common.Tests.Mocks
         public MockGenericModel(T value)
         {
             this.Value = value;
-            this.NestedValue = new[] { value };
+            this.NestedValue = new[]
+                               {
+                                   value
+                               };
         }
 
         public T Value { get; }

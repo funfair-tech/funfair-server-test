@@ -33,7 +33,9 @@ namespace FunFair.Test.Common.Tests.Mocks.Converters.TypeConverter
 
         private static Model? Convert(string value)
         {
-            return Model.TryParse(source: value, out Model? model) ? model : null;
+            return Model.TryParse(source: value, out Model? model)
+                ? model
+                : null;
         }
     }
 }
