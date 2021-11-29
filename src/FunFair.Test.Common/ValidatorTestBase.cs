@@ -24,7 +24,7 @@ namespace FunFair.Test.Common
         protected ValidatorTestBase(ITestOutputHelper output)
             : base(output)
         {
-            this._validator = new TValidator();
+            this._validator = new();
         }
 
         /// <summary>

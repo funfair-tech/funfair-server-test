@@ -150,7 +150,7 @@ namespace FunFair.Test.Common
 
         private DisposableLogger BuildLogger()
         {
-            return new DisposableLogger(this.GetTypedLogger<LoggingTestBase>());
+            return new(this.GetTypedLogger<LoggingTestBase>());
         }
 
         private void ReportUnhandledException(object? sender, UnobservedTaskExceptionEventArgs args)

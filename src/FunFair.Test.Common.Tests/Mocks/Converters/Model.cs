@@ -58,11 +58,11 @@ namespace FunFair.Test.Common.Tests.Mocks.Converters
             switch (source)
             {
                 case "RED":
-                    value = new Model(ModelColor.RED);
+                    value = new(ModelColor.RED);
 
                     return true;
                 case "BLUE":
-                    value = new Model(ModelColor.BLUE);
+                    value = new(ModelColor.BLUE);
 
                     return true;
                 default:

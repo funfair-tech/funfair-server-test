@@ -50,7 +50,7 @@ namespace FunFair.Test.Common.Extensions
                                                         IReadOnlyDictionary<string, string> headers)
         {
             HttpClient client =
-                new(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)) { BaseAddress = new Uri("https://localhost") };
+                new(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)) { BaseAddress = new("https://localhost") };
 
             httpClientFactory.CreateClient(clientName)
                              .Returns(client);
