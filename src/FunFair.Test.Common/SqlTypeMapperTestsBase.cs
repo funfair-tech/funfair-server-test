@@ -21,7 +21,7 @@ namespace FunFair.Test.Common
         /// </summary>
         protected SqlTypeMapperTestsBase()
         {
-            this.Handler = new TTypeMapper();
+            this.Handler = new();
         }
 
         /// <summary>

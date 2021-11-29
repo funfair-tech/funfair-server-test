@@ -10,8 +10,8 @@ namespace FunFair.Test.Common.Tests
     {
         public ComparableObjectTests()
             : base(value1: "Hello",
-                   equivalentToValue1: new string("olleH".Reverse()
-                                                         .ToArray()),
+                   equivalentToValue1: new("olleH".Reverse()
+                                                  .ToArray()),
                    value2: "World",
                    zeroObject: string.Empty)
         {

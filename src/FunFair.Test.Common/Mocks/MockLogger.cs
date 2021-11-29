@@ -27,7 +27,7 @@ namespace FunFair.Test.Common.Mocks
             ILogger logger)
         {
             this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this._seen = new ConcurrentDictionary<LogLevel, LogCounter>();
+            this._seen = new();
         }
 
         /// <summary>
