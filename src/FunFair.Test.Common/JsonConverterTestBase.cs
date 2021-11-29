@@ -111,7 +111,9 @@ namespace FunFair.Test.Common
 
             public override int GetHashCode()
             {
-                return this.Value != null ? this.Value.GetHashCode() : 0;
+                return this.Value != null
+                    ? this.Value.GetHashCode()
+                    : 0;
             }
 
             public static bool operator ==(Model? left, Model? right)
