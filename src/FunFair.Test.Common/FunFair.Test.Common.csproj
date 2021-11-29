@@ -8,7 +8,6 @@
     <LangVersion>latest</LangVersion>
     <Features>strict;flow-analysis</Features>
     <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
     <IsPackable>True</IsPackable>
     <IsPublishable>False</IsPublishable>
