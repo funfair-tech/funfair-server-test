@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace FunFair.Test.Common.Tests.Mocks.Converters.TypeConverter;
 
-public sealed class ModelTypeConverter : System.ComponentModel.TypeConverter
+public sealed class ModelTypeConverter : TypeConverter
 {
     /// <inheritdoc />
     public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
