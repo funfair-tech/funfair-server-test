@@ -7,155 +7,151 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace FunFair.Test.Common
+namespace FunFair.Test.Common;
+
+/// <summary>
+///     Simple base class for tests that need logging or output to the test logs.
+/// </summary>
+[SuppressMessage(category: "Microsoft.Usage", checkId: "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "_loggerFactory", Justification = "If Disposed then tests can and will report errors")]
+public abstract class LoggingTestBase : TestBase, IDisposable
 {
+    private readonly ILoggerFactory _loggerFactory;
+
+    private readonly IServiceProvider _serviceProvider;
+
+    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0035: Test classes should be immutable", Justification = "Infrastructure not a test")]
+    private DisposableLogger? _logger;
+
     /// <summary>
-    ///     Simple base class for tests that need logging or output to the test logs.
+    ///     Constructor.
     /// </summary>
-    [SuppressMessage(category: "Microsoft.Usage",
-                     checkId: "CA2213:DisposableFieldsShouldBeDisposed",
-                     MessageId = "_loggerFactory",
-                     Justification = "If Disposed then tests can and will report errors")]
-    public abstract class LoggingTestBase : TestBase, IDisposable
+    /// <param name="output">XUnit output</param>
+    protected LoggingTestBase(ITestOutputHelper output)
+        : this(output: output, dependencyInjectionRegistration: NoDependencyInjectionConfiguration, initializeServices: NoDependencyInjectionInitialization)
     {
-        private readonly ILoggerFactory _loggerFactory;
+    }
 
-        private readonly IServiceProvider _serviceProvider;
+    /// <summary>
+    ///     Constructor.
+    /// </summary>
+    /// <param name="output">XUnit output</param>
+    /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
+    protected LoggingTestBase(ITestOutputHelper output, Action<IServiceCollection> dependencyInjectionRegistration)
+        : this(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration, initializeServices: NoDependencyInjectionInitialization)
+    {
+    }
 
-        [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0035: Test classes should be immutable", Justification = "Infrastructure not a test")]
-        private DisposableLogger? _logger;
-
-        /// <summary>
-        ///     Constructor.
-        /// </summary>
-        /// <param name="output">XUnit output</param>
-        protected LoggingTestBase(ITestOutputHelper output)
-            : this(output: output, dependencyInjectionRegistration: NoDependencyInjectionConfiguration, initializeServices: NoDependencyInjectionInitialization)
+    /// <summary>
+    ///     Constructor.
+    /// </summary>
+    /// <param name="output">XUnit output</param>
+    /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
+    /// <param name="initializeServices">Initialises services.</param>
+    [SuppressMessage(category: "Major Code Smell", checkId: "S3442:\"abstract\" classes should not have \"public\" constructors", Justification = "By Design")]
+    protected internal LoggingTestBase(ITestOutputHelper output, Action<IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
+    {
+        if (output == null)
         {
+            throw new ArgumentNullException(nameof(output));
         }
 
-        /// <summary>
-        ///     Constructor.
-        /// </summary>
-        /// <param name="output">XUnit output</param>
-        /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
-        protected LoggingTestBase(ITestOutputHelper output, Action<IServiceCollection> dependencyInjectionRegistration)
-            : this(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration, initializeServices: NoDependencyInjectionInitialization)
+        if (dependencyInjectionRegistration == null)
         {
+            throw new ArgumentNullException(nameof(dependencyInjectionRegistration));
         }
 
-        /// <summary>
-        ///     Constructor.
-        /// </summary>
-        /// <param name="output">XUnit output</param>
-        /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
-        /// <param name="initializeServices">Initialises services.</param>
-        [SuppressMessage(category: "Major Code Smell", checkId: "S3442:\"abstract\" classes should not have \"public\" constructors", Justification = "By Design")]
-        protected internal LoggingTestBase(ITestOutputHelper output, Action<IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
+        if (initializeServices == null)
         {
-            if (output == null)
-            {
-                throw new ArgumentNullException(nameof(output));
-            }
-
-            if (dependencyInjectionRegistration == null)
-            {
-                throw new ArgumentNullException(nameof(dependencyInjectionRegistration));
-            }
-
-            if (initializeServices == null)
-            {
-                throw new ArgumentNullException(nameof(initializeServices));
-            }
-
-            TaskScheduler.UnobservedTaskException += this.ReportUnhandledException;
-
-            IServiceCollection serviceCollection = new ServiceCollection();
-
-            LoggingStartup.AddLoggingSupport(services: serviceCollection, output: output);
-            dependencyInjectionRegistration(serviceCollection);
-
-            this._serviceProvider = serviceCollection.BuildServiceProvider();
-
-            this._loggerFactory = this._serviceProvider.GetRequiredService<ILoggerFactory>();
-            initializeServices(this._serviceProvider);
+            throw new ArgumentNullException(nameof(initializeServices));
         }
 
-        /// <summary>
-        ///     Gets a logger
-        /// </summary>
-        protected ILogger Logger => this._logger ??= this.BuildLogger();
+        TaskScheduler.UnobservedTaskException += this.ReportUnhandledException;
 
-        /// <summary>
-        ///     Test Log output.
-        /// </summary>
-        protected ITestOutputHelper Output => new LogOutput(this.Logger);
+        IServiceCollection serviceCollection = new ServiceCollection();
 
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            this.Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
+        LoggingStartup.AddLoggingSupport(services: serviceCollection, output: output);
+        dependencyInjectionRegistration(serviceCollection);
 
-        private static void NoDependencyInjectionInitialization(IServiceProvider serviceProvider)
-        {
-            // Nothing to do
-        }
+        this._serviceProvider = serviceCollection.BuildServiceProvider();
 
-        private static void NoDependencyInjectionConfiguration(IServiceCollection serviceCollection)
-        {
-            // Nothing to do
-        }
+        this._loggerFactory = this._serviceProvider.GetRequiredService<ILoggerFactory>();
+        initializeServices(this._serviceProvider);
+    }
 
-        /// <summary>
-        ///     Disposes of any managed resources
-        /// </summary>
-        /// <param name="disposing">true, when the object is being disposed; otherwise, false.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            IDisposable? disposableLogger = this._logger;
-            disposableLogger?.Dispose();
+    /// <summary>
+    ///     Gets a logger
+    /// </summary>
+    protected ILogger Logger => this._logger ??= this.BuildLogger();
 
-            // note do not dispose _loggerFactory in this method
+    /// <summary>
+    ///     Test Log output.
+    /// </summary>
+    protected ITestOutputHelper Output => new LogOutput(this.Logger);
 
-            TaskScheduler.UnobservedTaskException -= this.ReportUnhandledException;
-        }
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
 
-        /// <summary>
-        ///     Gets the service from Dependency injection.
-        /// </summary>
-        /// <typeparam name="T">The service </typeparam>
-        /// <returns></returns>
-        protected internal T GetServiceFromDependencyInjection<T>()
-            where T : notnull
-        {
-            return this._serviceProvider.GetRequiredService<T>();
-        }
+    private static void NoDependencyInjectionInitialization(IServiceProvider serviceProvider)
+    {
+        // Nothing to do
+    }
 
-        /// <summary>
-        ///     Gets the Service provider that's registered.
-        /// </summary>
-        /// <returns></returns>
-        protected internal IServiceProvider RetrieveDependencyInjectionServiceProvider()
-        {
-            return this._serviceProvider;
-        }
+    private static void NoDependencyInjectionConfiguration(IServiceCollection serviceCollection)
+    {
+        // Nothing to do
+    }
 
-        /// <inheritdoc />
-        protected sealed override ILogger<T> GetTypedLogger<T>()
-        {
-            return this._loggerFactory.CreateLogger<T>();
-        }
+    /// <summary>
+    ///     Disposes of any managed resources
+    /// </summary>
+    /// <param name="disposing">true, when the object is being disposed; otherwise, false.</param>
+    protected virtual void Dispose(bool disposing)
+    {
+        IDisposable? disposableLogger = this._logger;
+        disposableLogger?.Dispose();
 
-        private DisposableLogger BuildLogger()
-        {
-            return new(this.GetTypedLogger<LoggingTestBase>());
-        }
+        // note do not dispose _loggerFactory in this method
 
-        private void ReportUnhandledException(object? sender, UnobservedTaskExceptionEventArgs args)
-        {
-            this.Output.WriteLine("Unhandled Exception: " + args.Exception.Message);
-        }
+        TaskScheduler.UnobservedTaskException -= this.ReportUnhandledException;
+    }
+
+    /// <summary>
+    ///     Gets the service from Dependency injection.
+    /// </summary>
+    /// <typeparam name="T">The service </typeparam>
+    /// <returns></returns>
+    protected internal T GetServiceFromDependencyInjection<T>()
+        where T : notnull
+    {
+        return this._serviceProvider.GetRequiredService<T>();
+    }
+
+    /// <summary>
+    ///     Gets the Service provider that's registered.
+    /// </summary>
+    /// <returns></returns>
+    protected internal IServiceProvider RetrieveDependencyInjectionServiceProvider()
+    {
+        return this._serviceProvider;
+    }
+
+    /// <inheritdoc />
+    protected sealed override ILogger<T> GetTypedLogger<T>()
+    {
+        return this._loggerFactory.CreateLogger<T>();
+    }
+
+    private DisposableLogger BuildLogger()
+    {
+        return new(this.GetTypedLogger<LoggingTestBase>());
+    }
+
+    private void ReportUnhandledException(object? sender, UnobservedTaskExceptionEventArgs args)
+    {
+        this.Output.WriteLine("Unhandled Exception: " + args.Exception.Message);
     }
 }

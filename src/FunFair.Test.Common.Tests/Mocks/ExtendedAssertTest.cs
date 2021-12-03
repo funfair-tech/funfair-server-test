@@ -4,82 +4,75 @@ using FunFair.Test.Common.Mocks;
 using Xunit;
 using Xunit.Sdk;
 
-namespace FunFair.Test.Common.Tests.Mocks
+namespace FunFair.Test.Common.Tests.Mocks;
+
+public sealed class ExtendedAssertTest : TestBase
 {
-    public sealed class ExtendedAssertTest : TestBase
+    private static MockGenericModel<string> CreateModel(string value)
     {
-        private static MockGenericModel<string> CreateModel(string value)
-        {
-            return new(value);
-        }
+        return new(value);
+    }
 
-        private static IReadOnlyList<MockGenericModel<string>> CreateModelList(string value)
-        {
-            return new ReadOnlyCollection<MockGenericModel<string>>(new List<MockGenericModel<string>> { CreateModel(value) });
-        }
+    private static IReadOnlyList<MockGenericModel<string>> CreateModelList(string value)
+    {
+        return new ReadOnlyCollection<MockGenericModel<string>>(new List<MockGenericModel<string>> { CreateModel(value) });
+    }
 
-        [Fact]
-        public void TwoListAreDeepEqualIfAllMembersAreEquals()
-        {
-            IReadOnlyList<MockGenericModel<string>> expected = CreateModelList(value: "expected");
-            IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "expected");
+    [Fact]
+    public void TwoListAreDeepEqualIfAllMembersAreEquals()
+    {
+        IReadOnlyList<MockGenericModel<string>> expected = CreateModelList(value: "expected");
+        IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "expected");
 
-            ExtendedAssert.DeepEqual(expected: expected, actual: actual);
-        }
+        ExtendedAssert.DeepEqual(expected: expected, actual: actual);
+    }
 
-        [Fact]
-        public void TwoObjectsAreDeepEqualIfAllValuesAreEquals()
-        {
-            MockGenericModel<string> expected = CreateModel(value: "expected");
-            MockGenericModel<string> actual = CreateModel(value: "expected");
+    [Fact]
+    public void TwoObjectsAreDeepEqualIfAllValuesAreEquals()
+    {
+        MockGenericModel<string> expected = CreateModel(value: "expected");
+        MockGenericModel<string> actual = CreateModel(value: "expected");
 
-            ExtendedAssert.DeepEqual(expected: expected, actual: actual);
-        }
+        ExtendedAssert.DeepEqual(expected: expected, actual: actual);
+    }
 
-        [Fact]
-        public void TwoObjectsAreNotDeepEqualIfAllMembersAreNotEquals()
-        {
-            IReadOnlyList<MockGenericModel<string>> expected = CreateModelList(value: "expected");
-            IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "actual");
+    [Fact]
+    public void TwoObjectsAreNotDeepEqualIfAllMembersAreNotEquals()
+    {
+        IReadOnlyList<MockGenericModel<string>> expected = CreateModelList(value: "expected");
+        IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "actual");
 
-            Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
-        }
+        Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
+    }
 
-        [Fact]
-        public void TwoObjectsAreNotDeepEqualIfAllValuesAreEquals()
-        {
-            MockGenericModel<string> expected = CreateModel(value: "expected");
-            MockGenericModel<string> actual = CreateModel(value: "actual");
+    [Fact]
+    public void TwoObjectsAreNotDeepEqualIfAllValuesAreEquals()
+    {
+        MockGenericModel<string> expected = CreateModel(value: "expected");
+        MockGenericModel<string> actual = CreateModel(value: "actual");
 
-            Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
-        }
+        Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
+    }
 
-        [Fact]
-        public void TwoObjectsAreNotDeepEqualIfAnyNestedValueIsNotEqual()
-        {
-            MockGenericModel<string> expected = CreateModel(value: "expected");
-            expected.NestedValue = new[]
-                                   {
-                                       "new nested value"
-                                   };
-            MockGenericModel<string> actual = CreateModel(value: "expected");
+    [Fact]
+    public void TwoObjectsAreNotDeepEqualIfAnyNestedValueIsNotEqual()
+    {
+        MockGenericModel<string> expected = CreateModel(value: "expected");
+        expected.NestedValue = new[] { "new nested value" };
+        MockGenericModel<string> actual = CreateModel(value: "expected");
 
-            Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
-        }
+        Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
+    }
 
-        [Fact]
-        public void TwoObjectsAreNotDeepEqualIfAnyNestedValueOfAnyMemberIsNotEqual()
-        {
-            MockGenericModel<string> expectedMember = CreateModel(value: "expected");
-            expectedMember.NestedValue = new[]
-                                         {
-                                             "new nested value"
-                                         };
+    [Fact]
+    public void TwoObjectsAreNotDeepEqualIfAnyNestedValueOfAnyMemberIsNotEqual()
+    {
+        MockGenericModel<string> expectedMember = CreateModel(value: "expected");
+        expectedMember.NestedValue = new[] { "new nested value" };
 
-            IReadOnlyList<MockGenericModel<string>> expected = new ReadOnlyCollection<MockGenericModel<string>>(new List<MockGenericModel<string>> { expectedMember });
-            IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "actual");
+        IReadOnlyList<MockGenericModel<string>> expected = new ReadOnlyCollection<MockGenericModel<string>>(new List<MockGenericModel<string>> { expectedMember });
+        IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "actual");
 
-            Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
-        }
+        Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
     }
 }
