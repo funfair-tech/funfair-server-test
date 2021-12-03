@@ -6,122 +6,117 @@ using System.Threading;
 using Microsoft.Extensions.Logging;
 using NonBlocking;
 
-namespace FunFair.Test.Common.Mocks
+namespace FunFair.Test.Common.Mocks;
+
+/// <summary>
+///     Mock of logging.
+/// </summary>
+[SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
+public sealed class MockLogger<T> : ILogger<T>
 {
+    private readonly ILogger _logger;
+    private readonly ConcurrentDictionary<LogLevel, LogCounter> _seen;
+
     /// <summary>
-    ///     Mock of logging.
+    ///     Constructor.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
-    public sealed class MockLogger<T> : ILogger<T>
+    public MockLogger([SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")] ILogger logger)
     {
-        private readonly ILogger _logger;
-        private readonly ConcurrentDictionary<LogLevel, LogCounter> _seen;
+        this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        this._seen = new();
+    }
 
-        /// <summary>
-        ///     Constructor.
-        /// </summary>
-        public MockLogger(
-            [SuppressMessage(category: "FunFair.CodeAnalysis",
-                             checkId: "FFS0024: Logger parameters should be ILogger<T>",
-                             Justification = "Not created through DI")]
-            ILogger logger)
+    /// <summary>
+    ///     Summary of all the items that have been seen.
+    /// </summary>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    public IReadOnlyDictionary<LogLevel, int> Seen => this._seen.ToDictionary(keySelector: k => k.Key, elementSelector: v => v.Value.Count);
+
+    /// <summary>
+    ///     Have Critical errors been reported.
+    /// </summary>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    public bool CriticalReported => this._seen.ContainsKey(LogLevel.Critical);
+
+    /// <summary>
+    ///     Have errors been reported.
+    /// </summary>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    public bool ErrorsReported => this._seen.ContainsKey(LogLevel.Error);
+
+    /// <summary>
+    ///     Have warnings been reported.
+    /// </summary>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    public bool WarningsReported => this._seen.ContainsKey(LogLevel.Warning);
+
+    /// <summary>
+    ///     Have trace messages been reported.
+    /// </summary>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    public bool TraceReported => this._seen.ContainsKey(LogLevel.Trace);
+
+    /// <summary>
+    ///     Has Information been reported.
+    /// </summary>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    public bool InformationReported => this._seen.ContainsKey(LogLevel.Information);
+
+    /// <summary>
+    ///     Have debug messages been reported.
+    /// </summary>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    public bool DebugReported => this._seen.ContainsKey(LogLevel.Debug);
+
+    /// <inheritdoc />
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+    {
+        if (HasValidState(state))
         {
-            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this._seen = new();
+            this._logger.Log<object>(logLevel: logLevel, eventId: eventId, state: state, exception: exception, formatter: (_, _) => string.Empty);
         }
 
-        /// <summary>
-        ///     Summary of all the items that have been seen.
-        /// </summary>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
-        public IReadOnlyDictionary<LogLevel, int> Seen => this._seen.ToDictionary(keySelector: k => k.Key, elementSelector: v => v.Value.Count);
+        LogCounter counter = this._seen.GetOrAdd(key: logLevel, new LogCounter());
 
-        /// <summary>
-        ///     Have Critical errors been reported.
-        /// </summary>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
-        public bool CriticalReported => this._seen.ContainsKey(LogLevel.Critical);
+        counter.Increment();
+    }
 
-        /// <summary>
-        ///     Have errors been reported.
-        /// </summary>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
-        public bool ErrorsReported => this._seen.ContainsKey(LogLevel.Error);
+    /// <inheritdoc />
+    public bool IsEnabled(LogLevel logLevel)
+    {
+        return this._logger.IsEnabled(logLevel);
+    }
 
-        /// <summary>
-        ///     Have warnings been reported.
-        /// </summary>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
-        public bool WarningsReported => this._seen.ContainsKey(LogLevel.Warning);
-
-        /// <summary>
-        ///     Have trace messages been reported.
-        /// </summary>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
-        public bool TraceReported => this._seen.ContainsKey(LogLevel.Trace);
-
-        /// <summary>
-        ///     Has Information been reported.
-        /// </summary>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
-        public bool InformationReported => this._seen.ContainsKey(LogLevel.Information);
-
-        /// <summary>
-        ///     Have debug messages been reported.
-        /// </summary>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
-        public bool DebugReported => this._seen.ContainsKey(LogLevel.Debug);
-
-        /// <inheritdoc />
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+    /// <inheritdoc />
+    public IDisposable BeginScope<TState>(TState state)
+    {
+        if (state == null)
         {
-            if (HasValidState(state))
-            {
-                this._logger.Log<object>(logLevel: logLevel, eventId: eventId, state: state, exception: exception, formatter: (_, _) => string.Empty);
-            }
-
-            LogCounter counter = this._seen.GetOrAdd(key: logLevel, new LogCounter());
-
-            counter.Increment();
+            throw new ArgumentNullException(nameof(state));
         }
 
-        /// <inheritdoc />
-        public bool IsEnabled(LogLevel logLevel)
+        return this._logger.BeginScope<object>(state);
+    }
+
+    private static bool HasValidState([NotNullWhen(true)] object? state)
+    {
+        return state != null;
+    }
+
+    private sealed class LogCounter
+    {
+        private long _count;
+
+        public LogCounter()
         {
-            return this._logger.IsEnabled(logLevel);
+            this._count = 0;
         }
 
-        /// <inheritdoc />
-        public IDisposable BeginScope<TState>(TState state)
+        public int Count => (int)Interlocked.Read(ref this._count);
+
+        public void Increment()
         {
-            if (state == null)
-            {
-                throw new ArgumentNullException(nameof(state));
-            }
-
-            return this._logger.BeginScope<object>(state);
-        }
-
-        private static bool HasValidState([NotNullWhen(true)] object? state)
-        {
-            return state != null;
-        }
-
-        private sealed class LogCounter
-        {
-            private long _count;
-
-            public LogCounter()
-            {
-                this._count = 0;
-            }
-
-            public int Count => (int)Interlocked.Read(ref this._count);
-
-            public void Increment()
-            {
-                Interlocked.Increment(ref this._count);
-            }
+            Interlocked.Increment(ref this._count);
         }
     }
 }
