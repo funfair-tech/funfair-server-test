@@ -8,23 +8,22 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.6.1.965
-- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.0.64
-- FF-1429 - Updated To DotNet SDK 5.0.403
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.6.2.978
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.31.0.39249
-- FF-1429 - Updated NSubstitute.Analyzers.CSharp to 1.0.15
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.32.0.39516
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.7.0.995
-- FF-1429 - Updated Roslynator.Analyzers to 3.3.0
-- FF-1429 - Updated FluentValidation.AspNetCore to 10.3.5
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.7.3.1052
-- FF-3856 - Updated to DotNet 6.0 with DotNet 5.0 fallback
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [5.7.0] - 2021-12-03
+### Changed
+- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.0.64
+- FF-1429 - Updated To DotNet SDK 5.0.403
+- FF-1429 - Updated NSubstitute.Analyzers.CSharp to 1.0.15
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.32.0.39516
+- FF-1429 - Updated Roslynator.Analyzers to 3.3.0
+- FF-1429 - Updated FluentValidation.AspNetCore to 10.3.5
+- FF-1429 - Updated FunFair.CodeAnalysis to 5.7.3.1052
+- FF-3856 - Updated to DotNet 6.0 with DotNet 5.0 fallback
+
 ## [5.6.2] - 2021-11-05
 ### Removed
 - Redundant dependencies
