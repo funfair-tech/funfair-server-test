@@ -19,6 +19,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Roslynator.Analyzers to 3.3.0
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.3.5
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.7.3.1052
+- FF-3856 - Updated to DotNet 6.0 with DotNet 5.0 fallback
 ### Removed
 
 <!--
