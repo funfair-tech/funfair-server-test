@@ -58,7 +58,10 @@ public sealed class ExtendedAssertTest : TestBase
     public void TwoObjectsAreNotDeepEqualIfAnyNestedValueIsNotEqual()
     {
         MockGenericModel<string> expected = CreateModel(value: "expected");
-        expected.NestedValue = new[] { "new nested value" };
+        expected.NestedValue = new[]
+                               {
+                                   "new nested value"
+                               };
         MockGenericModel<string> actual = CreateModel(value: "expected");
 
         Assert.Throws<EqualException>(testCode: () => { ExtendedAssert.DeepEqual(expected: expected, actual: actual); });
@@ -68,7 +71,10 @@ public sealed class ExtendedAssertTest : TestBase
     public void TwoObjectsAreNotDeepEqualIfAnyNestedValueOfAnyMemberIsNotEqual()
     {
         MockGenericModel<string> expectedMember = CreateModel(value: "expected");
-        expectedMember.NestedValue = new[] { "new nested value" };
+        expectedMember.NestedValue = new[]
+                                     {
+                                         "new nested value"
+                                     };
 
         IReadOnlyList<MockGenericModel<string>> expected = new ReadOnlyCollection<MockGenericModel<string>>(new List<MockGenericModel<string>> { expectedMember });
         IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "actual");
