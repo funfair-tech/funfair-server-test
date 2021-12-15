@@ -7,7 +7,10 @@ internal sealed class MockGenericModel<T>
     public MockGenericModel(T value)
     {
         this.Value = value;
-        this.NestedValue = new[] { value };
+        this.NestedValue = new[]
+                           {
+                               value
+                           };
     }
 
     public T Value { get; }
