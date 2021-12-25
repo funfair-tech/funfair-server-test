@@ -441,7 +441,7 @@
         <!-- RCS1159 - Use EventHandler<T> -->
         <Rule Id="RCS1159" Action="Error"/>
         <!-- RCS1163 - Unused parameter -->
-        <Rule Id="RCS1163" Action="Error"/>
+        <Rule Id="RCS1163" Action="None"/>
         <!-- RCS1168 - Parameter name differs from base name -->
         <Rule Id="RCS1168" Action="Error"/>
         <!-- RCS1170 - Use read-only auto-implemented property -->
