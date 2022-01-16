@@ -127,6 +127,7 @@ public abstract class TestBase
     /// <param name="value"></param>
     /// <typeparam name="T"></typeparam>
     [SuppressMessage(category: "Microsoft.Usage", checkId: "CA1801:ReviewUnusedParameters", Justification = "Needed for Unit Test")]
+    [SuppressMessage(category: "codecracker.CSharp", checkId: "CC0057:ReviewUnusedParameters", Justification = "Needed for Unit Test")]
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static void UnusedVariable<T>(T value)

@@ -38,7 +38,8 @@ public static class HttpClientFactoryExtensions
     /// <param name="httpStatusCode">HTTP status code to be returned.</param>
     /// <param name="responseMessage">Response message string.</param>
     /// <param name="headers">Headers to add to the response.</param>
-    [SuppressMessage(category: "Reliability", checkId: "CA2000:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
+    [SuppressMessage(category: "Microsoft.Reliability", checkId: "CA2000:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
+    [SuppressMessage(category: "codecracker.CSharp", checkId: "CC0022:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
     public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
                                                     string clientName,
                                                     HttpStatusCode httpStatusCode,

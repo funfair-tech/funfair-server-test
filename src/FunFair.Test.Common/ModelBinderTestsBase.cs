@@ -30,7 +30,7 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
 
     private void MockValueProvider(string testValue)
     {
-        this._valueProvider.GetValue("Test")
+        this._valueProvider.GetValue(@"Test")
             .Returns(new ValueProviderResult(testValue));
     }
 

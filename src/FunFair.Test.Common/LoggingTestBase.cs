@@ -14,7 +14,7 @@ namespace FunFair.Test.Common;
 /// </summary>
 [SuppressMessage(category: "Microsoft.Usage",
                  checkId: "CA2213:DisposableFieldsShouldBeDisposed",
-                 MessageId = "_loggerFactory",
+                 MessageId = nameof(_loggerFactory),
                  Justification = "If Disposed then tests can and will report errors")]
 public abstract class LoggingTestBase : TestBase, IDisposable
 {

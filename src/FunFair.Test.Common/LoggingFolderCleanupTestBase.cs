@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Xunit.Abstractions;
@@ -44,9 +45,10 @@ public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
         {
             Directory.Delete(path: folderToMurder, recursive: true);
         }
-        catch
+        catch (Exception exception)
         {
             // don't care
+            Trace.WriteLine(exception.Message);
         }
     }
 }

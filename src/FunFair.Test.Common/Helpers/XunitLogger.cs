@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -108,12 +109,13 @@ internal sealed class XunitLogger : ILogger
         {
             this._output.WriteLine(message);
         }
-        catch (Exception)
+        catch (Exception exception)
         {
             // We could fail because we're on a background thread and our captured ITestOutputHelper is
             // busted (if the test "completed" before the background thread fired).
             // So, ignore this. There isn't really anything we can do but hope the
             // caller has additional loggers registered
+            Trace.WriteLine(exception.Message);
         }
     }
 
