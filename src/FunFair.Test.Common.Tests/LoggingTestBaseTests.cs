@@ -22,9 +22,9 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
         {
             this.Output.WriteLine($"Hello World. It's {now}");
         }
-        catch // (Exception exception)
+        catch (Exception exception)
         {
-            throw new FormatException("Twit");
+            throw new FormatException(message: "Twit", innerException: exception);
         }
     }
 }
