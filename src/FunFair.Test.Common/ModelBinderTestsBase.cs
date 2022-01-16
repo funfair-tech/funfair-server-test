@@ -14,6 +14,7 @@ namespace FunFair.Test.Common;
 public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
     where TBinder : class, IModelBinder
 {
+    private const string MODEL_NAME = @"TestModel";
     private readonly TBinder _binder;
     private readonly IValueProvider _valueProvider;
 
@@ -30,13 +31,13 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
 
     private void MockValueProvider(string testValue)
     {
-        this._valueProvider.GetValue(@"Test")
+        this._valueProvider.GetValue(MODEL_NAME)
             .Returns(new ValueProviderResult(testValue));
     }
 
     private ModelBindingContext MockBindingContext()
     {
-        ModelBindingContext bindingContext = new DefaultModelBindingContext { ModelName = "Test", ValueProvider = this._valueProvider };
+        ModelBindingContext bindingContext = new DefaultModelBindingContext { ModelName = MODEL_NAME, ValueProvider = this._valueProvider };
 
         return bindingContext;
     }

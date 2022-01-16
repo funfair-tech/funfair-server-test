@@ -9,11 +9,10 @@ internal sealed class DisposableLogger : ILogger, IDisposable
     private readonly ILogger _logger;
     private readonly IDisposable _scope;
 
-    public DisposableLogger(
-        [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")] ILogger logger)
+    public DisposableLogger([SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")] ILogger logger)
     {
         this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        this._scope = this._logger.BeginScope(state: "Test");
+        this._scope = this._logger.BeginScope(state: "Test-Logging");
     }
 
     public void Dispose()
