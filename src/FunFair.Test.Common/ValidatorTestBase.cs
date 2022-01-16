@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using FluentValidation;
@@ -116,7 +117,7 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
     protected static void AssertOnlyNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
     {
         Assert.True(result.Errors.All(predicate: e => e.PropertyName == erroringProperty),
-                    $"Should only have had errors in {erroringProperty}, but found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct())}");
+                    $"Should only have had errors in {erroringProperty}, but found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct(StringComparer.Ordinal))}");
     }
 
     /// <summary>
@@ -141,14 +142,12 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
     {
         Assert.NotEmpty(erroringProperties);
 
-        bool hasUnexpectedErrors = result.Errors.All(predicate: error => erroringProperties.Contains(error.PropertyName));
+        bool hasUnexpectedErrors = result.Errors.All(predicate: error => erroringProperties.Contains(value: error.PropertyName, comparer: StringComparer.Ordinal));
         bool hasAllExpectedErrors = erroringProperties.All(predicate: error => result.Errors.Any(predicate: p => p.PropertyName == error));
 
-        Assert.True(condition: hasUnexpectedErrors,
-                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasUnexpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
 
-        Assert.True(condition: hasAllExpectedErrors,
-                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasAllExpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
     }
 
     /// <summary>
@@ -188,14 +187,14 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
     {
         return string.Join(separator: ", ",
                            result.Errors.Select(selector: e => e.PropertyName)
-                                 .Distinct()
+                                 .Distinct(StringComparer.Ordinal)
                                  .OrderBy(keySelector: x => x.ToUpperInvariant()));
     }
 
     private static string DumpExpectedPropertiesInError(string[] erroringProperties)
     {
         return string.Join(separator: ", ",
-                           erroringProperties.Distinct()
+                           erroringProperties.Distinct(StringComparer.Ordinal)
                                              .OrderBy(keySelector: x => x.ToUpperInvariant()));
     }
 
