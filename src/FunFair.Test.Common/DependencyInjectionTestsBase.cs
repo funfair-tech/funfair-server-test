@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -26,7 +28,30 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     ///     Require that the service is registered.
     /// </summary>
     /// <typeparam name="TService">The service that must be registered</typeparam>
+    /// <remarks>This version should be used if there is any async or observables registered in the constructor.</remarks>
     protected void RequireService<TService>()
+        where TService : class
+    {
+        this.RequireServiceCommon<TService>();
+    }
+
+    /// <summary>
+    ///     Require that the service is registered.
+    /// </summary>
+    /// <typeparam name="TService">The service that must be registered</typeparam>
+    /// <remarks>This version should be used if there is any async or observables registered in the constructor.</remarks>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used in implementations")]
+    protected async Task RequireServiceAsync<TService>()
+        where TService : class
+    {
+        TService service = this.RequireServiceCommon<TService>();
+
+        await Task.CompletedTask;
+
+        this.Logger.LogDebug($"Waiting for dispose of {service.GetType().FullName}...");
+    }
+
+    private TService RequireServiceCommon<TService>()
         where TService : class
     {
         TService service = this.GetService<TService>();
@@ -38,5 +63,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         this.Output.WriteLine($"Type Name: {fullName}");
 
         Assert.NotEqual(expected: "Castle.Proxies.ObjectProxy", actual: fullName);
+
+        return service;
     }
 }
