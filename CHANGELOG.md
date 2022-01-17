@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.34.0.42011
-- Tightened up the checks for RegisteredService so that it will refuse proxy objects from castle (NSubstitute)
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [5.8.1] - 2022-01-17
+### Changed
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.34.0.42011
+- Tightened up the checks for RegisteredService so that it will refuse proxy objects from castle (NSubstitute)
+
 ## [5.8.0] - 2022-01-17
 ### Added
 - Dependency Injection Test Base class.
