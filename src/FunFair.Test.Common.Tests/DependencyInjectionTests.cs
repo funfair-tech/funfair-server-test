@@ -1,3 +1,4 @@
+using FunFair.Test.Common.Tests.Mocks;
 using FunFair.Test.Common.Tests.Mocks.Converters.Binders;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,7 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
 
     private static void Configure(IServiceCollection serviceCollection)
     {
-        serviceCollection.AddSingleton(GetSubstitute<ITest>());
+        serviceCollection.AddSingleton(GetSubstitute<ITestInterface>());
         serviceCollection.AddSingleton<IModelBinder, ModelBinder>();
     }
 
@@ -26,8 +27,12 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
     }
 
     [Fact]
-    public void TestIsRegistered()
+    public void TestIsRegisteredAsCastleCore()
     {
-        this.RequireService<ITest>();
+        ITestInterface test = this.GetService<ITestInterface>();
+
+        string fullName = test.GetType()
+                              .FullName ?? string.Empty;
+        Assert.Equal(expected: "Castle.Proxies.ObjectProxy", actual: fullName);
     }
 }

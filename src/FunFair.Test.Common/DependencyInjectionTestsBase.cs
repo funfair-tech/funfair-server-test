@@ -31,5 +31,12 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     {
         TService service = this.GetService<TService>();
         Assert.NotNull(service);
+
+        string fullName = service.GetType()
+                                 .FullName ?? string.Empty;
+        this.Output.WriteLine($"Type Name: {nameof(TService)}");
+        this.Output.WriteLine($"Type Name: {fullName}");
+
+        Assert.NotEqual(expected: "Castle.Proxies.ObjectProxy", actual: fullName);
     }
 }
