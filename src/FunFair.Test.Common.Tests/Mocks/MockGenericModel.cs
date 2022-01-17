@@ -2,9 +2,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace FunFair.Test.Common.Tests.Mocks;
 
-internal sealed class MockGenericModel2<T>
+internal sealed class MockGenericModel<T>
 {
-    public MockGenericModel2(T value)
+    public MockGenericModel(T value)
     {
         this.Value = value;
         this.NestedValue = new[]
