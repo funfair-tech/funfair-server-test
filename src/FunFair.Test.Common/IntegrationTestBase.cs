@@ -54,6 +54,7 @@ public abstract class IntegrationTestBase : LoggingTestBase
     /// </summary>
     /// <typeparam name="T">The service </typeparam>
     /// <returns>The service that was registered with dependency injection.</returns>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "May be used in derived test classes")]
     protected T GetService<T>()
         where T : notnull
     {
