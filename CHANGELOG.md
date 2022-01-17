@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.34.0.42011
+- Tightened up the checks for RegisteredService so that it will refuse proxy objects from castle (NSubstitute)
 ### Removed
 
 <!--
