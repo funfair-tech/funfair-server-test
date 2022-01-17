@@ -15,6 +15,7 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
 
     private static void Configure(IServiceCollection serviceCollection)
     {
+        serviceCollection.AddSingleton(GetSubstitute<ITest>());
         serviceCollection.AddSingleton<IModelBinder, ModelBinder>();
     }
 
@@ -22,5 +23,11 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
     public void ModelBinderIsRegistered()
     {
         this.RequireService<IModelBinder>();
+    }
+
+    [Fact]
+    public void TestIsRegistered()
+    {
+        this.RequireService<ITest>();
     }
 }
