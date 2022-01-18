@@ -1,3 +1,4 @@
+using System;
 using FunFair.Test.Common.Tests.Mocks;
 using FunFair.Test.Common.Tests.Mocks.Converters.Binders;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -27,12 +28,32 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
     }
 
     [Fact]
-    public void TestIsRegisteredAsCastleCore()
+    public void TestIsRegisteredAsCastleCoreProxy()
     {
         ITestInterface test = this.GetService<ITestInterface>();
 
         string fullName = test.GetType()
                               .FullName ?? string.Empty;
-        Assert.Equal(expected: "Castle.Proxies.ObjectProxy", actual: fullName);
+        this.Output.WriteLine(fullName);
+
+        Assert.True(IsProxyObject(fullName), userMessage: "Should be proxy object");
+    }
+
+    [Fact]
+    public void RealIsNotRegisteredAsCastleCoreProxy()
+    {
+        IModelBinder test = this.GetService<IModelBinder>();
+
+        string fullName = test.GetType()
+                              .FullName ?? string.Empty;
+        this.Output.WriteLine(fullName);
+
+        Assert.False(IsProxyObject(fullName), userMessage: "Should not be proxy object");
+    }
+
+    private static bool IsProxyObject(string fullTypeName)
+    {
+        return StringComparer.Ordinal.Equals(x: fullTypeName, y: "Castle.Proxies.ObjectProxy") ||
+               fullTypeName.StartsWith(value: "Castle.Proxies.ObjectProxy_", comparisonType: StringComparison.Ordinal);
     }
 }

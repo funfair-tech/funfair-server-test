@@ -62,8 +62,14 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         this.Output.WriteLine($"Type Name: {nameof(TService)}");
         this.Output.WriteLine($"Type Name: {fullName}");
 
-        Assert.NotEqual(expected: "Castle.Proxies.ObjectProxy", actual: fullName);
+        Assert.False(IsProxyObject(fullName), $"{typeof(TService).FullName} must not be a proxy object - found: {fullName}");
 
         return service;
+    }
+
+    private static bool IsProxyObject(string fullTypeName)
+    {
+        return StringComparer.Ordinal.Equals(x: fullTypeName, y: "Castle.Proxies.ObjectProxy") ||
+               fullTypeName.StartsWith(value: "Castle.Proxies.ObjectProxy_", comparisonType: StringComparison.Ordinal);
     }
 }
