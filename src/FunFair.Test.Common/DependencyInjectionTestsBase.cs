@@ -59,7 +59,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
 
         string fullName = service.GetType()
                                  .FullName ?? string.Empty;
-        this.Output.WriteLine($"Type Name: {nameof(TService)}");
+        this.Output.WriteLine($"Type Name: {typeof(TService).FullName}");
         this.Output.WriteLine($"Type Name: {fullName}");
 
         Assert.False(IsProxyObject(fullName), $"{typeof(TService).FullName} must not be a proxy object - found: {fullName}");
