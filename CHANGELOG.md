@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - FF-1429 - Updated NSubstitute to 4.3.0
+- FF-1429 - Updated Roslynator.Analyzers to 4.0.0
 ### Removed
 
 <!--
