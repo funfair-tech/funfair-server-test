@@ -6,16 +6,20 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-- Special cases for TeamCity to reduce length of messages.
 ### Fixed
 ### Changed
-- FF-1429 - Updated NSubstitute to 4.3.0
-- FF-1429 - Updated Roslynator.Analyzers to 4.0.0
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [5.8.2] - 2022-01-26
+### Added
+- Special cases for TeamCity to reduce length of messages.
+### Changed
+- FF-1429 - Updated NSubstitute to 4.3.0
+- FF-1429 - Updated Roslynator.Analyzers to 4.0.0
+
 ## [5.8.1] - 2022-01-17
 ### Changed
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.34.0.42011
