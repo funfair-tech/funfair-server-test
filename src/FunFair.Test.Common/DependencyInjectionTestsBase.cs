@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -28,7 +30,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     ///     Require that the service is registered.
     /// </summary>
     /// <typeparam name="TService">The service that must be registered</typeparam>
-    /// <remarks>This version should be used if there is any async or observables registered in the constructor.</remarks>
+    /// <remarks>This version should be used if there are no async or observables registered in the constructor.</remarks>
     protected void RequireService<TService>()
         where TService : class
     {
@@ -49,6 +51,58 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         await Task.CompletedTask;
 
         this.Logger.LogDebug($"Waiting for dispose of {service.GetType().FullName}...");
+    }
+
+    /// <summary>
+    ///     Require that a service of the named type is registered against an interface, where there may be more than once instance of the interface registration.
+    /// </summary>
+    /// <typeparam name="TInterface">The interface that the service should be registered for.</typeparam>
+    /// <typeparam name="TService">The service that must be registered</typeparam>
+    /// <remarks>This version should be used if there are no async or observables registered in the constructor.</remarks>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used in implementations")]
+    protected void RequireServiceInCollectionFor<TInterface, TService>()
+        where TInterface : class where TService : class, TInterface
+    {
+        IReadOnlyList<TInterface> services = this.ServiceProvider.GetServices<TInterface>()
+                                                 .ToArray();
+
+        Console.WriteLine("Found Services:");
+
+        foreach (TInterface service in services)
+        {
+            Console.WriteLine($"* {service.GetType().FullName}");
+        }
+
+        Assert.NotEmpty(services);
+        Assert.Contains(collection: services, filter: service => service.GetType() == typeof(TService));
+    }
+
+    /// <summary>
+    ///     Require that a service of the named type is registered against an interface, where there may be more than once instance of the interface registration.
+    /// </summary>
+    /// <typeparam name="TInterface">The interface that the service should be registered for.</typeparam>
+    /// <typeparam name="TService">The service that must be registered</typeparam>
+    /// <remarks>This version should be used if there is any async or observables registered in the constructor.</remarks>
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used in implementations")]
+    protected async Task RequireServiceInCollectionForAsync<TInterface, TService>()
+        where TInterface : class where TService : class, TInterface
+    {
+        IReadOnlyList<TInterface> services = this.ServiceProvider.GetServices<TInterface>()
+                                                 .ToArray();
+
+        Console.WriteLine("Found Services:");
+
+        foreach (TInterface service in services)
+        {
+            Console.WriteLine($"* {service.GetType().FullName}");
+        }
+
+        Assert.NotEmpty(services);
+        Assert.Contains(collection: services, filter: service => service.GetType() == typeof(TService));
+
+        await Task.CompletedTask;
+
+        this.Logger.LogDebug($"Waiting for dispose of {typeof(TInterface).FullName}...");
     }
 
     private TService RequireServiceCommon<TService>()

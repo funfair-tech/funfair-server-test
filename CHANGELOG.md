@@ -16,6 +16,7 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 ## [5.8.2] - 2022-01-26
 ### Added
 - Special cases for TeamCity to reduce length of messages.
+- RequireServiceInCollectionFor and RequireServiceInCollectionForAsync in dependency injection test base class.
 ### Changed
 - FF-1429 - Updated NSubstitute to 4.3.0
 - FF-1429 - Updated Roslynator.Analyzers to 4.0.0
