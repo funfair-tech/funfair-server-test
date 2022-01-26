@@ -31,31 +31,31 @@ public abstract class EquatableObjectTestBase<TObject> : TestBase
     /// <summary>
     ///     An object that is equivalent or as near as possible to zero
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Add Unit tests")]
     protected internal TObject ZeroObject { get; }
 
     /// <summary>
     ///     The Value.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Add Unit tests")]
     protected internal TObject Value1 { get; }
 
     /// <summary>
     ///     An alias of the value.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Add Unit tests")]
     protected internal TObject Value1Alias { get; }
 
     /// <summary>
     ///     A value that is equivalent to value 1
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Add Unit tests")]
     protected internal TObject EquivalentToValue1 { get; }
 
     /// <summary>
     ///     A value that is equivalent to value 1, but typed as an object.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "MemberCanBePrivate.Global", Justification = "TODO: Add Unit tests")]
     protected internal object EquivalentToValue1AsObject { get; }
 
     /// <summary>

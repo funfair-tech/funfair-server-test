@@ -16,6 +16,8 @@ internal sealed class XunitLogger : ILogger
         Environment.NewLine
     };
 
+    private static readonly bool Teamcity = RunningUnderTeamCity();
+
     private readonly string _category;
     private readonly DateTimeOffset? _logStart;
     private readonly LogLevel _minLogLevel;
@@ -90,6 +92,13 @@ internal sealed class XunitLogger : ILogger
         return new NullScope();
     }
 
+    private static bool RunningUnderTeamCity()
+    {
+        string? env = Environment.GetEnvironmentVariable("TEAMCITY_VERSION");
+
+        return !string.IsNullOrWhiteSpace(env);
+    }
+
     private static StringBuilder AppendMessageLine(StringBuilder mb, string line, string additionalLinePrefix)
     {
         return mb.Append(additionalLinePrefix)
@@ -101,13 +110,23 @@ internal sealed class XunitLogger : ILogger
         return exception != null;
     }
 
-    [SuppressMessage(category: "Microsoft.Design", checkId: "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Unit Test")]
-    [SuppressMessage(category: "Roslynator.Analyzers", checkId: "RCS1075:DoNotCatchGeneralExceptionTypes", Justification = "Unit Test")]
     private void LogToOutput(string message)
     {
+        foreach (string line in message.Split(Environment.NewLine))
+        {
+            this.LogOneLine(line);
+        }
+    }
+
+    [SuppressMessage(category: "Microsoft.Design", checkId: "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Unit Test")]
+    [SuppressMessage(category: "Roslynator.Analyzers", checkId: "RCS1075:DoNotCatchGeneralExceptionTypes", Justification = "Unit Test")]
+    private void LogOneLine(string message)
+    {
+        string line = ReplaceSquareBracketsForTeamCity(message);
+
         try
         {
-            this._output.WriteLine(message);
+            this._output.WriteLine(line);
         }
         catch (Exception exception)
         {
@@ -117,6 +136,18 @@ internal sealed class XunitLogger : ILogger
             // caller has additional loggers registered
             Trace.WriteLine(exception.Message);
         }
+    }
+
+    private static string ReplaceSquareBracketsForTeamCity(string message)
+    {
+        if (!Teamcity)
+        {
+            return message;
+        }
+
+        // don't log [ and ] as Teamcity can get confused
+        return message.Replace(oldValue: "[", newValue: "<<{", comparisonType: StringComparison.Ordinal)
+                      .Replace(oldValue: "]", newValue: "}>>", comparisonType: StringComparison.Ordinal);
     }
 
     private sealed class NullScope : IDisposable

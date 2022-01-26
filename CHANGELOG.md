@@ -6,6 +6,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+- Special cases for TeamCity to reduce length of messages.
 ### Fixed
 ### Changed
 - FF-1429 - Updated NSubstitute to 4.3.0

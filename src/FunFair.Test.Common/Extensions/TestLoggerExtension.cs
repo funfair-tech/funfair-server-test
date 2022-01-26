@@ -18,7 +18,7 @@ public static class TestLoggerExtension
     /// <param name="logLevel">Log level</param>
     /// <param name="message">Message</param>
     /// <param name="received">Received amount</param>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit Tests")]
     public static void Received(this ILogger logger, LogLevel logLevel, string message, int received = 1)
     {
         logger.Received(received)
@@ -31,7 +31,7 @@ public static class TestLoggerExtension
     /// <param name="logger">Logger</param>
     /// <param name="logLevel">Log level</param>
     /// <param name="message">Message</param>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit Tests")]
     public static void DidNotReceive(this ILogger logger, LogLevel logLevel, string message)
     {
         logger.DidNotReceive()

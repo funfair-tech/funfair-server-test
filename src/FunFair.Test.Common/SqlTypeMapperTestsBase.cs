@@ -35,7 +35,7 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
     /// <param name="value">The value to parse.</param>
     /// <param name="expected">The expected value of the mapped type.</param>
     /// <typeparam name="TValueType">The type of the value.</typeparam>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     protected void ShouldParse<TValueType>(TValueType value, TMappedType expected)
     {
         TMappedType result = this.Handler.Parse(value);
@@ -49,7 +49,7 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
     /// <param name="value">The value to set.</param>
     /// <param name="expected">The expected typed value.</param>
     /// <typeparam name="TValueType">The type of the value.</typeparam>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     protected void ShouldSetValue<TValueType>(TMappedType value, TValueType expected)
     {
         IDbDataParameter parameter = GetSubstitute<IDbDataParameter>();
@@ -65,7 +65,7 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
     /// </summary>
     /// <param name="value">The value to set.</param>
     /// <param name="expected">The expected typed value.</param>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     protected void ShouldSetValue(TMappedType value, in byte[] expected)
     {
         // note special case for byte arrays as NSubstitute whatever you give it always says it received something other than the expected
@@ -84,7 +84,7 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
     ///     Checks that the value is set to the expected value.
     /// </summary>
     /// <param name="value">The value to set.</param>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     protected void ShouldNotSetValue<TExceptionType>(TMappedType value)
         where TExceptionType : Exception
     {
@@ -100,7 +100,7 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
     /// <param name="value">The value to parse.</param>
     /// <typeparam name="TExceptionType">The exception that should be raised.</typeparam>
     /// <typeparam name="TValueType">The type of the value.</typeparam>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     protected void ShouldNotParse<TExceptionType, TValueType>(TValueType value)
         where TExceptionType : Exception
     {

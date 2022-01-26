@@ -29,43 +29,43 @@ public sealed class MockLogger<T> : ILogger<T>
     /// <summary>
     ///     Summary of all the items that have been seen.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     public IReadOnlyDictionary<LogLevel, int> Seen => this._seen.ToDictionary(keySelector: k => k.Key, elementSelector: v => v.Value.Count);
 
     /// <summary>
     ///     Have Critical errors been reported.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     public bool CriticalReported => this._seen.ContainsKey(LogLevel.Critical);
 
     /// <summary>
     ///     Have errors been reported.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     public bool ErrorsReported => this._seen.ContainsKey(LogLevel.Error);
 
     /// <summary>
     ///     Have warnings been reported.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     public bool WarningsReported => this._seen.ContainsKey(LogLevel.Warning);
 
     /// <summary>
     ///     Have trace messages been reported.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     public bool TraceReported => this._seen.ContainsKey(LogLevel.Trace);
 
     /// <summary>
     ///     Has Information been reported.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     public bool InformationReported => this._seen.ContainsKey(LogLevel.Information);
 
     /// <summary>
     ///     Have debug messages been reported.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     public bool DebugReported => this._seen.ContainsKey(LogLevel.Debug);
 
     /// <inheritdoc />

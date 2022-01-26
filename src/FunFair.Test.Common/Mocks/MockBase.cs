@@ -37,13 +37,13 @@ public abstract class MockBase<T>
     ///     Gets a new T
     /// </summary>
     /// <returns></returns>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit Tests")]
     public abstract T Next();
 
     /// <inheritdoc />
     [SuppressMessage(category: "ToStringWithoutOverrideAnalyzer",
                      checkId: "ExplicitToStringWithoutOverrideAnalyzer: Calling ToString() on object of type 'T' but it does not override ToString()",
-                     Justification = "TODO: Review")]
+                     Justification = "Valid in this case")]
     public override string ToString()
     {
         return this._value.ToString() ?? string.Empty;

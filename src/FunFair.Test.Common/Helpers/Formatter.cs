@@ -16,7 +16,7 @@ public static class Formatter
     /// <returns>The formatted value.</returns>
     [SuppressMessage(category: "ToStringWithoutOverrideAnalyzer",
                      checkId: "ExplicitToStringWithoutOverrideAnalyzer: Calling ToString() on object of type 'T' but it does not override ToString()",
-                     Justification = "TODO: Review")]
+                     Justification = "Valid in this case")]
     public static string FormatValue<T>(this T value)
         where T : notnull
     {
