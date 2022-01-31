@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated Roslynator.Analyzers to 4.0.2
-- FF-1429 - Updated coverlet to 3.1.1
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.35.0.42613
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [5.8.3] - 2022-01-31
+### Changed
+- FF-1429 - Updated Roslynator.Analyzers to 4.0.2
+- FF-1429 - Updated coverlet to 3.1.1
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.35.0.42613
+
 ## [5.8.2] - 2022-01-26
 ### Added
 - Special cases for TeamCity to reduce length of messages.
