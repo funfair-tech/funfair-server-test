@@ -8,17 +8,20 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [5.8.4] - 2022-02-04
+### Changed
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.689
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.690
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.691
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.692
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.693
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.694
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [5.8.3] - 2022-01-31
 ### Changed
 - FF-1429 - Updated Roslynator.Analyzers to 4.0.2
