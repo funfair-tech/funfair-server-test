@@ -47,7 +47,6 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 ### Added
 - Dependency Injection Test Base class.
 ### Changed
-- FF-1429 - Updated Philips.CodeAnalysis.DuplicateCodeAnalyzer to 1.1.5
 - FF-1429 - Updated Philips.CodeAnalysis.DuplicateCodeAnalyzer to 1.1.6
 
 ## [5.7.3] - 2021-12-17
@@ -88,7 +87,6 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 - Additional asserts in base classes for type converters - as it makes no sense for them to convert null - as input
   parameters are not nullable.
 ### Changed
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.2.5.870
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.3.0.879
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.27.0.35380
 - FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.11.0
@@ -97,10 +95,8 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 
 ## [5.5.0] - 2021-07-20
 ### Changed
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.2.1.809
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.3.0
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.26.0.34506
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.2.3.837
 - FF-1429 - Updated coverlet to 3.1.0
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.2.4.854
 
@@ -108,20 +104,10 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 ### Added
 - Base class for testing Model Binders
 ### Changed
-- FF-1429 - Updated FluentValidation.AspNetCore to 10.0.2
-- FF-1429 - Updated FluentValidation.AspNetCore to 10.0.3
-- FF-1429 - Updated FluentValidation.AspNetCore to 10.0.4
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.21.0.30542
-- FF-1429 - Updated FluentValidation.AspNetCore to 10.1.0
 - FF-1429 - Updated Dapper to 2.0.90
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.22.0.31243
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.2.0.740
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.23.0.32424
 - FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.10.0
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.10.56
-- FF-1429 - Updated FluentValidation.AspNetCore to 10.2.0
-- FF-1429 - Updated FluentValidation.AspNetCore to 10.2.1
-- FF-1429 - Updated FluentValidation.AspNetCore to 10.2.2
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.2.3
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.24.0.32949
 - FF-1429 - Updated Roslynator.Analyzers to 3.2.0
@@ -130,7 +116,6 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 ## [5.3.0] - 2021-04-06
 ### Changed
 - FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.9.4
-- FF-1429 - Updated FluentValidation.AspNetCore to 9.5.4
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.0.0
 
 ## [5.2.0] - 2021-03-19
@@ -144,12 +129,8 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 ### Added
 - Additional test method in SqlTypeMapperTestsBase
 ### Changed
-- FF-1429 - Updated AsyncFixer to 1.4.1
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.17.0.26580
 - FF-1429 - Updated AsyncFixer to 1.5.1
 - FF-1429 - Updated Roslynator.Analyzers to 3.1.0
-- FF-1429 - Updated FluentValidation.AspNetCore to 9.5.0
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.18.0.27296
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.1.0.658
 - FF-1429 - Updated FluentValidation.AspNetCore to 9.5.1
 - FF-1429 - Updated coverlet to 3.0.3
@@ -180,10 +161,7 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 - FF-1429 - Updated FluentValidation.AspNetCore to 9.3.0
 - FF-1429 - Updated NSubstitute.Analyzers.CSharp to 1.0.14
 - FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.8.0
-- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.8.55
-- FF-1429 - Updated FunFair.CodeAnalysis to 1.15.0.542
 - FF-1429 - Updated Microsoft.CodeAnalysis.FxCopAnalyzers to 3.3.1
-- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.8.51
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 16.8.50
 - FF-1429 - Updated FunFair.CodeAnalysis to 1.15.0.518
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.15.0.24505
@@ -192,11 +170,7 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 
 ## [1.14.0] 2020-10-14
 ### Changed
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.14.0.22654
-- FF-1429 - Updated FunFair.CodeAnalysis to 1.14.0.468
-- FF-1429 - Updated FunFair.CodeAnalysis to 1.13.0.452
 - FF-1429 - Updated FunFair.CodeAnalysis to 1.12.0.445
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.13.1.21947
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.13.0.21683
 - FF-2930 - Updated to .net core 3.1.403
 
@@ -229,8 +203,6 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 ### Changed
 - FF-1429 - Updated Microsoft.CodeAnalysis.FxCopAnalyzers to 3.3.0
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.11.0.20529
-- FF-1429 - Updated FluentValidation.AspNetCore to 9.1.2
-- FF-1429 - Updated FluentValidation.AspNetCore to 9.1.1
 - FF-1429 - Updated FluentValidation.AspNetCore to 9.1.0
 - FF-1429 - Updated Microsoft.NET.Test.Sdk to 16.7.0
 - FF-1429 - Updated xunit.runner.visualstudio to 2.4.3
@@ -262,9 +234,6 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 ### Added
 - FF-2601 - Can return an HttpClient containing a fake message handler which can be configured to respond as required
 ### Changed
-- FF-1429 - Updated FunFair.CodeAnalysis to 1.7.1.352
-- FF-1429 - Updated FunFair.CodeAnalysis to 1.7.0.347
-- FF-1429 - Updated FunFair.CodeAnalysis to 1.6.0.343
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.9.0.19135
 - FF-1429 - Updated FunFair.CodeAnalysis to 1.5.0.314
 
@@ -289,7 +258,7 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 
 ## [1.6.1] 2020-04-27
 ### Changed
-- FF-2295 - removed iequatable from jsonconvertertestbase
+- FF-2295 - removed IEquatable from JsonConverterTestBase
 
 ### Added
 ## [1.6.0] 2020-03-30
