@@ -17,6 +17,7 @@ internal sealed class XunitLogger : ILogger
     };
 
     private static readonly bool Teamcity = RunningUnderTeamCity();
+    private static readonly object TeamCityOutputLock = new();
 
     private readonly string _category;
     private readonly DateTimeOffset? _logStart;
@@ -79,7 +80,17 @@ internal sealed class XunitLogger : ILogger
             message = message.Substring(startIndex: 0, message.Length - Environment.NewLine.Length);
         }
 
-        this.LogToOutput(message);
+        if (Teamcity)
+        {
+            lock (TeamCityOutputLock)
+            {
+                this.LogToOutput(message);
+            }
+        }
+        else
+        {
+            this.LogToOutput(message);
+        }
     }
 
     public bool IsEnabled(LogLevel logLevel)

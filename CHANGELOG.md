@@ -6,6 +6,8 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+- Locking when running under TeamCity so that it doesn't write two messages at the same time and end up with a corrupt
+  message
 ### Fixed
 ### Changed
 - Dependency injection tests so that when getting a single service it explicitly checks that ONLY one is registered.
