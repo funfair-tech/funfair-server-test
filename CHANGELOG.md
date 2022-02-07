@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- Dependency injection tests so that when getting a single service it explicitly checks that ONLY one is registered.
 ### Removed
 
 <!--
@@ -21,11 +22,6 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 
 ## [5.8.4] - 2022-02-04
 ### Changed
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.689
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.690
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.691
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.692
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.693
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.694
 
 ## [5.8.3] - 2022-01-31

@@ -63,18 +63,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     protected void RequireServiceInCollectionFor<TInterface, TService>()
         where TInterface : class where TService : class, TInterface
     {
-        IReadOnlyList<TInterface> services = this.ServiceProvider.GetServices<TInterface>()
-                                                 .ToArray();
-
-        Console.WriteLine("Found Services:");
-
-        foreach (TInterface service in services)
-        {
-            Console.WriteLine($"* {service.GetType().FullName}");
-        }
-
-        Assert.NotEmpty(services);
-        Assert.Contains(collection: services, filter: service => service.GetType() == typeof(TService));
+        this.RequireServiceInCollectionForCommon<TInterface, TService>();
     }
 
     /// <summary>
@@ -87,22 +76,34 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     protected async Task RequireServiceInCollectionForAsync<TInterface, TService>()
         where TInterface : class where TService : class, TInterface
     {
-        IReadOnlyList<TInterface> services = this.ServiceProvider.GetServices<TInterface>()
-                                                 .ToArray();
-
-        Console.WriteLine("Found Services:");
-
-        foreach (TInterface service in services)
-        {
-            Console.WriteLine($"* {service.GetType().FullName}");
-        }
-
-        Assert.NotEmpty(services);
-        Assert.Contains(collection: services, filter: service => service.GetType() == typeof(TService));
+        this.RequireServiceInCollectionForCommon<TInterface, TService>();
 
         await Task.CompletedTask;
 
         this.Logger.LogDebug($"Waiting for dispose of {typeof(TInterface).FullName}...");
+    }
+
+    private void RequireServiceInCollectionForCommon<TInterface, TService>()
+        where TInterface : class where TService : class, TInterface
+    {
+        IReadOnlyList<TInterface> services = this.ServiceProvider.GetServices<TInterface>()
+                                                 .ToArray();
+
+        this.DumpServices(services);
+
+        Assert.NotEmpty(services);
+        Assert.Contains(collection: services, filter: service => service.GetType() == typeof(TService));
+    }
+
+    private void DumpServices<TInterface>(IReadOnlyList<TInterface> services)
+        where TInterface : class
+    {
+        this.Output.WriteLine("Found Services:");
+
+        foreach (TInterface service in services)
+        {
+            this.Output.WriteLine($"* {service.GetType().FullName}");
+        }
     }
 
     private TService RequireServiceCommon<TService>()
@@ -117,6 +118,18 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         this.Output.WriteLine($"Type Name: {fullName}");
 
         Assert.False(IsProxyObject(fullName), $"{typeof(TService).FullName} must not be a proxy object - found: {fullName}");
+
+        IReadOnlyList<TService> services = this.ServiceProvider.GetServices<TService>()
+                                               .ToArray();
+
+        this.Output.WriteLine("Found Services:");
+
+        foreach (TService foundService in services)
+        {
+            this.Output.WriteLine($"* {foundService.GetType().FullName}");
+        }
+
+        Assert.Single(services);
 
         return service;
     }
