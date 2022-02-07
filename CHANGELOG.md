@@ -6,17 +6,21 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-- Locking when running under TeamCity so that it doesn't write two messages at the same time and end up with a corrupt
-  message
 ### Fixed
 ### Changed
-- Dependency injection tests so that when getting a single service it explicitly checks that ONLY one is registered.
-- FF-1429 - Updated FunFair.CodeAnalysis to 5.8.0.1196
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [5.9.0] - 2022-02-07
+### Added
+- Locking when running under TeamCity so that it doesn't write two messages at the same time and end up with a corrupt
+  message
+### Changed
+- Dependency injection tests so that when getting a single service it explicitly checks that ONLY one is registered.
+- FF-1429 - Updated FunFair.CodeAnalysis to 5.8.0.1196
+
 ## [5.8.5] - 2022-02-07
 ### Added
 - Validator test class for testing fluent validators with dependencies
