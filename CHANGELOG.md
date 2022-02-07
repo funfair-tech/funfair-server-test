@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependency injection tests so that when getting a single service it explicitly checks that ONLY one is registered.
+- FF-1429 - Updated FunFair.CodeAnalysis to 5.8.0.1196
 ### Removed
 
 <!--
