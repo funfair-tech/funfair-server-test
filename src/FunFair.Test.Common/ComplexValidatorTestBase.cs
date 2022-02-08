@@ -16,7 +16,6 @@ namespace FunFair.Test.Common;
 public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TValidator, TObject> : LoggingTestBase
     where TValidator : AbstractValidator<TObject>
 {
-
     /// <summary>
     ///     Constructor.
     /// </summary>
@@ -33,7 +32,8 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
     /// <returns>Validation result.</returns>
     public ValidationResult Validate(TObject instance)
     {
-        ValidationResult result = this.CreateValidator().Validate(instance);
+        ValidationResult result = this.CreateValidator()
+                                      .Validate(instance);
 
         this.Dump(result);
 
@@ -149,9 +149,11 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
         bool hasUnexpectedErrors = result.Errors.All(predicate: error => erroringProperties.Contains(value: error.PropertyName, comparer: StringComparer.Ordinal));
         bool hasAllExpectedErrors = erroringProperties.All(predicate: error => result.Errors.Any(predicate: p => p.PropertyName == error));
 
-        Assert.True(condition: hasUnexpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasUnexpectedErrors,
+                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
 
-        Assert.True(condition: hasAllExpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasAllExpectedErrors,
+                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
     }
 
     /// <summary>
