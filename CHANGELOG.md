@@ -8,12 +8,15 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-3881 - Updated DotNet SDK to 6.0.102
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [5.9.1] - 2022-02-09
+### Changed
+- FF-3881 - Updated DotNet SDK to 6.0.102
+
 ## [5.9.0] - 2022-02-07
 ### Added
 - Locking when running under TeamCity so that it doesn't write two messages at the same time and end up with a corrupt
