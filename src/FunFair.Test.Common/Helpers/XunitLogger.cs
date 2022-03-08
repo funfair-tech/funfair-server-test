@@ -23,9 +23,9 @@ internal sealed class XunitLogger : ILogger
     private readonly DateTimeOffset? _logStart;
     private readonly LogLevel _minLogLevel;
     private readonly ITestOutputHelper _output;
-    private readonly Semaphore _semaphore;
+    private readonly SemaphoreSlim _semaphore;
 
-    public XunitLogger(ITestOutputHelper output, string category, LogLevel minLogLevel, DateTimeOffset? logStart, Semaphore semaphore)
+    public XunitLogger(ITestOutputHelper output, string category, LogLevel minLogLevel, DateTimeOffset? logStart, SemaphoreSlim semaphore)
     {
         this._minLogLevel = minLogLevel;
         this._category = category;
@@ -104,7 +104,7 @@ internal sealed class XunitLogger : ILogger
 
     private void LogUnderLock(string message)
     {
-        this._semaphore.WaitOne();
+        this._semaphore.Wait();
 
         try
         {
