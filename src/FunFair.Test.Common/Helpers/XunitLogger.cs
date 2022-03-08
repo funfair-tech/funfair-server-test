@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
@@ -17,19 +18,20 @@ internal sealed class XunitLogger : ILogger
     };
 
     private static readonly bool Teamcity = RunningUnderTeamCity();
-    private static readonly object TeamCityOutputLock = new();
 
     private readonly string _category;
     private readonly DateTimeOffset? _logStart;
     private readonly LogLevel _minLogLevel;
     private readonly ITestOutputHelper _output;
+    private readonly Semaphore _semaphore;
 
-    public XunitLogger(ITestOutputHelper output, string category, LogLevel minLogLevel, DateTimeOffset? logStart)
+    public XunitLogger(ITestOutputHelper output, string category, LogLevel minLogLevel, DateTimeOffset? logStart, Semaphore semaphore)
     {
         this._minLogLevel = minLogLevel;
         this._category = category;
         this._output = output;
         this._logStart = logStart;
+        this._semaphore = semaphore ?? throw new ArgumentNullException(nameof(semaphore));
     }
 
     [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0005:Avoid DateTimeOffset.UtcNow", Justification = "Unit test")]
@@ -82,10 +84,7 @@ internal sealed class XunitLogger : ILogger
 
         if (Teamcity)
         {
-            lock (TeamCityOutputLock)
-            {
-                this.LogToOutput(message);
-            }
+            this.LogUnderLock(message);
         }
         else
         {
@@ -101,6 +100,20 @@ internal sealed class XunitLogger : ILogger
     public IDisposable BeginScope<TState>(TState state)
     {
         return new NullScope();
+    }
+
+    private void LogUnderLock(string message)
+    {
+        this._semaphore.WaitOne();
+
+        try
+        {
+            this.LogToOutput(message);
+        }
+        finally
+        {
+            this._semaphore.Release();
+        }
     }
 
     private static bool RunningUnderTeamCity()
@@ -158,7 +171,8 @@ internal sealed class XunitLogger : ILogger
 
         // don't log [ and ] as Teamcity can get confused
         return message.Replace(oldValue: "[", newValue: "<<{", comparisonType: StringComparison.Ordinal)
-                      .Replace(oldValue: "]", newValue: "}>>", comparisonType: StringComparison.Ordinal);
+                      .Replace(oldValue: "]", newValue: "}>>", comparisonType: StringComparison.Ordinal)
+                      .Trim();
     }
 
     private sealed class NullScope : IDisposable
