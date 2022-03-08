@@ -39,7 +39,7 @@ public abstract class LoggingTestBase : TestBase, IDisposable
     /// </summary>
     /// <param name="output">XUnit output</param>
     /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
-    protected LoggingTestBase(ITestOutputHelper output, Action<IServiceCollection> dependencyInjectionRegistration)
+    protected LoggingTestBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration)
         : this(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration, initializeServices: NoDependencyInjectionInitialization)
     {
     }
@@ -51,7 +51,7 @@ public abstract class LoggingTestBase : TestBase, IDisposable
     /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
     /// <param name="initializeServices">Initialises services.</param>
     [SuppressMessage(category: "Major Code Smell", checkId: "S3442:\"abstract\" classes should not have \"public\" constructors", Justification = "By Design")]
-    protected internal LoggingTestBase(ITestOutputHelper output, Action<IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
+    protected internal LoggingTestBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
     {
         if (output == null)
         {
@@ -70,12 +70,8 @@ public abstract class LoggingTestBase : TestBase, IDisposable
 
         TaskScheduler.UnobservedTaskException += this.ReportUnhandledException;
 
-        IServiceCollection serviceCollection = new ServiceCollection();
-
-        LoggingStartup.AddLoggingSupport(services: serviceCollection, output: output);
-        dependencyInjectionRegistration(serviceCollection);
-
-        this._serviceProvider = serviceCollection.BuildServiceProvider();
+        this._serviceProvider = dependencyInjectionRegistration(new ServiceCollection().AddLoggingSupport(output: output))
+            .BuildServiceProvider();
 
         this._loggerFactory = this._serviceProvider.GetRequiredService<ILoggerFactory>();
         initializeServices(this._serviceProvider);
@@ -103,9 +99,10 @@ public abstract class LoggingTestBase : TestBase, IDisposable
         // Nothing to do
     }
 
-    private static void NoDependencyInjectionConfiguration(IServiceCollection serviceCollection)
+    private static IServiceCollection NoDependencyInjectionConfiguration(IServiceCollection serviceCollection)
     {
         // Nothing to do
+        return serviceCollection;
     }
 
     /// <summary>

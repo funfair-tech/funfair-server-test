@@ -7,9 +7,9 @@ namespace FunFair.Test.Common.Startup;
 
 internal static class LoggingStartup
 {
-    public static void AddLoggingSupport(IServiceCollection services, ITestOutputHelper output)
+    public static IServiceCollection AddLoggingSupport(this IServiceCollection services, ITestOutputHelper output)
     {
-        services.AddLogging(configure: builder => AddFilters(builder: builder, output: output));
+        return services.AddLogging(configure: builder => AddFilters(builder: builder, output: output));
     }
 
     private static void AddFilters(ILoggingBuilder builder, ITestOutputHelper output)

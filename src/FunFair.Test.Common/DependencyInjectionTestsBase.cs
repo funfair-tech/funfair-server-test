@@ -21,7 +21,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     /// </summary>
     /// <param name="output">XUnit output</param>
     /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
-    protected DependencyInjectionTestsBase(ITestOutputHelper output, Action<IServiceCollection> dependencyInjectionRegistration)
+    protected DependencyInjectionTestsBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration)
         : base(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration)
     {
     }

@@ -15,10 +15,10 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
     {
     }
 
-    private static void Configure(IServiceCollection serviceCollection)
+    private static IServiceCollection Configure(IServiceCollection serviceCollection)
     {
-        serviceCollection.AddSingleton(GetSubstitute<ITestInterface>());
-        serviceCollection.AddSingleton<IModelBinder, ModelBinder>();
+        return serviceCollection.AddSingleton(GetSubstitute<ITestInterface>())
+                                .AddSingleton<IModelBinder, ModelBinder>();
     }
 
     [Fact]
