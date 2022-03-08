@@ -17,7 +17,7 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
 
     private static IServiceCollection Configure(IServiceCollection serviceCollection)
     {
-        return serviceCollection.AddSingleton(GetSubstitute<ITestInterface>())
+        return serviceCollection.AddMockedService<ITestInterface>()
                                 .AddSingleton<IModelBinder, ModelBinder>();
     }
 
