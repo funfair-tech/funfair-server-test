@@ -38,7 +38,9 @@ public abstract class IntegrationTestBase : LoggingTestBase
     /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
     /// <param name="initializeServices">Initialises services.</param>
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "May be used in derived test classes")]
-    protected IntegrationTestBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
+    protected IntegrationTestBase(ITestOutputHelper output,
+                                  Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration,
+                                  Action<IServiceProvider> initializeServices)
         : base(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration, initializeServices: initializeServices)
     {
     }

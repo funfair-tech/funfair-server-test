@@ -51,7 +51,9 @@ public abstract class LoggingTestBase : TestBase, IDisposable
     /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
     /// <param name="initializeServices">Initialises services.</param>
     [SuppressMessage(category: "Major Code Smell", checkId: "S3442:\"abstract\" classes should not have \"public\" constructors", Justification = "By Design")]
-    protected internal LoggingTestBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
+    protected internal LoggingTestBase(ITestOutputHelper output,
+                                       Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration,
+                                       Action<IServiceProvider> initializeServices)
     {
         if (output == null)
         {
