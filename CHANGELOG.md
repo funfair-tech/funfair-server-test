@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-3881 - Updated DotNet SDK to 6.0.201
 - FF-1429 - Updated FluentValidation.AspNetCore to 10.4.0
 - FF-1429 - Updated NonBlocking to 2.0.0
+- FF-1429 - Updated Meziantou.Analyzer to 1.0.698
 ### Removed
 
 <!--
