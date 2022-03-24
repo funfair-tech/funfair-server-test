@@ -40,7 +40,8 @@ internal static class LoggingStartup
 
     private static void AddFilters(ILoggingBuilder builder)
     {
-        builder.AddFilter(category: @"Microsoft", level: LogLevel.Warning)
+        builder.ClearProviders()
+               .AddFilter(category: @"Microsoft", level: LogLevel.Warning)
                .AddFilter(category: @"System.Net.Http.HttpClient", level: LogLevel.Warning)
                .SetMinimumLevel(LogLevel.Trace);
     }

@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using FunFair.Test.Common.Logging;
 using FunFair.Test.Common.Startup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,14 +15,11 @@ namespace FunFair.Test.Common;
                  checkId: "CA2213:DisposableFieldsShouldBeDisposed",
                  MessageId = nameof(_loggerFactory),
                  Justification = "If Disposed then tests can and will report errors")]
-public abstract class LoggingTestBase : TestBase, IDisposable
+public abstract class LoggingTestBase : TestBase
 {
     private readonly ILoggerFactory _loggerFactory;
 
     private readonly IServiceProvider _serviceProvider;
-
-    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0035: Test classes should be immutable", Justification = "Infrastructure not a test")]
-    private DisposableLogger? _logger;
 
     /// <summary>
     ///     Constructor.
@@ -76,25 +72,19 @@ public abstract class LoggingTestBase : TestBase, IDisposable
         this._loggerFactory = this._serviceProvider.GetRequiredService<ILoggerFactory>();
         LoggingStartup.InitializeLogging(loggerFactory: this._loggerFactory, output: output);
         this.Output = output;
+        this.Logger = this.GetTypedLogger<LoggingTestBase>();
         initializeServices(this._serviceProvider);
     }
 
     /// <summary>
     ///     Gets a logger
     /// </summary>
-    protected ILogger Logger => this._logger ??= this.BuildLogger();
+    protected ILogger Logger { get; }
 
     /// <summary>
     ///     Test Log output.
     /// </summary>
     protected ITestOutputHelper Output { get; }
-
-    /// <inheritdoc />
-    public void Dispose()
-    {
-        this.Dispose(disposing: true);
-        GC.SuppressFinalize(this);
-    }
 
     private static void NoDependencyInjectionInitialization(IServiceProvider serviceProvider)
     {
@@ -143,11 +133,6 @@ public abstract class LoggingTestBase : TestBase, IDisposable
     protected sealed override ILogger<T> GetTypedLogger<T>()
     {
         return this._loggerFactory.CreateLogger<T>();
-    }
-
-    private DisposableLogger BuildLogger()
-    {
-        return new(this.GetTypedLogger<LoggingTestBase>());
     }
 
     private void ReportUnhandledException(object? sender, UnobservedTaskExceptionEventArgs args)
