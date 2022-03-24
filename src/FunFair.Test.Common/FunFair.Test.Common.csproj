@@ -43,6 +43,7 @@
     <PackageReference Include="NSubstitute" Version="4.3.0"/>
     <PackageReference Include="xunit" Version="2.4.1"/>
 
+    <PackageReference Include="Serilog.Enrichers.AssemblyName" Version="1.0.9"/>
     <PackageReference Include="Serilog.Enrichers.Demystifier" Version="1.0.2"/>
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0"/>
     <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2"/>
