@@ -32,6 +32,8 @@ internal static class LoggingStartup
         return new LoggerConfiguration().Enrich.FromLogContext()
                                         .Enrich.WithSensitiveDataMasking()
                                         .Enrich.WithDemystifiedStackTraces()
+                                        .Enrich.WithAssemblyName()
+                                        .Enrich.WithAssemblyVersion()
                                         .Enrich.WithMachineName()
                                         .Enrich.WithProcessId()
                                         .Enrich.WithThreadId()
