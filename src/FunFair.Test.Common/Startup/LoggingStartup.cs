@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Core;
+using Serilog.Enrichers.Sensitive;
 using Serilog.Events;
 using Xunit.Abstractions;
 
@@ -29,6 +30,7 @@ internal static class LoggingStartup
     private static Logger CreateLogger(ITestOutputHelper output)
     {
         return new LoggerConfiguration().Enrich.FromLogContext()
+                                        .Enrich.WithSensitiveDataMasking()
                                         .Enrich.WithDemystifiedStackTraces()
                                         .Enrich.WithMachineName()
                                         .Enrich.WithProcessId()
