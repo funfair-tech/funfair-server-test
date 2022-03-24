@@ -51,9 +51,7 @@ public abstract class LoggingTestBase : TestBase, IDisposable
     /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
     /// <param name="initializeServices">Initialises services.</param>
     [SuppressMessage(category: "Major Code Smell", checkId: "S3442:\"abstract\" classes should not have \"public\" constructors", Justification = "By Design")]
-    protected internal LoggingTestBase(ITestOutputHelper output,
-                                       Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration,
-                                       Action<IServiceProvider> initializeServices)
+    protected internal LoggingTestBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
     {
         if (output == null)
         {
@@ -72,10 +70,11 @@ public abstract class LoggingTestBase : TestBase, IDisposable
 
         TaskScheduler.UnobservedTaskException += this.ReportUnhandledException;
 
-        this._serviceProvider = dependencyInjectionRegistration(new ServiceCollection().AddLoggingSupport(output: output))
+        this._serviceProvider = dependencyInjectionRegistration(new ServiceCollection().AddLoggingSupport())
             .BuildServiceProvider();
 
         this._loggerFactory = this._serviceProvider.GetRequiredService<ILoggerFactory>();
+        LoggingStartup.InitializeLogging(loggerFactory: this._loggerFactory, output: output);
         initializeServices(this._serviceProvider);
     }
 
