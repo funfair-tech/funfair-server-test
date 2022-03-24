@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -21,6 +22,24 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
         try
         {
             this.Output.WriteLine($"Hello World. It's {now}");
+        }
+        catch (Exception exception)
+        {
+            throw new FormatException(message: "Twit", innerException: exception);
+        }
+    }
+
+    [Fact]
+    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0005:Avoid DateTimeOffset.UtcNow", Justification = "Unit test")]
+    public void LoggingOutputs()
+    {
+        ILogger<LoggingTestBaseTests> logger = this.GetTypedLogger<LoggingTestBaseTests>();
+
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+
+        try
+        {
+            logger.LogError($"Hello World. It's {now}");
         }
         catch (Exception exception)
         {

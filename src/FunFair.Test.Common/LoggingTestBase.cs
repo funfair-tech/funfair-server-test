@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using FunFair.Test.Common.Logging;
 using FunFair.Test.Common.Startup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,14 +15,11 @@ namespace FunFair.Test.Common;
                  checkId: "CA2213:DisposableFieldsShouldBeDisposed",
                  MessageId = nameof(_loggerFactory),
                  Justification = "If Disposed then tests can and will report errors")]
-public abstract class LoggingTestBase : TestBase, IDisposable
+public abstract class LoggingTestBase : TestBase
 {
     private readonly ILoggerFactory _loggerFactory;
 
     private readonly IServiceProvider _serviceProvider;
-
-    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0035: Test classes should be immutable", Justification = "Infrastructure not a test")]
-    private DisposableLogger? _logger;
 
     /// <summary>
     ///     Constructor.
@@ -51,9 +47,7 @@ public abstract class LoggingTestBase : TestBase, IDisposable
     /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
     /// <param name="initializeServices">Initialises services.</param>
     [SuppressMessage(category: "Major Code Smell", checkId: "S3442:\"abstract\" classes should not have \"public\" constructors", Justification = "By Design")]
-    protected internal LoggingTestBase(ITestOutputHelper output,
-                                       Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration,
-                                       Action<IServiceProvider> initializeServices)
+    protected internal LoggingTestBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
     {
         if (output == null)
         {
@@ -72,29 +66,25 @@ public abstract class LoggingTestBase : TestBase, IDisposable
 
         TaskScheduler.UnobservedTaskException += this.ReportUnhandledException;
 
-        this._serviceProvider = dependencyInjectionRegistration(new ServiceCollection().AddLoggingSupport(output: output))
+        this._serviceProvider = dependencyInjectionRegistration(new ServiceCollection().AddLoggingSupport())
             .BuildServiceProvider();
 
         this._loggerFactory = this._serviceProvider.GetRequiredService<ILoggerFactory>();
+        LoggingStartup.InitializeLogging(loggerFactory: this._loggerFactory, output: output);
+        this.Output = output;
+        this.Logger = this.GetTypedLogger<LoggingTestBase>();
         initializeServices(this._serviceProvider);
     }
 
     /// <summary>
     ///     Gets a logger
     /// </summary>
-    protected ILogger Logger => this._logger ??= this.BuildLogger();
+    protected ILogger Logger { get; }
 
     /// <summary>
     ///     Test Log output.
     /// </summary>
-    protected ITestOutputHelper Output => new LogOutput(this.Logger);
-
-    /// <inheritdoc />
-    public void Dispose()
-    {
-        this.Dispose(disposing: true);
-        GC.SuppressFinalize(this);
-    }
+    protected ITestOutputHelper Output { get; }
 
     private static void NoDependencyInjectionInitialization(IServiceProvider serviceProvider)
     {
@@ -113,10 +103,8 @@ public abstract class LoggingTestBase : TestBase, IDisposable
     /// <param name="disposing">true, when the object is being disposed; otherwise, false.</param>
     protected virtual void Dispose(bool disposing)
     {
-        IDisposable? disposableLogger = this._logger;
-        disposableLogger?.Dispose();
-
         // note do not dispose _loggerFactory in this method
+        this._loggerFactory.Dispose();
 
         TaskScheduler.UnobservedTaskException -= this.ReportUnhandledException;
     }
@@ -145,11 +133,6 @@ public abstract class LoggingTestBase : TestBase, IDisposable
     protected sealed override ILogger<T> GetTypedLogger<T>()
     {
         return this._loggerFactory.CreateLogger<T>();
-    }
-
-    private DisposableLogger BuildLogger()
-    {
-        return new(this.GetTypedLogger<LoggingTestBase>());
     }
 
     private void ReportUnhandledException(object? sender, UnobservedTaskExceptionEventArgs args)

@@ -33,18 +33,25 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)FunFair.props" />
   <ItemGroup>
-    <!-- Note in this project ONLY we need to exclude the test SDK from being packed -->
-  </ItemGroup>
-  <ItemGroup>
     <Content Remove="content\testhost.dll" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.4.1" />
-    <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
-    <PackageReference Include="NonBlocking" Version="2.0.0" />
-    <PackageReference Include="NSubstitute" Version="4.3.0" />
-    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="Castle.Core" Version="4.4.1"/>
+    <PackageReference Include="Dapper" Version="2.0.123"/>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0"/>
+    <PackageReference Include="NonBlocking" Version="2.0.0"/>
+    <PackageReference Include="NSubstitute" Version="4.3.0"/>
+    <PackageReference Include="xunit" Version="2.4.1"/>
+
+    <PackageReference Include="Serilog.Enrichers.AssemblyName" Version="1.0.9"/>
+    <PackageReference Include="Serilog.Enrichers.Demystifier" Version="1.0.2"/>
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0"/>
+    <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2"/>
+    <PackageReference Include="Serilog.Enrichers.Sensitive" Version="1.0.0"/>
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0"/>
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0"/>
+    <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0"/>
+    <PackageReference Include="Serilog.Sinks.Xunit" Version="3.0.3"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
