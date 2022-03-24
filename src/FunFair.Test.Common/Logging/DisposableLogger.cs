@@ -4,21 +4,13 @@ using Microsoft.Extensions.Logging;
 
 namespace FunFair.Test.Common.Logging;
 
-internal sealed class DisposableLogger : ILogger, IDisposable
+internal sealed class DisposableLogger : ILogger
 {
     private readonly ILogger _logger;
-    private readonly IDisposable _scope;
 
-    public DisposableLogger(
-        [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")] ILogger logger)
+    public DisposableLogger([SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")] ILogger logger)
     {
         this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        this._scope = this._logger.BeginScope(state: "Test-Logging");
-    }
-
-    public void Dispose()
-    {
-        this._scope.Dispose();
     }
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)

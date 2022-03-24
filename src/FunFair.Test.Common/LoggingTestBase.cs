@@ -75,6 +75,7 @@ public abstract class LoggingTestBase : TestBase, IDisposable
 
         this._loggerFactory = this._serviceProvider.GetRequiredService<ILoggerFactory>();
         LoggingStartup.InitializeLogging(loggerFactory: this._loggerFactory, output: output);
+        this.Output = output;
         initializeServices(this._serviceProvider);
     }
 
@@ -86,7 +87,7 @@ public abstract class LoggingTestBase : TestBase, IDisposable
     /// <summary>
     ///     Test Log output.
     /// </summary>
-    protected ITestOutputHelper Output => new LogOutput(this.Logger);
+    protected ITestOutputHelper Output { get; }
 
     /// <inheritdoc />
     public void Dispose()
@@ -112,10 +113,8 @@ public abstract class LoggingTestBase : TestBase, IDisposable
     /// <param name="disposing">true, when the object is being disposed; otherwise, false.</param>
     protected virtual void Dispose(bool disposing)
     {
-        IDisposable? disposableLogger = this._logger;
-        disposableLogger?.Dispose();
-
         // note do not dispose _loggerFactory in this method
+        this._loggerFactory.Dispose();
 
         TaskScheduler.UnobservedTaskException -= this.ReportUnhandledException;
     }
