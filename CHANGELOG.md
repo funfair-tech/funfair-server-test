@@ -13,6 +13,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated NonBlocking to 2.0.0
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.698
 - FF-1429 - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.2.28
+- Removed lots of custom code to log to xunit and replaced with serilog
 ### Removed
 
 <!--
