@@ -53,7 +53,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
         IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
-        Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Content-Type"] = "application/json", ["Authorization"] = "Bearer 12345" };
+        Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Authorization"] = "Bearer 12345" };
         httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, headers: headers);
 
         HttpClient client = httpClientFactory.CreateClient(clientName);
@@ -84,7 +84,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
         IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
-        Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Content-Type"] = "application/json", ["Authorization"] = "Bearer 12345" };
+        Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Authorization"] = "Bearer 12345" };
         httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, headers: headers, responseObject: new ExampleObject { Name = "Banana" });
 
         HttpClient client = httpClientFactory.CreateClient(clientName);
@@ -121,7 +121,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
         IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
-        Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Content-Type"] = "application/json", ["Authorization"] = "Bearer 12345" };
+        Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Authorization"] = "Bearer 12345" };
         httpClientFactory.MockCreateClientWithResponse(clientName: clientName,
                                                        httpStatusCode: HttpStatusCode.BadGateway,
                                                        headers: headers,
