@@ -69,7 +69,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
         IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
-        httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, new ExampleObject { Name = "Banana" });
+        httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, responseObject: MockReferenceData.ExampleObject);
 
         HttpClient client = httpClientFactory.CreateClient(clientName);
 
@@ -85,7 +85,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
         IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
         Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Authorization"] = "Bearer 12345" };
-        httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, headers: headers, responseObject: new ExampleObject { Name = "Banana" });
+        httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, headers: headers, responseObject: MockReferenceData.ExampleObject);
 
         HttpClient client = httpClientFactory.CreateClient(clientName);
 
@@ -104,7 +104,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
         httpClientFactory.MockCreateClientWithResponse(clientName: clientName,
                                                        httpStatusCode: HttpStatusCode.BadGateway,
-                                                       new ExampleObject { Name = "Banana" },
+                                                       responseObject: MockReferenceData.ExampleObject,
                                                        jsonSerializerOptions: serializerOptions);
 
         HttpClient client = httpClientFactory.CreateClient(clientName);
@@ -125,7 +125,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
         httpClientFactory.MockCreateClientWithResponse(clientName: clientName,
                                                        httpStatusCode: HttpStatusCode.BadGateway,
                                                        headers: headers,
-                                                       responseObject: new ExampleObject { Name = "Banana" },
+                                                       responseObject: MockReferenceData.ExampleObject.Next(),
                                                        jsonSerializerOptions: serializerOptions);
 
         HttpClient client = httpClientFactory.CreateClient(clientName);

@@ -37,7 +37,6 @@ public abstract class MockBase<T>
     ///     Gets a new T
     /// </summary>
     /// <returns></returns>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit Tests")]
     public abstract T Next();
 
     /// <inheritdoc />
