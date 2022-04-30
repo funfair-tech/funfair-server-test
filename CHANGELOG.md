@@ -15,6 +15,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-3881 - Updated DotNet SDK to 6.0.202
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.701
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.38.0.46746
+- FF-1429 - Updated FluentValidation.AspNetCore to 11.0.0
 ### Removed
 
 <!--
