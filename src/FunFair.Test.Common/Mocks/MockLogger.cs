@@ -11,7 +11,6 @@ namespace FunFair.Test.Common.Mocks;
 /// <summary>
 ///     Mock of logging.
 /// </summary>
-[SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
 public sealed class MockLogger<T> : ILogger<T>
 {
     private readonly ILogger _logger;

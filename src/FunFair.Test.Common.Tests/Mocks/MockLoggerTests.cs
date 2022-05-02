@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FunFair.Test.Common.Mocks;
 using Microsoft.Extensions.Logging;
 using Xunit;
@@ -24,6 +25,9 @@ public sealed class MockLoggerTests : TestBase
         Assert.False(condition: this._logger.InformationReported, userMessage: "Information should not have been reported");
         Assert.False(condition: this._logger.DebugReported, userMessage: "Debug should not have been reported");
         Assert.False(condition: this._logger.TraceReported, userMessage: "Trace should not have been reported");
+
+        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Critical] = 1 };
+        Assert.Equal(expected: items, actual: this._logger.Seen);
     }
 
     [Fact]
@@ -37,6 +41,9 @@ public sealed class MockLoggerTests : TestBase
         Assert.False(condition: this._logger.InformationReported, userMessage: "Information should not have been reported");
         Assert.False(condition: this._logger.DebugReported, userMessage: "Debug should not have been reported");
         Assert.False(condition: this._logger.TraceReported, userMessage: "Trace should not have been reported");
+
+        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Error] = 1 };
+        Assert.Equal(expected: items, actual: this._logger.Seen);
     }
 
     [Fact]
@@ -50,6 +57,9 @@ public sealed class MockLoggerTests : TestBase
         Assert.False(condition: this._logger.InformationReported, userMessage: "Information should not have been reported");
         Assert.False(condition: this._logger.DebugReported, userMessage: "Debug should not have been reported");
         Assert.False(condition: this._logger.TraceReported, userMessage: "Trace should not have been reported");
+
+        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Warning] = 1 };
+        Assert.Equal(expected: items, actual: this._logger.Seen);
     }
 
     [Fact]
@@ -63,6 +73,9 @@ public sealed class MockLoggerTests : TestBase
         Assert.True(condition: this._logger.InformationReported, userMessage: "Information should have been reported");
         Assert.False(condition: this._logger.DebugReported, userMessage: "Debug should not have been reported");
         Assert.False(condition: this._logger.TraceReported, userMessage: "Trace should not have been reported");
+
+        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Information] = 1 };
+        Assert.Equal(expected: items, actual: this._logger.Seen);
     }
 
     [Fact]
@@ -76,6 +89,9 @@ public sealed class MockLoggerTests : TestBase
         Assert.False(condition: this._logger.InformationReported, userMessage: "Information should have been reported");
         Assert.True(condition: this._logger.DebugReported, userMessage: "Debug should have been reported");
         Assert.False(condition: this._logger.TraceReported, userMessage: "Trace should not have been reported");
+
+        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Debug] = 1 };
+        Assert.Equal(expected: items, actual: this._logger.Seen);
     }
 
     [Fact]
@@ -89,5 +105,8 @@ public sealed class MockLoggerTests : TestBase
         Assert.False(condition: this._logger.InformationReported, userMessage: "Information should have been reported");
         Assert.False(condition: this._logger.DebugReported, userMessage: "Debug should have been reported");
         Assert.True(condition: this._logger.TraceReported, userMessage: "Trace should have been reported");
+
+        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Trace] = 1 };
+        Assert.Equal(expected: items, actual: this._logger.Seen);
     }
 }
