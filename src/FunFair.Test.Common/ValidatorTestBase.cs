@@ -98,7 +98,6 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
     /// <summary>
     ///     Tests that all properties in the object pass validation.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     protected void TestEverythingValid()
     {
         TObject itemToValidate = this.CreateAValidObject();
@@ -151,7 +150,6 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
     /// </summary>
     /// <param name="parts">The parts.</param>
     /// <returns>The property name.</returns>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     protected static string MakePropertyName(params string[] parts)
     {
         return string.Join(separator: ".", value: parts);
