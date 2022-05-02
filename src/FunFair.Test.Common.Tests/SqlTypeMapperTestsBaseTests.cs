@@ -16,4 +16,10 @@ public sealed class SqlTypeMapperTestsBaseTests : SqlTypeMapperTestsBase<Example
     {
         this.ShouldNotParse<InvalidCastException, decimal>(value: 1.234m);
     }
+
+    [Fact]
+    public void ShouldSetValueTest()
+    {
+        this.ShouldSetValue(new("Test Value"), expected: "Test Value");
+    }
 }

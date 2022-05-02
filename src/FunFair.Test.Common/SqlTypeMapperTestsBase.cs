@@ -12,7 +12,6 @@ namespace FunFair.Test.Common;
 /// </summary>
 /// <typeparam name="TTypeMapper">The type mapper to test.</typeparam>
 /// <typeparam name="TMappedType">The mapped type.</typeparam>
-[SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
 public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTypeMapper, TMappedType> : TestBase
     where TTypeMapper : SqlMapper.TypeHandler<TMappedType>, new()
 {
@@ -35,7 +34,6 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
     /// <param name="value">The value to parse.</param>
     /// <param name="expected">The expected value of the mapped type.</param>
     /// <typeparam name="TValueType">The type of the value.</typeparam>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     protected void ShouldParse<TValueType>(TValueType value, TMappedType expected)
     {
         TMappedType result = this.Handler.Parse(value);
@@ -49,7 +47,6 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
     /// <param name="value">The value to set.</param>
     /// <param name="expected">The expected typed value.</param>
     /// <typeparam name="TValueType">The type of the value.</typeparam>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     protected void ShouldSetValue<TValueType>(TMappedType value, TValueType expected)
     {
         IDbDataParameter parameter = GetSubstitute<IDbDataParameter>();
@@ -100,7 +97,6 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
     /// <param name="value">The value to parse.</param>
     /// <typeparam name="TExceptionType">The exception that should be raised.</typeparam>
     /// <typeparam name="TValueType">The type of the value.</typeparam>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     protected void ShouldNotParse<TExceptionType, TValueType>(TValueType value)
         where TExceptionType : Exception
     {
