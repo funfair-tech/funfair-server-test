@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Xunit;
 
 namespace FunFair.Test.Common.Tests;
@@ -21,6 +22,12 @@ public sealed class SqlTypeMapperTestsBaseTests : SqlTypeMapperTestsBase<Example
     public void ShouldSetValueTest()
     {
         this.ShouldSetValue(new("Test Value"), expected: "Test Value");
+    }
+
+    [Fact]
+    public void ShouldSetValueBinaryTest()
+    {
+        this.ShouldSetValue(new("Binary"), Encoding.UTF8.GetBytes("Binary"));
     }
 
     [Fact]

@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Text;
 using Dapper;
 
 namespace FunFair.Test.Common.Tests;
@@ -11,6 +12,13 @@ public sealed class ExampleRecordTypeMapper : SqlMapper.TypeHandler<ExampleRecor
         if (value.Name == "Exception")
         {
             throw new ArgumentOutOfRangeException(nameof(value), actualValue: value.Name, message: "Example");
+        }
+
+        if (value.Name == "Binary")
+        {
+            parameter.Value = Encoding.UTF8.GetBytes(value.Name);
+
+            return;
         }
 
         parameter.Value = value.Name;
