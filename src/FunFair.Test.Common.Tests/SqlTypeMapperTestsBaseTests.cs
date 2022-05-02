@@ -22,4 +22,10 @@ public sealed class SqlTypeMapperTestsBaseTests : SqlTypeMapperTestsBase<Example
     {
         this.ShouldSetValue(new("Test Value"), expected: "Test Value");
     }
+
+    [Fact]
+    public void ShouldNotSetValueTest()
+    {
+        this.ShouldNotSetValue<ArgumentOutOfRangeException>(new("Exception"));
+    }
 }

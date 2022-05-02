@@ -81,7 +81,6 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
     ///     Checks that the value is set to the expected value.
     /// </summary>
     /// <param name="value">The value to set.</param>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     protected void ShouldNotSetValue<TExceptionType>(TMappedType value)
         where TExceptionType : Exception
     {

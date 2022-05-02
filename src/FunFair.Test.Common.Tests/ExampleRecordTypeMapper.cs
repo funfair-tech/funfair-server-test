@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using Dapper;
 
@@ -7,6 +8,11 @@ public sealed class ExampleRecordTypeMapper : SqlMapper.TypeHandler<ExampleRecor
 {
     public override void SetValue(IDbDataParameter parameter, ExampleRecord value)
     {
+        if (value.Name == "Exception")
+        {
+            throw new ArgumentOutOfRangeException(nameof(value), actualValue: value.Name, message: "Example");
+        }
+
         parameter.Value = value.Name;
     }
 
