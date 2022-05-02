@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
@@ -8,7 +7,6 @@ namespace FunFair.Test.Common.Extensions;
 /// <summary>
 ///     Test logger extension
 /// </summary>
-[SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
 public static class TestLoggerExtension
 {
     /// <summary>
