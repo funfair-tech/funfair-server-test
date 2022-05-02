@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FunFair.Test.Common.Extensions;
 using FunFair.Test.Common.Mocks;
 using Microsoft.Extensions.Logging;
 using Xunit;
@@ -7,11 +8,13 @@ namespace FunFair.Test.Common.Tests.Mocks;
 
 public sealed class MockLoggerTests : TestBase
 {
+    private readonly ILogger _baseLogger;
     private readonly MockLogger<ExampleObject> _logger;
 
     public MockLoggerTests()
     {
-        this._logger = new(GetSubstitute<ILogger>());
+        this._baseLogger = GetSubstitute<ILogger>();
+        this._logger = new(this._baseLogger);
     }
 
     [Fact]
@@ -28,6 +31,13 @@ public sealed class MockLoggerTests : TestBase
 
         IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Critical] = 1 };
         Assert.Equal(expected: items, actual: this._logger.Seen);
+
+        this._baseLogger.Received(logLevel: LogLevel.Critical, message: "Critical Error");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Error, message: "Error");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Warning, message: "Warning");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Information, message: "Information");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Debug, message: "Debug");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Trace, message: "Trace");
     }
 
     [Fact]
@@ -44,6 +54,13 @@ public sealed class MockLoggerTests : TestBase
 
         IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Error] = 1 };
         Assert.Equal(expected: items, actual: this._logger.Seen);
+
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Critical, message: "Critical Error");
+        this._baseLogger.Received(logLevel: LogLevel.Error, message: "Error");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Warning, message: "Warning");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Information, message: "Information");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Debug, message: "Debug");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Trace, message: "Trace");
     }
 
     [Fact]
@@ -60,6 +77,13 @@ public sealed class MockLoggerTests : TestBase
 
         IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Warning] = 1 };
         Assert.Equal(expected: items, actual: this._logger.Seen);
+
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Critical, message: "Critical Error");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Error, message: "Error");
+        this._baseLogger.Received(logLevel: LogLevel.Warning, message: "Warning");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Information, message: "Information");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Debug, message: "Debug");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Trace, message: "Trace");
     }
 
     [Fact]
@@ -76,6 +100,13 @@ public sealed class MockLoggerTests : TestBase
 
         IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Information] = 1 };
         Assert.Equal(expected: items, actual: this._logger.Seen);
+
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Critical, message: "Critical Error");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Error, message: "Error");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Warning, message: "Warning");
+        this._baseLogger.Received(logLevel: LogLevel.Information, message: "Information");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Debug, message: "Debug");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Trace, message: "Trace");
     }
 
     [Fact]
@@ -92,6 +123,13 @@ public sealed class MockLoggerTests : TestBase
 
         IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Debug] = 1 };
         Assert.Equal(expected: items, actual: this._logger.Seen);
+
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Critical, message: "Critical Error");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Error, message: "Error");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Warning, message: "Warning");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Information, message: "Information");
+        this._baseLogger.Received(logLevel: LogLevel.Debug, message: "Debug");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Trace, message: "Trace");
     }
 
     [Fact]
@@ -108,5 +146,12 @@ public sealed class MockLoggerTests : TestBase
 
         IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Trace] = 1 };
         Assert.Equal(expected: items, actual: this._logger.Seen);
+
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Critical, message: "Critical Error");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Error, message: "Error");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Warning, message: "Warning");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Information, message: "Information");
+        this._baseLogger.DidNotReceive(logLevel: LogLevel.Debug, message: "Debug");
+        this._baseLogger.Received(logLevel: LogLevel.Trace, message: "Trace");
     }
 }
