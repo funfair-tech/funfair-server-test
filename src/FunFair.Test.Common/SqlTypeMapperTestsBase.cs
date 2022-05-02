@@ -62,7 +62,6 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
     /// </summary>
     /// <param name="value">The value to set.</param>
     /// <param name="expected">The expected typed value.</param>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     protected void ShouldSetValue(TMappedType value, in byte[] expected)
     {
         // note special case for byte arrays as NSubstitute whatever you give it always says it received something other than the expected
