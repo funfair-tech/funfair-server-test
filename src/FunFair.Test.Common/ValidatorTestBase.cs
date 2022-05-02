@@ -64,7 +64,6 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
     /// <param name="expectedErrorCount">The expected number of errors.</param>
     /// <param name="erroringProperty">The property expected to have errors.</param>
     /// <returns>Validation result.</returns>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     public ValidationResult Validate(TObject instance, int expectedErrorCount, string erroringProperty)
     {
         ValidationResult result = this.Validate(instance: instance, expectedErrorCount: expectedErrorCount);
@@ -81,7 +80,6 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
     /// <param name="expectedErrorCount">The expected number of errors.</param>
     /// <param name="erroringProperties">The properties expected to have errors.</param>
     /// <returns>Validation result.</returns>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     public ValidationResult Validate(TObject instance, int expectedErrorCount, params string[] erroringProperties)
     {
         ValidationResult result = this.Validate(instance: instance, expectedErrorCount: expectedErrorCount);
@@ -113,7 +111,6 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
     /// </summary>
     /// <param name="result">The validation result.</param>
     /// <param name="erroringProperty">The property expected to have errors.</param>
-    [SuppressMessage(category: "ReSharper", checkId: "ParameterOnlyUsedForPreconditionCheck.Local", Justification = "Helper method")]
     protected static void AssertOnlyNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
     {
         Assert.True(result.Errors.All(predicate: e => e.PropertyName == erroringProperty),
@@ -125,7 +122,6 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
     /// </summary>
     /// <param name="result">The validation result.</param>
     /// <param name="erroringProperty">The property expected to have errors.</param>
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Add Unit tests")]
     [SuppressMessage(category: "ReSharper", checkId: "ParameterOnlyUsedForPreconditionCheck.Local", Justification = "Helper method")]
     protected static void AssertNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
     {
@@ -145,11 +141,9 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
         bool hasUnexpectedErrors = result.Errors.All(predicate: error => erroringProperties.Contains(value: error.PropertyName, comparer: StringComparer.Ordinal));
         bool hasAllExpectedErrors = erroringProperties.All(predicate: error => result.Errors.Any(predicate: p => p.PropertyName == error));
 
-        Assert.True(condition: hasUnexpectedErrors,
-                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasUnexpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
 
-        Assert.True(condition: hasAllExpectedErrors,
-                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasAllExpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
     }
 
     /// <summary>
