@@ -41,7 +41,10 @@ public sealed class ComplexValidatorTestBaseTests : ComplexValidatorTestBase<Tes
     [Fact]
     public void NameNullIsInvalid2()
     {
-        ValidationResult validationResult = this.Validate(new() { Name = null! }, expectedErrorCount: 1, MakePropertyName(nameof(ExampleObject.Name)), MakePropertyName(nameof(ExampleObject.Name)));
+        ValidationResult validationResult = this.Validate(new() { Name = null! },
+                                                          expectedErrorCount: 1,
+                                                          MakePropertyName(nameof(ExampleObject.Name)),
+                                                          MakePropertyName(nameof(ExampleObject.Name)));
 
         AssertNamedPropertiesHaveErrors(result: validationResult, nameof(ExampleObject.Name));
         AssertNamedPropertyHasErrors(result: validationResult, nameof(ExampleObject.Name));
