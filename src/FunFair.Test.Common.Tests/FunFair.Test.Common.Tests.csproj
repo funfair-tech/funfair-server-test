@@ -47,6 +47,6 @@
         <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
         <PackageReference Include="ToStringWithoutOverrideAnalyzer" Version="0.6.0" PrivateAssets="All" />
         <PackageReference Include="xunit.analyzers" Version="0.10.0" PrivateAssets="All" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.4" PrivateAssets="None" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="None" />
     </ItemGroup>
 </Project>

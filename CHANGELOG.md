@@ -17,6 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.38.0.46746
 - FF-1429 - Updated FluentValidation.AspNetCore to 11.0.0
 - FF-1429 - Updated xunit.runner.visualstudio to 2.4.4
+- FF-1429 - Updated xunit.runner.visualstudio to 2.4.5
 ### Removed
 
 <!--
