@@ -18,6 +18,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated FluentValidation.AspNetCore to 11.0.0
 - FF-1429 - Updated xunit.runner.visualstudio to 2.4.4
 - FF-1429 - Updated xunit.runner.visualstudio to 2.4.5
+- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.2.32
 ### Removed
 
 <!--
