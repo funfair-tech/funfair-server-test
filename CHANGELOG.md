@@ -8,15 +8,14 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [5.9.5] - 2022-05-20
+### Changed
 - FF-1429 - Updated Roslynator.Analyzers to 4.1.0
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.37.0.45539
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.699
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.700
-- FF-3881 - Updated DotNet SDK to 6.0.202
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.701
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.38.0.46746
-- FF-1429 - Updated FluentValidation.AspNetCore to 11.0.0
-- FF-1429 - Updated xunit.runner.visualstudio to 2.4.4
 - FF-1429 - Updated xunit.runner.visualstudio to 2.4.5
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.2.32
 - FF-1429 - Updated FluentValidation.AspNetCore to 11.0.1
@@ -27,11 +26,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.39.0.47922
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.702
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.8.2.1317
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [5.9.4] - 2022-03-24
 ### Changed
 - FF-3881 - Updated DotNet SDK to 6.0.201

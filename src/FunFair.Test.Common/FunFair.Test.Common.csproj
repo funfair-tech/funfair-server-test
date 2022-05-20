@@ -16,6 +16,8 @@
     <TieredCompilation>true</TieredCompilation>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <WarningsAsErrors />
+    <IsTrimmable>false</IsTrimmable>
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
   </PropertyGroup>
   <PropertyGroup>
     <AnalysisLevel>latest</AnalysisLevel>
