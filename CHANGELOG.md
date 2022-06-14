@@ -8,15 +8,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated FluentValidation.AspNetCore to 11.0.2
-- FF-1429 - Updated Roslynator.Analyzers to 4.1.1
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.40.0.48530
-- FF-1429 - Updated FluentValidation.AspNetCore to 11.0.3
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [5.9.6] - 2022-06-14
+### Changed
+- FF-1429 - Updated FluentValidation.AspNetCore to 11.0.2
+- FF-1429 - Updated Roslynator.Analyzers to 4.1.1
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.40.0.48530
+- FF-1429 - Updated FluentValidation.AspNetCore to 11.0.3
+
 ## [5.9.5] - 2022-05-20
 ### Changed
 - FF-1429 - Updated Roslynator.Analyzers to 4.1.0
