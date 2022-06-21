@@ -6,6 +6,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+- Initial deploy scripts for github actions
 ### Fixed
 ### Changed
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.8.3.1353
