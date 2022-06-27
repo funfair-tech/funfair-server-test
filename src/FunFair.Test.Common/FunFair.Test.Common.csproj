@@ -40,7 +40,7 @@
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="5.0.0" />
     <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="11.1.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.1.1" />
     <PackageReference Include="NonBlocking" Version="2.1.0" />
     <PackageReference Include="NSubstitute" Version="4.3.0" />
     <PackageReference Include="Serilog.Enrichers.AssemblyName" Version="1.0.9" />
