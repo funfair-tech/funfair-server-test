@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.703
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.704
+- FF-1429 - Updated FluentValidation.AspNetCore to 11.1.2
 ### Removed
 
 <!--
