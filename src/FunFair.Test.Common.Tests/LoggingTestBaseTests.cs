@@ -52,9 +52,9 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
     [Fact]
     public void MakeFaker()
     {
-        List<ExampleObject> fake = MakeFake<ExampleObject>()
-                                   .RuleFor(property: x => x.Name, setter: (f, _) => f.Company.Bs())
-                                   .Generate(10);
+        IReadOnlyList<ExampleObject> fake = MakeFake<ExampleObject>(rules: rules => rules.RuleFor(property: x => x.Name, setter: (f, _) => f.Company.Bs()), itemCount: 10);
+
+        Assert.Equal(expected: 10, actual: fake.Count);
 
         foreach (ExampleObject item in fake)
         {

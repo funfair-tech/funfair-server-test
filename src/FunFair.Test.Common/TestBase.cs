@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -61,14 +62,19 @@ public abstract class TestBase
     }
 
     /// <summary>
-    ///     Makes a Fake object using Bogus
+    ///     Makes a Fake object using the given rules.
     /// </summary>
+    /// <param name="rules">The rules to generate the object.</param>
+    /// <param name="itemCount">The number of items to generate.</param>
     /// <typeparam name="T">The type of the object to create</typeparam>
     /// <returns>The faker object</returns>
-    protected static Faker<T> MakeFake<T>()
+    protected static IReadOnlyList<T> MakeFake<T>(Func<Faker<T>, Faker<T>> rules, int itemCount)
         where T : class
     {
-        return new Faker<T>().StrictMode(true);
+        Assert.True(itemCount > 0, userMessage: "Must generate at least one ");
+
+        return rules(new Faker<T>().StrictMode(true))
+            .Generate(itemCount);
     }
 
     /// <summary>
