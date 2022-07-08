@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Bogus;
 using FunFair.Test.Common.Helpers;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -57,6 +58,17 @@ public abstract class TestBase
     protected virtual ILogger<T> GetTypedLogger<T>()
     {
         return GetSubstitute<ILogger<T>>();
+    }
+
+    /// <summary>
+    ///     Makes a Fake object using Bogus
+    /// </summary>
+    /// <typeparam name="T">The type of the object to create</typeparam>
+    /// <returns>The faker object</returns>
+    protected static Faker<T> MakeFake<T>()
+        where T : class
+    {
+        return new Faker<T>().StrictMode(true);
     }
 
     /// <summary>

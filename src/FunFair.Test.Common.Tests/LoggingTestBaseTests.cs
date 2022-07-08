@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using FunFair.Test.Common.Tests.Mocks;
 using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Abstractions;
@@ -44,6 +46,19 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
         catch (Exception exception)
         {
             throw new FormatException(message: "Twit", innerException: exception);
+        }
+    }
+
+    [Fact]
+    public void MakeFaker()
+    {
+        List<ExampleObject> fake = MakeFake<ExampleObject>()
+                                   .RuleFor(property: x => x.Name, setter: (f, _) => f.Company.Bs())
+                                   .Generate(10);
+
+        foreach (ExampleObject item in fake)
+        {
+            this.Output.WriteLine($"* {item.Name}");
         }
     }
 }
