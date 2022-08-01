@@ -14,6 +14,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.707
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.708
 - FF-1429 - Updated xunit.analyzers to 1.0.0
+- FF-1429 - Updated xunit to 2.4.2
 ### Removed
 
 <!--
