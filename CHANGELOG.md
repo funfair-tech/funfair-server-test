@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.43.0.51858
+- FF-1429 - Updated FluentValidation.AspNetCore to 11.1.3
 ### Removed
 
 <!--
