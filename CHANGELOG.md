@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - FF-1429 - Updated FluentValidation.AspNetCore to 11.2.1
 - FF-3881 - Updated DotNet SDK to 6.0.400
+- FF-1429 - Updated FunFair.CodeAnalysis to 5.8.5.1436
 ### Removed
 
 <!--
