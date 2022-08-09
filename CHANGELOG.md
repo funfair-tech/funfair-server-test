@@ -8,12 +8,15 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated FluentValidation.AspNetCore to 11.2.0
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.0.4] - 2022-08-09
+### Changed
+- FF-1429 - Updated FluentValidation.AspNetCore to 11.2.0
+
 ## [6.0.3] - 2022-08-06
 ### Changed
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.43.0.51858
