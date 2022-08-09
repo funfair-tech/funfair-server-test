@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - FF-1429 - Updated FluentValidation.AspNetCore to 11.2.1
+- FF-3881 - Updated DotNet SDK to 6.0.400
 ### Removed
 
 <!--
