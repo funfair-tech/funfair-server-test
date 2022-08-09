@@ -73,7 +73,7 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
         Assert.NotNull(result);
         Assert.IsType<byte[]>(result);
 
-        Assert.Equal(BitConverter.ToString(expected), BitConverter.ToString((byte[])result!));
+        Assert.Equal(BitConverter.ToString(expected), BitConverter.ToString((byte[])result));
     }
 
     /// <summary>

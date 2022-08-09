@@ -130,12 +130,6 @@ public abstract class TestBase
     {
         Assert.NotNull(value);
 
-        if (value == null)
-        {
-            // Shouldn't need this, but when Assert.NotNull is capable of meaning the same!
-            throw new NullException(nameof(value));
-        }
-
         return value;
     }
 
