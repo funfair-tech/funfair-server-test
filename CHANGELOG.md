@@ -18,6 +18,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.711
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.712
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.713
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.44.0.52574
 ### Removed
 
 <!--
