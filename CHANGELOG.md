@@ -25,6 +25,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.719
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.720
 - FF-1429 - Updated Microsoft.NET.Test.Sdk to 17.3.1
+- FF-1429 - Updated CountryData.Bogus to 3.78.0
 ### Removed
 
 <!--
