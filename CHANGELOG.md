@@ -11,7 +11,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated FluentValidation.AspNetCore to 11.2.1
 - FF-3881 - Updated DotNet SDK to 6.0.400
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.3.44
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.711
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.712
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.713
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.44.0.52574
@@ -26,6 +25,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.721
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.722
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.9.0.1493
+- FF-1429 - Updated Meziantou.Analyzer to 1.0.723
 ### Removed
 
 <!--
