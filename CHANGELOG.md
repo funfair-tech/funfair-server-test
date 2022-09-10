@@ -26,7 +26,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.9.0.1493
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.723
 - FF-1429 - Updated FluentValidation.AspNetCore to 11.2.2
-- FF-1429 - Updated Serilog.Enrichers.Sensitive to 1.1.0
+- FF-1429 - Updated Serilog.Enrichers.Sensitive to 1.2.0
 ### Removed
 
 <!--
