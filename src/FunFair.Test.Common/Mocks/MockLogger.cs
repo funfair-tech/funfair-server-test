@@ -19,8 +19,7 @@ public sealed class MockLogger<T> : ILogger<T>
     /// <summary>
     ///     Constructor.
     /// </summary>
-    public MockLogger(
-        [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")] ILogger logger)
+    public MockLogger([SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")] ILogger logger)
     {
         this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this._seen = new();
@@ -80,6 +79,7 @@ public sealed class MockLogger<T> : ILogger<T>
         return this._logger.IsEnabled(logLevel);
     }
 
+#if NET6_0
     /// <inheritdoc />
     public IDisposable BeginScope<TState>(TState state)
     {
@@ -89,6 +89,22 @@ public sealed class MockLogger<T> : ILogger<T>
         }
 
         return this._logger.BeginScope<object>(state);
+    }
+#elif NET7_0
+    /// <inheritdoc />
+    public IDisposable BeginScope<TState>(TState state)
+        where TState : notnull
+    {
+        return this._logger.BeginScope<object>(state) ?? ThrowInvalidOperationException();
+    }
+#else
+    #error "Unsupported .NET version"
+#endif
+
+    [DoesNotReturn]
+    private static IDisposable ThrowInvalidOperationException()
+    {
+        throw new InvalidOperationException();
     }
 
     [DoesNotReturn]
