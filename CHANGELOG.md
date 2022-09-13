@@ -10,7 +10,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - FF-3881 - Updated DotNet SDK to 6.0.400
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.3.44
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.712
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.713
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.44.0.52574
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.714
@@ -27,6 +26,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.723
 - FF-1429 - Updated FluentValidation.AspNetCore to 11.2.2
 - FF-1429 - Updated Serilog.Enrichers.Sensitive to 1.2.0
+- FF-1429 - Updated Meziantou.Analyzer to 1.0.725
 ### Removed
 
 <!--

@@ -14,7 +14,7 @@
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <TieredCompilation>true</TieredCompilation>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    <WarningsAsErrors/>
+    <WarningsAsErrors />
     <!-- Dotnet 7 features -->
     <TieredPGO>true</TieredPGO>
     <UseSystemResourceKeys>true</UseSystemResourceKeys>
@@ -43,7 +43,7 @@
     <PackageReference Include="coverlet.collector" Version="3.1.2" PrivateAssets="All" />
     <PackageReference Include="coverlet.msbuild" Version="3.1.2" PrivateAssets="All" />
     <PackageReference Include="FunFair.CodeAnalysis" Version="5.9.0.1493" PrivateAssets="All" />
-    <PackageReference Include="Meziantou.Analyzer" Version="1.0.723" PrivateAssets="All" />
+    <PackageReference Include="Meziantou.Analyzer" Version="1.0.725" PrivateAssets="All" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.1" PrivateAssets="None" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.3.44" PrivateAssets="All" />
     <PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.15" PrivateAssets="All" />
