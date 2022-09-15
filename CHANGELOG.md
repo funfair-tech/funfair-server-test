@@ -17,7 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated FluentValidation.AspNetCore to 11.2.2
 - FF-1429 - Updated Serilog.Enrichers.Sensitive to 1.2.0
 - FF-1429 - Updated Serilog to 2.12.0
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.727
+- FF-1429 - Updated Meziantou.Analyzer to 1.0.728
 ### Removed
 
 <!--
