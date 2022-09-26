@@ -10,7 +10,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - FF-3881 - Updated DotNet SDK to 6.0.400
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.3.44
-- FF-1429 - Updated Microsoft.NET.Test.Sdk to 17.3.1
 - FF-1429 - Updated CountryData.Bogus to 3.78.0
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.9.0.1493
 - FF-1429 - Updated FluentValidation.AspNetCore to 11.2.2
@@ -18,6 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Serilog to 2.12.0
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.45.0.54064
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.732
+- FF-1429 - Updated Microsoft.NET.Test.Sdk to 17.3.2
 ### Removed
 
 <!--
