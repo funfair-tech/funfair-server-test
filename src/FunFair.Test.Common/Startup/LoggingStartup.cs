@@ -30,7 +30,19 @@ internal static class LoggingStartup
     private static Logger CreateLogger(ITestOutputHelper output)
     {
         return new LoggerConfiguration().Enrich.FromLogContext()
-                                        .Enrich.WithSensitiveDataMasking()
+                                        .Enrich.WithSensitiveDataMasking(options =>
+                                                                         {
+                                                                             options.Mode = MaskingMode.Globally;
+                                                                             options.MaskingOperators = new()
+                                                                                                        {
+                                                                                                            new EmailAddressMaskingOperator(),
+                                                                                                            new CreditCardMaskingOperator(),
+                                                                                                            new IbanMaskingOperator()
+
+                                                                                                            // need to find a sane way of adding these
+                                                                                                        };
+                                                                             options.MaskValue = "**MASKED*";
+                                                                         })
                                         .Enrich.WithDemystifiedStackTraces()
                                         .Enrich.WithAssemblyName()
                                         .Enrich.WithAssemblyVersion()
