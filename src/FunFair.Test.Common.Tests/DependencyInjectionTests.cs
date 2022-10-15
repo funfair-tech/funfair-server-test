@@ -18,7 +18,13 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
     private static IServiceCollection Configure(IServiceCollection serviceCollection)
     {
         return serviceCollection.AddMockedService<ITestInterface>()
+                                .AddMockedService<ITestInterface2>(NoChanges)
                                 .AddSingleton<IModelBinder, ModelBinder>();
+    }
+
+    private static void NoChanges(ITestInterface2 item)
+    {
+        // Used to force compiler to use the different overload
     }
 
     [Fact]
@@ -31,6 +37,18 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
     public void TestIsRegisteredAsCastleCoreProxy()
     {
         ITestInterface test = this.GetService<ITestInterface>();
+
+        string fullName = test.GetType()
+                              .FullName ?? string.Empty;
+        this.Output.WriteLine(fullName);
+
+        Assert.True(IsProxyObject(fullName), userMessage: "Should be proxy object");
+    }
+
+    [Fact]
+    public void Test2IsRegisteredAsCastleCoreProxy()
+    {
+        ITestInterface2 test = this.GetService<ITestInterface2>();
 
         string fullName = test.GetType()
                               .FullName ?? string.Empty;
