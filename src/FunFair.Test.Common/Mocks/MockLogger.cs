@@ -110,9 +110,6 @@ public sealed class MockLogger<T> : ILogger<T>
     {
         throw new InvalidOperationException();
     }
-#else
-    #error "Unsupported .NET version"
-#endif
 
     private static bool IsNull<TState>([NotNullWhen(false)] TState state)
     {
@@ -123,6 +120,10 @@ public sealed class MockLogger<T> : ILogger<T>
 
         return false;
     }
+
+#else
+    #error "Unsupported .NET version"
+#endif
 
     private static bool IsNullObject([NotNullWhen(false)] object? state)
     {
