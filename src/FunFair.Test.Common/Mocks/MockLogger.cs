@@ -97,6 +97,21 @@ public sealed class MockLogger<T> : ILogger<T>
     {
         throw new ArgumentNullException(nameof(state));
     }
+
+    private static bool IsNull<TState>([NotNullWhen(false)] TState state)
+    {
+        if (typeof(TState).IsClass)
+        {
+            return IsNullObject(state);
+        }
+
+        return false;
+    }
+
+    private static bool IsNullObject([NotNullWhen(false)] object? state)
+    {
+        return state == null;
+    }
 #elif NET7_0
     /// <inheritdoc />
     public IDisposable BeginScope<TState>(TState state)
@@ -110,25 +125,9 @@ public sealed class MockLogger<T> : ILogger<T>
     {
         throw new InvalidOperationException();
     }
-
-    private static bool IsNull<TState>([NotNullWhen(false)] TState state)
-    {
-        if (typeof(TState).IsClass)
-        {
-            return IsNullObject(state);
-        }
-
-        return false;
-    }
-
 #else
     #error "Unsupported .NET version"
 #endif
-
-    private static bool IsNullObject([NotNullWhen(false)] object? state)
-    {
-        return state == null;
-    }
 
     private static bool HasValidState([NotNullWhen(true)] object? state)
     {
