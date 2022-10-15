@@ -90,6 +90,13 @@ public sealed class MockLogger<T> : ILogger<T>
 
         return this._logger.BeginScope<object>(state);
     }
+
+    [DoesNotReturn]
+    [SuppressMessage(category: "ReSharper", checkId: "EntityNameCapturedOnly.Local", Justification = "Simplifies usage")]
+    private static IDisposable ThrowArgumentNullException<TState>(TState state)
+    {
+        throw new ArgumentNullException(nameof(state));
+    }
 #elif NET7_0
     /// <inheritdoc />
     public IDisposable BeginScope<TState>(TState state)
@@ -106,13 +113,6 @@ public sealed class MockLogger<T> : ILogger<T>
 #else
     #error "Unsupported .NET version"
 #endif
-
-    [DoesNotReturn]
-    [SuppressMessage(category: "ReSharper", checkId: "EntityNameCapturedOnly.Local", Justification = "Simplifies usage")]
-    private static IDisposable ThrowArgumentNullException<TState>(TState state)
-    {
-        throw new ArgumentNullException(nameof(state));
-    }
 
     private static bool IsNull<TState>([NotNullWhen(false)] TState state)
     {
