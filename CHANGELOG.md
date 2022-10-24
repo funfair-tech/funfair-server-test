@@ -8,6 +8,13 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.0.5] - 2022-10-24
+### Changed
 - FF-3881 - Updated DotNet SDK to 6.0.400
 - FF-1429 - Updated CountryData.Bogus to 3.78.0
 - FF-1429 - Updated FunFair.CodeAnalysis to 5.9.0.1493
@@ -20,11 +27,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Serilog.Enrichers.Sensitive to 1.5.1
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.3.48
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.740
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.0.4] - 2022-08-09
 ### Changed
 - FF-1429 - Updated FluentValidation.AspNetCore to 11.2.0
