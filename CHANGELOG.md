@@ -19,7 +19,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FF-1429 - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.2.29
 - FF-1429 - Updated Serilog.Enrichers.Sensitive to 1.5.1
 - FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.3.48
-- FF-1429 - Updated Meziantou.Analyzer to 1.0.738
+- FF-1429 - Updated Meziantou.Analyzer to 1.0.740
 ### Removed
 
 <!--
