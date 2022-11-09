@@ -25,6 +25,7 @@
     <WarningsAsErrors />
     <IsTrimmable>false</IsTrimmable>
     <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+    <FFTestProject>true</FFTestProject>
   </PropertyGroup>
   <PropertyGroup>
     <AnalysisLevel>latest</AnalysisLevel>
