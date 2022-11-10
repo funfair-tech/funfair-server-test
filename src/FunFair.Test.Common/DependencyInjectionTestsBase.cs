@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using FunFair.Test.Common.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -50,7 +50,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
 
         await Task.CompletedTask;
 
-        this.Logger.LogDebug($"Waiting for dispose of {service.GetType().FullName}...");
+        this.Logger.LogWaitingForDispose(service.GetType());
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
 
         await Task.CompletedTask;
 
-        this.Logger.LogDebug($"Waiting for dispose of {typeof(TInterface).FullName}...");
+        this.Logger.LogWaitingForDispose(typeof(TInterface));
     }
 
     private void RequireServiceInCollectionForCommon<TInterface, TService>()
@@ -140,3 +140,4 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
                fullTypeName.StartsWith(value: "Castle.Proxies.ObjectProxy_", comparisonType: StringComparison.Ordinal);
     }
 }
+
