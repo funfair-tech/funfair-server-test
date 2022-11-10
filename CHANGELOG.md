@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - FF-3881 - Updated DotNet SDK to 7.0.100
+- FF-1429 - Updated Credfeto.Enumeration.Source.Generation to 0.0.8.10
 ### Removed
 
 <!--
