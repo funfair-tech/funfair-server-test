@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using FunFair.Test.Common.Tests.Extensions;
 using FunFair.Test.Common.Tests.Mocks;
 using Microsoft.Extensions.Logging;
 using Xunit;
@@ -41,13 +42,15 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
 
         try
         {
-            logger.LogError($"Hello World. It's {now}");
+            logger.LogHelloWorld(now);
         }
         catch (Exception exception)
         {
             throw new FormatException(message: "Twit", innerException: exception);
         }
     }
+
+
 
     [Fact]
     public void MakeFaker()
