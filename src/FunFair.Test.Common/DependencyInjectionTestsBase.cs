@@ -140,4 +140,3 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
                fullTypeName.StartsWith(value: "Castle.Proxies.ObjectProxy_", comparisonType: StringComparison.Ordinal);
     }
 }
-

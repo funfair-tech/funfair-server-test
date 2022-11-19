@@ -50,8 +50,6 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
         }
     }
 
-
-
     [Fact]
     public void MakeFaker()
     {
