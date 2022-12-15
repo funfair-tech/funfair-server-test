@@ -8,12 +8,15 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated Credfeto.Enumeration.Source.Generation to 1.0.1.13
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.0.11] - 2022-12-15
+### Changed
+- FF-1429 - Updated Credfeto.Enumeration.Source.Generation to 1.0.1.13
+
 ## [6.0.10] - 2022-12-14
 ### Changed
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.756
