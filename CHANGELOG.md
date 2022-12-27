@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.51.0.59060
 - FF-1429 - Updated Credfeto.Enumeration.Source.Generation to 1.0.3.15
+- FF-1429 - Updated NonBlocking to 2.1.1
 ### Removed
 
 <!--
