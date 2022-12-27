@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.51.0.59060
-- FF-1429 - Updated NonBlocking to 2.1.1
-- FF-1429 - Updated Credfeto.Enumeration.Source.Generation to 1.0.4.16
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.0.13] - 2022-12-27
+### Changed
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.51.0.59060
+- FF-1429 - Updated NonBlocking to 2.1.1
+- FF-1429 - Updated Credfeto.Enumeration.Source.Generation to 1.0.4.16
+
 ## [6.0.12] - 2022-12-17
 ### Changed
 - FF-1429 - Updated Meziantou.Analyzer to 1.0.757
