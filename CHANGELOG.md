@@ -8,12 +8,15 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated Castle.Core to 5.1.1
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.0.14] - 2022-12-30
+### Changed
+- FF-1429 - Updated Castle.Core to 5.1.1
+
 ## [6.0.13] - 2022-12-27
 ### Changed
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.51.0.59060
