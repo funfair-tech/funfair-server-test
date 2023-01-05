@@ -140,11 +140,9 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
         bool hasUnexpectedErrors = result.Errors.All(predicate: error => erroringProperties.Contains(value: error.PropertyName, comparer: StringComparer.Ordinal));
         bool hasAllExpectedErrors = erroringProperties.All(predicate: error => result.Errors.Any(predicate: p => p.PropertyName == error));
 
-        Assert.True(condition: hasUnexpectedErrors,
-                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasUnexpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
 
-        Assert.True(condition: hasAllExpectedErrors,
-                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasAllExpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
     }
 
     /// <summary>
@@ -172,7 +170,7 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
 
         this.Output.WriteLine($"Found {result.Errors.Count} errors:");
 
-        foreach (ValidationFailure error in result.Errors.OrderBy(keySelector: e => e.PropertyName)
+        foreach (ValidationFailure error in result.Errors.OrderBy(keySelector: e => e.PropertyName, comparer: StringComparer.Ordinal)
                                                   .ThenBy(keySelector: e => e.ErrorMessage))
         {
             this.Output.WriteLine($" * {error.PropertyName} : {error.ErrorMessage}");
@@ -184,14 +182,14 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
         return string.Join(separator: ", ",
                            result.Errors.Select(selector: e => e.PropertyName)
                                  .Distinct(StringComparer.Ordinal)
-                                 .OrderBy(keySelector: x => x.ToUpperInvariant()));
+                                 .OrderBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase));
     }
 
     private static string DumpExpectedPropertiesInError(string[] erroringProperties)
     {
         return string.Join(separator: ", ",
                            erroringProperties.Distinct(StringComparer.Ordinal)
-                                             .OrderBy(keySelector: x => x.ToUpperInvariant()));
+                                             .OrderBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase));
     }
 
     /// <summary>
