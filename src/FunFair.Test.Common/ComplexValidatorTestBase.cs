@@ -176,7 +176,7 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
         this.Output.WriteLine($"Found {result.Errors.Count} errors:");
 
         foreach (ValidationFailure error in result.Errors.OrderBy(keySelector: e => e.PropertyName, comparer: StringComparer.Ordinal)
-                                                  .ThenBy(keySelector: e => e.ErrorMessage))
+                                                  .ThenBy(keySelector: e => e.ErrorMessage, comparer: StringComparer.Ordinal))
         {
             this.Output.WriteLine($" * {error.PropertyName} : {error.ErrorMessage}");
         }
