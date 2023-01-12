@@ -8,15 +8,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.4.33
-- FF-1429 - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.2.32
-- FF-1429 - Updated Meziantou.Analyzer to 2.0.5
-- FF-3881 - Updated DotNet SDK to 7.0.102
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.0.15] - 2023-01-12
+### Changed
+- FF-1429 - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.4.33
+- FF-1429 - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.2.32
+- FF-1429 - Updated Meziantou.Analyzer to 2.0.5
+- FF-3881 - Updated DotNet SDK to 7.0.102
+
 ## [6.0.14] - 2022-12-30
 ### Changed
 - FF-1429 - Updated Castle.Core to 5.1.1
