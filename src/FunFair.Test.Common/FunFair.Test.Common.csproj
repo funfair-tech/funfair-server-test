@@ -49,7 +49,6 @@
     <PackageReference Include="AutoBogus.NSubstitute" Version="2.13.1" />
     <PackageReference Include="Bogus" Version="34.0.2" />
     <PackageReference Include="Castle.Core" Version="5.1.1" />
-    <PackageReference Include="CountryData.Bogus" Version="3.78.0" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
     <PackageReference Include="NonBlocking" Version="2.1.1" />
