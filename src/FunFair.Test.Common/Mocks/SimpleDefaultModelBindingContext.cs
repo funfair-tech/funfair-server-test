@@ -1,0 +1,352 @@
+using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
+namespace FunFair.Test.Common.Mocks;
+
+internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
+{
+    private const int MAX_MODEL_BINDING_RECURSION_DEPTH = 32;
+    private readonly Stack<State> _stack = new();
+    private ActionContext _actionContext = default!;
+    private int? _maxModelBindingRecursionDepth;
+    private ModelStateDictionary _modelState = default!;
+
+    private IValueProvider _originalValueProvider = default!;
+
+    private State _state = new();
+    private ValidationStateDictionary _validationState = default!;
+
+    /// <inheritdoc />
+    public override ActionContext ActionContext
+    {
+        get => this._actionContext;
+        set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            this._actionContext = value;
+        }
+    }
+
+    /// <inheritdoc />
+    public override string FieldName
+    {
+        get => this._state.FieldName;
+        set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            this._state.FieldName = value;
+        }
+    }
+
+    /// <inheritdoc />
+    public override object? Model
+    {
+        get => this._state.Model;
+        set => this._state.Model = value;
+    }
+
+    /// <inheritdoc />
+    public override ModelMetadata ModelMetadata
+    {
+        get => this._state.ModelMetadata;
+        set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            this._state.ModelMetadata = value;
+        }
+    }
+
+    /// <inheritdoc />
+    public override string ModelName
+    {
+        get => this._state.ModelName;
+        set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            this._state.ModelName = value;
+        }
+    }
+
+    /// <inheritdoc />
+    public override ModelStateDictionary ModelState
+    {
+        get => this._modelState;
+        set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            this._modelState = value;
+        }
+    }
+
+    /// <inheritdoc />
+    public override string? BinderModelName
+    {
+        get => this._state.BinderModelName;
+        set => this._state.BinderModelName = value;
+    }
+
+    /// <inheritdoc />
+    public override BindingSource? BindingSource
+    {
+        get => this._state.BindingSource;
+        set => this._state.BindingSource = value;
+    }
+
+    /// <inheritdoc />
+    public override bool IsTopLevelObject
+    {
+        get => this._state.IsTopLevelObject;
+        set => this._state.IsTopLevelObject = value;
+    }
+
+    /// <summary>
+    ///     Gets or sets the original value provider to be used when value providers are not filtered.
+    /// </summary>
+    public IValueProvider OriginalValueProvider
+    {
+        get => this._originalValueProvider;
+        set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            this._originalValueProvider = value;
+        }
+    }
+
+    /// <inheritdoc />
+    public override IValueProvider ValueProvider
+    {
+        get => this._state.ValueProvider;
+        set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            this._state.ValueProvider = value;
+        }
+    }
+
+    /// <inheritdoc />
+    public override Func<ModelMetadata, bool>? PropertyFilter
+    {
+        get => this._state.PropertyFilter;
+        set => this._state.PropertyFilter = value;
+    }
+
+    /// <inheritdoc />
+    public override ValidationStateDictionary ValidationState
+    {
+        get => this._validationState;
+        set
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            this._validationState = value;
+        }
+    }
+
+    /// <inheritdoc />
+    public override ModelBindingResult Result
+    {
+        get => this._state.Result;
+        set => this._state.Result = value;
+    }
+
+    private int MaxModelBindingRecursionDepth
+    {
+        get
+        {
+            return this._maxModelBindingRecursionDepth ??= MAX_MODEL_BINDING_RECURSION_DEPTH;
+        }
+        set => this._maxModelBindingRecursionDepth = value;
+    }
+
+    /// <summary>
+    ///     Creates a new <see cref="DefaultModelBindingContext" /> for top-level model binding operation.
+    /// </summary>
+    /// <param name="actionContext">
+    ///     The <see cref="ActionContext" /> associated with the binding operation.
+    /// </param>
+    /// <param name="valueProvider">The <see cref="IValueProvider" /> to use for binding.</param>
+    /// <param name="metadata"><see cref="ModelMetadata" /> associated with the model.</param>
+    /// <param name="bindingInfo"><see cref="BindingInfo" /> associated with the model.</param>
+    /// <param name="modelName">The name of the property or parameter being bound.</param>
+    /// <returns>A new instance of <see cref="DefaultModelBindingContext" />.</returns>
+    public static ModelBindingContext CreateBindingContext(ActionContext actionContext, IValueProvider valueProvider, ModelMetadata metadata, BindingInfo? bindingInfo, string modelName)
+    {
+        if (actionContext == null)
+        {
+            throw new ArgumentNullException(nameof(actionContext));
+        }
+
+        if (valueProvider == null)
+        {
+            throw new ArgumentNullException(nameof(valueProvider));
+        }
+
+        if (metadata == null)
+        {
+            throw new ArgumentNullException(nameof(metadata));
+        }
+
+        if (modelName == null)
+        {
+            throw new ArgumentNullException(nameof(modelName));
+        }
+
+        string? binderModelName = bindingInfo?.BinderModelName ?? metadata.BinderModelName;
+        BindingSource? bindingSource = bindingInfo?.BindingSource ?? metadata.BindingSource;
+        IPropertyFilterProvider? propertyFilterProvider = bindingInfo?.PropertyFilterProvider ?? metadata.PropertyFilterProvider;
+
+        SimpleDefaultModelBindingContext bindingContext = new()
+                                                          {
+                                                              ActionContext = actionContext,
+                                                              BinderModelName = binderModelName,
+                                                              BindingSource = bindingSource,
+                                                              PropertyFilter = propertyFilterProvider?.PropertyFilter,
+                                                              ValidationState = new(),
+
+                                                              // Because this is the top-level context, FieldName and ModelName should be the same.
+                                                              FieldName = binderModelName ?? modelName,
+                                                              ModelName = binderModelName ?? modelName,
+
+                                                              //OriginalModelName = binderModelName ?? modelName,
+                                                              IsTopLevelObject = true,
+                                                              ModelMetadata = metadata,
+                                                              ModelState = actionContext.ModelState,
+                                                              OriginalValueProvider = valueProvider,
+                                                              ValueProvider = FilterValueProvider(valueProvider: valueProvider, bindingSource: bindingSource)
+                                                          };
+
+        bindingContext.MaxModelBindingRecursionDepth = MAX_MODEL_BINDING_RECURSION_DEPTH;
+
+        return bindingContext;
+    }
+
+    /// <inheritdoc />
+    public override NestedScope EnterNestedScope(ModelMetadata modelMetadata, string fieldName, string modelName, object? model)
+    {
+        if (modelMetadata == null)
+        {
+            throw new ArgumentNullException(nameof(modelMetadata));
+        }
+
+        if (fieldName == null)
+        {
+            throw new ArgumentNullException(nameof(fieldName));
+        }
+
+        if (modelName == null)
+        {
+            throw new ArgumentNullException(nameof(modelName));
+        }
+
+        NestedScope scope = this.EnterNestedScope();
+
+        // Only filter if the new BindingSource affects the value providers. Otherwise we want
+        // to preserve the current state.
+        if (modelMetadata.BindingSource?.IsGreedy == false)
+        {
+            this.ValueProvider = FilterValueProvider(valueProvider: this.OriginalValueProvider, bindingSource: modelMetadata.BindingSource);
+        }
+
+        this.Model = model;
+        this.ModelMetadata = modelMetadata;
+        this.ModelName = modelName;
+        this.FieldName = fieldName;
+        this.BinderModelName = modelMetadata.BinderModelName;
+        this.BindingSource = modelMetadata.BindingSource;
+        this.PropertyFilter = modelMetadata.PropertyFilterProvider?.PropertyFilter;
+
+        this.IsTopLevelObject = false;
+
+        return scope;
+    }
+
+    /// <inheritdoc />
+    public override NestedScope EnterNestedScope()
+    {
+        this._stack.Push(this._state);
+
+        // Would this new scope (which isn't in _stack) exceed the allowed recursion depth? That is, has the model
+        // binding system already nested MaxModelBindingRecursionDepth binders?
+        if (this._stack.Count >= this.MaxModelBindingRecursionDepth)
+        {
+            throw new InvalidOperationException("Recursion depth exceeded");
+        }
+
+        this.Result = default;
+
+        return new(this);
+    }
+
+    /// <inheritdoc />
+    protected override void ExitNestedScope()
+    {
+        this._state = this._stack.Pop();
+    }
+
+    private static IValueProvider FilterValueProvider(IValueProvider valueProvider, BindingSource? bindingSource)
+    {
+        if (bindingSource?.IsGreedy != false)
+        {
+            return valueProvider;
+        }
+
+        return valueProvider;
+    }
+
+    private sealed class State
+    {
+        public string FieldName { get; set; } = default!;
+
+        public object? Model { get; set; }
+
+        public ModelMetadata ModelMetadata { get; set; } = default!;
+
+        public string ModelName { get; set; } = default!;
+
+        public IValueProvider ValueProvider { get; set; } = default!;
+
+        public Func<ModelMetadata, bool>? PropertyFilter { get; set; }
+
+        public string? BinderModelName { get; set; }
+
+        public BindingSource? BindingSource { get; set; }
+
+        public bool IsTopLevelObject { get; set; }
+
+        public ModelBindingResult Result { get; set; }
+    }
+}

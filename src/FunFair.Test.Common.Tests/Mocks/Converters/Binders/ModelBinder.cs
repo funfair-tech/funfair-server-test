@@ -8,7 +8,7 @@ public sealed class ModelBinder : IModelBinder
 {
     public Task BindModelAsync(ModelBindingContext bindingContext)
     {
-        string modelKindName = ModelNames.CreatePropertyModelName(prefix: null, propertyName: bindingContext.ModelName);
+        string modelKindName = CreatePropertyModelName(prefix: null, propertyName: bindingContext.ModelName);
         string? modelTypeValue = bindingContext.ValueProvider.GetValue(modelKindName)
                                                .FirstValue;
 
@@ -29,5 +29,33 @@ public sealed class ModelBinder : IModelBinder
         bindingContext.Result = ModelBindingResult.Failed();
 
         return Task.CompletedTask;
+    }
+
+    /// <summary>
+    ///     Create a property model name with a prefix.
+    /// </summary>
+    /// <param name="prefix">The prefix to use.</param>
+    /// <param name="propertyName">The property name.</param>
+    /// <returns>The property model name.</returns>
+    private static string CreatePropertyModelName(string? prefix, string? propertyName)
+    {
+        if (string.IsNullOrEmpty(prefix))
+        {
+            return propertyName ?? string.Empty;
+        }
+
+        if (string.IsNullOrEmpty(propertyName))
+        {
+            return prefix;
+        }
+
+        if (propertyName.StartsWith('['))
+        {
+            // The propertyName might represent an indexer access, in which case combining
+            // with a 'dot' would be invalid. This case occurs only when called from ValidationVisitor.
+            return prefix + propertyName;
+        }
+
+        return prefix + "." + propertyName;
     }
 }

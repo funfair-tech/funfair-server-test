@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using FunFair.Test.Common.Mocks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NSubstitute;
 using Xunit;
@@ -37,9 +38,7 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
 
     private ModelBindingContext MockBindingContext()
     {
-        ModelBindingContext bindingContext = new DefaultModelBindingContext { ModelName = MODEL_NAME, ValueProvider = this._valueProvider };
-
-        return bindingContext;
+        return new SimpleDefaultModelBindingContext { ModelName = MODEL_NAME, ValueProvider = this._valueProvider };
     }
 
     /// <summary>
