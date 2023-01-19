@@ -19,8 +19,7 @@ public sealed class MockLogger<T> : ILogger<T>
     /// <summary>
     ///     Constructor.
     /// </summary>
-    public MockLogger(
-        [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")] ILogger logger)
+    public MockLogger([SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")] ILogger logger)
     {
         this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this._seen = new();
@@ -80,40 +79,6 @@ public sealed class MockLogger<T> : ILogger<T>
         return this._logger.IsEnabled(logLevel);
     }
 
-#if NET6_0
-    /// <inheritdoc />
-    public IDisposable BeginScope<TState>(TState state)
-    {
-        if (IsNull(state))
-        {
-            return ThrowArgumentNullException(state);
-        }
-
-        return this._logger.BeginScope<object>(state);
-    }
-
-    [DoesNotReturn]
-    [SuppressMessage(category: "ReSharper", checkId: "EntityNameCapturedOnly.Local", Justification = "Simplifies usage")]
-    private static IDisposable ThrowArgumentNullException<TState>(TState state)
-    {
-        throw new ArgumentNullException(nameof(state));
-    }
-
-    private static bool IsNull<TState>([NotNullWhen(false)] TState state)
-    {
-        if (typeof(TState).IsClass)
-        {
-            return IsNullObject(state);
-        }
-
-        return false;
-    }
-
-    private static bool IsNullObject([NotNullWhen(false)] object? state)
-    {
-        return state == null;
-    }
-#elif NET7_0
     /// <inheritdoc />
     public IDisposable BeginScope<TState>(TState state)
         where TState : notnull
@@ -126,9 +91,6 @@ public sealed class MockLogger<T> : ILogger<T>
     {
         throw new InvalidOperationException();
     }
-#else
-    #error "Unsupported .NET version"
-#endif
 
     private static bool HasValidState([NotNullWhen(true)] object? state)
     {
