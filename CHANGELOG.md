@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated FluentValidation to 11.4.0
-- FF-1429 - Updated Meziantou.Analyzer to 2.0.9
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.0.17] - 2023-01-20
+### Changed
+- FF-1429 - Updated FluentValidation to 11.4.0
+- FF-1429 - Updated Meziantou.Analyzer to 2.0.9
+
 ## [6.0.16] - 2023-01-17
 ### Changed
 - FF-1429 - Updated Meziantou.Analyzer to 2.0.8
