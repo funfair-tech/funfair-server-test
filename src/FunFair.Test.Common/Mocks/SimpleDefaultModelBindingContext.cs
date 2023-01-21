@@ -203,7 +203,11 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
     /// <param name="bindingInfo"><see cref="BindingInfo" /> associated with the model.</param>
     /// <param name="modelName">The name of the property or parameter being bound.</param>
     /// <returns>A new instance of <see cref="DefaultModelBindingContext" />.</returns>
-    public static ModelBindingContext CreateBindingContext(ActionContext actionContext, IValueProvider valueProvider, ModelMetadata metadata, BindingInfo? bindingInfo, string modelName)
+    public static ModelBindingContext CreateBindingContext(ActionContext actionContext,
+                                                           IValueProvider valueProvider,
+                                                           ModelMetadata metadata,
+                                                           BindingInfo? bindingInfo,
+                                                           string modelName)
     {
         if (actionContext == null)
         {
