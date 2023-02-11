@@ -8,12 +8,15 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated Serilog.Sinks.Xunit to 3.0.5
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.0.20] - 2023-02-11
+### Changed
+- FF-1429 - Updated Serilog.Sinks.Xunit to 3.0.5
+
 ## [6.0.19] - 2023-02-04
 ### Changed
 - FF-1429 - Updated SmartAnalyzers.CSharpExtensions.Annotations to 4.2.8
