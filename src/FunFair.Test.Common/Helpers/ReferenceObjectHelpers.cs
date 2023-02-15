@@ -1,10 +1,12 @@
 using System;
+using Meziantou.Xunit;
 
 namespace FunFair.Test.Common.Helpers;
 
 /// <summary>
 ///     Helpers for comparing reference objects.
 /// </summary>
+[DisableParallelization]
 public static class ReferenceObjectHelpers
 {
     /// <summary>
