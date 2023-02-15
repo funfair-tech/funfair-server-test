@@ -73,7 +73,9 @@ public abstract class TestBase
     {
         Assert.True(itemCount > 0, userMessage: "Must generate at least one ");
 
-        return rules(new Faker<T>().StrictMode(true))
+        const bool enable = true;
+
+        return rules(new Faker<T>().StrictMode(enable))
             .Generate(itemCount);
     }
 
