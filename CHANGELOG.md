@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - FF-1429 - Updated Meziantou.Analyzer to 2.0.16
 - FF-1429 - Updated FluentValidation to 11.5.1
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.53.0.62665
 ### Removed
 
 <!--
