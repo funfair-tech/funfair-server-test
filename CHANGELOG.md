@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - FF-1429 - Updated Meziantou.Analyzer to 2.0.19
+- FF-1429 - Updated Serilog.Enrichers.Sensitive to 1.7.2
 ### Removed
 
 <!--
