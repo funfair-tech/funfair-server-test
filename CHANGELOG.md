@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated Meziantou.Analyzer to 2.0.19
-- FF-1429 - Updated Serilog.Enrichers.Sensitive to 1.7.2
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.0.26] - 2023-03-05
+### Changed
+- FF-1429 - Updated Meziantou.Analyzer to 2.0.19
+- FF-1429 - Updated Serilog.Enrichers.Sensitive to 1.7.2
+
 ## [6.0.25] - 2023-02-25
 ### Changed
 - FF-1429 - Updated Credfeto.Enumeration.Source.Generation to 1.0.7.19
