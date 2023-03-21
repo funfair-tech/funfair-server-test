@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - FF-1429 - Updated SonarAnalyzer.CSharp to 8.54.0.64047
 - SDK - Updated DotNet SDK to 7.0.202
+- Dependencies - Updated SonarAnalyzer.CSharp to 8.55.0.65544
 ### Removed
 
 <!--
