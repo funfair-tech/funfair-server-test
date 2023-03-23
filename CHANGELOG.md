@@ -8,15 +8,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- FF-1429 - Updated SonarAnalyzer.CSharp to 8.54.0.64047
-- SDK - Updated DotNet SDK to 7.0.202
-- Dependencies - Updated SonarAnalyzer.CSharp to 8.55.0.65544
-- Dependencies - Updated Meziantou.Analyzer to 2.0.22
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.0.27] - 2023-03-23
+### Changed
+- FF-1429 - Updated SonarAnalyzer.CSharp to 8.54.0.64047
+- SDK - Updated DotNet SDK to 7.0.202
+- Dependencies - Updated SonarAnalyzer.CSharp to 8.55.0.65544
+- Dependencies - Updated Meziantou.Analyzer to 2.0.22
+
 ## [6.0.26] - 2023-03-05
 ### Changed
 - FF-1429 - Updated Meziantou.Analyzer to 2.0.19
