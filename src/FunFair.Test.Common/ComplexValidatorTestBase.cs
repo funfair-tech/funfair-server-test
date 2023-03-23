@@ -117,7 +117,7 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
     [SuppressMessage(category: "ReSharper", checkId: "ParameterOnlyUsedForPreconditionCheck.Local", Justification = "Helper method")]
     protected static void AssertOnlyNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
     {
-        Assert.True(result.Errors.All(predicate: e => e.PropertyName == erroringProperty),
+        Assert.True(result.Errors.TrueForAll(e => e.PropertyName == erroringProperty),
                     $"Should only have had errors in {erroringProperty}, but found errors in {string.Join(separator: ",", result.Errors.Select(selector: e => e.PropertyName).Distinct(StringComparer.Ordinal))}");
     }
 
@@ -129,8 +129,7 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
     [SuppressMessage(category: "ReSharper", checkId: "ParameterOnlyUsedForPreconditionCheck.Local", Justification = "Helper method")]
     protected static void AssertNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
     {
-        Assert.True(result.Errors.Any(predicate: e => e.PropertyName == erroringProperty),
-                    $"Should have had errors in {erroringProperty}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(result.Errors.Exists(e => e.PropertyName == erroringProperty), $"Should have had errors in {erroringProperty}, but not found found errors in {DumpPropertiesInError(result)}");
     }
 
     /// <summary>
@@ -142,14 +141,12 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
     {
         Assert.NotEmpty(erroringProperties);
 
-        bool hasUnexpectedErrors = result.Errors.All(predicate: error => erroringProperties.Contains(value: error.PropertyName, comparer: StringComparer.Ordinal));
-        bool hasAllExpectedErrors = erroringProperties.All(predicate: error => result.Errors.Any(predicate: p => p.PropertyName == error));
+        bool hasUnexpectedErrors = result.Errors.TrueForAll(error => erroringProperties.Contains(value: error.PropertyName, comparer: StringComparer.Ordinal));
+        bool hasAllExpectedErrors = erroringProperties.All(error => result.Errors.Exists(p => p.PropertyName == error));
 
-        Assert.True(condition: hasUnexpectedErrors,
-                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasUnexpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
 
-        Assert.True(condition: hasAllExpectedErrors,
-                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasAllExpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
     }
 
     /// <summary>
