@@ -12,7 +12,6 @@
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
     <IsPackable>True</IsPackable>
     <IsPublishable>False</IsPublishable>
-    <IsTrimmable>false</IsTrimmable>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
