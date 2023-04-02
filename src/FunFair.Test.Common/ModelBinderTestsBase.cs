@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using FunFair.Test.Common.Mocks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -7,11 +7,6 @@ using Xunit;
 
 namespace FunFair.Test.Common;
 
-/// <summary>
-///     Test base class for testing model binders.
-/// </summary>
-/// <typeparam name="TBinder">The binder class.</typeparam>
-/// <typeparam name="TDataType">The data type the binder uses.</typeparam>
 public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
     where TBinder : class, IModelBinder
 {
@@ -19,10 +14,6 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
     private readonly TBinder _binder;
     private readonly IValueProvider _valueProvider;
 
-    /// <summary>
-    ///     Constructor.
-    /// </summary>
-    /// <param name="binder">The binder to test.</param>
     protected ModelBinderTestsBase(TBinder binder)
     {
         this._binder = binder ?? throw new ArgumentNullException(nameof(binder));
@@ -41,11 +32,6 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
         return new SimpleDefaultModelBindingContext { ModelName = MODEL_NAME, ValueProvider = this._valueProvider };
     }
 
-    /// <summary>
-    ///     Checks that the value should convert to the expected model.
-    /// </summary>
-    /// <param name="value">The value to convert.</param>
-    /// <param name="expected">The expected model.</param>
     protected async Task MustConvertAsync(string value, TDataType expected)
     {
         Assert.NotNull(value);
@@ -60,10 +46,6 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
         Assert.Equal(expected: expected, actual: bindingContext.Result.Model);
     }
 
-    /// <summary>
-    ///     Checks that the value does not convert to the expected model.
-    /// </summary>
-    /// <param name="value">The value to convert.</param>
     protected async Task MustNotConvertAsync(string value)
     {
         Assert.NotNull(value);

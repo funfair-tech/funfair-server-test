@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -31,12 +31,6 @@ public sealed class ModelBinder : IModelBinder
         return Task.CompletedTask;
     }
 
-    /// <summary>
-    ///     Create a property model name with a prefix.
-    /// </summary>
-    /// <param name="prefix">The prefix to use.</param>
-    /// <param name="propertyName">The property name.</param>
-    /// <returns>The property model name.</returns>
     private static string CreatePropertyModelName(string? prefix, string? propertyName)
     {
         if (string.IsNullOrEmpty(prefix))

@@ -5,38 +5,20 @@ using Xunit.Abstractions;
 
 namespace FunFair.Test.Common;
 
-/// <summary>
-///     Simple base class for integration tests..
-/// </summary>
 [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
 public abstract class IntegrationTestBase : LoggingTestBase
 {
-    /// <summary>
-    ///     Constructor.
-    /// </summary>
-    /// <param name="output">XUnit output</param>
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "May be used in derived test classes")]
     protected IntegrationTestBase(ITestOutputHelper output)
         : base(output)
     {
     }
 
-    /// <summary>
-    ///     Constructor.
-    /// </summary>
-    /// <param name="output">XUnit output</param>
-    /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
     protected IntegrationTestBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration)
         : base(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration)
     {
     }
 
-    /// <summary>
-    ///     Constructor.
-    /// </summary>
-    /// <param name="output">XUnit output</param>
-    /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
-    /// <param name="initializeServices">Initialises services.</param>
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "May be used in derived test classes")]
     protected IntegrationTestBase(ITestOutputHelper output,
                                   Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration,
@@ -45,17 +27,9 @@ public abstract class IntegrationTestBase : LoggingTestBase
     {
     }
 
-    /// <summary>
-    ///     Gets the Dependency Injection Service Provider.
-    /// </summary>
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "May be used in derived test classes")]
     protected internal IServiceProvider ServiceProvider => this.RetrieveDependencyInjectionServiceProvider();
 
-    /// <summary>
-    ///     Gets the service from Dependency injection.
-    /// </summary>
-    /// <typeparam name="T">The service </typeparam>
-    /// <returns>The service that was registered with dependency injection.</returns>
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "May be used in derived test classes")]
     protected T GetService<T>()
         where T : notnull

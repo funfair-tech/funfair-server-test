@@ -10,38 +10,20 @@ using Xunit.Abstractions;
 
 namespace FunFair.Test.Common;
 
-/// <summary>
-///     Checks for Dependency Injection issues.
-/// </summary>
 [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
 public abstract class DependencyInjectionTestsBase : IntegrationTestBase
 {
-    /// <summary>
-    ///     Constructor.
-    /// </summary>
-    /// <param name="output">XUnit output</param>
-    /// <param name="dependencyInjectionRegistration">Registers services with dependency injection services.</param>
     protected DependencyInjectionTestsBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration)
         : base(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration)
     {
     }
 
-    /// <summary>
-    ///     Require that the service is registered.
-    /// </summary>
-    /// <typeparam name="TService">The service that must be registered</typeparam>
-    /// <remarks>This version should be used if there are no async or observables registered in the constructor.</remarks>
     protected void RequireService<TService>()
         where TService : class
     {
         this.RequireServiceCommon<TService>();
     }
 
-    /// <summary>
-    ///     Require that the service is registered.
-    /// </summary>
-    /// <typeparam name="TService">The service that must be registered</typeparam>
-    /// <remarks>This version should be used if there is any async or observables registered in the constructor.</remarks>
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used in implementations")]
     protected async Task RequireServiceAsync<TService>()
         where TService : class
@@ -53,12 +35,6 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         this.Logger.LogWaitingForDispose(service.GetType());
     }
 
-    /// <summary>
-    ///     Require that a service of the named type is registered against an interface, where there may be more than once instance of the interface registration.
-    /// </summary>
-    /// <typeparam name="TInterface">The interface that the service should be registered for.</typeparam>
-    /// <typeparam name="TService">The service that must be registered</typeparam>
-    /// <remarks>This version should be used if there are no async or observables registered in the constructor.</remarks>
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used in implementations")]
     protected void RequireServiceInCollectionFor<TInterface, TService>()
         where TInterface : class where TService : class, TInterface
@@ -66,12 +42,6 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         this.RequireServiceInCollectionForCommon<TInterface, TService>();
     }
 
-    /// <summary>
-    ///     Require that a service of the named type is registered against an interface, where there may be more than once instance of the interface registration.
-    /// </summary>
-    /// <typeparam name="TInterface">The interface that the service should be registered for.</typeparam>
-    /// <typeparam name="TService">The service that must be registered</typeparam>
-    /// <remarks>This version should be used if there is any async or observables registered in the constructor.</remarks>
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used in implementations")]
     protected async Task RequireServiceInCollectionForAsync<TInterface, TService>()
         where TInterface : class where TService : class, TInterface

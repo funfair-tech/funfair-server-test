@@ -10,21 +10,11 @@ using NSubstitute;
 
 namespace FunFair.Test.Common.Extensions;
 
-/// <summary>
-///     Extensions on <see cref="IHttpClientFactory" />
-/// </summary>
 public static class HttpClientFactoryExtensions
 {
     private static readonly JsonSerializerOptions SerializerOptions = new();
     private static readonly IReadOnlyDictionary<string, string> NoHeaders = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>
-    ///     Mocks the client
-    /// </summary>
-    /// <param name="httpClientFactory">The Http Client Factory</param>
-    /// <param name="clientName">The client name.</param>
-    /// <param name="httpStatusCode">HTTP status code to be returned.</param>
-    /// <param name="responseMessage">Response message string.</param>
     public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, string responseMessage)
     {
         MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
@@ -34,14 +24,6 @@ public static class HttpClientFactoryExtensions
                                      headers: NoHeaders);
     }
 
-    /// <summary>
-    ///     Mocks the client
-    /// </summary>
-    /// <param name="httpClientFactory">The Http Client Factory</param>
-    /// <param name="clientName">The client name.</param>
-    /// <param name="httpStatusCode">HTTP status code to be returned.</param>
-    /// <param name="responseMessage">Response message string.</param>
-    /// <param name="headers">Headers to add to the response.</param>
     [SuppressMessage(category: "Microsoft.Reliability", checkId: "CA2000:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
     [SuppressMessage(category: "codecracker.CSharp", checkId: "CC0022:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
     public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
@@ -57,24 +39,11 @@ public static class HttpClientFactoryExtensions
                          .Returns(client);
     }
 
-    /// <summary>
-    ///     Mocks the client
-    /// </summary>
-    /// <param name="httpClientFactory">The Http Client Factory</param>
-    /// <param name="clientName">The client name.</param>
-    /// <param name="httpStatusCode">HTTP status code to be returned.</param>
     public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode)
     {
         MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty);
     }
 
-    /// <summary>
-    ///     Mocks the client
-    /// </summary>
-    /// <param name="httpClientFactory">The Http Client Factory</param>
-    /// <param name="clientName">The client name.</param>
-    /// <param name="httpStatusCode">HTTP status code to be returned.</param>
-    /// <param name="headers">Headers to add to the response.</param>
     public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
                                                     string clientName,
                                                     HttpStatusCode httpStatusCode,
@@ -83,13 +52,6 @@ public static class HttpClientFactoryExtensions
         MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty, headers: headers);
     }
 
-    /// <summary>
-    ///     Creates the client
-    /// </summary>
-    /// <param name="httpClientFactory">The Http Client Factory</param>
-    /// <param name="clientName">The client name.</param>
-    /// <param name="httpStatusCode">HTTP status code to be returned.</param>
-    /// <param name="responseObject">Response object to return.</param>
     public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, T responseObject)
     {
         MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
@@ -99,14 +61,6 @@ public static class HttpClientFactoryExtensions
                                      headers: NoHeaders);
     }
 
-    /// <summary>
-    ///     Creates the client
-    /// </summary>
-    /// <param name="httpClientFactory">The Http Client Factory</param>
-    /// <param name="clientName">The client name.</param>
-    /// <param name="httpStatusCode">HTTP status code to be returned.</param>
-    /// <param name="responseObject">Response object to return.</param>
-    /// <param name="headers">Headers to add to the response.</param>
     public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
                                                        string clientName,
                                                        HttpStatusCode httpStatusCode,
@@ -120,14 +74,6 @@ public static class HttpClientFactoryExtensions
                                      headers: headers);
     }
 
-    /// <summary>
-    ///     Creates the client
-    /// </summary>
-    /// <param name="httpClientFactory">The Http Client Factory</param>
-    /// <param name="clientName">The client name.</param>
-    /// <param name="httpStatusCode">HTTP status code to be returned.</param>
-    /// <param name="responseObject">Response object to return.</param>
-    /// <param name="jsonSerializerOptions">The JSON serializer options to use.</param>
     public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
                                                        string clientName,
                                                        HttpStatusCode httpStatusCode,
@@ -140,15 +86,6 @@ public static class HttpClientFactoryExtensions
                                      JsonSerializer.Serialize(value: responseObject, options: jsonSerializerOptions));
     }
 
-    /// <summary>
-    ///     Creates the client
-    /// </summary>
-    /// <param name="httpClientFactory">The Http Client Factory</param>
-    /// <param name="clientName">The client name.</param>
-    /// <param name="httpStatusCode">HTTP status code to be returned.</param>
-    /// <param name="responseObject">Response object to return.</param>
-    /// <param name="jsonSerializerOptions">The JSON serializer options to use.</param>
-    /// <param name="headers">Headers to add to the response.</param>
     public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
                                                        string clientName,
                                                        HttpStatusCode httpStatusCode,

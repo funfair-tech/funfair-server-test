@@ -2,10 +2,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace FunFair.Test.Common.Mocks;
 
-/// <summary>
-///     Base class for value.
-/// </summary>
-/// <typeparam name="T">The type of the mock.</typeparam>
 [SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
 [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0029: Should be internal", Justification = "Infrastructure")]
 [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0030: Should be internal", Justification = "Infrastructure")]
@@ -14,32 +10,18 @@ public abstract class MockBase<T>
 {
     private readonly T _value;
 
-    /// <summary>
-    ///     Constructor.
-    /// </summary>
-    /// <param name="value">The reference instance value.</param>
     protected MockBase(T value)
     {
         this._value = value;
     }
 
-    /// <summary>
-    ///     Gets the reference object instance.
-    /// </summary>
-    /// <param name="instance">The instance to convert.</param>
-    /// <returns>The instance value.</returns>
     public static implicit operator T(MockBase<T> instance)
     {
         return instance._value;
     }
 
-    /// <summary>
-    ///     Gets a new T
-    /// </summary>
-    /// <returns></returns>
     public abstract T Next();
 
-    /// <inheritdoc />
     [SuppressMessage(category: "ToStringWithoutOverrideAnalyzer",
                      checkId: "ExplicitToStringWithoutOverrideAnalyzer: Calling ToString() on object of type 'T' but it does not override ToString()",
                      Justification = "Valid in this case")]
