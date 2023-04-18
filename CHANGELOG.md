@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- SDK - Updated DotNet SDK to 7.0.203
-- Dependencies - Updated Meziantou.Analyzer to 2.0.34
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.0.29] - 2023-04-18
+### Changed
+- SDK - Updated DotNet SDK to 7.0.203
+- Dependencies - Updated Meziantou.Analyzer to 2.0.34
+
 ## [6.0.28] - 2023-04-08
 ### Changed
 - Dependencies - Updated Meziantou.Analyzer to 2.0.29
