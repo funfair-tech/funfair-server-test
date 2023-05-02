@@ -6,6 +6,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+- Additional base classes for testing value type equality and comparable implementations
 ### Fixed
 ### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.3.0
