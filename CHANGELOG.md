@@ -6,17 +6,21 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-- Additional base classes for testing value type equality and comparable implementations
 ### Fixed
 ### Changed
-- Dependencies - Updated Roslynator.Analyzers to 4.3.0
-- Dependencies - Updated SonarAnalyzer.CSharp to 9.0.0.68202
-- Dependencies - Updated Meziantou.Analyzer to 2.0.45
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.0] - 2023-05-02
+### Added
+- Additional base classes for testing value type equality and comparable implementations
+### Changed
+- Dependencies - Updated Roslynator.Analyzers to 4.3.0
+- Dependencies - Updated SonarAnalyzer.CSharp to 9.0.0.68202
+- Dependencies - Updated Meziantou.Analyzer to 2.0.45
+
 ## [6.0.30] - 2023-04-23
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 8.56.0.67649
