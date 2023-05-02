@@ -14,22 +14,22 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
 
     private TObject Value2 { get; }
 
-    protected abstract bool OperatorGreaterThanOrEqualTo(TObject l, TObject r);
+    protected abstract bool OperatorGreaterThanOrEqualTo(in TObject l, in TObject r);
 
-    protected abstract bool OperatorLessThanOrEqualTo(TObject l, TObject r);
+    protected abstract bool OperatorLessThanOrEqualTo(in TObject l, in TObject r);
 
-    protected abstract bool OperatorGreaterThan(TObject l, TObject r);
+    protected abstract bool OperatorGreaterThan(in TObject l, in TObject r);
 
-    protected abstract bool OperatorLessThan(TObject l, TObject r);
+    protected abstract bool OperatorLessThan(in TObject l, in TObject r);
 
-    private static int TypedCompareTo(TObject l, TObject r)
+    private static int TypedCompareTo(in TObject l, in TObject r)
     {
         IComparable<TObject> cmp = l;
 
         return cmp.CompareTo(r);
     }
 
-    private static int UntypedCompareTo(TObject l, object? r)
+    private static int UntypedCompareTo(in TObject l, object? r)
     {
         IComparable cmp = l;
 

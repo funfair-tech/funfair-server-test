@@ -26,21 +26,21 @@ public abstract class EquatableValueTestBase<TObject> : TestBase
 
     protected internal object EquivalentToValue1AsObject { get; }
 
-    private static bool TypedEquals(TObject x, TObject y)
+    private static bool TypedEquals(in TObject x, in TObject y)
     {
         IEquatable<TObject> eq = x;
 
         return eq.Equals(y);
     }
 
-    private static bool UntypedEquals(TObject x, object? y)
+    private static bool UntypedEquals(in TObject x, object? y)
     {
         return x.Equals(y);
     }
 
-    protected abstract bool OperatorEquals(TObject x, TObject y);
+    protected abstract bool OperatorEquals(in TObject x, in TObject y);
 
-    protected abstract bool OperatorNotEquals(TObject x, TObject y);
+    protected abstract bool OperatorNotEquals(in TObject x, in TObject y);
 
     [Fact]
     public void GetHashCodeSameNoMatterHowManyTimesCalled()
