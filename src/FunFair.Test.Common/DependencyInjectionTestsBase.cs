@@ -56,8 +56,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     private void RequireServiceInCollectionForCommon<TInterface, TService>()
         where TInterface : class where TService : class, TInterface
     {
-        IReadOnlyList<TInterface> services = this.ServiceProvider.GetServices<TInterface>()
-                                                 .ToArray();
+        IReadOnlyList<TInterface> services = this.GetServices<TService>();
 
         this.DumpServices(services);
 
@@ -89,8 +88,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
 
         Assert.False(IsProxyObject(fullName), $"{typeof(TService).FullName} must not be a proxy object - found: {fullName}");
 
-        IReadOnlyList<TService> services = this.ServiceProvider.GetServices<TService>()
-                                               .ToArray();
+        IReadOnlyList<TService> services = this.GetServices<TService>();
 
         this.Output.WriteLine("Found Services:");
 
@@ -102,6 +100,13 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         Assert.Single(services);
 
         return service;
+    }
+
+    private IReadOnlyList<TService> GetServices<TService>()
+        where TService : class
+    {
+        return this.ServiceProvider.GetServices<TService>()
+                   .ToArray();
     }
 
     private static bool IsProxyObject(string fullTypeName)
