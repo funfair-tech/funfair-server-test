@@ -27,9 +27,9 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
             .Returns(new ValueProviderResult(testValue));
     }
 
-    private ModelBindingContext MockBindingContext()
+    private SimpleDefaultModelBindingContext MockBindingContext()
     {
-        return new SimpleDefaultModelBindingContext { ModelName = MODEL_NAME, ValueProvider = this._valueProvider };
+        return new() { ModelName = MODEL_NAME, ValueProvider = this._valueProvider };
     }
 
     protected async Task MustConvertAsync(string value, TDataType expected)

@@ -33,21 +33,6 @@ public abstract class LoggingTestBase : TestBase
                                        Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration,
                                        Action<IServiceProvider> initializeServices)
     {
-        if (output is null)
-        {
-            throw new ArgumentNullException(nameof(output));
-        }
-
-        if (dependencyInjectionRegistration is null)
-        {
-            throw new ArgumentNullException(nameof(dependencyInjectionRegistration));
-        }
-
-        if (initializeServices is null)
-        {
-            throw new ArgumentNullException(nameof(initializeServices));
-        }
-
         TaskScheduler.UnobservedTaskException += this.ReportUnhandledException;
 
         this._serviceProvider = dependencyInjectionRegistration(new ServiceCollection().AddLoggingSupport())

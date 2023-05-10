@@ -15,7 +15,7 @@ public sealed class ExtendedAssertTest : TestBase
 
     private static IReadOnlyList<MockGenericModel<string>> CreateModelList(string value)
     {
-        return new ReadOnlyCollection<MockGenericModel<string>>(new List<MockGenericModel<string>> { CreateModel(value) });
+        return new[] { CreateModel(value) };
     }
 
     [Fact]
