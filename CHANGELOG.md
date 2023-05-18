@@ -13,6 +13,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.0.18
 - Dependencies - Updated Microsoft.NET.Test.Sdk to 17.6.0
 - SDK - Updated DotNet SDK to 7.0.302
+- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.6.40
 ### Removed
 
 <!--
