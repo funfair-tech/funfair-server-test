@@ -8,6 +8,13 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.1.1] - 2023-05-31
+### Changed
 - Dependencies - Updated Serilog.Extensions.Logging to 7.0.0
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.0.18
 - Dependencies - Updated Microsoft.NET.Test.Sdk to 17.6.0
@@ -16,11 +23,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated coverlet to 6.0.0
 - Dependencies - Updated Meziantou.Analyzer to 2.0.56
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.2.0.71021
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.1.0] - 2023-05-02
 ### Added
 - Additional base classes for testing value type equality and comparable implementations
