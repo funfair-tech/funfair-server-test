@@ -56,7 +56,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     private void RequireServiceInCollectionForCommon<TInterface, TService>()
         where TInterface : class where TService : class, TInterface
     {
-        IReadOnlyList<TInterface> services = this.GetServices<TService>();
+        IReadOnlyList<TInterface> services = this.GetServices<TInterface>();
 
         this.DumpServices(services);
 
@@ -75,24 +75,24 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         }
     }
 
-    private TService RequireServiceCommon<TService>()
-        where TService : class
+    private TInterface RequireServiceCommon<TInterface>()
+        where TInterface : class
     {
-        TService service = this.GetService<TService>();
+        TInterface service = this.GetService<TInterface>();
         Assert.NotNull(service);
 
         string fullName = service.GetType()
                                  .FullName ?? string.Empty;
-        this.Output.WriteLine($"Type Name: {typeof(TService).FullName}");
+        this.Output.WriteLine($"Type Name: {typeof(TInterface).FullName}");
         this.Output.WriteLine($"Type Name: {fullName}");
 
-        Assert.False(IsProxyObject(fullName), $"{typeof(TService).FullName} must not be a proxy object - found: {fullName}");
+        Assert.False(IsProxyObject(fullName), $"{typeof(TInterface).FullName} must not be a proxy object - found: {fullName}");
 
-        IReadOnlyList<TService> services = this.GetServices<TService>();
+        IReadOnlyList<TInterface> services = this.GetServices<TInterface>();
 
         this.Output.WriteLine("Found Services:");
 
-        foreach (TService foundService in services)
+        foreach (TInterface foundService in services)
         {
             this.Output.WriteLine($"* {foundService.GetType().FullName}");
         }
@@ -102,10 +102,10 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         return service;
     }
 
-    private IReadOnlyList<TService> GetServices<TService>()
-        where TService : class
+    private IReadOnlyList<TInterface> GetServices<TInterface>()
+        where TInterface : class
     {
-        return this.ServiceProvider.GetServices<TService>()
+        return this.ServiceProvider.GetServices<TInterface>()
                    .ToArray();
     }
 
