@@ -73,7 +73,8 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
     [SuppressMessage(category: "ReSharper", checkId: "ParameterOnlyUsedForPreconditionCheck.Local", Justification = "Helper method")]
     protected static void AssertNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
     {
-        Assert.True(result.Errors.Exists(e => e.PropertyName == erroringProperty), $"Should have had errors in {erroringProperty}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(result.Errors.Exists(e => e.PropertyName == erroringProperty),
+                    $"Should have had errors in {erroringProperty}, but not found found errors in {DumpPropertiesInError(result)}");
     }
 
     protected static void AssertNamedPropertiesHaveErrors(ValidationResult result, params string[] erroringProperties)
@@ -83,9 +84,11 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
         bool hasUnexpectedErrors = result.Errors.TrueForAll(error => erroringProperties.Contains(value: error.PropertyName, comparer: StringComparer.Ordinal));
         bool hasAllExpectedErrors = Array.TrueForAll(array: erroringProperties, match: error => result.Errors.Exists(p => p.PropertyName == error));
 
-        Assert.True(condition: hasUnexpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasUnexpectedErrors,
+                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
 
-        Assert.True(condition: hasAllExpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasAllExpectedErrors,
+                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
     }
 
     protected static string MakePropertyName(params string[] parts)
