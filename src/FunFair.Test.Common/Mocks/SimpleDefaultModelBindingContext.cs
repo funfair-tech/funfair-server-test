@@ -24,7 +24,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         get => this._actionContext;
         set
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -38,7 +38,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         get => this._state.FieldName;
         set
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -58,7 +58,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         get => this._state.ModelMetadata;
         set
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -72,7 +72,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         get => this._state.ModelName;
         set
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -86,7 +86,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         get => this._modelState;
         set
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -118,7 +118,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         get => this._originalValueProvider;
         set
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -132,7 +132,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         get => this._state.ValueProvider;
         set
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -152,7 +152,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         get => this._validationState;
         set
         {
-            if (value == null)
+            if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
@@ -176,28 +176,24 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         set => this._maxModelBindingRecursionDepth = value;
     }
 
-    public static ModelBindingContext CreateBindingContext(ActionContext actionContext,
-                                                           IValueProvider valueProvider,
-                                                           ModelMetadata metadata,
-                                                           BindingInfo? bindingInfo,
-                                                           string modelName)
+    public static ModelBindingContext CreateBindingContext(ActionContext actionContext, IValueProvider valueProvider, ModelMetadata metadata, BindingInfo? bindingInfo, string modelName)
     {
-        if (actionContext == null)
+        if (actionContext is null)
         {
             throw new ArgumentNullException(nameof(actionContext));
         }
 
-        if (valueProvider == null)
+        if (valueProvider is null)
         {
             throw new ArgumentNullException(nameof(valueProvider));
         }
 
-        if (metadata == null)
+        if (metadata is null)
         {
             throw new ArgumentNullException(nameof(metadata));
         }
 
-        if (modelName == null)
+        if (modelName is null)
         {
             throw new ArgumentNullException(nameof(modelName));
         }
@@ -233,17 +229,17 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
 
     public override NestedScope EnterNestedScope(ModelMetadata modelMetadata, string fieldName, string modelName, object? model)
     {
-        if (modelMetadata == null)
+        if (modelMetadata is null)
         {
             throw new ArgumentNullException(nameof(modelMetadata));
         }
 
-        if (fieldName == null)
+        if (fieldName is null)
         {
             throw new ArgumentNullException(nameof(fieldName));
         }
 
-        if (modelName == null)
+        if (modelName is null)
         {
             throw new ArgumentNullException(nameof(modelName));
         }

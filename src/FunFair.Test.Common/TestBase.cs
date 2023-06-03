@@ -106,7 +106,7 @@ public abstract class TestBase
 
     private static bool IsNull(object? obj)
     {
-        return obj == null;
+        return obj is null;
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]

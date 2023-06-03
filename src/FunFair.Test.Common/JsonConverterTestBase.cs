@@ -89,7 +89,7 @@ public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(Dynamica
 
         public override int GetHashCode()
         {
-            return this.Value != null
+            return this.Value is not null
                 ? this.Value.GetHashCode()
                 : 0;
         }

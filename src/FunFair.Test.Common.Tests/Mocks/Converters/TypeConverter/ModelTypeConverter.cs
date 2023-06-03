@@ -26,7 +26,7 @@ public sealed class ModelTypeConverter : System.ComponentModel.TypeConverter
 
     private static bool IsNull([NotNullWhen(false)] object? value)
     {
-        return value == null;
+        return value is null;
     }
 
     private static Model? Convert(string value)

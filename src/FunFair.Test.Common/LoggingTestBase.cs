@@ -29,21 +29,19 @@ public abstract class LoggingTestBase : TestBase
     }
 
     [SuppressMessage(category: "Major Code Smell", checkId: "S3442:\"abstract\" classes should not have \"public\" constructors", Justification = "By Design")]
-    protected internal LoggingTestBase(ITestOutputHelper output,
-                                       Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration,
-                                       Action<IServiceProvider> initializeServices)
+    protected internal LoggingTestBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
     {
-        if (output == null)
+        if (output is null)
         {
             throw new ArgumentNullException(nameof(output));
         }
 
-        if (dependencyInjectionRegistration == null)
+        if (dependencyInjectionRegistration is null)
         {
             throw new ArgumentNullException(nameof(dependencyInjectionRegistration));
         }
 
-        if (initializeServices == null)
+        if (initializeServices is null)
         {
             throw new ArgumentNullException(nameof(initializeServices));
         }

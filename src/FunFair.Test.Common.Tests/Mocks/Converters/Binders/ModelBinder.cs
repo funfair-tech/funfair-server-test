@@ -12,7 +12,7 @@ public sealed class ModelBinder : IModelBinder
         string? modelTypeValue = bindingContext.ValueProvider.GetValue(modelKindName)
                                                .FirstValue;
 
-        if (modelTypeValue == null)
+        if (modelTypeValue is null)
         {
             bindingContext.Result = ModelBindingResult.Failed();
 
