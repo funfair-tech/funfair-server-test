@@ -33,6 +33,7 @@
     <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
   <ItemGroup>
     <!--    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" PrivateAssets="None"/>-->
