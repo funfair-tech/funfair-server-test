@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -14,6 +15,11 @@ public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(Dynamica
     private readonly JsonSerializerOptions _options;
 
     protected JsonConverterTestBase(ITestOutputHelper output)
+        : this(output: output, context: null)
+    {
+    }
+
+    protected JsonConverterTestBase(ITestOutputHelper output, JsonSerializerContext? context)
         : base(output)
     {
         JsonConverter converter = new TConverter();
@@ -24,10 +30,32 @@ public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(Dynamica
                             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                             Converters = { converter }
                         };
+
+        AddContext(options: this._options, context: context);
     }
 
     protected virtual string InvalidValue { get; } = Guid.NewGuid()
                                                          .ToString();
+
+    [Conditional("NET7_0_OR_GREATER")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedParameter.Local", Justification = "Used in conditional implementations")]
+    private static void AddContext(JsonSerializerOptions options, JsonSerializerContext? context)
+    {
+#if NET7_0_OR_GREATER
+        if(context is null)
+        {
+            return;
+        }
+
+        if(options.TypeInfoResolver is null)
+        {
+            options.TypeInfoResolver = context;
+            return;
+        }
+
+        options.TypeInfoResolver = JsonTypeInfoResolver.Combine(options.TypeInfoResolver, context);
+#endif
+    }
 
     protected abstract TObject CreateInstance();
 
