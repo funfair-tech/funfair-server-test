@@ -15,6 +15,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.analyzers to 1.2.0
 - Dependencies - Updated Dapper to 2.0.143
 - Dependencies - Updated FluentValidation to 11.6.0
+- Dependencies - Updated Microsoft.Extensions to 7.0.1
 ### Removed
 
 <!--
