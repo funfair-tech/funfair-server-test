@@ -8,7 +8,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Microsoft.NET.Test.Sdk to 17.6.1
 - SDK - Updated DotNet SDK to 7.0.305
 - Dependencies - Updated Meziantou.Analyzer to 2.0.63
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.5.0.73987
@@ -16,6 +15,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Dapper to 2.0.143
 - Dependencies - Updated FluentValidation to 11.6.0
 - Dependencies - Updated Microsoft.Extensions to 7.0.1
+- Dependencies - Updated Microsoft.NET.Test.Sdk to 17.6.3
 ### Removed
 
 <!--
