@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Bogus;
@@ -9,7 +8,6 @@ using FunFair.Test.Common.Helpers;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Xunit;
-using Xunit.Sdk;
 
 namespace FunFair.Test.Common;
 
@@ -79,34 +77,23 @@ public abstract class TestBase
         return value;
     }
 
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
+    protected static T AssertReallyNotNull<T>([NotNull] T? value)
+        where T : struct
+    {
+        Assert.NotNull(value);
+
+        return value!.Value;
+    }
+
     [SuppressMessage(category: "Microsoft.Usage", checkId: "CA1801:ReviewUnusedParameters", Justification = "Needed for Unit Test")]
     [SuppressMessage(category: "codecracker.CSharp", checkId: "CC0057:ReviewUnusedParameters", Justification = "Needed for Unit Test")]
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
+    [SuppressMessage(category: "IDE", checkId: "IDE0060: Remove unused params", Justification = "Used by test classes")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static void UnusedVariable<T>(T value)
     {
         // Marking that the variable is unused.
-    }
-
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
-    protected static void IsNotAssignableFrom<T>(object obj)
-    {
-        IsNotAssignableFrom(typeof(T), obj: obj);
-    }
-
-    protected static void IsNotAssignableFrom(Type expectedType, object obj)
-    {
-        if (IsNull(obj) || expectedType.GetTypeInfo()
-                                       .IsAssignableFrom(obj.GetType()
-                                                            .GetTypeInfo()))
-        {
-            throw new IsAssignableFromException(expected: expectedType, actual: obj);
-        }
-    }
-
-    private static bool IsNull(object? obj)
-    {
-        return obj is null;
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
