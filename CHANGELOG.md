@@ -8,6 +8,13 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.1.2] - 2023-07-10
+### Changed
 - SDK - Updated DotNet SDK to 7.0.305
 - Dependencies - Updated Meziantou.Analyzer to 2.0.63
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.5.0.73987
@@ -19,11 +26,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated NonBlocking to 2.1.2
 - Dependencies - Updated xunit.runner.visualstudio to 2.5.0
 - Dependencies - Updated xunit to 2.5.0
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.1.1] - 2023-05-31
 ### Changed
 - Dependencies - Updated Serilog.Extensions.Logging to 7.0.0
