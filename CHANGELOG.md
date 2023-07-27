@@ -6,17 +6,22 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-- Packages on new NuGet feed
 ### Fixed
+### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.1.4] - 2023-07-27
+### Added
+- Packages on new NuGet feed
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.6.0.74858
 - Dependencies - Updated Meziantou.Analyzer to 2.0.74
 ### Removed
 - Packages on MyGet feed as MyGet has disappeared completely
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.1.3] - 2023-07-12
 ### Changed
 - SDK - Updated DotNet SDK to 7.0.306
