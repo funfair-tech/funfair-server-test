@@ -9,7 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.1.87
-- Dependencies - Updated Meziantou.Analyzer to 2.0.78
+- Dependencies - Updated Meziantou.Analyzer to 2.0.79
 ### Removed
 
 <!--
