@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.7.30
 ### Removed
 
 <!--
