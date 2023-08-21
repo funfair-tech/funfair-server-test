@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- Dependencies - Updated SonarAnalyzer.CSharp to 9.8.0.76515
 ### Removed
 
 <!--
