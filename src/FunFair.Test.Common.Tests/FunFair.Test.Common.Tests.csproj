@@ -14,14 +14,14 @@
     <IsPackable>false</IsPackable>
     <IsPublishable>false</IsPublishable>
     <IsTrimmable>false</IsTrimmable>
-    <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
+    <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
     <LangVersion>latest</LangVersion>
     <NuGetAudit>true</NuGetAudit>
     <Nullable>enable</Nullable>
     <OptimizationPreference>speed</OptimizationPreference>
     <OutputType>Library</OutputType>
     <RunAOTCompilation>false</RunAOTCompilation>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <TieredCompilation>true</TieredCompilation>
     <TieredPGO>true</TieredPGO>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
@@ -37,10 +37,6 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
-  <ItemGroup>
-    <!--    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" PrivateAssets="None"/>-->
-    <!--    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" PrivateAssets="None"/>-->
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FunFair.Test.Common\FunFair.Test.Common.csproj" />
   </ItemGroup>

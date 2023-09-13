@@ -10,9 +10,7 @@ public static class CancellationTokenSourceExtensions
 #if NET8_0_OR_GREATER
     public static Task CancelAsync(this CancellationTokenSource cancellationTokenSource, bool throwOnFirstException)
     {
-        cancellationTokenSource.CancelAsync();
-
-        return Task.CompletedTask;
+        return cancellationTokenSource.CancelAsync();
     }
 #else
     public static Task CancelAsync(this CancellationTokenSource cancellationTokenSource)

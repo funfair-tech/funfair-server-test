@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.0.135
+- SDK - Updated DotNet SDK to 8.0.100-rc.1.23455.8
 ### Removed
 
 <!--
