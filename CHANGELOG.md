@@ -8,15 +8,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated SonarAnalyzer.CSharp to 9.9.0.77355
-- Dependencies - Updated NSubstitute to 5.1.0
-- SDK - Updated DotNet SDK to 7.0.401
-- Dependencies - Updated Meziantou.Analyzer to 2.0.85
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.9] - 2023-09-13
+### Changed
+- Dependencies - Updated SonarAnalyzer.CSharp to 9.9.0.77355
+- Dependencies - Updated NSubstitute to 5.1.0
+- SDK - Updated DotNet SDK to 7.0.401
+- Dependencies - Updated Meziantou.Analyzer to 2.0.85
+
 ## [6.1.8] - 2023-08-30
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.8.0.76515
