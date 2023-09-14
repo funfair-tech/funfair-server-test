@@ -92,7 +92,11 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         init => this._maxModelBindingRecursionDepth = value;
     }
 
-    public static ModelBindingContext CreateBindingContext(ActionContext actionContext, IValueProvider valueProvider, ModelMetadata metadata, BindingInfo? bindingInfo, string modelName)
+    public static ModelBindingContext CreateBindingContext(ActionContext actionContext,
+                                                           IValueProvider valueProvider,
+                                                           ModelMetadata metadata,
+                                                           BindingInfo? bindingInfo,
+                                                           string modelName)
     {
         string? binderModelName = bindingInfo?.BinderModelName ?? metadata.BinderModelName;
         BindingSource? bindingSource = bindingInfo?.BindingSource ?? metadata.BindingSource;
