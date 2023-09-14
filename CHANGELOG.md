@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- SDK - Updated DotNet SDK to 8.0.100-rc.1.23455.8
-- Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.0.138
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.10] - 2023-09-14
+### Changed
+- SDK - Updated DotNet SDK to 8.0.100-rc.1.23455.8
+- Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.0.138
+
 ## [6.1.9] - 2023-09-13
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.9.0.77355
