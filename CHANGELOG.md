@@ -13,8 +13,8 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit to 2.5.1
 - Dependencies - Updated xunit.runner.visualstudio to 2.5.1
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.11.0.78383
-- Dependencies - Updated Meziantou.Analyzer to 2.0.87
 - Dependencies - Updated Dapper to 2.1.4
+- Dependencies - Updated Meziantou.Analyzer to 2.0.92
 ### Removed
 
 <!--
