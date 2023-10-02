@@ -7,8 +7,15 @@ namespace FunFair.Test.Common.Tests;
 
 public sealed class ExampleRecordTypeMapper : SqlMapper.TypeHandler<ExampleRecord>
 {
-    public override void SetValue(IDbDataParameter parameter, ExampleRecord value)
+    public override void SetValue(IDbDataParameter parameter, ExampleRecord? value)
     {
+        if (value is null)
+        {
+            parameter.Value = DBNull.Value;
+
+            return;
+        }
+
         if (value.Name == "Exception")
         {
             throw new ArgumentOutOfRangeException(nameof(value), actualValue: value.Name, message: "Example");

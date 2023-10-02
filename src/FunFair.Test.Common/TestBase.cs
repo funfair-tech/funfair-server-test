@@ -83,7 +83,7 @@ public abstract class TestBase
     {
         Assert.NotNull(value);
 
-        return value!.Value;
+        return value.Value;
     }
 
     [SuppressMessage(category: "Microsoft.Usage", checkId: "CA1801:ReviewUnusedParameters", Justification = "Needed for Unit Test")]
