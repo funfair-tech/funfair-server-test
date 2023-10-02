@@ -83,12 +83,13 @@ public abstract class TestBase
     {
         Assert.NotNull(value);
 
-        return value!.Value;
+        return value.Value;
     }
 
     [SuppressMessage(category: "Microsoft.Usage", checkId: "CA1801:ReviewUnusedParameters", Justification = "Needed for Unit Test")]
     [SuppressMessage(category: "codecracker.CSharp", checkId: "CC0057:ReviewUnusedParameters", Justification = "Needed for Unit Test")]
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedParameter.Global", Justification = "Used by test classes")]
     [SuppressMessage(category: "IDE", checkId: "IDE0060: Remove unused params", Justification = "Used by test classes")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static void UnusedVariable<T>(T value)
