@@ -19,12 +19,7 @@ public static class ReferenceObjectHelpers
             return false;
         }
 
-        if (left is null)
-        {
-            return false;
-        }
-
-        return eq(arg1: left, arg2: right);
+        return left is not null && eq(arg1: left, arg2: right);
     }
 
     public static int Compare<T>(T? left, T? right, Func<T, T, int> cmp)
@@ -40,11 +35,8 @@ public static class ReferenceObjectHelpers
             return -1;
         }
 
-        if (left is null)
-        {
-            return 1;
-        }
-
-        return cmp(arg1: left, arg2: right);
+        return left is null
+            ? 1
+            : cmp(arg1: left, arg2: right);
     }
 }
