@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
@@ -17,11 +18,7 @@ public static class HttpClientFactoryExtensions
 
     public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, string responseMessage)
     {
-        MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
-                                     clientName: clientName,
-                                     httpStatusCode: httpStatusCode,
-                                     responseMessage: responseMessage,
-                                     headers: NoHeaders);
+        MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: responseMessage, headers: NoHeaders);
     }
 
     [SuppressMessage(category: "Microsoft.Reliability", checkId: "CA2000:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
@@ -32,11 +29,17 @@ public static class HttpClientFactoryExtensions
                                                     string responseMessage,
                                                     IReadOnlyDictionary<string, string> headers)
     {
-        HttpClient client =
-            new(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)) { BaseAddress = new("https://localhost") };
+        HttpClient client = CreateFakeClient(httpStatusCode: httpStatusCode, responseMessage: responseMessage, headers: headers);
 
         httpClientFactory.CreateClient(clientName)
                          .Returns(client);
+    }
+
+    [SuppressMessage(category: "Microsoft.Reliability", checkId: "CA2000:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
+    [SuppressMessage(category: "codecracker.CSharp", checkId: "CC0022:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
+    private static HttpClient CreateFakeClient(HttpStatusCode httpStatusCode, string responseMessage, IReadOnlyDictionary<string, string> headers)
+    {
+        return new(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)) { BaseAddress = new("https://localhost") };
     }
 
     public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode)
@@ -44,10 +47,7 @@ public static class HttpClientFactoryExtensions
         MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty);
     }
 
-    public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
-                                                    string clientName,
-                                                    HttpStatusCode httpStatusCode,
-                                                    IReadOnlyDictionary<string, string> headers)
+    public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, IReadOnlyDictionary<string, string> headers)
     {
         MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty, headers: headers);
     }
@@ -100,6 +100,7 @@ public static class HttpClientFactoryExtensions
                                      headers: headers);
     }
 
+    [DebuggerDisplay("HTTP: {_statusCode}: {_responseMessage}")]
     private sealed class FakeHttpMessageHandler : HttpMessageHandler
     {
         private readonly IReadOnlyDictionary<string, string> _headers;
