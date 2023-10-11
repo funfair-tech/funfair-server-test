@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Bogus;
@@ -19,6 +20,8 @@ public abstract class TestBase
         Assert.False(condition: false, userMessage: "Because");
     }
 
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static Task<T?> FromOptionalResultAsync<T>(T? value)
         where T : class
     {
@@ -26,12 +29,16 @@ public abstract class TestBase
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static Task<T?> NullResultAsync<T>()
         where T : class
     {
         return FromOptionalResultAsync((T?)null);
     }
 
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected virtual ILogger<T> GetTypedLogger<T>()
     {
         return GetSubstitute<ILogger<T>>();
@@ -69,6 +76,8 @@ public abstract class TestBase
         return Substitute.For<T1, T2, T3>(constructorArguments);
     }
 
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static T AssertReallyNotNull<T>([NotNull] T? value)
         where T : class
     {
@@ -78,12 +87,12 @@ public abstract class TestBase
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static T AssertReallyNotNull<T>([NotNull] T? value)
         where T : struct
     {
-        Assert.NotNull(value);
-
-        return value.Value;
+        return Assert.NotNull(value);
     }
 
     [SuppressMessage(category: "Microsoft.Usage", checkId: "CA1801:ReviewUnusedParameters", Justification = "Needed for Unit Test")]
@@ -98,6 +107,8 @@ public abstract class TestBase
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static string FormatValue<T>(T value)
         where T : notnull
     {
