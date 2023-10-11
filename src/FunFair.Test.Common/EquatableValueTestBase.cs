@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Xunit;
 
 namespace FunFair.Test.Common;
@@ -26,13 +28,23 @@ public abstract class EquatableValueTestBase<TObject> : TestBase
 
     protected internal object EquivalentToValue1AsObject { get; }
 
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool TypedEquals(in TObject x, in TObject y)
     {
-        IEquatable<TObject> eq = x;
-
-        return eq.Equals(y);
+        return DoTypedEquals(x, y);
     }
 
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static bool DoTypedEquals<T>(in T l, in T r)
+        where T : struct, IEquatable<T>
+    {
+        return l.Equals(r);
+    }
+
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool UntypedEquals(in TObject x, object? y)
     {
         return x.Equals(y);

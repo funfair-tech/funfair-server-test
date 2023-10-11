@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 using Xunit;
 
 namespace FunFair.Test.Common;
@@ -22,18 +24,34 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
 
     protected abstract bool OperatorLessThan(in TObject l, in TObject r);
 
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int TypedCompareTo(in TObject l, in TObject r)
     {
-        IComparable<TObject> cmp = l;
-
-        return cmp.CompareTo(r);
+        return DoTypedCompareTo(l, r);
     }
 
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static int DoTypedCompareTo<T>(in T l, in T r)
+        where T : struct, IComparable<T>
+    {
+        return l.CompareTo(r);
+    }
+
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static int DoUntypedCompareTo<T>(in T l, object? r)
+        where T : struct, IComparable
+    {
+        return l.CompareTo(r);
+    }
+
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int UntypedCompareTo(in TObject l, object? r)
     {
-        IComparable cmp = l;
-
-        return cmp.CompareTo(r);
+        return DoUntypedCompareTo(l, r);
     }
 
     [Fact]
