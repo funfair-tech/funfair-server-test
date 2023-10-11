@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 2.0.93
-- SDK - Updated DotNet SDK to 8.0.100-rc.2.23502.2
-- Optimised and avoided boxing
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.12] - 2023-10-11
+### Changed
+- Dependencies - Updated Meziantou.Analyzer to 2.0.93
+- SDK - Updated DotNet SDK to 8.0.100-rc.2.23502.2
+- Optimised and avoided boxing
+
 ## [6.1.11] - 2023-10-04
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.3.138
