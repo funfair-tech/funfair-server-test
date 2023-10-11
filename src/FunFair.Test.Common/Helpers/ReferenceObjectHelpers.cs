@@ -14,12 +14,12 @@ public static class ReferenceObjectHelpers
             return true;
         }
 
-        if (ReferenceEquals(objA: null, objB: right))
+        if (right is null)
         {
             return false;
         }
 
-        if (ReferenceEquals(objA: null, objB: left))
+        if (left is null)
         {
             return false;
         }
@@ -35,12 +35,12 @@ public static class ReferenceObjectHelpers
             return 0;
         }
 
-        if (ReferenceEquals(objA: null, objB: right))
+        if (right is null)
         {
             return -1;
         }
 
-        if (ReferenceEquals(objA: null, objB: left))
+        if (left is null)
         {
             return 1;
         }
