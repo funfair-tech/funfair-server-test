@@ -9,13 +9,15 @@ using NonBlocking;
 
 namespace FunFair.Test.Common.Mocks;
 
-[DebuggerDisplay("Critical: {CriticalReported} Errors: {ErrorsReported} Warnings: {WarningsReported} Trace: {TraceReported} Information: {InformationReported} Debug: {DebugReported}")]
+[DebuggerDisplay(
+    "Critical: {CriticalReported} Errors: {ErrorsReported} Warnings: {WarningsReported} Trace: {TraceReported} Information: {InformationReported} Debug: {DebugReported}")]
 public sealed class MockLogger<T> : ILogger<T>
 {
     private readonly ILogger _logger;
     private readonly ConcurrentDictionary<LogLevel, LogCounter> _seen;
 
-    public MockLogger([SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")] ILogger logger)
+    public MockLogger(
+        [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0024: Logger parameters should be ILogger<T>", Justification = "Not created through DI")] ILogger logger)
     {
         this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this._seen = new();

@@ -28,7 +28,7 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int TypedCompareTo(in TObject l, in TObject r)
     {
-        return DoTypedCompareTo(l, r);
+        return DoTypedCompareTo(l: l, r: r);
     }
 
     [Pure]
@@ -51,7 +51,7 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int UntypedCompareTo(in TObject l, object? r)
     {
-        return DoUntypedCompareTo(l, r);
+        return DoUntypedCompareTo(l: l, r: r);
     }
 
     [Fact]

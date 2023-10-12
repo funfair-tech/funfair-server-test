@@ -32,7 +32,7 @@ public abstract class EquatableValueTestBase<TObject> : TestBase
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool TypedEquals(in TObject x, in TObject y)
     {
-        return DoTypedEquals(x, y);
+        return DoTypedEquals(l: x, r: y);
     }
 
     [Pure]
