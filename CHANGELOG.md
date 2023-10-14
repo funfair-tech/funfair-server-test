@@ -8,16 +8,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated SonarAnalyzer.CSharp to 9.12.0.78982
-- Dependencies - Updated xunit.analyzers to 1.4.0
-- Dependencies - Updated Dapper to 2.1.11
-- Dependencies - Updated xunit to 2.5.2
-- Dependencies - Updated xunit.runner.visualstudio to 2.5.3
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.13] - 2023-10-14
+### Changed
+- Dependencies - Updated SonarAnalyzer.CSharp to 9.12.0.78982
+- Dependencies - Updated xunit.analyzers to 1.4.0
+- Dependencies - Updated Dapper to 2.1.11
+- Dependencies - Updated xunit to 2.5.2
+- Dependencies - Updated xunit.runner.visualstudio to 2.5.3
+
 ## [6.1.12] - 2023-10-11
 ### Changed
 - Dependencies - Updated Meziantou.Analyzer to 2.0.93
