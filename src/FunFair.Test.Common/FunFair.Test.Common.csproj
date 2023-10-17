@@ -73,7 +73,7 @@
     <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.Xunit" Version="3.0.5" />
-    <PackageReference Include="xunit" Version="2.5.2" />
+    <PackageReference Include="xunit" Version="2.5.3" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" ExcludeAssets="runtime" />
