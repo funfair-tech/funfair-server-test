@@ -8,16 +8,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated xunit to 2.5.3
-- Dependencies - Updated TeamCity.VSTest.TestAdapter to 1.0.38
-- Dependencies - Updated Roslynator.Analyzers to 4.6.0
-- Dependencies - Updated FluentValidation to 11.8.0
-- Dependencies - Updated Dapper to 2.1.15
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.14] - 2023-10-20
+### Changed
+- Dependencies - Updated xunit to 2.5.3
+- Dependencies - Updated TeamCity.VSTest.TestAdapter to 1.0.38
+- Dependencies - Updated Roslynator.Analyzers to 4.6.0
+- Dependencies - Updated FluentValidation to 11.8.0
+- Dependencies - Updated Dapper to 2.1.15
+
 ## [6.1.13] - 2023-10-14
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.12.0.78982
