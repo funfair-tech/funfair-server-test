@@ -6,19 +6,23 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-- TimeSources for start of common mocks
 ### Fixed
+### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.1.15] - 2023-11-08
+### Added
+- TimeSources for start of common mocks
 ### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.6.1
 - Dependencies - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.3.1
 - Dependencies - Updated xunit to 2.6.1
 - Dependencies - Updated Meziantou.Analyzer to 2.0.105
 - Dependencies - Updated Microsoft.NET.Test.Sdk to 17.8.0
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.1.14] - 2023-10-20
 ### Changed
 - Dependencies - Updated xunit to 2.5.3
