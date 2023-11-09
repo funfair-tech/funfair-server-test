@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 2.0.106
-- Dependencies - Updated Serilog to 3.1.0
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.16] - 2023-11-09
+### Changed
+- Dependencies - Updated Meziantou.Analyzer to 2.0.106
+- Dependencies - Updated Serilog to 3.1.0
+
 ## [6.1.15] - 2023-11-08
 ### Added
 - TimeSources for start of common mocks
