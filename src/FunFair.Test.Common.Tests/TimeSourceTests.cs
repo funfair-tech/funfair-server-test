@@ -153,4 +153,18 @@ public sealed class TimeSourceTests : LoggingTestBase
         DateTime baseTime = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Unspecified);
         Assert.Throws<ArgumentOutOfRangeException>(() => TimeSources.CreateFrozen(baseTime));
     }
+
+    [Fact]
+    public void CannotCreateAdvanceableTimeSourceInLocaltime()
+    {
+        DateTime baseTime = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Local);
+        Assert.Throws<ArgumentOutOfRangeException>(() => TimeSources.CreateAdvanceable(baseTime));
+    }
+
+    [Fact]
+    public void CannotCreateAdvanceableTimeSourceInUnspecified()
+    {
+        DateTime baseTime = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Unspecified);
+        Assert.Throws<ArgumentOutOfRangeException>(() => TimeSources.CreateAdvanceable(baseTime));
+    }
 }

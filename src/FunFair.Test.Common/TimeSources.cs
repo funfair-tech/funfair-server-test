@@ -10,7 +10,7 @@ public static class TimeSources
 
     public static FrozenTimeSource Future { get; } = CreateFrozen(new(year: 2100, month: 3, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Utc));
 
-    public static AdvanceableTimeSource Advanceable { get; } = CreateAdvanceable(new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Utc));
+    public static AdvanceableTimeSource Advanceable { get; } = CreateAdvanceable(Past);
 
     public static FrozenTimeSource CreateFrozen(in DateTime startTime)
     {
@@ -38,6 +38,11 @@ public static class TimeSources
         return startTime.Offset == TimeSpan.Zero
             ? AdvanceableTimeSource.Create(startTime)
             : AdvanceableMustBeInUtcFormat(startTime);
+    }
+
+    public static AdvanceableTimeSource CreateAdvanceable(in FrozenTimeSource startTime)
+    {
+        return AdvanceableTimeSource.Create(startTime.UtcNowAsOffset);
     }
 
     [DoesNotReturn]
