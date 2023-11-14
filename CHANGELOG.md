@@ -8,16 +8,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 2.0.109
-- Dependencies - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.4.0
-- SDK - Updated DotNet SDK to 8.0.100
-- Dependencies - Updated Microsoft.Extensions to 8.0.0
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.4.198
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.18] - 2023-11-14
+### Changed
+- Dependencies - Updated Meziantou.Analyzer to 2.0.109
+- Dependencies - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.4.0
+- SDK - Updated DotNet SDK to 8.0.100
+- Dependencies - Updated Microsoft.Extensions to 8.0.0
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.4.198
+
 ## [6.1.17] - 2023-11-11
 ### Changed
 - Dependencies - Updated Serilog to 3.1.1
