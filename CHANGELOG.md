@@ -8,15 +8,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 2.0.110
-- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.8.14
-- Dependencies - Updated Serilog.Extensions.Logging to 8.0.0
-- Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.1.168
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.19] - 2023-11-16
+### Changed
+- Dependencies - Updated Meziantou.Analyzer to 2.0.110
+- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.8.14
+- Dependencies - Updated Serilog.Extensions.Logging to 8.0.0
+- Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.1.168
+
 ## [6.1.18] - 2023-11-14
 ### Changed
 - Dependencies - Updated Meziantou.Analyzer to 2.0.109
