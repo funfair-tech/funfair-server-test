@@ -13,11 +13,11 @@ public readonly record struct AdvanceableTimeSource
     private AdvanceableTimeSource(in DateTimeOffset utcNow, int offset)
     {
         this._offset = offset;
-        this.BaseOfset = utcNow;
+        this.BaseOffset = utcNow;
         this.UtcNowAsOffset = utcNow.AddDays(offset);
     }
 
-    public DateTimeOffset BaseOfset { get; }
+    public DateTimeOffset BaseOffset { get; }
 
     public DateTimeOffset UtcNowAsOffset { get; }
 
@@ -25,7 +25,7 @@ public readonly record struct AdvanceableTimeSource
 
     public AdvanceableTimeSource Next()
     {
-        return new(utcNow: this.BaseOfset, this._offset + 1);
+        return new(utcNow: this.BaseOffset, this._offset + 1);
     }
 
     internal static AdvanceableTimeSource Create(in DateTimeOffset utcNow)
