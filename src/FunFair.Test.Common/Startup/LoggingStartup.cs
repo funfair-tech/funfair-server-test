@@ -13,12 +13,12 @@ namespace FunFair.Test.Common.Startup;
 
 internal static class LoggingStartup
 {
-    private static readonly List<IMaskingOperator> MaskingOperators = new()
-                                                                      {
-                                                                          new EmailAddressMaskingOperator(), new CreditCardMaskingOperator(), new IbanMaskingOperator()
+    private static readonly List<IMaskingOperator> MaskingOperators =
+    [
+        new EmailAddressMaskingOperator(), new CreditCardMaskingOperator(), new IbanMaskingOperator()
 
-                                                                          // need to find a sane way of adding these
-                                                                      };
+        // need to find a sane way of adding these
+    ];
 
     public static IServiceCollection AddLoggingSupport(this IServiceCollection services)
     {
