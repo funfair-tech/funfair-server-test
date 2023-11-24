@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated Dapper to 2.1.24
+- Dependencies - Updated Roslynator.Analyzers to 4.6.4
 ### Removed
 
 <!--
