@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Dapper to 2.1.24
-- Dependencies - Updated Roslynator.Analyzers to 4.6.4
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.21] - 2023-11-24
+### Changed
+- Dependencies - Updated Dapper to 2.1.24
+- Dependencies - Updated Roslynator.Analyzers to 4.6.4
+
 ## [6.1.20] - 2023-11-23
 ### Changed
 - Dependencies - Updated xunit.analyzers to 1.6.0
