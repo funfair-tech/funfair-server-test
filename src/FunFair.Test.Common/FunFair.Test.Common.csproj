@@ -57,7 +57,7 @@
     <PackageReference Include="Castle.Core" Version="5.1.1" />
     <PackageReference Include="Dapper" Version="2.1.24" />
     <PackageReference Include="FluentValidation" Version="11.8.1" />
-    <PackageReference Include="Meziantou.Framework.InlineSnapshotTesting" Version="1.0.28"/>
+    <PackageReference Include="Meziantou.Framework.InlineSnapshotTesting" Version="1.0.28" />
     <PackageReference Include="Meziantou.Xunit.ParallelTestFramework" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
@@ -94,7 +94,7 @@
     <PackageReference Include="SecurityCodeScan.VS2019" Version="5.6.7" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="SerilogAnalyzer" Version="0.15.0" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="SmartAnalyzers.CSharpExtensions.Annotations" Version="4.2.8" PrivateAssets="All" ExcludeAssets="runtime" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="9.14.0.81108" PrivateAssets="All" ExcludeAssets="runtime" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="9.15.0.81779" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="TeamCity.VSTest.TestAdapter" Version="1.0.38" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="ToStringWithoutOverrideAnalyzer" Version="0.6.0" PrivateAssets="All" ExcludeAssets="runtime" />
