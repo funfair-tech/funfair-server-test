@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 2.0.121
-- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 2.0.0
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.23] - 2023-12-16
+### Changed
+- Dependencies - Updated Meziantou.Analyzer to 2.0.121
+- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 2.0.0
+
 ## [6.1.22] - 2023-12-12
 ### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.7.0
