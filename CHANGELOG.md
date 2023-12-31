@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 2.0.132
-- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 2.0.1
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.29] - 2023-12-31
+### Changed
+- Dependencies - Updated Meziantou.Analyzer to 2.0.132
+- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 2.0.1
+
 ## [6.1.27] - 2023-12-27
 ### Changed
 - Dependencies - Updated Bogus to 35.2.0
