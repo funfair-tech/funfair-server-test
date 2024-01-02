@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
@@ -13,8 +14,9 @@ public static class Formatter
     {
         string rv = value.ToString() ?? string.Empty;
 
-        Assert.False(rv == value.GetType()
-                                .FullName,
+        Assert.False(StringComparer.Ordinal.Equals(x: rv,
+                                                   y: value.GetType()
+                                                           .FullName),
                      userMessage: "ToString() not implemented");
 
         return rv;

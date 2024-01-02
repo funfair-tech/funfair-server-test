@@ -20,7 +20,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     {
         using (CancellationTokenSource cts = new(Delay))
         {
-            const string clientName = @"TestExample";
+            const string clientName = "TestExample";
             const string expectedContent = "Hello World!";
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
@@ -42,7 +42,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     {
         using (CancellationTokenSource cts = new(Delay))
         {
-            const string clientName = @"TestExample";
+            const string clientName = "TestExample";
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
@@ -60,7 +60,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     {
         using (CancellationTokenSource cts = new(Delay))
         {
-            const string clientName = @"TestExample";
+            const string clientName = "TestExample";
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
@@ -79,7 +79,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     {
         using (CancellationTokenSource cts = new(Delay))
         {
-            const string clientName = @"TestExample";
+            const string clientName = "TestExample";
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
@@ -97,15 +97,12 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     {
         using (CancellationTokenSource cts = new(Delay))
         {
-            const string clientName = @"TestExample";
+            const string clientName = "TestExample";
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
             Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Authorization"] = "Bearer 12345" };
-            httpClientFactory.MockCreateClientWithResponse(clientName: clientName,
-                                                           httpStatusCode: HttpStatusCode.BadGateway,
-                                                           headers: headers,
-                                                           responseObject: MockReferenceData.ExampleObject);
+            httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, headers: headers, responseObject: MockReferenceData.ExampleObject);
 
             HttpClient client = httpClientFactory.CreateClient(clientName);
 
@@ -121,7 +118,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
         {
             JsonSerializerOptions serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
-            const string clientName = @"TestExample";
+            const string clientName = "TestExample";
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
@@ -143,7 +140,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
         using (CancellationTokenSource cts = new(Delay))
         {
             JsonSerializerOptions serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-            const string clientName = @"TestExample";
+            const string clientName = "TestExample";
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 

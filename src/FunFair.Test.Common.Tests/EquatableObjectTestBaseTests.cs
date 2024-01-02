@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Xunit;
 
@@ -15,12 +16,12 @@ public sealed class EquatableObjectTestBaseTests : EquatableObjectTestBase<strin
 
     protected override bool OperatorEquals(string? x, string? y)
     {
-        return x == y;
+        return StringComparer.Ordinal.Equals(x: x, y: y);
     }
 
     protected override bool OperatorNotEquals(string? x, string? y)
     {
-        return x != y;
+        return !StringComparer.Ordinal.Equals(x: x, y: y);
     }
 
     [Fact]

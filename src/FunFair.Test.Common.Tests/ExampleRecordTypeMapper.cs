@@ -16,12 +16,12 @@ public sealed class ExampleRecordTypeMapper : SqlMapper.TypeHandler<ExampleRecor
             return;
         }
 
-        if (value.Name == "Exception")
+        if (StringComparer.Ordinal.Equals(x: value.Name, y: "Exception"))
         {
             throw new ArgumentOutOfRangeException(nameof(value), actualValue: value.Name, message: "Example");
         }
 
-        if (value.Name == "Binary")
+        if (StringComparer.Ordinal.Equals(x: value.Name, y: "Binary"))
         {
             parameter.Value = Encoding.UTF8.GetBytes(value.Name);
 

@@ -10,7 +10,7 @@ namespace FunFair.Test.Common;
 public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
     where TBinder : class, IModelBinder
 {
-    private const string MODEL_NAME = @"TestModel";
+    private const string MODEL_NAME = "TestModel";
     private readonly TBinder _binder;
     private readonly IValueProvider _valueProvider;
 
