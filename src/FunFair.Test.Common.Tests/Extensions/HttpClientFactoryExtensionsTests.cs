@@ -102,7 +102,10 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
             Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Authorization"] = "Bearer 12345" };
-            httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, headers: headers, responseObject: MockReferenceData.ExampleObject);
+            httpClientFactory.MockCreateClientWithResponse(clientName: clientName,
+                                                           httpStatusCode: HttpStatusCode.BadGateway,
+                                                           headers: headers,
+                                                           responseObject: MockReferenceData.ExampleObject);
 
             HttpClient client = httpClientFactory.CreateClient(clientName);
 
