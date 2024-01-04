@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -50,16 +51,18 @@ public abstract class EquatableObjectTestBase<TObject> : TestBase
     {
         int referenceHashCode = this.Value1.GetHashCode();
 
-        int[] selection = this.GetHashCodes();
+        IReadOnlyList<int> selection = this.GetHashCodes();
 
         Assert.All(collection: selection, action: hashCode => Assert.Equal(expected: hashCode, actual: referenceHashCode));
     }
 
-    private int[] GetHashCodes()
+    private IReadOnlyList<int> GetHashCodes()
     {
-        return Enumerable.Range(start: 0, count: 100)
-                         .Select(selector: _ => this.Value1.GetHashCode())
-                         .ToArray();
+        return
+        [
+            ..Enumerable.Range(start: 0, count: 100)
+                        .Select(selector: _ => this.Value1.GetHashCode())
+        ];
     }
 
     [Fact]

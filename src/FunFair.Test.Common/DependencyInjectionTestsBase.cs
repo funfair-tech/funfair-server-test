@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading.Tasks;
 using FunFair.Test.Common.Extensions;
 using Microsoft.Extensions.DependencyInjection;
@@ -105,8 +104,10 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     private IReadOnlyList<TInterface> GetServices<TInterface>()
         where TInterface : class
     {
-        return this.ServiceProvider.GetServices<TInterface>()
-                   .ToArray();
+        return
+        [
+            ..this.ServiceProvider.GetServices<TInterface>()
+        ];
     }
 
     private static bool IsProxyObject(string fullTypeName)
