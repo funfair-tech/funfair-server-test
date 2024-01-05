@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.analyzers to 1.9.0
 - Dependencies - Updated xunit to 2.6.5
 - Dependencies - Updated Dapper to 2.1.28
+- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 2.0.2
 ### Removed
 
 <!--
