@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Roslynator.Analyzers to 4.9.0
-- Dependencies - Updated Meziantou.Analyzer to 2.0.136
-- Dependencies - Updated Bogus to 35.3.1
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.35] - 2024-01-13
+### Changed
+- Dependencies - Updated Roslynator.Analyzers to 4.9.0
+- Dependencies - Updated Meziantou.Analyzer to 2.0.136
+- Dependencies - Updated Bogus to 35.3.1
+
 ## [6.1.33] - 2024-01-06
 ### Changed
 - Dependencies - Updated Meziantou.Analyzer to 2.0.134
