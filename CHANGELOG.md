@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Bogus to 35.4.0
-- Dependencies - Updated xunit.analyzers to 1.10.0
-- Dependencies - Updated xunit to 2.6.6
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.39] - 2024-01-15
+### Changed
+- Dependencies - Updated Bogus to 35.4.0
+- Dependencies - Updated xunit.analyzers to 1.10.0
+- Dependencies - Updated xunit to 2.6.6
+
 ## [6.1.37] - 2024-01-14
 ### Changed
 - Dependencies - Updated Bogus to 35.3.2
