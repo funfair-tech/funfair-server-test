@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated Bogus to 35.4.0
+- Dependencies - Updated xunit.analyzers to 1.10.0
 ### Removed
 
 <!--
