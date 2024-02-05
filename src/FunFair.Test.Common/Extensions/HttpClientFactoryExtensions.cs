@@ -16,13 +16,11 @@ public static class HttpClientFactoryExtensions
     private static readonly JsonSerializerOptions SerializerOptions = new();
     private static readonly IReadOnlyDictionary<string, string> NoHeaders = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
+    private static Uri LocalHostUri { get; } = new("https://localhost");
+
     public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, string responseMessage)
     {
-        MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
-                                     clientName: clientName,
-                                     httpStatusCode: httpStatusCode,
-                                     responseMessage: responseMessage,
-                                     headers: NoHeaders);
+        MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: responseMessage, headers: NoHeaders);
     }
 
     [SuppressMessage(category: "Microsoft.Reliability", checkId: "CA2000:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
@@ -43,7 +41,7 @@ public static class HttpClientFactoryExtensions
     [SuppressMessage(category: "codecracker.CSharp", checkId: "CC0022:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
     private static HttpClient CreateFakeClient(HttpStatusCode httpStatusCode, string responseMessage, IReadOnlyDictionary<string, string> headers)
     {
-        return new(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)) { BaseAddress = new("https://localhost") };
+        return new(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)) { BaseAddress = LocalHostUri };
     }
 
     public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode)
@@ -51,10 +49,7 @@ public static class HttpClientFactoryExtensions
         MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty);
     }
 
-    public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
-                                                    string clientName,
-                                                    HttpStatusCode httpStatusCode,
-                                                    IReadOnlyDictionary<string, string> headers)
+    public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, IReadOnlyDictionary<string, string> headers)
     {
         MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty, headers: headers);
     }

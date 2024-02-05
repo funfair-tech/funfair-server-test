@@ -10,7 +10,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
 {
     private const int MAX_MODEL_BINDING_RECURSION_DEPTH = 32;
 
-    private readonly Stack<State> _stack = new();
+    private readonly Stack<State> _stack = [];
     private int? _maxModelBindingRecursionDepth;
 
     private State _state = new();
@@ -92,11 +92,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         init => this._maxModelBindingRecursionDepth = value;
     }
 
-    public static ModelBindingContext CreateBindingContext(ActionContext actionContext,
-                                                           IValueProvider valueProvider,
-                                                           ModelMetadata metadata,
-                                                           BindingInfo? bindingInfo,
-                                                           string modelName)
+    public static ModelBindingContext CreateBindingContext(ActionContext actionContext, IValueProvider valueProvider, ModelMetadata metadata, BindingInfo? bindingInfo, string modelName)
     {
         string? binderModelName = bindingInfo?.BinderModelName ?? metadata.BinderModelName;
         BindingSource? bindingSource = bindingInfo?.BindingSource ?? metadata.BindingSource;

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using FunFair.Test.Common.Mocks;
 using Xunit;
 using Xunit.Sdk;
@@ -15,10 +14,10 @@ public sealed class ExtendedAssertTest : TestBase
 
     private static IReadOnlyList<MockGenericModel<string>> CreateModelList(string value)
     {
-        return new[]
-               {
-                   CreateModel(value)
-               };
+        return
+        [
+            CreateModel(value)
+        ];
     }
 
     [Fact]
@@ -79,7 +78,7 @@ public sealed class ExtendedAssertTest : TestBase
             "new nested value"
         ];
 
-        IReadOnlyList<MockGenericModel<string>> expected = new ReadOnlyCollection<MockGenericModel<string>>(new List<MockGenericModel<string>> { expectedMember });
+        IReadOnlyList<MockGenericModel<string>> expected = [expectedMember];
         IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "actual");
 
         Assert.Throws<EqualException>(testCode: () => ExtendedAssert.DeepEqual(expected: expected, actual: actual));
