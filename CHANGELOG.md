@@ -8,15 +8,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Roslynator.Analyzers to 4.10.0
-- Dependencies - Updated SonarAnalyzer.CSharp to 9.19.0.84025
-- Dependencies - Updated Microsoft.NET.Test.Sdk to 17.9.0
-- Dependencies - Updated Meziantou.Analyzer to 2.0.140
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.40] - 2024-02-07
+### Changed
+- Dependencies - Updated Roslynator.Analyzers to 4.10.0
+- Dependencies - Updated SonarAnalyzer.CSharp to 9.19.0.84025
+- Dependencies - Updated Microsoft.NET.Test.Sdk to 17.9.0
+- Dependencies - Updated Meziantou.Analyzer to 2.0.140
+
 ## [6.1.39] - 2024-01-15
 ### Changed
 - Dependencies - Updated Bogus to 35.4.0
