@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.7.269
+- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.9.28
 ### Removed
 
 <!--
