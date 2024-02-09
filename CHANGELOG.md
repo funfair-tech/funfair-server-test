@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.7.269
-- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.9.28
-- Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.2.267
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.41] - 2024-02-09
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.7.269
+- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.9.28
+- Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.2.267
+
 ## [6.1.40] - 2024-02-07
 ### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.10.0
