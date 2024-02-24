@@ -20,7 +20,11 @@ public static class HttpClientFactoryExtensions
 
     public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, string responseMessage)
     {
-        MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: responseMessage, headers: NoHeaders);
+        MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
+                                     clientName: clientName,
+                                     httpStatusCode: httpStatusCode,
+                                     responseMessage: responseMessage,
+                                     headers: NoHeaders);
     }
 
     [SuppressMessage(category: "Microsoft.Reliability", checkId: "CA2000:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
@@ -49,7 +53,10 @@ public static class HttpClientFactoryExtensions
         MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty);
     }
 
-    public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, IReadOnlyDictionary<string, string> headers)
+    public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
+                                                    string clientName,
+                                                    HttpStatusCode httpStatusCode,
+                                                    IReadOnlyDictionary<string, string> headers)
     {
         MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty, headers: headers);
     }
