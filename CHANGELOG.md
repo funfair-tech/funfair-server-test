@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.9.296
-- Dependencies - Updated Bogus to 35.4.1
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.43] - 2024-03-03
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.9.296
+- Dependencies - Updated Bogus to 35.4.1
+
 ## [6.1.42] - 2024-02-27
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.8.274
