@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.21.0.86780
+- Dependencies - Updated Dapper to 2.1.35
 ### Removed
 
 <!--
