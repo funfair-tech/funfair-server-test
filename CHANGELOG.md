@@ -13,6 +13,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - SDK - Updated DotNet SDK to 8.0.202
 - Dependencies - Updated Bogus to 35.5.0
 - Dependencies - Updated coverlet to 6.0.2
+- Dependencies - Updated Dapper to 2.1.37
 ### Removed
 
 <!--
