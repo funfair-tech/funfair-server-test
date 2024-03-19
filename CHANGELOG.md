@@ -10,10 +10,10 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.10.303
 - Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.4.303
-- SDK - Updated DotNet SDK to 8.0.202
 - Dependencies - Updated Bogus to 35.5.0
 - Dependencies - Updated coverlet to 6.0.2
 - Dependencies - Updated Dapper to 2.1.37
+- SDK - Updated DotNet SDK to 8.0.203
 ### Removed
 
 <!--
