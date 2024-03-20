@@ -8,6 +8,13 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.1.46] - 2024-03-20
+### Changed
 - Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.4.303
 - Dependencies - Updated Bogus to 35.5.0
 - Dependencies - Updated coverlet to 6.0.2
@@ -17,11 +24,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Roslynator.Analyzers to 4.12.0
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.11.311
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.22.0.87781
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.1.45] - 2024-03-08
 ### Changed
 - Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.3.296
