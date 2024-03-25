@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.23.0.88079
+- Dependencies - Updated Credfeto.Enumeration.Source.Generation to 1.1.5.315
 ### Removed
 
 <!--
