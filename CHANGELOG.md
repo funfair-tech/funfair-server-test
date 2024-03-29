@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.12.324
+- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.0.1
 ### Removed
 
 <!--
