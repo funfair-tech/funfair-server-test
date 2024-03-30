@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.12.324
-- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.0.1
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.48] - 2024-03-30
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.12.324
+- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.0.1
+
 ## [6.1.47] - 2024-03-26
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.23.0.88079
