@@ -9,11 +9,11 @@ namespace FunFair.Test.Common.Tests;
 public sealed class ComparableObjectTests : ComparableObjectTestBase<string>
 {
     public ComparableObjectTests()
-        : base(value1: "Hello",
-               equivalentToValue1: new("olleH".Reverse()
-                                              .ToArray()),
-               value2: "World",
-               zeroObject: string.Empty)
+        : base(zeroObject: string.Empty,
+               value1: "Hello",
+               new("olleH".Reverse()
+                          .ToArray()),
+               value2: "World")
     {
     }
 
