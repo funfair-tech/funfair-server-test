@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.23.1.88495
+- SDK - Updated DotNet SDK to 8.0.204
 ### Removed
 
 <!--
