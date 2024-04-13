@@ -8,6 +8,13 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.1.50] - 2024-04-13
+### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.13.341
 - Dependencies - Updated Meziantou.Analyzer to 2.0.147
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.23.2.88755
@@ -15,11 +22,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.runner.visualstudio to 2.5.8
 - Dependencies - Updated xunit to 2.7.1
 - Dependencies - Updated Dapper to 2.1.44
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.1.49] - 2024-04-10
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.23.1.88495
