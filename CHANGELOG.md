@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.12.1
+- Dependencies - Updated Meziantou.Analyzer to 2.0.149
 ### Removed
 
 <!--
