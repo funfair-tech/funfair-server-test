@@ -8,16 +8,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated xunit.analyzers to 1.13.0
-- Dependencies - Updated xunit.runner.visualstudio to 2.8.0
-- Dependencies - Updated xunit to 2.8.0
-- Dependencies - Updated Meziantou.Analyzer to 2.0.150
-- Dependencies - Updated Bogus to 35.5.1
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.53] - 2024-04-28
+### Changed
+- Dependencies - Updated xunit.analyzers to 1.13.0
+- Dependencies - Updated xunit.runner.visualstudio to 2.8.0
+- Dependencies - Updated xunit to 2.8.0
+- Dependencies - Updated Meziantou.Analyzer to 2.0.150
+- Dependencies - Updated Bogus to 35.5.1
+
 ## [6.1.52] - 2024-04-24
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.14.369
