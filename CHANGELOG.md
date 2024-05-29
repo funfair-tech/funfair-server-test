@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.analyzers to 1.14.0
 - Dependencies - Updated xunit.runner.visualstudio to 2.8.1
 - Dependencies - Updated xunit to 2.8.1
+- SDK - Updated DotNet SDK to 8.0.301
 ### Removed
 
 <!--
