@@ -14,6 +14,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - SDK - Updated DotNet SDK to 8.0.301
 - Dependencies - Updated Meziantou.Analyzer to 2.0.154
 - Dependencies - Updated Meziantou.Xunit.ParallelTestFramework to 2.2.0
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.17.415
 ### Removed
 
 <!--
