@@ -13,6 +13,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit to 2.8.1
 - SDK - Updated DotNet SDK to 8.0.301
 - Dependencies - Updated Meziantou.Analyzer to 2.0.154
+- Dependencies - Updated Meziantou.Xunit.ParallelTestFramework to 2.2.0
 ### Removed
 
 <!--
