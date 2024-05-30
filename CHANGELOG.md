@@ -8,6 +8,13 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.1.58] - 2024-05-30
+### Changed
 - Dependencies - Updated xunit.analyzers to 1.14.0
 - Dependencies - Updated xunit.runner.visualstudio to 2.8.1
 - Dependencies - Updated xunit to 2.8.1
@@ -15,11 +22,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Analyzer to 2.0.154
 - Dependencies - Updated Meziantou.Xunit.ParallelTestFramework to 2.2.0
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.17.415
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.1.57] - 2024-05-24
 ### Changed
 - Dependencies - Updated Microsoft.NET.Test.Sdk to 17.10.0
