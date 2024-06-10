@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.26.0.92422
 - Dependencies - Updated Roslynator.Analyzers to 4.12.4
+- Dependencies - Updated FluentValidation to 11.9.2
 ### Removed
 
 <!--
