@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated SonarAnalyzer.CSharp to 9.26.0.92422
-- Dependencies - Updated Roslynator.Analyzers to 4.12.4
-- Dependencies - Updated FluentValidation to 11.9.2
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.59] - 2024-06-11
+### Changed
+- Dependencies - Updated SonarAnalyzer.CSharp to 9.26.0.92422
+- Dependencies - Updated Roslynator.Analyzers to 4.12.4
+- Dependencies - Updated FluentValidation to 11.9.2
+
 ## [6.1.58] - 2024-05-30
 ### Changed
 - Dependencies - Updated xunit.analyzers to 1.14.0
