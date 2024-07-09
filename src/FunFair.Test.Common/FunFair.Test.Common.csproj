@@ -87,6 +87,6 @@
     <PackageReference Include="TeamCity.VSTest.TestAdapter" Version="1.0.40" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="ToStringWithoutOverrideAnalyzer" Version="0.6.0" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="xunit.analyzers" Version="1.15.0" PrivateAssets="All" ExcludeAssets="runtime" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.1" PrivateAssets="All" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" PrivateAssets="All" />
   </ItemGroup>
 </Project>
