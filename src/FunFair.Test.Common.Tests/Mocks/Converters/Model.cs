@@ -18,7 +18,7 @@ public sealed class Model : IEquatable<Model>
 
     public bool Equals(Model? other)
     {
-        if (ReferenceEquals(objA: null, objB: other))
+        if (other is null)
         {
             return false;
         }

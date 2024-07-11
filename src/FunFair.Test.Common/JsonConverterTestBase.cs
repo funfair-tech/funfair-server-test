@@ -80,7 +80,8 @@ public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(Dynamica
 
         this.Output.WriteLine($"Serialized model as: {doc}");
 
-        Assert.Throws<JsonException>(testCode: () => JsonSerializer.Deserialize<Model>(json: doc, options: this._options));
+        JsonException exception = Assert.Throws<JsonException>(testCode: () => JsonSerializer.Deserialize<Model>(json: doc, options: this._options));
+        UnusedVariable(exception);
     }
 
     private sealed class Model : IEquatable<Model>

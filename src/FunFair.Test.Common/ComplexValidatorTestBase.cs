@@ -62,7 +62,8 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
     {
         TObject itemToValidate = this.CreateAValidObject();
 
-        this.Validate(instance: itemToValidate, expectedErrorCount: 0);
+        ValidationResult result = this.Validate(instance: itemToValidate, expectedErrorCount: 0);
+        UnusedVariable(result);
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "ParameterOnlyUsedForPreconditionCheck.Local", Justification = "Helper method")]
@@ -84,14 +85,11 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
         Assert.NotEmpty(erroringProperties);
 
         bool hasUnexpectedErrors = result.Errors.TrueForAll(error => erroringProperties.Contains(value: error.PropertyName, comparer: StringComparer.Ordinal));
-        bool hasAllExpectedErrors =
-            Array.TrueForAll(array: erroringProperties, match: error => result.Errors.Exists(p => StringComparer.Ordinal.Equals(x: p.PropertyName, y: error)));
+        bool hasAllExpectedErrors = Array.TrueForAll(array: erroringProperties, match: error => result.Errors.Exists(p => StringComparer.Ordinal.Equals(x: p.PropertyName, y: error)));
 
-        Assert.True(condition: hasUnexpectedErrors,
-                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasUnexpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
 
-        Assert.True(condition: hasAllExpectedErrors,
-                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasAllExpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
     }
 
     protected static string MakePropertyName(params string[] parts)

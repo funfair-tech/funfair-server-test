@@ -92,11 +92,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         init => this._maxModelBindingRecursionDepth = value;
     }
 
-    public static ModelBindingContext CreateBindingContext(ActionContext actionContext,
-                                                           IValueProvider valueProvider,
-                                                           ModelMetadata metadata,
-                                                           BindingInfo? bindingInfo,
-                                                           string modelName)
+    public static ModelBindingContext CreateBindingContext(ActionContext actionContext, IValueProvider valueProvider, ModelMetadata metadata, BindingInfo? bindingInfo, string modelName)
     {
         string? binderModelName = bindingInfo?.BinderModelName ?? metadata.BinderModelName;
         BindingSource? bindingSource = bindingInfo?.BindingSource ?? metadata.BindingSource;
@@ -108,7 +104,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
                    BinderModelName = binderModelName,
                    BindingSource = bindingSource,
                    PropertyFilter = propertyFilterProvider?.PropertyFilter,
-                   ValidationState = new(),
+                   ValidationState = [],
 
                    // Because this is the top-level context, FieldName and ModelName should be the same.
                    FieldName = binderModelName ?? modelName,
@@ -171,11 +167,13 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
 
     private static IValueProvider FilterValueProvider(IValueProvider valueProvider, BindingSource? bindingSource)
     {
-        if (bindingSource?.IsGreedy != false)
-        {
-            return valueProvider;
-        }
+        return bindingSource?.IsGreedy != false
+            ? BindingSourceValueProvider(valueProvider)
+            : valueProvider;
+    }
 
+    private static IValueProvider BindingSourceValueProvider(IValueProvider valueProvider)
+    {
         return valueProvider;
     }
 
