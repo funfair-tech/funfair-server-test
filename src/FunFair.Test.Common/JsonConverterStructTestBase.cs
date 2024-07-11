@@ -68,7 +68,8 @@ public abstract class JsonConverterStructTestBase<[DynamicallyAccessedMembers(Dy
 
         this.Output.WriteLine($"Serialized model as: {doc}");
 
-        Assert.Throws<JsonException>(testCode: () => this.DeserializeDoc(doc));
+        JsonException exception = Assert.Throws<JsonException>(testCode: () => this.DeserializeDoc(doc));
+        UnusedVariable(exception);
     }
 
     private Model DeserializeDoc(string doc)

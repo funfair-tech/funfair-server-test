@@ -45,9 +45,9 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
 
         object? result = parameter.Value;
         Assert.NotNull(result);
-        Assert.IsType<byte[]>(result);
+        byte[] data = Assert.IsType<byte[]>(result);
 
-        Assert.Equal(BitConverter.ToString(expected), BitConverter.ToString((byte[])result));
+        Assert.Equal(BitConverter.ToString(expected), BitConverter.ToString(data));
     }
 
     protected void ShouldNotSetValue<TExceptionType>(TMappedType value)
@@ -56,13 +56,15 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
         // note special case for byte arrays as NSubstitute whatever you give it always says it received something other than the expected
         IDbDataParameter parameter = new MockParameter();
 
-        Assert.Throws<TExceptionType>(() => this.Handler.SetValue(parameter: parameter, value: value));
+        TExceptionType test = Assert.Throws<TExceptionType>(() => this.Handler.SetValue(parameter: parameter, value: value));
+        UnusedVariable(test);
     }
 
     protected void ShouldNotParse<TExceptionType, TValueType>(TValueType value)
         where TExceptionType : Exception where TValueType : notnull
     {
-        Assert.Throws<TExceptionType>(() => this.Handler.Parse(value));
+        TExceptionType test = Assert.Throws<TExceptionType>(() => this.Handler.Parse(value));
+        UnusedVariable(test);
     }
 
     private sealed class MockParameter : IDbDataParameter

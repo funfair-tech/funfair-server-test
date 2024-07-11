@@ -13,17 +13,7 @@ public static class ReferenceObjectHelpers
     public static bool AreEqual<T>(T? left, T? right, Func<T, T, bool> eq)
         where T : class
     {
-        if (ReferenceEquals(objA: left, objB: right))
-        {
-            return true;
-        }
-
-        if (right is null)
-        {
-            return false;
-        }
-
-        return left is not null && eq(arg1: left, arg2: right);
+        return ReferenceEquals(objA: left, objB: right) || right is not null && left is not null && eq(arg1: left, arg2: right);
     }
 
     [Pure]
@@ -41,8 +31,11 @@ public static class ReferenceObjectHelpers
             return -1;
         }
 
-        return left is null
-            ? 1
-            : cmp(arg1: left, arg2: right);
+        if (left is null)
+        {
+            return 1;
+        }
+
+        return cmp(arg1: left, arg2: right);
     }
 }

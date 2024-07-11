@@ -267,7 +267,8 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     [Fact]
     public void UntypedCompareToValue1ToOtherTypedObjectThrowsArgumentException()
     {
-        Assert.Throws<ArgumentException>(testCode: () => UntypedCompareTo(l: this.Value1, Guid.NewGuid()));
+        ArgumentException exception = Assert.Throws<ArgumentException>(testCode: () => UntypedCompareTo(l: this.Value1, Guid.NewGuid()));
+        UnusedVariable(exception);
     }
 
     [Fact]

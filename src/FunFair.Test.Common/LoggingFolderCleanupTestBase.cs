@@ -16,8 +16,9 @@ public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
                                        Guid.NewGuid()
                                            .ToString());
 
-        Directory.CreateDirectory(this.TempFolder);
-        this.Output.WriteLine($"Using Temp folder: {this.TempFolder}");
+        DirectoryInfo created = Directory.CreateDirectory(this.TempFolder);
+
+        this.Output.WriteLine($"Using Temp folder: {created.FullName}");
     }
 
     protected string TempFolder { get; }

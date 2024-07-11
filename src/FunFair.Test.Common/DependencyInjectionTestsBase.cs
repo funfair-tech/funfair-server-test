@@ -20,7 +20,8 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     protected void RequireService<TService>()
         where TService : class
     {
-        this.RequireServiceCommon<TService>();
+        TService service = this.RequireServiceCommon<TService>();
+        UnusedVariable(service);
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used in implementations")]
@@ -96,9 +97,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
             this.Output.WriteLine($"* {foundService.GetType().FullName}");
         }
 
-        Assert.Single(services);
-
-        return service;
+        return Assert.Single(services);
     }
 
     private IReadOnlyList<TInterface> GetServices<TInterface>()
