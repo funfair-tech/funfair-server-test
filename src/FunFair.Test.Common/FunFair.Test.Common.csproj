@@ -24,7 +24,7 @@
     <UseSystemResourceKeys>true</UseSystemResourceKeys>
     <WarningsAsErrors />
     <NuGetAudit>true</NuGetAudit>
-    <NuGetAuditLevel>low</NuGetAuditLevel>
+    <NuGetAuditLevel>high</NuGetAuditLevel>
     <EnableMicrosoftExtensionsConfigurationBinderSourceGenerator>true</EnableMicrosoftExtensionsConfigurationBinderSourceGenerator>
     <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
     <OptimizationPreference>speed</OptimizationPreference>
@@ -34,6 +34,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
   </PropertyGroup>
   <PropertyGroup>
     <AnalysisLevel>latest</AnalysisLevel>
