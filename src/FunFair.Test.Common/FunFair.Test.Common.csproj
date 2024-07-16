@@ -25,6 +25,7 @@
     <WarningsAsErrors />
     <NuGetAudit>true</NuGetAudit>
     <NuGetAuditLevel>high</NuGetAuditLevel>
+    <NuGetAuditMode>all</NuGetAuditMode>
     <EnableMicrosoftExtensionsConfigurationBinderSourceGenerator>true</EnableMicrosoftExtensionsConfigurationBinderSourceGenerator>
     <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
     <OptimizationPreference>speed</OptimizationPreference>
