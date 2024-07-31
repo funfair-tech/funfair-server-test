@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.30.0.95878
 - Dependencies - Updated Bogus to 35.6.0
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.19.498
+- Dependencies - Updated Meziantou.Xunit.ParallelTestFramework to 2.3.0
 ### Removed
 
 <!--
