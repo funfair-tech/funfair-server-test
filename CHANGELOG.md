@@ -8,12 +8,15 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.0.7
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.64] - 2024-08-01
+### Changed
+- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.0.7
+
 ## [6.1.63] - 2024-08-01
 ### Changed
 - Dependencies - Updated Meziantou.Analyzer to 2.0.163
