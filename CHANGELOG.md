@@ -8,16 +8,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 2.0.163
-- Dependencies - Updated SonarAnalyzer.CSharp to 9.30.0.95878
-- Dependencies - Updated Bogus to 35.6.0
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.19.498
-- Dependencies - Updated Meziantou.Xunit.ParallelTestFramework to 2.3.0
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.63] - 2024-08-01
+### Changed
+- Dependencies - Updated Meziantou.Analyzer to 2.0.163
+- Dependencies - Updated SonarAnalyzer.CSharp to 9.30.0.95878
+- Dependencies - Updated Bogus to 35.6.0
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.19.498
+- Dependencies - Updated Meziantou.Xunit.ParallelTestFramework to 2.3.0
+
 ## [6.1.62] - 2024-07-11
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 9.28.0.94264
