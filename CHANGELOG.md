@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- SDK - Updated DotNet SDK to 8.0.400
-- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.11.20
-- Dependencies - Updated SonarAnalyzer.CSharp to 9.32.0.97167
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.65] - 2024-08-14
+### Changed
+- SDK - Updated DotNet SDK to 8.0.400
+- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.11.20
+- Dependencies - Updated SonarAnalyzer.CSharp to 9.32.0.97167
+
 ## [6.1.64] - 2024-08-01
 ### Changed
 - Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.0.7
