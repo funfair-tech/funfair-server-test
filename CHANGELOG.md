@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.22.521
 - Dependencies - Updated xunit.analyzers to 1.16.0
+- Dependencies - Updated Bogus to 35.6.1
 ### Removed
 
 <!--
