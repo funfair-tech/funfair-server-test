@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- Dependencies - Updated Microsoft.NET.Test.Sdk to 17.11.1
 ### Removed
 
 <!--
