@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.23.533
-- Dependencies - Updated Roslynator.Analyzers to 4.12.5
-- Dependencies - Updated FluentValidation to 11.10.0
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.70] - 2024-09-16
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.23.533
+- Dependencies - Updated Roslynator.Analyzers to 4.12.5
+- Dependencies - Updated FluentValidation to 11.10.0
+
 ## [6.1.69] - 2024-09-05
 ### Changed
 - Dependencies - Updated Microsoft.NET.Test.Sdk to 17.11.1
