@@ -8,8 +8,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated SonarAnalyzer.CSharp to 9.31.0.96804
-- SDK - Updated DotNet SDK to 8.0.400
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.21.517
+- Dependencies - Updated Microsoft.NET.Test.Sdk to 17.11.0
+- SDK - Updated Dotnet to 9.0 RC1
 ### Removed
 
 <!--
