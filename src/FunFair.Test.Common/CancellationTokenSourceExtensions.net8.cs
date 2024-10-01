@@ -11,7 +11,8 @@ public static partial class CancellationTokenSourceExtensions
 {
     public static Task CancelAsync(this CancellationTokenSource cancellationTokenSource, bool throwOnFirstException)
     {
-        if (throwOnFirstException) {
+        if (throwOnFirstException)
+        {
             Debug.WriteLine("throwOnFirstException is ignored");
         }
 

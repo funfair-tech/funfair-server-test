@@ -1,6 +1,5 @@
 #if NET8_0_OR_GREATER
 #else
-
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
