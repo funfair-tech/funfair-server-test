@@ -14,6 +14,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Analyzer to 2.0.170
 - Dependencies - Updated Roslynator.Analyzers to 4.12.8
 - Dependencies - Updated xunit to 2.9.2
+- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.0.8
 ### Removed
 
 <!--
