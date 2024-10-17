@@ -8,6 +8,13 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.1.71] - 2024-10-17
+### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.21.517
 - Dependencies - Updated Microsoft.NET.Test.Sdk to 17.11.0
 - SDK - Updated Dotnet to 9.0 RC1
@@ -15,11 +22,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Roslynator.Analyzers to 4.12.8
 - Dependencies - Updated xunit to 2.9.2
 - Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.0.8
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.1.70] - 2024-09-16
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.23.533
