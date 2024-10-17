@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Microsoft.NET.Test.Sdk to 17.11.0
 - SDK - Updated Dotnet to 9.0 RC1
 - Dependencies - Updated Meziantou.Analyzer to 2.0.170
+- Dependencies - Updated Roslynator.Analyzers to 4.12.8
 ### Removed
 
 <!--
