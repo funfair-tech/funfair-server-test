@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 2.0.172
-- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.0.9
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.72] - 2024-10-19
+### Changed
+- Dependencies - Updated Meziantou.Analyzer to 2.0.172
+- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.0.9
+
 ## [6.1.71] - 2024-10-17
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.21.517
