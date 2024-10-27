@@ -8,9 +8,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.26.665
 - Dependencies - Updated Credfeto.Enumeration to 1.1.17.637
 - Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.1.1
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.27.668
 ### Removed
 
 <!--
