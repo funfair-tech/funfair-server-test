@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.2.0
+- Dependencies - Updated NSubstitute to 5.3.0
 ### Removed
 
 <!--
