@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.29.685
-- Dependencies - Updated Credfeto.Enumeration to 1.1.20.657
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.236] - 2024-11-01
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.29.685
+- Dependencies - Updated Credfeto.Enumeration to 1.1.20.657
+
 ## [6.1.235] - 2024-10-30
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.28.680
