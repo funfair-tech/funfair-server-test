@@ -8,16 +8,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.32.711
-- Dependencies - Updated Credfeto.Enumeration to 1.1.23.685
-- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.12.19
-- Dependencies - Updated Meziantou.Analyzer to 2.0.179
-- SDK - Updated DotNet SDK to 9.0.100
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.239] - 2024-11-13
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.32.711
+- Dependencies - Updated Credfeto.Enumeration to 1.1.23.685
+- Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.12.19
+- Dependencies - Updated Meziantou.Analyzer to 2.0.179
+- SDK - Updated DotNet SDK to 9.0.100
+
 ## [6.1.238] - 2024-11-12
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.31.691
