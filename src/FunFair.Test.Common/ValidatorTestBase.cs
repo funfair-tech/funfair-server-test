@@ -90,16 +90,13 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
     {
         bool hasUnexpectedErrors = result.Errors.TrueForAll(error => erroringProperties.Contains(value: error.PropertyName, comparer: StringComparer.Ordinal));
 
-        Assert.True(condition: hasUnexpectedErrors,
-                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(condition: hasUnexpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
     }
 
     private static void AssertHasAllExpectedErrors(ValidationResult result, string[] erroringProperties)
     {
-        bool hasAllExpectedErrors =
-            Array.TrueForAll(array: erroringProperties, match: error => result.Errors.Exists(p => StringComparer.Ordinal.Equals(x: p.PropertyName, y: error)));
-        Assert.True(condition: hasAllExpectedErrors,
-                    $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
+        bool hasAllExpectedErrors = Array.TrueForAll(array: erroringProperties, match: error => result.Errors.Exists(p => StringComparer.Ordinal.Equals(x: p.PropertyName, y: error)));
+        Assert.True(condition: hasAllExpectedErrors, $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}");
     }
 
     protected static string MakePropertyName(params string[] parts)
@@ -130,7 +127,7 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
         return string.Join(separator: ", ",
                            result.Errors.Select(selector: e => e.PropertyName)
                                  .Distinct(StringComparer.Ordinal)
-                                 .OrderBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase));
+                                 .Order(StringComparer.OrdinalIgnoreCase));
     }
 
     private static string DumpExpectedPropertiesInError(IReadOnlyList<string> erroringProperties)
@@ -141,7 +138,7 @@ public abstract class ValidatorTestBase<[DynamicallyAccessedMembers(DynamicallyA
     private static IOrderedEnumerable<string> ErroringProperties(IReadOnlyList<string> erroringProperties)
     {
         return erroringProperties.Distinct(StringComparer.Ordinal)
-                                 .OrderBy(keySelector: x => x, comparer: StringComparer.OrdinalIgnoreCase);
+                                 .Order(StringComparer.OrdinalIgnoreCase);
     }
 
     [Fact]
