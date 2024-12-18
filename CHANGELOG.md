@@ -17,6 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated FluentValidation to 11.11.0
 - Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.0.8
 - Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.3.5
+- Dependencies - Updated Microsoft.NET.Test.Sdk to 17.12.0
 ### Removed
 
 <!--
