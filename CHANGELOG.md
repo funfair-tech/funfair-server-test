@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Credfeto.Enumeration to 1.2.43.772
 - Dependencies - Updated Meziantou.Analyzer to 2.0.182
 - Dependencies - Updated Roslynator.Analyzers to 4.12.10
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.3.0.106239
 ### Removed
 
 <!--
