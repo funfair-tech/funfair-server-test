@@ -8,6 +8,13 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.1.241] - 2024-12-18
+### Changed
 - Dependencies - Updated Credfeto.Enumeration to 1.2.43.772
 - Dependencies - Updated Meziantou.Analyzer to 2.0.182
 - Dependencies - Updated Roslynator.Analyzers to 4.12.10
@@ -18,11 +25,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.0.8
 - Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.3.5
 - Dependencies - Updated Microsoft.NET.Test.Sdk to 17.12.0
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.1.240] - 2024-12-17
 ### Changed
 - SDK - Updated DotNet SDK to 9.0.101
