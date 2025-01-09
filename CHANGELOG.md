@@ -8,16 +8,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.53.833
-- Dependencies - Updated Microsoft.Sbom.Targets to 3.0.1
-- Dependencies - Updated Credfeto.Enumeration to 1.2.52.820
-- Dependencies - Updated Meziantou.Analyzer to 2.0.185
-- Dependencies - Updated xunit to 2.9.3
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.244] - 2025-01-09
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.53.833
+- Dependencies - Updated Microsoft.Sbom.Targets to 3.0.1
+- Dependencies - Updated Credfeto.Enumeration to 1.2.52.820
+- Dependencies - Updated Meziantou.Analyzer to 2.0.185
+- Dependencies - Updated xunit to 2.9.3
+
 ## [6.1.243] - 2025-01-07
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.52.823
