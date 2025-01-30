@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.64.879
 - Dependencies - Updated Credfeto.Enumeration to 1.2.64.889
 - Dependencies - Updated Roslynator.Analyzers to 4.12.11
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.6.0.109712
 ### Removed
 
 <!--
