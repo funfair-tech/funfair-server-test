@@ -8,16 +8,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.67.907
-- Dependencies - Updated Microsoft.Sbom.Targets to 3.1.0
-- Dependencies - Updated Dapper to 2.1.66
-- Dependencies - Updated xunit.analyzers to 1.20.0
-- Dependencies - Updated xunit.runner.visualstudio to 3.0.2
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.257] - 2025-02-07
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.67.907
+- Dependencies - Updated Microsoft.Sbom.Targets to 3.1.0
+- Dependencies - Updated Dapper to 2.1.66
+- Dependencies - Updated xunit.analyzers to 1.20.0
+- Dependencies - Updated xunit.runner.visualstudio to 3.0.2
+
 ## [6.1.256] - 2025-02-04
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.66.900
