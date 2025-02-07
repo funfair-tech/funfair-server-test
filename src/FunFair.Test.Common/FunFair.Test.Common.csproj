@@ -64,7 +64,7 @@
     <PackageReference Include="AutoBogus.NSubstitute" Version="2.13.1" />
     <PackageReference Include="Bogus" Version="35.6.1" />
     <PackageReference Include="Castle.Core" Version="5.1.1" />
-    <PackageReference Include="Dapper" Version="2.1.44" />
+    <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="Meziantou.Extensions.Logging.Xunit" Version="1.0.8" />
     <PackageReference Include="Meziantou.Framework.InlineSnapshotTesting" Version="3.3.5" />
