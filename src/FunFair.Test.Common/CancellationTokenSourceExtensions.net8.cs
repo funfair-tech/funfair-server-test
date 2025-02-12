@@ -1,4 +1,3 @@
-#if NET8_0_OR_GREATER
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
@@ -19,4 +18,3 @@ public static partial class CancellationTokenSourceExtensions
         return cancellationTokenSource.CancelAsync();
     }
 }
-#endif

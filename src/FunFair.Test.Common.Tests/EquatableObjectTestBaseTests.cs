@@ -7,10 +7,7 @@ namespace FunFair.Test.Common.Tests;
 public sealed class EquatableObjectTestBaseTests : EquatableObjectTestBase<string>
 {
     public EquatableObjectTestBaseTests()
-        : base(zeroObject: string.Empty,
-               value1: "Hello",
-               new("olleH".Reverse()
-                          .ToArray()))
+        : base(zeroObject: string.Empty, value1: "Hello", new([.."olleH".Reverse()]))
     {
     }
 

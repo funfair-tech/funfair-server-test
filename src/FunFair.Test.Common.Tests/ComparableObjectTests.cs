@@ -11,8 +11,9 @@ public sealed class ComparableObjectTests : ComparableObjectTestBase<string>
     public ComparableObjectTests()
         : base(zeroObject: string.Empty,
                value1: "Hello",
-               new("olleH".Reverse()
-                          .ToArray()),
+               new([
+                   .."olleH".Reverse()
+               ]),
                value2: "World")
     {
     }
