@@ -12,9 +12,7 @@ namespace FunFair.Test.Common.Tests;
 public sealed class LoggingTestBaseTests : LoggingTestBase
 {
     public LoggingTestBaseTests(ITestOutputHelper output)
-        : base(output)
-    {
-    }
+        : base(output) { }
 
     [Fact]
     [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0005:Avoid DateTimeOffset.UtcNow", Justification = "Unit test")]

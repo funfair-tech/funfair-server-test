@@ -11,15 +11,11 @@ namespace FunFair.Test.Common.Tests;
 public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
 {
     public DependencyInjectionTests(ITestOutputHelper output)
-        : base(output: output, dependencyInjectionRegistration: Configure)
-    {
-    }
+        : base(output: output, dependencyInjectionRegistration: Configure) { }
 
     private static IServiceCollection Configure(IServiceCollection serviceCollection)
     {
-        return serviceCollection.AddMockedService<ITestInterface>()
-                                .AddMockedService<ITestInterface2>(NoChanges)
-                                .AddSingleton<IModelBinder, ModelBinder>();
+        return serviceCollection.AddMockedService<ITestInterface>().AddMockedService<ITestInterface2>(NoChanges).AddSingleton<IModelBinder, ModelBinder>();
     }
 
     private static void NoChanges(ITestInterface2 item)
@@ -38,8 +34,7 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
     {
         ITestInterface test = this.GetService<ITestInterface>();
 
-        string fullName = test.GetType()
-                              .FullName ?? string.Empty;
+        string fullName = test.GetType().FullName ?? string.Empty;
         this.Output.WriteLine(fullName);
 
         Assert.True(IsProxyObject(fullName), userMessage: "Should be proxy object");
@@ -50,8 +45,7 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
     {
         ITestInterface2 test = this.GetService<ITestInterface2>();
 
-        string fullName = test.GetType()
-                              .FullName ?? string.Empty;
+        string fullName = test.GetType().FullName ?? string.Empty;
         this.Output.WriteLine(fullName);
 
         Assert.True(IsProxyObject(fullName), userMessage: "Should be proxy object");
@@ -62,8 +56,7 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
     {
         IModelBinder test = this.GetService<IModelBinder>();
 
-        string fullName = test.GetType()
-                              .FullName ?? string.Empty;
+        string fullName = test.GetType().FullName ?? string.Empty;
         this.Output.WriteLine(fullName);
 
         Assert.False(IsProxyObject(fullName), userMessage: "Should not be proxy object");
@@ -71,7 +64,7 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
 
     private static bool IsProxyObject(string fullTypeName)
     {
-        return StringComparer.Ordinal.Equals(x: fullTypeName, y: "Castle.Proxies.ObjectProxy") ||
-               fullTypeName.StartsWith(value: "Castle.Proxies.ObjectProxy_", comparisonType: StringComparison.Ordinal);
+        return StringComparer.Ordinal.Equals(x: fullTypeName, y: "Castle.Proxies.ObjectProxy")
+            || fullTypeName.StartsWith(value: "Castle.Proxies.ObjectProxy_", comparisonType: StringComparison.Ordinal);
     }
 }

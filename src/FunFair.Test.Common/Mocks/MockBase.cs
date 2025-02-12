@@ -24,9 +24,11 @@ public abstract class MockBase<T>
 
     public abstract T Next();
 
-    [SuppressMessage(category: "ToStringWithoutOverrideAnalyzer",
-                     checkId: "ExplicitToStringWithoutOverrideAnalyzer: Calling ToString() on object of type 'T' but it does not override ToString()",
-                     Justification = "Valid in this case")]
+    [SuppressMessage(
+        category: "ToStringWithoutOverrideAnalyzer",
+        checkId: "ExplicitToStringWithoutOverrideAnalyzer: Calling ToString() on object of type 'T' but it does not override ToString()",
+        Justification = "Valid in this case"
+    )]
     public override string ToString()
     {
         return this._value.ToString() ?? string.Empty;

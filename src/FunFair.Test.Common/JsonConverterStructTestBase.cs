@@ -8,7 +8,8 @@ using Xunit.Abstractions;
 namespace FunFair.Test.Common;
 
 public abstract class JsonConverterStructTestBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TConverter, TObject> : LoggingTestBase
-    where TConverter : JsonConverter<TObject>, new() where TObject : struct
+    where TConverter : JsonConverter<TObject>, new()
+    where TObject : struct
 {
     private readonly JsonSerializerOptions _options;
 
@@ -17,16 +18,15 @@ public abstract class JsonConverterStructTestBase<[DynamicallyAccessedMembers(Dy
     {
         JsonConverter converter = new TConverter();
         this._options = new()
-                        {
-                            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                            PropertyNameCaseInsensitive = false,
-                            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                            Converters = { converter }
-                        };
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            PropertyNameCaseInsensitive = false,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = { converter },
+        };
     }
 
-    protected virtual string InvalidValue { get; } = Guid.NewGuid()
-                                                         .ToString();
+    protected virtual string InvalidValue { get; } = Guid.NewGuid().ToString();
 
     protected abstract TObject CreateInstance();
 

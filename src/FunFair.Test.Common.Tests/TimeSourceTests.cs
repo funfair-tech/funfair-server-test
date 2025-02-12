@@ -8,9 +8,7 @@ namespace FunFair.Test.Common.Tests;
 public sealed class TimeSourceTests : LoggingTestBase
 {
     public TimeSourceTests(ITestOutputHelper output)
-        : base(output)
-    {
-    }
+        : base(output) { }
 
     [Fact]
     public void PastDateTimeIsSane()

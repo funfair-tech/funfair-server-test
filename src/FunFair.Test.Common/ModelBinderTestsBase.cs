@@ -23,8 +23,7 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
 
     private void MockValueProvider(string testValue)
     {
-        this._valueProvider.GetValue(MODEL_NAME)
-            .Returns(new ValueProviderResult(testValue));
+        this._valueProvider.GetValue(MODEL_NAME).Returns(new ValueProviderResult(testValue));
     }
 
     private SimpleDefaultModelBindingContext MockBindingContext()

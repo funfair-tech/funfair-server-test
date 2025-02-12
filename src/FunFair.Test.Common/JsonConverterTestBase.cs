@@ -9,14 +9,13 @@ using Xunit.Abstractions;
 namespace FunFair.Test.Common;
 
 public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TConverter, TObject> : LoggingTestBase
-    where TConverter : JsonConverter<TObject>, new() where TObject : class
+    where TConverter : JsonConverter<TObject>, new()
+    where TObject : class
 {
     private readonly JsonSerializerOptions _options;
 
     protected JsonConverterTestBase(ITestOutputHelper output)
-        : this(output: output, context: null)
-    {
-    }
+        : this(output: output, context: null) { }
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedParameter.Local", Justification = "Used in conditional implementations")]
     protected JsonConverterTestBase(ITestOutputHelper output, JsonSerializerContext? context)
@@ -24,18 +23,17 @@ public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(Dynamica
     {
         JsonConverter converter = new TConverter();
         this._options = new()
-                        {
-                            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                            PropertyNameCaseInsensitive = false,
-                            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                            Converters = { converter }
-                        };
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            PropertyNameCaseInsensitive = false,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = { converter },
+        };
 
         JsonOptions.AddContext(options: this._options, context: context);
     }
 
-    protected virtual string InvalidValue { get; } = Guid.NewGuid()
-                                                         .ToString();
+    protected virtual string InvalidValue { get; } = Guid.NewGuid().ToString();
 
     protected abstract TObject CreateInstance();
 
@@ -98,9 +96,7 @@ public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(Dynamica
 
         public override int GetHashCode()
         {
-            return this.Value is not null
-                ? this.Value.GetHashCode()
-                : 0;
+            return this.Value is not null ? this.Value.GetHashCode() : 0;
         }
 
         public static bool operator ==(Model? left, Model? right)

@@ -12,9 +12,7 @@ public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
     protected LoggingFolderCleanupTestBase(ITestOutputHelper output)
         : base(output)
     {
-        this.TempFolder = Path.Combine(Path.GetTempPath(),
-                                       Guid.NewGuid()
-                                           .ToString());
+        this.TempFolder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
 
         DirectoryInfo created = Directory.CreateDirectory(this.TempFolder);
 

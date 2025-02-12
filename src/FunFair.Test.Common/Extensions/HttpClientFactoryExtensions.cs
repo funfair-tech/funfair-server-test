@@ -20,25 +20,22 @@ public static class HttpClientFactoryExtensions
 
     public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, string responseMessage)
     {
-        MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
-                                     clientName: clientName,
-                                     httpStatusCode: httpStatusCode,
-                                     responseMessage: responseMessage,
-                                     headers: NoHeaders);
+        MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: responseMessage, headers: NoHeaders);
     }
 
     [SuppressMessage(category: "Microsoft.Reliability", checkId: "CA2000:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
     [SuppressMessage(category: "codecracker.CSharp", checkId: "CC0022:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
-    public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
-                                                    string clientName,
-                                                    HttpStatusCode httpStatusCode,
-                                                    string responseMessage,
-                                                    IReadOnlyDictionary<string, string> headers)
+    public static void MockCreateClientWithResponse(
+        this IHttpClientFactory httpClientFactory,
+        string clientName,
+        HttpStatusCode httpStatusCode,
+        string responseMessage,
+        IReadOnlyDictionary<string, string> headers
+    )
     {
         HttpClient client = CreateFakeClient(httpStatusCode: httpStatusCode, responseMessage: responseMessage, headers: headers);
 
-        httpClientFactory.CreateClient(clientName)
-                         .Returns(client);
+        httpClientFactory.CreateClient(clientName).Returns(client);
     }
 
     [SuppressMessage(category: "Microsoft.Reliability", checkId: "CA2000:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
@@ -53,60 +50,71 @@ public static class HttpClientFactoryExtensions
         MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty);
     }
 
-    public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory,
-                                                    string clientName,
-                                                    HttpStatusCode httpStatusCode,
-                                                    IReadOnlyDictionary<string, string> headers)
+    public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, IReadOnlyDictionary<string, string> headers)
     {
         MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty, headers: headers);
     }
 
     public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, T responseObject)
     {
-        MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
-                                     clientName: clientName,
-                                     httpStatusCode: httpStatusCode,
-                                     JsonSerializer.Serialize(value: responseObject, options: SerializerOptions),
-                                     headers: NoHeaders);
+        MockCreateClientWithResponse(
+            httpClientFactory: httpClientFactory,
+            clientName: clientName,
+            httpStatusCode: httpStatusCode,
+            JsonSerializer.Serialize(value: responseObject, options: SerializerOptions),
+            headers: NoHeaders
+        );
     }
 
-    public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
-                                                       string clientName,
-                                                       HttpStatusCode httpStatusCode,
-                                                       T responseObject,
-                                                       IReadOnlyDictionary<string, string> headers)
+    public static void MockCreateClientWithResponse<T>(
+        this IHttpClientFactory httpClientFactory,
+        string clientName,
+        HttpStatusCode httpStatusCode,
+        T responseObject,
+        IReadOnlyDictionary<string, string> headers
+    )
     {
-        MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
-                                     clientName: clientName,
-                                     httpStatusCode: httpStatusCode,
-                                     JsonSerializer.Serialize(value: responseObject, options: SerializerOptions),
-                                     headers: headers);
+        MockCreateClientWithResponse(
+            httpClientFactory: httpClientFactory,
+            clientName: clientName,
+            httpStatusCode: httpStatusCode,
+            JsonSerializer.Serialize(value: responseObject, options: SerializerOptions),
+            headers: headers
+        );
     }
 
-    public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
-                                                       string clientName,
-                                                       HttpStatusCode httpStatusCode,
-                                                       T responseObject,
-                                                       JsonSerializerOptions jsonSerializerOptions)
+    public static void MockCreateClientWithResponse<T>(
+        this IHttpClientFactory httpClientFactory,
+        string clientName,
+        HttpStatusCode httpStatusCode,
+        T responseObject,
+        JsonSerializerOptions jsonSerializerOptions
+    )
     {
-        MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
-                                     clientName: clientName,
-                                     httpStatusCode: httpStatusCode,
-                                     JsonSerializer.Serialize(value: responseObject, options: jsonSerializerOptions));
+        MockCreateClientWithResponse(
+            httpClientFactory: httpClientFactory,
+            clientName: clientName,
+            httpStatusCode: httpStatusCode,
+            JsonSerializer.Serialize(value: responseObject, options: jsonSerializerOptions)
+        );
     }
 
-    public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory,
-                                                       string clientName,
-                                                       HttpStatusCode httpStatusCode,
-                                                       T responseObject,
-                                                       JsonSerializerOptions jsonSerializerOptions,
-                                                       IReadOnlyDictionary<string, string> headers)
+    public static void MockCreateClientWithResponse<T>(
+        this IHttpClientFactory httpClientFactory,
+        string clientName,
+        HttpStatusCode httpStatusCode,
+        T responseObject,
+        JsonSerializerOptions jsonSerializerOptions,
+        IReadOnlyDictionary<string, string> headers
+    )
     {
-        MockCreateClientWithResponse(httpClientFactory: httpClientFactory,
-                                     clientName: clientName,
-                                     httpStatusCode: httpStatusCode,
-                                     JsonSerializer.Serialize(value: responseObject, options: jsonSerializerOptions),
-                                     headers: headers);
+        MockCreateClientWithResponse(
+            httpClientFactory: httpClientFactory,
+            clientName: clientName,
+            httpStatusCode: httpStatusCode,
+            JsonSerializer.Serialize(value: responseObject, options: jsonSerializerOptions),
+            headers: headers
+        );
     }
 
     [DebuggerDisplay("HTTP: {_statusCode}: {_responseMessage}")]

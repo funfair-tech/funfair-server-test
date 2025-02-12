@@ -67,11 +67,7 @@ public abstract class EquatableValueTestBase<TObject> : TestBase
 
     private IReadOnlyList<int> GetHashCodes()
     {
-        return
-        [
-            ..Enumerable.Range(start: 0, count: 100)
-                        .Select(selector: _ => this.Value1.GetHashCode())
-        ];
+        return [.. Enumerable.Range(start: 0, count: 100).Select(selector: _ => this.Value1.GetHashCode())];
     }
 
     [Fact]

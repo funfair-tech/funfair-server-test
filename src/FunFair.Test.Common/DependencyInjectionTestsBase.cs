@@ -13,9 +13,7 @@ namespace FunFair.Test.Common;
 public abstract class DependencyInjectionTestsBase : IntegrationTestBase
 {
     protected DependencyInjectionTestsBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration)
-        : base(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration)
-    {
-    }
+        : base(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration) { }
 
     protected void RequireService<TService>()
         where TService : class
@@ -37,14 +35,16 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used in implementations")]
     protected void RequireServiceInCollectionFor<TInterface, TService>()
-        where TInterface : class where TService : class, TInterface
+        where TInterface : class
+        where TService : class, TInterface
     {
         this.RequireServiceInCollectionForCommon<TInterface, TService>();
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used in implementations")]
     protected async Task RequireServiceInCollectionForAsync<TInterface, TService>()
-        where TInterface : class where TService : class, TInterface
+        where TInterface : class
+        where TService : class, TInterface
     {
         this.RequireServiceInCollectionForCommon<TInterface, TService>();
 
@@ -54,7 +54,8 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     }
 
     private void RequireServiceInCollectionForCommon<TInterface, TService>()
-        where TInterface : class where TService : class, TInterface
+        where TInterface : class
+        where TService : class, TInterface
     {
         IReadOnlyList<TInterface> services = this.GetServices<TInterface>();
 
@@ -81,8 +82,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         TInterface service = this.GetService<TInterface>();
         Assert.NotNull(service);
 
-        string fullName = service.GetType()
-                                 .FullName ?? string.Empty;
+        string fullName = service.GetType().FullName ?? string.Empty;
         this.Output.WriteLine($"Type Name: {typeof(TInterface).FullName}");
         this.Output.WriteLine($"Type Name: {fullName}");
 
@@ -103,15 +103,12 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     private IReadOnlyList<TInterface> GetServices<TInterface>()
         where TInterface : class
     {
-        return
-        [
-            ..this.ServiceProvider.GetServices<TInterface>()
-        ];
+        return [.. this.ServiceProvider.GetServices<TInterface>()];
     }
 
     private static bool IsProxyObject(string fullTypeName)
     {
-        return StringComparer.Ordinal.Equals(x: fullTypeName, y: "Castle.Proxies.ObjectProxy") ||
-               fullTypeName.StartsWith(value: "Castle.Proxies.ObjectProxy_", comparisonType: StringComparison.Ordinal);
+        return StringComparer.Ordinal.Equals(x: fullTypeName, y: "Castle.Proxies.ObjectProxy")
+            || fullTypeName.StartsWith(value: "Castle.Proxies.ObjectProxy_", comparisonType: StringComparison.Ordinal);
     }
 }

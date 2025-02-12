@@ -51,8 +51,7 @@ public abstract class TestBase
 
         const bool enable = true;
 
-        return rules(new Faker<T>().StrictMode(enable))
-            .Generate(itemCount);
+        return rules(new Faker<T>().StrictMode(enable)).Generate(itemCount);
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
@@ -64,14 +63,17 @@ public abstract class TestBase
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
     protected static T1 GetSubstitute<T1, T2>(params object[] constructorArguments)
-        where T1 : class where T2 : class
+        where T1 : class
+        where T2 : class
     {
         return Substitute.For<T1, T2>(constructorArguments);
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
     protected static T1 GetSubstitute<T1, T2, T3>(params object[] constructorArguments)
-        where T1 : class where T2 : class where T3 : class
+        where T1 : class
+        where T2 : class
+        where T3 : class
     {
         return Substitute.For<T1, T2, T3>(constructorArguments);
     }

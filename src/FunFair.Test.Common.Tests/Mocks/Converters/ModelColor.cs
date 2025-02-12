@@ -7,5 +7,5 @@ public enum ModelColor
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Deliberate for usage in tests")]
     RED,
 
-    BLUE
+    BLUE,
 }

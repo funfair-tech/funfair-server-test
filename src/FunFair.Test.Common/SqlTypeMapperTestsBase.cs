@@ -9,7 +9,6 @@ namespace FunFair.Test.Common;
 
 public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TTypeMapper, TMappedType> : TestBase
     where TTypeMapper : SqlMapper.TypeHandler<TMappedType>, new()
-
 {
     protected SqlTypeMapperTestsBase()
     {
@@ -32,8 +31,7 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
 
         this.Handler.SetValue(parameter: parameter, value: value);
 
-        parameter.Received(requiredNumberOfCalls: 1)
-                 .Value = expected;
+        parameter.Received(requiredNumberOfCalls: 1).Value = expected;
     }
 
     protected void ShouldSetValue(TMappedType value, in byte[] expected)
@@ -61,7 +59,8 @@ public abstract class SqlTypeMapperTestsBase<[DynamicallyAccessedMembers(Dynamic
     }
 
     protected void ShouldNotParse<TExceptionType, TValueType>(TValueType value)
-        where TExceptionType : Exception where TValueType : notnull
+        where TExceptionType : Exception
+        where TValueType : notnull
     {
         TExceptionType test = Assert.Throws<TExceptionType>(() => this.Handler.Parse(value));
         UnusedVariable(test);

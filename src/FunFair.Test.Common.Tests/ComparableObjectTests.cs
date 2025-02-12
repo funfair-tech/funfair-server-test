@@ -9,14 +9,7 @@ namespace FunFair.Test.Common.Tests;
 public sealed class ComparableObjectTests : ComparableObjectTestBase<string>
 {
     public ComparableObjectTests()
-        : base(zeroObject: string.Empty,
-               value1: "Hello",
-               new([
-                   .."olleH".Reverse()
-               ]),
-               value2: "World")
-    {
-    }
+        : base(zeroObject: string.Empty, value1: "Hello", new([.. "olleH".Reverse()]), value2: "World") { }
 
     protected override bool OperatorEquals(string? x, string? y)
     {

@@ -9,9 +9,7 @@ namespace FunFair.Test.Common.Tests;
 public sealed class JsonConverterTestBaseTests : JsonConverterTestBase<ModelConverter, Model>
 {
     public JsonConverterTestBaseTests(ITestOutputHelper output)
-        : base(output)
-    {
-    }
+        : base(output) { }
 
     protected override string InvalidValue { get; } = "banana";
 

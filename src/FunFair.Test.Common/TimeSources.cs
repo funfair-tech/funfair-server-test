@@ -14,30 +14,22 @@ public static class TimeSources
 
     public static FrozenTimeSource CreateFrozen(in DateTime startTime)
     {
-        return startTime.Kind == DateTimeKind.Utc
-            ? CreateFrozen(new DateTimeOffset(dateTime: startTime, offset: TimeSpan.Zero))
-            : FrozenMustBeInUtcFormat(startTime);
+        return startTime.Kind == DateTimeKind.Utc ? CreateFrozen(new DateTimeOffset(dateTime: startTime, offset: TimeSpan.Zero)) : FrozenMustBeInUtcFormat(startTime);
     }
 
     public static FrozenTimeSource CreateFrozen(in DateTimeOffset startTime)
     {
-        return startTime.Offset == TimeSpan.Zero
-            ? FrozenTimeSource.Create(startTime)
-            : FrozenMustBeInUtcFormat(startTime);
+        return startTime.Offset == TimeSpan.Zero ? FrozenTimeSource.Create(startTime) : FrozenMustBeInUtcFormat(startTime);
     }
 
     public static AdvanceableTimeSource CreateAdvanceable(in DateTime startTime)
     {
-        return startTime.Kind == DateTimeKind.Utc
-            ? CreateAdvanceable(new DateTimeOffset(dateTime: startTime, offset: TimeSpan.Zero))
-            : AdvanceableMustBeInUtcFormat(startTime);
+        return startTime.Kind == DateTimeKind.Utc ? CreateAdvanceable(new DateTimeOffset(dateTime: startTime, offset: TimeSpan.Zero)) : AdvanceableMustBeInUtcFormat(startTime);
     }
 
     public static AdvanceableTimeSource CreateAdvanceable(in DateTimeOffset startTime)
     {
-        return startTime.Offset == TimeSpan.Zero
-            ? AdvanceableTimeSource.Create(startTime)
-            : AdvanceableMustBeInUtcFormat(startTime);
+        return startTime.Offset == TimeSpan.Zero ? AdvanceableTimeSource.Create(startTime) : AdvanceableMustBeInUtcFormat(startTime);
     }
 
     public static AdvanceableTimeSource CreateAdvanceable(in FrozenTimeSource startTime)

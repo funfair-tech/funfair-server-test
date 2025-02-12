@@ -6,16 +6,10 @@ namespace FunFair.Test.Common.Tests.Mocks;
 internal sealed class MockExampleObject : MockBase<ExampleObject>
 {
     public MockExampleObject()
-        : base(new() { Name = "Test" })
-    {
-    }
+        : base(new() { Name = "Test" }) { }
 
     public override ExampleObject Next()
     {
-        return new()
-               {
-                   Name = Guid.NewGuid()
-                              .ToString()
-               };
+        return new() { Name = Guid.NewGuid().ToString() };
     }
 }

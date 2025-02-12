@@ -32,8 +32,7 @@ public sealed class ModelBinder : IModelBinder
 
     private static string? GetModelTypeValue(ModelBindingContext bindingContext, string modelKindName)
     {
-        return bindingContext.ValueProvider.GetValue(modelKindName)
-                             .FirstValue;
+        return bindingContext.ValueProvider.GetValue(modelKindName).FirstValue;
     }
 
     private static string CreatePropertyModelName(string? prefix, string? propertyName)

@@ -8,10 +8,12 @@ using Xunit.Abstractions;
 
 namespace FunFair.Test.Common;
 
-[SuppressMessage(category: "Microsoft.Usage",
-                 checkId: "CA2213:DisposableFieldsShouldBeDisposed",
-                 MessageId = nameof(_loggerFactory),
-                 Justification = "If Disposed then tests can and will report errors")]
+[SuppressMessage(
+    category: "Microsoft.Usage",
+    checkId: "CA2213:DisposableFieldsShouldBeDisposed",
+    MessageId = nameof(_loggerFactory),
+    Justification = "If Disposed then tests can and will report errors"
+)]
 public abstract class LoggingTestBase : TestBase
 {
     private readonly ILoggerFactory _loggerFactory;
@@ -19,24 +21,17 @@ public abstract class LoggingTestBase : TestBase
     private readonly IServiceProvider _serviceProvider;
 
     protected LoggingTestBase(ITestOutputHelper output)
-        : this(output: output, dependencyInjectionRegistration: NoDependencyInjectionConfiguration, initializeServices: NoDependencyInjectionInitialization)
-    {
-    }
+        : this(output: output, dependencyInjectionRegistration: NoDependencyInjectionConfiguration, initializeServices: NoDependencyInjectionInitialization) { }
 
     protected LoggingTestBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration)
-        : this(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration, initializeServices: NoDependencyInjectionInitialization)
-    {
-    }
+        : this(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration, initializeServices: NoDependencyInjectionInitialization) { }
 
     [SuppressMessage(category: "Major Code Smell", checkId: "S3442:\"abstract\" classes should not have \"public\" constructors", Justification = "By Design")]
-    protected internal LoggingTestBase(ITestOutputHelper output,
-                                       Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration,
-                                       Action<IServiceProvider> initializeServices)
+    protected internal LoggingTestBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
     {
         TaskScheduler.UnobservedTaskException += this.ReportUnhandledException;
 
-        this._serviceProvider = dependencyInjectionRegistration(new ServiceCollection().AddLoggingSupport())
-            .BuildServiceProvider();
+        this._serviceProvider = dependencyInjectionRegistration(new ServiceCollection().AddLoggingSupport()).BuildServiceProvider();
 
         this._loggerFactory = this._serviceProvider.GetRequiredService<ILoggerFactory>();
         LoggingStartup.InitializeLogging(loggerFactory: this._loggerFactory, output: output);

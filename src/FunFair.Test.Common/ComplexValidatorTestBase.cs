@@ -13,14 +13,11 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
     where TValidator : AbstractValidator<TObject>
 {
     protected ComplexValidatorTestBase(ITestOutputHelper output)
-        : base(output)
-    {
-    }
+        : base(output) { }
 
     public ValidationResult Validate(TObject instance)
     {
-        ValidationResult result = this.CreateValidator()
-                                      .Validate(instance);
+        ValidationResult result = this.CreateValidator().Validate(instance);
 
         this.Dump(result);
 
@@ -69,15 +66,19 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
     [SuppressMessage(category: "ReSharper", checkId: "ParameterOnlyUsedForPreconditionCheck.Local", Justification = "Helper method")]
     protected static void AssertOnlyNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
     {
-        Assert.True(result.Errors.TrueForAll(e => StringComparer.Ordinal.Equals(x: e.PropertyName, y: erroringProperty)),
-                    $"Should only have had errors in {erroringProperty}, but found errors in {string.Join(separator: ',', result.Errors.Select(selector: e => e.PropertyName).Distinct(StringComparer.Ordinal))}");
+        Assert.True(
+            result.Errors.TrueForAll(e => StringComparer.Ordinal.Equals(x: e.PropertyName, y: erroringProperty)),
+            $"Should only have had errors in {erroringProperty}, but found errors in {string.Join(separator: ',', result.Errors.Select(selector: e => e.PropertyName).Distinct(StringComparer.Ordinal))}"
+        );
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "ParameterOnlyUsedForPreconditionCheck.Local", Justification = "Helper method")]
     protected static void AssertNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
     {
-        Assert.True(result.Errors.Exists(e => StringComparer.Ordinal.Equals(x: e.PropertyName, y: erroringProperty)),
-                    $"Should have had errors in {erroringProperty}, but not found found errors in {DumpPropertiesInError(result)}");
+        Assert.True(
+            result.Errors.Exists(e => StringComparer.Ordinal.Equals(x: e.PropertyName, y: erroringProperty)),
+            $"Should have had errors in {erroringProperty}, but not found found errors in {DumpPropertiesInError(result)}"
+        );
     }
 
     protected static void AssertNamedPropertiesHaveErrors(ValidationResult result, params string[] erroringProperties)
@@ -108,8 +109,11 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
 
         this.Output.WriteLine($"Found {result.Errors.Count} errors:");
 
-        foreach (ValidationFailure error in result.Errors.OrderBy(keySelector: e => e.PropertyName, comparer: StringComparer.Ordinal)
-                                                  .ThenBy(keySelector: e => e.ErrorMessage, comparer: StringComparer.Ordinal))
+        foreach (
+            ValidationFailure error in result
+                .Errors.OrderBy(keySelector: e => e.PropertyName, comparer: StringComparer.Ordinal)
+                .ThenBy(keySelector: e => e.ErrorMessage, comparer: StringComparer.Ordinal)
+        )
         {
             this.Output.WriteLine($" * {error.PropertyName} : {error.ErrorMessage}");
         }
@@ -117,10 +121,7 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
 
     private static string DumpPropertiesInError(ValidationResult result)
     {
-        return string.Join(separator: ", ",
-                           result.Errors.Select(selector: e => e.PropertyName)
-                                 .Distinct(StringComparer.Ordinal)
-                                 .Order(StringComparer.OrdinalIgnoreCase));
+        return string.Join(separator: ", ", result.Errors.Select(selector: e => e.PropertyName).Distinct(StringComparer.Ordinal).Order(StringComparer.OrdinalIgnoreCase));
     }
 
     private static string DumpExpectedPropertiesInError(IReadOnlyList<string> erroringProperties)
@@ -130,7 +131,6 @@ public abstract class ComplexValidatorTestBase<[DynamicallyAccessedMembers(Dynam
 
     private static IOrderedEnumerable<string> ErroringProperties(IReadOnlyList<string> erroringProperties)
     {
-        return erroringProperties.Distinct(StringComparer.Ordinal)
-                                 .Order(StringComparer.OrdinalIgnoreCase);
+        return erroringProperties.Distinct(StringComparer.Ordinal).Order(StringComparer.OrdinalIgnoreCase);
     }
 }

@@ -85,43 +85,36 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
 
     private int MaxModelBindingRecursionDepth
     {
-        get
-        {
-            return this._maxModelBindingRecursionDepth ??= MAX_MODEL_BINDING_RECURSION_DEPTH;
-        }
+        get { return this._maxModelBindingRecursionDepth ??= MAX_MODEL_BINDING_RECURSION_DEPTH; }
         init => this._maxModelBindingRecursionDepth = value;
     }
 
-    public static ModelBindingContext CreateBindingContext(ActionContext actionContext,
-                                                           IValueProvider valueProvider,
-                                                           ModelMetadata metadata,
-                                                           BindingInfo? bindingInfo,
-                                                           string modelName)
+    public static ModelBindingContext CreateBindingContext(ActionContext actionContext, IValueProvider valueProvider, ModelMetadata metadata, BindingInfo? bindingInfo, string modelName)
     {
         string? binderModelName = bindingInfo?.BinderModelName ?? metadata.BinderModelName;
         BindingSource? bindingSource = bindingInfo?.BindingSource ?? metadata.BindingSource;
         IPropertyFilterProvider? propertyFilterProvider = bindingInfo?.PropertyFilterProvider ?? metadata.PropertyFilterProvider;
 
         return new SimpleDefaultModelBindingContext
-               {
-                   ActionContext = actionContext,
-                   BinderModelName = binderModelName,
-                   BindingSource = bindingSource,
-                   PropertyFilter = propertyFilterProvider?.PropertyFilter,
-                   ValidationState = [],
+        {
+            ActionContext = actionContext,
+            BinderModelName = binderModelName,
+            BindingSource = bindingSource,
+            PropertyFilter = propertyFilterProvider?.PropertyFilter,
+            ValidationState = [],
 
-                   // Because this is the top-level context, FieldName and ModelName should be the same.
-                   FieldName = binderModelName ?? modelName,
-                   ModelName = binderModelName ?? modelName,
+            // Because this is the top-level context, FieldName and ModelName should be the same.
+            FieldName = binderModelName ?? modelName,
+            ModelName = binderModelName ?? modelName,
 
-                   //OriginalModelName = binderModelName ?? modelName,
-                   IsTopLevelObject = true,
-                   ModelMetadata = metadata,
-                   ModelState = actionContext.ModelState,
-                   OriginalValueProvider = valueProvider,
-                   ValueProvider = FilterValueProvider(valueProvider: valueProvider, bindingSource: bindingSource),
-                   MaxModelBindingRecursionDepth = MAX_MODEL_BINDING_RECURSION_DEPTH
-               };
+            //OriginalModelName = binderModelName ?? modelName,
+            IsTopLevelObject = true,
+            ModelMetadata = metadata,
+            ModelState = actionContext.ModelState,
+            OriginalValueProvider = valueProvider,
+            ValueProvider = FilterValueProvider(valueProvider: valueProvider, bindingSource: bindingSource),
+            MaxModelBindingRecursionDepth = MAX_MODEL_BINDING_RECURSION_DEPTH,
+        };
     }
 
     public override NestedScope EnterNestedScope(ModelMetadata modelMetadata, string fieldName, string modelName, object? model)
@@ -171,9 +164,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
 
     private static IValueProvider FilterValueProvider(IValueProvider valueProvider, BindingSource? bindingSource)
     {
-        return bindingSource?.IsGreedy != false
-            ? BindingSourceValueProvider(valueProvider)
-            : valueProvider;
+        return bindingSource?.IsGreedy != false ? BindingSourceValueProvider(valueProvider) : valueProvider;
     }
 
     private static IValueProvider BindingSourceValueProvider(IValueProvider valueProvider)

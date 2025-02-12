@@ -8,9 +8,7 @@ namespace FunFair.Test.Common.Tests;
 public sealed class ModelBinderBaseTests : ModelBinderTestsBase<ModelBinder, ModelColor>
 {
     public ModelBinderBaseTests()
-        : base(new())
-    {
-    }
+        : base(new()) { }
 
     [Theory]
     [InlineData("ReD", ModelColor.RED)]

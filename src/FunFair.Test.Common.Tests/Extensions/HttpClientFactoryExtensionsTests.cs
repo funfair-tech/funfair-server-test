@@ -102,10 +102,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
             Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Authorization"] = "Bearer 12345" };
-            httpClientFactory.MockCreateClientWithResponse(clientName: clientName,
-                                                           httpStatusCode: HttpStatusCode.BadGateway,
-                                                           responseObject: MockReferenceData.ExampleObject,
-                                                           headers: headers);
+            httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, responseObject: MockReferenceData.ExampleObject, headers: headers);
 
             HttpClient client = httpClientFactory.CreateClient(clientName);
 
@@ -125,10 +122,12 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
-            httpClientFactory.MockCreateClientWithResponse(clientName: clientName,
-                                                           httpStatusCode: HttpStatusCode.BadGateway,
-                                                           responseObject: MockReferenceData.ExampleObject,
-                                                           jsonSerializerOptions: serializerOptions);
+            httpClientFactory.MockCreateClientWithResponse(
+                clientName: clientName,
+                httpStatusCode: HttpStatusCode.BadGateway,
+                responseObject: MockReferenceData.ExampleObject,
+                jsonSerializerOptions: serializerOptions
+            );
 
             HttpClient client = httpClientFactory.CreateClient(clientName);
 
@@ -148,11 +147,13 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
             Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Authorization"] = "Bearer 12345" };
-            httpClientFactory.MockCreateClientWithResponse(clientName: clientName,
-                                                           httpStatusCode: HttpStatusCode.BadGateway,
-                                                           MockReferenceData.ExampleObject.Next(),
-                                                           jsonSerializerOptions: serializerOptions,
-                                                           headers: headers);
+            httpClientFactory.MockCreateClientWithResponse(
+                clientName: clientName,
+                httpStatusCode: HttpStatusCode.BadGateway,
+                MockReferenceData.ExampleObject.Next(),
+                jsonSerializerOptions: serializerOptions,
+                headers: headers
+            );
 
             HttpClient client = httpClientFactory.CreateClient(clientName);
 
