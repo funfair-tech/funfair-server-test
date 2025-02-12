@@ -31,9 +31,7 @@ public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(Dynamica
                             Converters = { converter }
                         };
 
-#if NET7_0_OR_GREATER
         JsonOptions.AddContext(options: this._options, context: context);
-#endif
     }
 
     protected virtual string InvalidValue { get; } = Guid.NewGuid()
