@@ -25,14 +25,23 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
-            httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, responseMessage: expectedContent);
+            httpClientFactory.MockCreateClientWithResponse(
+                clientName: clientName,
+                httpStatusCode: HttpStatusCode.BadGateway,
+                responseMessage: expectedContent
+            );
 
             HttpClient client = httpClientFactory.CreateClient(clientName);
 
-            HttpResponseMessage responseMessage = await client.GetAsync(new Uri(uriString: "/test", uriKind: UriKind.Relative), cancellationToken: cts.Token);
+            HttpResponseMessage responseMessage = await client.GetAsync(
+                new Uri(uriString: "/test", uriKind: UriKind.Relative),
+                cancellationToken: cts.Token
+            );
             Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
 
-            string content = await responseMessage.Content.ReadAsStringAsync(cancellationToken: cts.Token);
+            string content = await responseMessage.Content.ReadAsStringAsync(
+                cancellationToken: cts.Token
+            );
             Assert.Equal(expected: expectedContent, actual: content);
         }
     }
@@ -46,11 +55,17 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
-            httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway);
+            httpClientFactory.MockCreateClientWithResponse(
+                clientName: clientName,
+                httpStatusCode: HttpStatusCode.BadGateway
+            );
 
             HttpClient client = httpClientFactory.CreateClient(clientName);
 
-            HttpResponseMessage responseMessage = await client.GetAsync(new Uri(uriString: "/test", uriKind: UriKind.Relative), cancellationToken: cts.Token);
+            HttpResponseMessage responseMessage = await client.GetAsync(
+                new Uri(uriString: "/test", uriKind: UriKind.Relative),
+                cancellationToken: cts.Token
+            );
             Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
         }
     }
@@ -64,12 +79,22 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
-            Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Authorization"] = "Bearer 12345" };
-            httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, headers: headers);
+            Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase)
+            {
+                ["Authorization"] = "Bearer 12345",
+            };
+            httpClientFactory.MockCreateClientWithResponse(
+                clientName: clientName,
+                httpStatusCode: HttpStatusCode.BadGateway,
+                headers: headers
+            );
 
             HttpClient client = httpClientFactory.CreateClient(clientName);
 
-            HttpResponseMessage responseMessage = await client.GetAsync(new Uri(uriString: "/test", uriKind: UriKind.Relative), cancellationToken: cts.Token);
+            HttpResponseMessage responseMessage = await client.GetAsync(
+                new Uri(uriString: "/test", uriKind: UriKind.Relative),
+                cancellationToken: cts.Token
+            );
             Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
         }
     }
@@ -83,11 +108,18 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
-            httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, responseObject: MockReferenceData.ExampleObject);
+            httpClientFactory.MockCreateClientWithResponse(
+                clientName: clientName,
+                httpStatusCode: HttpStatusCode.BadGateway,
+                responseObject: MockReferenceData.ExampleObject
+            );
 
             HttpClient client = httpClientFactory.CreateClient(clientName);
 
-            HttpResponseMessage responseMessage = await client.GetAsync(new Uri(uriString: "/test", uriKind: UriKind.Relative), cancellationToken: cts.Token);
+            HttpResponseMessage responseMessage = await client.GetAsync(
+                new Uri(uriString: "/test", uriKind: UriKind.Relative),
+                cancellationToken: cts.Token
+            );
             Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
         }
     }
@@ -101,12 +133,23 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
-            Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Authorization"] = "Bearer 12345" };
-            httpClientFactory.MockCreateClientWithResponse(clientName: clientName, httpStatusCode: HttpStatusCode.BadGateway, responseObject: MockReferenceData.ExampleObject, headers: headers);
+            Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase)
+            {
+                ["Authorization"] = "Bearer 12345",
+            };
+            httpClientFactory.MockCreateClientWithResponse(
+                clientName: clientName,
+                httpStatusCode: HttpStatusCode.BadGateway,
+                responseObject: MockReferenceData.ExampleObject,
+                headers: headers
+            );
 
             HttpClient client = httpClientFactory.CreateClient(clientName);
 
-            HttpResponseMessage responseMessage = await client.GetAsync(new Uri(uriString: "/test", uriKind: UriKind.Relative), cancellationToken: cts.Token);
+            HttpResponseMessage responseMessage = await client.GetAsync(
+                new Uri(uriString: "/test", uriKind: UriKind.Relative),
+                cancellationToken: cts.Token
+            );
             Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
         }
     }
@@ -116,7 +159,10 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     {
         using (CancellationTokenSource cts = new(Delay))
         {
-            JsonSerializerOptions serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            JsonSerializerOptions serializerOptions = new()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
 
             const string clientName = "TestExample";
 
@@ -131,7 +177,10 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
             HttpClient client = httpClientFactory.CreateClient(clientName);
 
-            HttpResponseMessage responseMessage = await client.GetAsync(new Uri(uriString: "/test", uriKind: UriKind.Relative), cancellationToken: cts.Token);
+            HttpResponseMessage responseMessage = await client.GetAsync(
+                new Uri(uriString: "/test", uriKind: UriKind.Relative),
+                cancellationToken: cts.Token
+            );
             Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
         }
     }
@@ -141,12 +190,18 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     {
         using (CancellationTokenSource cts = new(Delay))
         {
-            JsonSerializerOptions serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            JsonSerializerOptions serializerOptions = new()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
             const string clientName = "TestExample";
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
 
-            Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase) { ["Authorization"] = "Bearer 12345" };
+            Dictionary<string, string> headers = new(StringComparer.OrdinalIgnoreCase)
+            {
+                ["Authorization"] = "Bearer 12345",
+            };
             httpClientFactory.MockCreateClientWithResponse(
                 clientName: clientName,
                 httpStatusCode: HttpStatusCode.BadGateway,
@@ -157,7 +212,10 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
             HttpClient client = httpClientFactory.CreateClient(clientName);
 
-            HttpResponseMessage responseMessage = await client.GetAsync(new Uri(uriString: "/test", uriKind: UriKind.Relative), cancellationToken: cts.Token);
+            HttpResponseMessage responseMessage = await client.GetAsync(
+                new Uri(uriString: "/test", uriKind: UriKind.Relative),
+                cancellationToken: cts.Token
+            );
             Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
         }
     }

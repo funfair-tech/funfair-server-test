@@ -89,11 +89,18 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         init => this._maxModelBindingRecursionDepth = value;
     }
 
-    public static ModelBindingContext CreateBindingContext(ActionContext actionContext, IValueProvider valueProvider, ModelMetadata metadata, BindingInfo? bindingInfo, string modelName)
+    public static ModelBindingContext CreateBindingContext(
+        ActionContext actionContext,
+        IValueProvider valueProvider,
+        ModelMetadata metadata,
+        BindingInfo? bindingInfo,
+        string modelName
+    )
     {
         string? binderModelName = bindingInfo?.BinderModelName ?? metadata.BinderModelName;
         BindingSource? bindingSource = bindingInfo?.BindingSource ?? metadata.BindingSource;
-        IPropertyFilterProvider? propertyFilterProvider = bindingInfo?.PropertyFilterProvider ?? metadata.PropertyFilterProvider;
+        IPropertyFilterProvider? propertyFilterProvider =
+            bindingInfo?.PropertyFilterProvider ?? metadata.PropertyFilterProvider;
 
         return new SimpleDefaultModelBindingContext
         {
@@ -112,12 +119,20 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
             ModelMetadata = metadata,
             ModelState = actionContext.ModelState,
             OriginalValueProvider = valueProvider,
-            ValueProvider = FilterValueProvider(valueProvider: valueProvider, bindingSource: bindingSource),
+            ValueProvider = FilterValueProvider(
+                valueProvider: valueProvider,
+                bindingSource: bindingSource
+            ),
             MaxModelBindingRecursionDepth = MAX_MODEL_BINDING_RECURSION_DEPTH,
         };
     }
 
-    public override NestedScope EnterNestedScope(ModelMetadata modelMetadata, string fieldName, string modelName, object? model)
+    public override NestedScope EnterNestedScope(
+        ModelMetadata modelMetadata,
+        string fieldName,
+        string modelName,
+        object? model
+    )
     {
         NestedScope scope = this.EnterNestedScope();
 
@@ -125,7 +140,10 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         // to preserve the current state.
         if (modelMetadata.BindingSource?.IsGreedy == false)
         {
-            this.ValueProvider = FilterValueProvider(valueProvider: this.OriginalValueProvider, bindingSource: modelMetadata.BindingSource);
+            this.ValueProvider = FilterValueProvider(
+                valueProvider: this.OriginalValueProvider,
+                bindingSource: modelMetadata.BindingSource
+            );
         }
 
         this.Model = model;
@@ -162,9 +180,14 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         this._state = this._stack.Pop();
     }
 
-    private static IValueProvider FilterValueProvider(IValueProvider valueProvider, BindingSource? bindingSource)
+    private static IValueProvider FilterValueProvider(
+        IValueProvider valueProvider,
+        BindingSource? bindingSource
+    )
     {
-        return bindingSource?.IsGreedy != false ? BindingSourceValueProvider(valueProvider) : valueProvider;
+        return bindingSource?.IsGreedy != false
+            ? BindingSourceValueProvider(valueProvider)
+            : valueProvider;
     }
 
     private static IValueProvider BindingSourceValueProvider(IValueProvider valueProvider)

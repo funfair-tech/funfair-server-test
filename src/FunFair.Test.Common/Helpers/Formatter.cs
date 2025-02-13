@@ -16,7 +16,10 @@ public static class Formatter
     {
         string rv = value.ToString() ?? string.Empty;
 
-        Assert.False(StringComparer.Ordinal.Equals(x: rv, y: value.GetType().FullName), userMessage: "ToString() not implemented");
+        Assert.False(
+            StringComparer.Ordinal.Equals(x: rv, y: value.GetType().FullName),
+            userMessage: "ToString() not implemented"
+        );
 
         return rv;
     }

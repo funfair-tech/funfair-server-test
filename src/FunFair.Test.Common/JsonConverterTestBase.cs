@@ -8,7 +8,10 @@ using Xunit.Abstractions;
 
 namespace FunFair.Test.Common;
 
-public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TConverter, TObject> : LoggingTestBase
+public abstract class JsonConverterTestBase<
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TConverter,
+    TObject
+> : LoggingTestBase
     where TConverter : JsonConverter<TObject>, new()
     where TObject : class
 {
@@ -17,7 +20,11 @@ public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(Dynamica
     protected JsonConverterTestBase(ITestOutputHelper output)
         : this(output: output, context: null) { }
 
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedParameter.Local", Justification = "Used in conditional implementations")]
+    [SuppressMessage(
+        category: "ReSharper",
+        checkId: "UnusedParameter.Local",
+        Justification = "Used in conditional implementations"
+    )]
     protected JsonConverterTestBase(ITestOutputHelper output, JsonSerializerContext? context)
         : base(output)
     {
@@ -72,11 +79,16 @@ public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(Dynamica
     [Fact]
     public void ShouldNotDeserialize()
     {
-        string doc = JsonSerializer.Serialize(new { value = this.InvalidValue }, options: this._options);
+        string doc = JsonSerializer.Serialize(
+            new { value = this.InvalidValue },
+            options: this._options
+        );
 
         this.Output.WriteLine($"Serialized model as: {doc}");
 
-        JsonException exception = Assert.Throws<JsonException>(testCode: () => JsonSerializer.Deserialize<Model>(json: doc, options: this._options));
+        JsonException exception = Assert.Throws<JsonException>(
+            testCode: () => JsonSerializer.Deserialize<Model>(json: doc, options: this._options)
+        );
         UnusedVariable(exception);
     }
 
@@ -111,7 +123,11 @@ public abstract class JsonConverterTestBase<[DynamicallyAccessedMembers(Dynamica
 
         private static bool AreEqual(Model? m1, Model? m2)
         {
-            return ReferenceObjectHelpers.AreEqual(left: m1, right: m2, eq: (l, r) => AreValuesEqual(o1: l.Value, o2: r.Value));
+            return ReferenceObjectHelpers.AreEqual(
+                left: m1,
+                right: m2,
+                eq: (l, r) => AreValuesEqual(o1: l.Value, o2: r.Value)
+            );
         }
 
         private static bool AreValuesEqual(TObject? o1, TObject? o2)

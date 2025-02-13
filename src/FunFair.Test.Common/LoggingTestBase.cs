@@ -21,17 +21,39 @@ public abstract class LoggingTestBase : TestBase
     private readonly IServiceProvider _serviceProvider;
 
     protected LoggingTestBase(ITestOutputHelper output)
-        : this(output: output, dependencyInjectionRegistration: NoDependencyInjectionConfiguration, initializeServices: NoDependencyInjectionInitialization) { }
+        : this(
+            output: output,
+            dependencyInjectionRegistration: NoDependencyInjectionConfiguration,
+            initializeServices: NoDependencyInjectionInitialization
+        ) { }
 
-    protected LoggingTestBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration)
-        : this(output: output, dependencyInjectionRegistration: dependencyInjectionRegistration, initializeServices: NoDependencyInjectionInitialization) { }
+    protected LoggingTestBase(
+        ITestOutputHelper output,
+        Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration
+    )
+        : this(
+            output: output,
+            dependencyInjectionRegistration: dependencyInjectionRegistration,
+            initializeServices: NoDependencyInjectionInitialization
+        ) { }
 
-    [SuppressMessage(category: "Major Code Smell", checkId: "S3442:\"abstract\" classes should not have \"public\" constructors", Justification = "By Design")]
-    protected internal LoggingTestBase(ITestOutputHelper output, Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration, Action<IServiceProvider> initializeServices)
+    [SuppressMessage(
+        category: "Major Code Smell",
+        checkId: "S3442:\"abstract\" classes should not have \"public\" constructors",
+        Justification = "By Design"
+    )]
+    protected internal LoggingTestBase(
+        ITestOutputHelper output,
+        Func<IServiceCollection, IServiceCollection> dependencyInjectionRegistration,
+        Action<IServiceProvider> initializeServices
+    )
     {
         TaskScheduler.UnobservedTaskException += this.ReportUnhandledException;
 
-        this._serviceProvider = dependencyInjectionRegistration(new ServiceCollection().AddLoggingSupport()).BuildServiceProvider();
+        this._serviceProvider = dependencyInjectionRegistration(
+                new ServiceCollection().AddLoggingSupport()
+            )
+            .BuildServiceProvider();
 
         this._loggerFactory = this._serviceProvider.GetRequiredService<ILoggerFactory>();
         LoggingStartup.InitializeLogging(loggerFactory: this._loggerFactory, output: output);
@@ -49,7 +71,9 @@ public abstract class LoggingTestBase : TestBase
         // Nothing to do
     }
 
-    private static IServiceCollection NoDependencyInjectionConfiguration(IServiceCollection serviceCollection)
+    private static IServiceCollection NoDependencyInjectionConfiguration(
+        IServiceCollection serviceCollection
+    )
     {
         // Nothing to do
         return serviceCollection;

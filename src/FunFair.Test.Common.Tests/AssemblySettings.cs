@@ -7,4 +7,8 @@ using System.Diagnostics.CodeAnalysis;
 )]
 [assembly: ExcludeFromCodeCoverage]
 
-[assembly: SuppressMessage(category: "Philips.CodeAnalysis.DuplicateCodeAnalyzer", checkId: "PH2071: Duplicate code", Justification = "Unit tests")]
+[assembly: SuppressMessage(
+    category: "Philips.CodeAnalysis.DuplicateCodeAnalyzer",
+    checkId: "PH2071: Duplicate code",
+    Justification = "Unit tests"
+)]

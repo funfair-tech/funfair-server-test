@@ -20,7 +20,10 @@ public static class TestServiceCollectionExtensions
 
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IServiceCollection AddMockedService<T>(this IServiceCollection serviceCollection, Action<T> init)
+    public static IServiceCollection AddMockedService<T>(
+        this IServiceCollection serviceCollection,
+        Action<T> init
+    )
         where T : class
     {
         T mock = Substitute.For<T>();

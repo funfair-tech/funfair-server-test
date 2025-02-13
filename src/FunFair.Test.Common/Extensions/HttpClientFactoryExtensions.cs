@@ -14,17 +14,39 @@ namespace FunFair.Test.Common.Extensions;
 public static class HttpClientFactoryExtensions
 {
     private static readonly JsonSerializerOptions SerializerOptions = new();
-    private static readonly IReadOnlyDictionary<string, string> NoHeaders = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    private static readonly IReadOnlyDictionary<string, string> NoHeaders = new Dictionary<
+        string,
+        string
+    >(StringComparer.OrdinalIgnoreCase);
 
     private static Uri LocalHostUri { get; } = new("https://localhost");
 
-    public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, string responseMessage)
+    public static void MockCreateClientWithResponse(
+        this IHttpClientFactory httpClientFactory,
+        string clientName,
+        HttpStatusCode httpStatusCode,
+        string responseMessage
+    )
     {
-        MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: responseMessage, headers: NoHeaders);
+        MockCreateClientWithResponse(
+            httpClientFactory: httpClientFactory,
+            clientName: clientName,
+            httpStatusCode: httpStatusCode,
+            responseMessage: responseMessage,
+            headers: NoHeaders
+        );
     }
 
-    [SuppressMessage(category: "Microsoft.Reliability", checkId: "CA2000:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
-    [SuppressMessage(category: "codecracker.CSharp", checkId: "CC0022:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
+    [SuppressMessage(
+        category: "Microsoft.Reliability",
+        checkId: "CA2000:Dispose objects before losing scope",
+        Justification = "For unit tests caller to dispose"
+    )]
+    [SuppressMessage(
+        category: "codecracker.CSharp",
+        checkId: "CC0022:Dispose objects before losing scope",
+        Justification = "For unit tests caller to dispose"
+    )]
     public static void MockCreateClientWithResponse(
         this IHttpClientFactory httpClientFactory,
         string clientName,
@@ -33,29 +55,79 @@ public static class HttpClientFactoryExtensions
         IReadOnlyDictionary<string, string> headers
     )
     {
-        HttpClient client = CreateFakeClient(httpStatusCode: httpStatusCode, responseMessage: responseMessage, headers: headers);
+        HttpClient client = CreateFakeClient(
+            httpStatusCode: httpStatusCode,
+            responseMessage: responseMessage,
+            headers: headers
+        );
 
         httpClientFactory.CreateClient(clientName).Returns(client);
     }
 
-    [SuppressMessage(category: "Microsoft.Reliability", checkId: "CA2000:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
-    [SuppressMessage(category: "codecracker.CSharp", checkId: "CC0022:Dispose objects before losing scope", Justification = "For unit tests caller to dispose")]
-    private static HttpClient CreateFakeClient(HttpStatusCode httpStatusCode, string responseMessage, IReadOnlyDictionary<string, string> headers)
+    [SuppressMessage(
+        category: "Microsoft.Reliability",
+        checkId: "CA2000:Dispose objects before losing scope",
+        Justification = "For unit tests caller to dispose"
+    )]
+    [SuppressMessage(
+        category: "codecracker.CSharp",
+        checkId: "CC0022:Dispose objects before losing scope",
+        Justification = "For unit tests caller to dispose"
+    )]
+    private static HttpClient CreateFakeClient(
+        HttpStatusCode httpStatusCode,
+        string responseMessage,
+        IReadOnlyDictionary<string, string> headers
+    )
     {
-        return new(new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)) { BaseAddress = LocalHostUri };
+        return new(
+            new FakeHttpMessageHandler(
+                statusCode: httpStatusCode,
+                responseMessage: responseMessage,
+                headers: headers
+            )
+        )
+        {
+            BaseAddress = LocalHostUri,
+        };
     }
 
-    public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode)
+    public static void MockCreateClientWithResponse(
+        this IHttpClientFactory httpClientFactory,
+        string clientName,
+        HttpStatusCode httpStatusCode
+    )
     {
-        MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty);
+        MockCreateClientWithResponse(
+            httpClientFactory: httpClientFactory,
+            clientName: clientName,
+            httpStatusCode: httpStatusCode,
+            responseMessage: string.Empty
+        );
     }
 
-    public static void MockCreateClientWithResponse(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, IReadOnlyDictionary<string, string> headers)
+    public static void MockCreateClientWithResponse(
+        this IHttpClientFactory httpClientFactory,
+        string clientName,
+        HttpStatusCode httpStatusCode,
+        IReadOnlyDictionary<string, string> headers
+    )
     {
-        MockCreateClientWithResponse(httpClientFactory: httpClientFactory, clientName: clientName, httpStatusCode: httpStatusCode, responseMessage: string.Empty, headers: headers);
+        MockCreateClientWithResponse(
+            httpClientFactory: httpClientFactory,
+            clientName: clientName,
+            httpStatusCode: httpStatusCode,
+            responseMessage: string.Empty,
+            headers: headers
+        );
     }
 
-    public static void MockCreateClientWithResponse<T>(this IHttpClientFactory httpClientFactory, string clientName, HttpStatusCode httpStatusCode, T responseObject)
+    public static void MockCreateClientWithResponse<T>(
+        this IHttpClientFactory httpClientFactory,
+        string clientName,
+        HttpStatusCode httpStatusCode,
+        T responseObject
+    )
     {
         MockCreateClientWithResponse(
             httpClientFactory: httpClientFactory,
@@ -124,16 +196,26 @@ public static class HttpClientFactoryExtensions
         private readonly string _responseMessage;
         private readonly HttpStatusCode _statusCode;
 
-        public FakeHttpMessageHandler(HttpStatusCode statusCode, string responseMessage, IReadOnlyDictionary<string, string> headers)
+        public FakeHttpMessageHandler(
+            HttpStatusCode statusCode,
+            string responseMessage,
+            IReadOnlyDictionary<string, string> headers
+        )
         {
             this._statusCode = statusCode;
             this._responseMessage = responseMessage;
             this._headers = headers ?? throw new ArgumentNullException(nameof(headers));
         }
 
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken
+        )
         {
-            HttpResponseMessage httpResponseMessage = new(this._statusCode) { Content = new StringContent(this._responseMessage) };
+            HttpResponseMessage httpResponseMessage = new(this._statusCode)
+            {
+                Content = new StringContent(this._responseMessage),
+            };
 
             foreach ((string key, string value) in this._headers)
             {

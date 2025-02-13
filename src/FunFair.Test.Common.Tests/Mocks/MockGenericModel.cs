@@ -12,6 +12,10 @@ internal sealed class MockGenericModel<T>
 
     public T Value { get; }
 
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedAutoPropertyAccessor.Global", Justification = "Deliberate - needed for tests")]
+    [SuppressMessage(
+        category: "ReSharper",
+        checkId: "UnusedAutoPropertyAccessor.Global",
+        Justification = "Deliberate - needed for tests"
+    )]
     public T[] NestedValue { get; set; }
 }

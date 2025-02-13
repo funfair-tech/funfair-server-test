@@ -15,7 +15,11 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
         : base(output) { }
 
     [Fact]
-    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0005:Avoid DateTimeOffset.UtcNow", Justification = "Unit test")]
+    [SuppressMessage(
+        category: "FunFair.CodeAnalysis",
+        checkId: "FFS0005:Avoid DateTimeOffset.UtcNow",
+        Justification = "Unit test"
+    )]
     public void OutputOutputs()
     {
         DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -31,7 +35,11 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
     }
 
     [Fact]
-    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0005:Avoid DateTimeOffset.UtcNow", Justification = "Unit test")]
+    [SuppressMessage(
+        category: "FunFair.CodeAnalysis",
+        checkId: "FFS0005:Avoid DateTimeOffset.UtcNow",
+        Justification = "Unit test"
+    )]
     public void LoggingOutputs()
     {
         ILogger<LoggingTestBaseTests> logger = this.GetTypedLogger<LoggingTestBaseTests>();
@@ -51,7 +59,10 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
     [Fact]
     public void MakeFaker()
     {
-        IReadOnlyList<ExampleObject> fake = MakeFake<ExampleObject>(rules: rules => rules.RuleFor(property: x => x.Name, setter: (f, _) => f.Company.Bs()), itemCount: 10);
+        IReadOnlyList<ExampleObject> fake = MakeFake<ExampleObject>(
+            rules: rules => rules.RuleFor(property: x => x.Name, setter: (f, _) => f.Company.Bs()),
+            itemCount: 10
+        );
 
         Assert.Equal(expected: 10, actual: fake.Count);
 

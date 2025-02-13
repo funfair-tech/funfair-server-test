@@ -10,6 +10,10 @@ internal static partial class LoggingExtensions
         logger.LogWaitingForDispose(type.FullName!);
     }
 
-    [LoggerMessage(EventId = 0, Level = LogLevel.Debug, Message = "Waiting for dispose of {type}...")]
+    [LoggerMessage(
+        EventId = 0,
+        Level = LogLevel.Debug,
+        Message = "Waiting for dispose of {type}..."
+    )]
     static partial void LogWaitingForDispose(this ILogger logger, string type);
 }

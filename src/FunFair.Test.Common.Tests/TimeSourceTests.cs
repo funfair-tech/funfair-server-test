@@ -13,42 +13,90 @@ public sealed class TimeSourceTests : LoggingTestBase
     [Fact]
     public void PastDateTimeIsSane()
     {
-        DateTime expected = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Utc);
+        DateTime expected = new(
+            year: 1975,
+            month: 03,
+            day: 16,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            kind: DateTimeKind.Utc
+        );
         Assert.Equal(expected: expected, actual: TimeSources.Past.UtcNow);
     }
 
     [Fact]
     public void PastDateTimeOffsetIsSane()
     {
-        DateTimeOffset expected = new(year: 1975, month: 3, day: 16, hour: 0, minute: 0, second: 0, offset: TimeSpan.Zero);
+        DateTimeOffset expected = new(
+            year: 1975,
+            month: 3,
+            day: 16,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            offset: TimeSpan.Zero
+        );
         Assert.Equal(expected: expected, actual: TimeSources.Past.UtcNowAsOffset);
     }
 
     [Fact]
     public void FutureDateTimeIsSane()
     {
-        DateTime expected = new(year: 2100, month: 3, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Utc);
+        DateTime expected = new(
+            year: 2100,
+            month: 3,
+            day: 16,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            kind: DateTimeKind.Utc
+        );
         Assert.Equal(expected: expected, actual: TimeSources.Future.UtcNow);
     }
 
     [Fact]
     public void FutureDateTimeOffsetIsSane()
     {
-        DateTimeOffset expected = new(year: 2100, month: 03, day: 16, hour: 0, minute: 0, second: 0, offset: TimeSpan.Zero);
+        DateTimeOffset expected = new(
+            year: 2100,
+            month: 03,
+            day: 16,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            offset: TimeSpan.Zero
+        );
         Assert.Equal(expected: expected, actual: TimeSources.Future.UtcNowAsOffset);
     }
 
     [Fact]
     public void AdvanceableInitialDateTimeIsSane()
     {
-        DateTime expected = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Utc);
+        DateTime expected = new(
+            year: 1975,
+            month: 03,
+            day: 16,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            kind: DateTimeKind.Utc
+        );
         Assert.Equal(expected: expected, actual: TimeSources.Advanceable.UtcNow);
     }
 
     [Fact]
     public void AdvanceableInitialDateTimeOffsetIsSane()
     {
-        DateTimeOffset expected = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, offset: TimeSpan.Zero);
+        DateTimeOffset expected = new(
+            year: 1975,
+            month: 03,
+            day: 16,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            offset: TimeSpan.Zero
+        );
         Assert.Equal(expected: expected, actual: TimeSources.Advanceable.UtcNowAsOffset);
     }
 
@@ -76,7 +124,15 @@ public sealed class TimeSourceTests : LoggingTestBase
     [InlineData(20)]
     public void AdvanceableDateTimeIsSaneAtOffset(int offset)
     {
-        DateTime baseTime = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Utc);
+        DateTime baseTime = new(
+            year: 1975,
+            month: 03,
+            day: 16,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            kind: DateTimeKind.Utc
+        );
         DateTime expected = baseTime.AddDays(offset);
 
         AdvanceableTimeSource current = TimeSources.Advanceable;
@@ -119,7 +175,15 @@ public sealed class TimeSourceTests : LoggingTestBase
     [InlineData(20)]
     public void AdvanceableDateTimeOffsetIsSaneAtOffset(int offset)
     {
-        DateTimeOffset baseTime = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, offset: TimeSpan.Zero);
+        DateTimeOffset baseTime = new(
+            year: 1975,
+            month: 03,
+            day: 16,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            offset: TimeSpan.Zero
+        );
         DateTimeOffset expected = baseTime.AddDays(offset);
 
         AdvanceableTimeSource current = TimeSources.Advanceable;
@@ -129,7 +193,9 @@ public sealed class TimeSourceTests : LoggingTestBase
             AdvanceableTimeSource last = current;
 
             current = current.Next();
-            this.Output.WriteLine($"Advancing from {last.UtcNowAsOffset} to {current.UtcNowAsOffset}");
+            this.Output.WriteLine(
+                $"Advancing from {last.UtcNowAsOffset} to {current.UtcNowAsOffset}"
+            );
             --offset;
         }
 
@@ -141,28 +207,60 @@ public sealed class TimeSourceTests : LoggingTestBase
     [Fact]
     public void CannotCreateFrozenTimeSourceInLocaltime()
     {
-        DateTime baseTime = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Local);
+        DateTime baseTime = new(
+            year: 1975,
+            month: 03,
+            day: 16,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            kind: DateTimeKind.Local
+        );
         Assert.Throws<ArgumentOutOfRangeException>(() => TimeSources.CreateFrozen(baseTime));
     }
 
     [Fact]
     public void CannotCreateFrozenTimeSourceInUnspecified()
     {
-        DateTime baseTime = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Unspecified);
+        DateTime baseTime = new(
+            year: 1975,
+            month: 03,
+            day: 16,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            kind: DateTimeKind.Unspecified
+        );
         Assert.Throws<ArgumentOutOfRangeException>(() => TimeSources.CreateFrozen(baseTime));
     }
 
     [Fact]
     public void CannotCreateAdvanceableTimeSourceInLocaltime()
     {
-        DateTime baseTime = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Local);
+        DateTime baseTime = new(
+            year: 1975,
+            month: 03,
+            day: 16,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            kind: DateTimeKind.Local
+        );
         Assert.Throws<ArgumentOutOfRangeException>(() => TimeSources.CreateAdvanceable(baseTime));
     }
 
     [Fact]
     public void CannotCreateAdvanceableTimeSourceInUnspecified()
     {
-        DateTime baseTime = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Unspecified);
+        DateTime baseTime = new(
+            year: 1975,
+            month: 03,
+            day: 16,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            kind: DateTimeKind.Unspecified
+        );
         Assert.Throws<ArgumentOutOfRangeException>(() => TimeSources.CreateAdvanceable(baseTime));
     }
 }

@@ -3,9 +3,21 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace FunFair.Test.Common.Mocks;
 
-[SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
-[SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0029: Should be internal", Justification = "Infrastructure")]
-[SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0030: Should be internal", Justification = "Infrastructure")]
+[SuppressMessage(
+    category: "ReSharper",
+    checkId: "UnusedType.Global",
+    Justification = "Base class for further tests"
+)]
+[SuppressMessage(
+    category: "FunFair.CodeAnalysis",
+    checkId: "FFS0029: Should be internal",
+    Justification = "Infrastructure"
+)]
+[SuppressMessage(
+    category: "FunFair.CodeAnalysis",
+    checkId: "FFS0030: Should be internal",
+    Justification = "Infrastructure"
+)]
 [DebuggerDisplay("{_value}")]
 public abstract class MockBase<T>
     where T : notnull

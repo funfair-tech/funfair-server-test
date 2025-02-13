@@ -6,7 +6,11 @@ using Xunit.Abstractions;
 
 namespace FunFair.Test.Common;
 
-[SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
+[SuppressMessage(
+    category: "ReSharper",
+    checkId: "UnusedType.Global",
+    Justification = "Base class for further tests"
+)]
 public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
 {
     protected LoggingFolderCleanupTestBase(ITestOutputHelper output)

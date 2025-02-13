@@ -5,7 +5,11 @@ using Xunit.Abstractions;
 
 namespace FunFair.Test.Common.Tests;
 
-[SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
+[SuppressMessage(
+    category: "ReSharper",
+    checkId: "UnusedType.Global",
+    Justification = "Base class for further tests"
+)]
 public sealed class JsonConverterTestBaseTests : JsonConverterTestBase<ModelConverter, Model>
 {
     public JsonConverterTestBaseTests(ITestOutputHelper output)
