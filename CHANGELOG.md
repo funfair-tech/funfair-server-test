@@ -8,17 +8,20 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.1.258] - 2025-02-14
+### Changed
 - SDK - Updated DotNet SDK to 9.0.200
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.67.921
 - Dependencies - Updated Meziantou.Analyzer to 2.0.187
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.13.2
 - Dependencies - Updated Roslynator.Analyzers to 4.13.0
 - Dependencies - Updated Microsoft.NET.Test.Sdk to 17.13.0
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.1.257] - 2025-02-07
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.67.907
