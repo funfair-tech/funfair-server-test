@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Roslynator.Analyzers to 4.13.1
-- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.3.6
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.260] - 2025-02-25
+### Changed
+- Dependencies - Updated Roslynator.Analyzers to 4.13.1
+- Dependencies - Updated Meziantou.Framework.InlineSnapshotTesting to 3.3.6
+
 ## [6.1.259] - 2025-02-21
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.68.928
