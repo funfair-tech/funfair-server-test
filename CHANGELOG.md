@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated SonarAnalyzer.CSharp to 10.7.0.110445
-- Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.0.9
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.261] - 2025-03-02
+### Changed
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.7.0.110445
+- Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.0.9
+
 ## [6.1.260] - 2025-02-25
 ### Changed
 - Dependencies - Updated Roslynator.Analyzers to 4.13.1
