@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.69.956
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.13.61
+- Dependencies - Updated Castle.Core to 5.2.1
 ### Removed
 
 <!--

@@ -63,7 +63,7 @@
   <ItemGroup>
     <PackageReference Include="AutoBogus.NSubstitute" Version="2.13.1" />
     <PackageReference Include="Bogus" Version="35.6.2" />
-    <PackageReference Include="Castle.Core" Version="5.1.1" />
+    <PackageReference Include="Castle.Core" Version="5.2.1" />
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="Meziantou.Extensions.Logging.Xunit" Version="1.0.9" />
