@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Credfeto.Enumeration to 1.2.70.976
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.72.974
 - SDK - Updated DotNet SDK to 9.0.202
+- Dependencies - Updated Meziantou.Analyzer to 2.0.189
 ### Removed
 
 <!--
