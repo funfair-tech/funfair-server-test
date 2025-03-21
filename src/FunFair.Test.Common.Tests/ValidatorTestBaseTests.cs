@@ -1,7 +1,6 @@
 using FluentValidation.Results;
 using FunFair.Test.Common.Tests.Mocks;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace FunFair.Test.Common.Tests;
 

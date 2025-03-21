@@ -5,7 +5,6 @@ using FunFair.Test.Common.Tests.Extensions;
 using FunFair.Test.Common.Tests.Mocks;
 using Microsoft.Extensions.Logging;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace FunFair.Test.Common.Tests;
 

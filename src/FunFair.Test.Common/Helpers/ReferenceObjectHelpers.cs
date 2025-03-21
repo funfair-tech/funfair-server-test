@@ -1,11 +1,12 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using Meziantou.Xunit;
+
+// using Meziantou.Xunit;
 
 namespace FunFair.Test.Common.Helpers;
 
-[DisableParallelization]
+// [DisableParallelization]
 public static class ReferenceObjectHelpers
 {
     [Pure]
@@ -13,8 +14,7 @@ public static class ReferenceObjectHelpers
     public static bool AreEqual<T>(T? left, T? right, Func<T, T, bool> eq)
         where T : class
     {
-        return ReferenceEquals(objA: left, objB: right)
-            || right is not null && left is not null && eq(arg1: left, arg2: right);
+        return ReferenceEquals(objA: left, objB: right) || right is not null && left is not null && eq(arg1: left, arg2: right);
     }
 
     [Pure]
