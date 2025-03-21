@@ -6,8 +6,12 @@ using Xunit;
 
 namespace FunFair.Test.Common;
 
-public abstract class JsonConverterStructTestBase<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TConverter, TObject> : LoggingTestBase
-    where TConverter : JsonConverter<TObject>, new() where TObject : struct
+public abstract class JsonConverterStructTestBase<
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TConverter,
+    TObject
+> : LoggingTestBase
+    where TConverter : JsonConverter<TObject>, new()
+    where TObject : struct
 {
     private readonly JsonSerializerOptions _options;
 
@@ -16,16 +20,15 @@ public abstract class JsonConverterStructTestBase<[DynamicallyAccessedMembers(Dy
     {
         JsonConverter converter = new TConverter();
         this._options = new()
-                        {
-                            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                            PropertyNameCaseInsensitive = false,
-                            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                            Converters = { converter },
-                        };
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            PropertyNameCaseInsensitive = false,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = { converter },
+        };
     }
 
-    protected virtual string InvalidValue { get; } = Guid.NewGuid()
-                                                         .ToString();
+    protected virtual string InvalidValue { get; } = Guid.NewGuid().ToString();
 
     protected abstract TObject CreateInstance();
 
@@ -63,11 +66,16 @@ public abstract class JsonConverterStructTestBase<[DynamicallyAccessedMembers(Dy
     [Fact]
     public void ShouldNotDeserialize()
     {
-        string doc = JsonSerializer.Serialize(new { value = this.InvalidValue }, options: this._options);
+        string doc = JsonSerializer.Serialize(
+            new { value = this.InvalidValue },
+            options: this._options
+        );
 
         this.Output.WriteLine($"Serialized model as: {doc}");
 
-        JsonException exception = Assert.Throws<JsonException>(testCode: () => this.DeserializeDoc(doc));
+        JsonException exception = Assert.Throws<JsonException>(
+            testCode: () => this.DeserializeDoc(doc)
+        );
         UnusedVariable(exception);
     }
 
@@ -78,7 +86,11 @@ public abstract class JsonConverterStructTestBase<[DynamicallyAccessedMembers(Dy
 
     private readonly struct Model
     {
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedAutoPropertyAccessor.Local", Justification = "For unit tests")]
+        [SuppressMessage(
+            category: "ReSharper",
+            checkId: "UnusedAutoPropertyAccessor.Local",
+            Justification = "For unit tests"
+        )]
         public TObject Value { get; init; }
     }
 }
