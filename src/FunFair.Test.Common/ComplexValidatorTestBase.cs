@@ -5,7 +5,6 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace FunFair.Test.Common;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Bogus;
 using FunFair.Test.Common.Helpers;
@@ -20,11 +21,44 @@ public abstract class TestBase
         Assert.False(condition: false, userMessage: "Because");
     }
 
+    [SuppressMessage("codecracker.CSharp", "CC0091: Make static", Justification = "Simplifies API")]
+    [SuppressMessage(
+        "SonarAnalyzer.CSharp",
+        "S2325: Make static",
+        Justification = "Simplifies API"
+    )]
+    [Pure]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected CancellationToken CancellationToken()
+    {
+        return GetTestCancellationToken();
+    }
+
+    protected CancellationTokenSource CreateCancellationTokenSource(
+        in CancellationToken cancellationToken
+    )
+    {
+        return CancellationTokenSource.CreateLinkedTokenSource(
+            this.CancellationToken(),
+            cancellationToken
+        );
+    }
+
+    private static CancellationToken GetTestCancellationToken()
+    {
+        CancellationToken cancellationToken = TestContext.Current.CancellationToken;
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return cancellationToken;
+    }
+
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static Task<T?> FromOptionalResultAsync<T>(T? value)
         where T : class
     {
+        TestContext.Current.CancellationToken.ThrowIfCancellationRequested();
+
         return Task.FromResult(value);
     }
 

@@ -4,7 +4,6 @@ using FunFair.Test.Common.Tests.Mocks.Converters.Binders;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace FunFair.Test.Common.Tests;
 

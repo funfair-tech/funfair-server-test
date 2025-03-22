@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using FunFair.Test.Common.Tests.Mocks.Converters;
 using FunFair.Test.Common.Tests.Mocks.Converters.JsonConverter;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace FunFair.Test.Common.Tests;
 

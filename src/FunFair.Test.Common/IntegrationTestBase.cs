@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace FunFair.Test.Common;
 

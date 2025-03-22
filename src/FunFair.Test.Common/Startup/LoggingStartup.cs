@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
-using Meziantou.Extensions.Logging.Xunit;
+using Meziantou.Extensions.Logging.Xunit.v3;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace FunFair.Test.Common.Startup;
 

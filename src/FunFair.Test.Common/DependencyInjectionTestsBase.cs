@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FunFair.Test.Common.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace FunFair.Test.Common;
 

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using FunFair.Test.Common.Startup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace FunFair.Test.Common;
 

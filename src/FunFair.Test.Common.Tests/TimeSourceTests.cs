@@ -1,7 +1,6 @@
 using System;
 using FunFair.Test.Common.Helpers;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace FunFair.Test.Common.Tests;
 

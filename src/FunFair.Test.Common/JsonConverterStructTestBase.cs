@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace FunFair.Test.Common;
 
