@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.73.978
-- Updated xunit to xunit v3 (different package)
-- Dependencies - Updated Credfeto.Enumeration to 1.2.71.984
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.265] - 2025-03-24
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.73.978
+- Updated xunit to xunit v3 (different package)
+- Dependencies - Updated Credfeto.Enumeration to 1.2.71.984
+
 ## [6.1.264] - 2025-03-20
 ### Changed
 - Dependencies - Updated Credfeto.Enumeration to 1.2.70.976
