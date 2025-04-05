@@ -72,8 +72,8 @@
     <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="17.14.2" />
     <PackageReference Include="NonBlocking" Version="2.1.2" />
     <PackageReference Include="NSubstitute" Version="5.3.0" />
-    <PackageReference Include="xunit.v3.assert" Version="2.0.0" />
-    <PackageReference Include="xunit.v3.extensibility.core" Version="2.0.0" />
+    <PackageReference Include="xunit.v3.assert" Version="2.0.1" />
+    <PackageReference Include="xunit.v3.extensibility.core" Version="2.0.1" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" ExcludeAssets="runtime" />
