@@ -9,6 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated Bogus to 35.6.3
+- Dependencies - Updated FunFair.CodeAnalysis to 7.0.77.1037
 ### Removed
 
 <!--
