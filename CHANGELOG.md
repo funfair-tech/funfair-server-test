@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Bogus to 35.6.3
 - Dependencies - Updated FunFair.CodeAnalysis to 7.0.77.1037
 - Dependencies - Updated Credfeto.Enumeration to 1.2.73.1040
+- Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.3
 ### Removed
 
 <!--
