@@ -119,10 +119,7 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
             ModelMetadata = metadata,
             ModelState = actionContext.ModelState,
             OriginalValueProvider = valueProvider,
-            ValueProvider = FilterValueProvider(
-                valueProvider: valueProvider,
-                bindingSource: bindingSource
-            ),
+            ValueProvider = FilterValueProvider(valueProvider: valueProvider, bindingSource: bindingSource),
             MaxModelBindingRecursionDepth = MAX_MODEL_BINDING_RECURSION_DEPTH,
         };
     }
@@ -180,14 +177,9 @@ internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         this._state = this._stack.Pop();
     }
 
-    private static IValueProvider FilterValueProvider(
-        IValueProvider valueProvider,
-        BindingSource? bindingSource
-    )
+    private static IValueProvider FilterValueProvider(IValueProvider valueProvider, BindingSource? bindingSource)
     {
-        return bindingSource?.IsGreedy != false
-            ? BindingSourceValueProvider(valueProvider)
-            : valueProvider;
+        return bindingSource?.IsGreedy != false ? BindingSourceValueProvider(valueProvider) : valueProvider;
     }
 
     private static IValueProvider BindingSourceValueProvider(IValueProvider valueProvider)
