@@ -18,11 +18,7 @@ public sealed class ExampleRecordTypeMapper : SqlMapper.TypeHandler<ExampleRecor
 
         if (StringComparer.Ordinal.Equals(x: value.Name, y: "Exception"))
         {
-            throw new ArgumentOutOfRangeException(
-                nameof(value),
-                actualValue: value.Name,
-                message: "Example"
-            );
+            throw new ArgumentOutOfRangeException(nameof(value), actualValue: value.Name, message: "Example");
         }
 
         if (StringComparer.Ordinal.Equals(x: value.Name, y: "Binary"))
