@@ -78,15 +78,12 @@ public abstract class JsonConverterTestBase<
     [Fact]
     public void ShouldNotDeserialize()
     {
-        string doc = JsonSerializer.Serialize(
-            new { value = this.InvalidValue },
-            options: this._options
-        );
+        string doc = JsonSerializer.Serialize(new { value = this.InvalidValue }, options: this._options);
 
         this.Output.WriteLine($"Serialized model as: {doc}");
 
-        JsonException exception = Assert.Throws<JsonException>(
-            testCode: () => JsonSerializer.Deserialize<Model>(json: doc, options: this._options)
+        JsonException exception = Assert.Throws<JsonException>(testCode: () =>
+            JsonSerializer.Deserialize<Model>(json: doc, options: this._options)
         );
         UnusedVariable(exception);
     }
