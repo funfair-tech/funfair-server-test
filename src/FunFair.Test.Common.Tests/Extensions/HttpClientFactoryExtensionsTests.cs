@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -39,9 +39,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
             );
             Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
 
-            string content = await responseMessage.Content.ReadAsStringAsync(
-                cancellationToken: cts.Token
-            );
+            string content = await responseMessage.Content.ReadAsStringAsync(cancellationToken: cts.Token);
             Assert.Equal(expected: expectedContent, actual: content);
         }
     }
@@ -159,10 +157,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     {
         using (CancellationTokenSource cts = new(Delay))
         {
-            JsonSerializerOptions serializerOptions = new()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            };
+            JsonSerializerOptions serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
             const string clientName = "TestExample";
 
@@ -190,10 +185,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     {
         using (CancellationTokenSource cts = new(Delay))
         {
-            JsonSerializerOptions serializerOptions = new()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            };
+            JsonSerializerOptions serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
             const string clientName = "TestExample";
 
             IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
