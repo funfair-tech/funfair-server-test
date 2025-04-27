@@ -12,15 +12,7 @@ public sealed class TimeSourceTests : LoggingTestBase
     [Fact]
     public void PastDateTimeIsSane()
     {
-        DateTime expected = new(
-            year: 1975,
-            month: 03,
-            day: 16,
-            hour: 0,
-            minute: 0,
-            second: 0,
-            kind: DateTimeKind.Utc
-        );
+        DateTime expected = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Utc);
         Assert.Equal(expected: expected, actual: TimeSources.Past.UtcNow);
     }
 
@@ -42,15 +34,7 @@ public sealed class TimeSourceTests : LoggingTestBase
     [Fact]
     public void FutureDateTimeIsSane()
     {
-        DateTime expected = new(
-            year: 2100,
-            month: 3,
-            day: 16,
-            hour: 0,
-            minute: 0,
-            second: 0,
-            kind: DateTimeKind.Utc
-        );
+        DateTime expected = new(year: 2100, month: 3, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Utc);
         Assert.Equal(expected: expected, actual: TimeSources.Future.UtcNow);
     }
 
@@ -72,15 +56,7 @@ public sealed class TimeSourceTests : LoggingTestBase
     [Fact]
     public void AdvanceableInitialDateTimeIsSane()
     {
-        DateTime expected = new(
-            year: 1975,
-            month: 03,
-            day: 16,
-            hour: 0,
-            minute: 0,
-            second: 0,
-            kind: DateTimeKind.Utc
-        );
+        DateTime expected = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Utc);
         Assert.Equal(expected: expected, actual: TimeSources.Advanceable.UtcNow);
     }
 
@@ -123,15 +99,7 @@ public sealed class TimeSourceTests : LoggingTestBase
     [InlineData(20)]
     public void AdvanceableDateTimeIsSaneAtOffset(int offset)
     {
-        DateTime baseTime = new(
-            year: 1975,
-            month: 03,
-            day: 16,
-            hour: 0,
-            minute: 0,
-            second: 0,
-            kind: DateTimeKind.Utc
-        );
+        DateTime baseTime = new(year: 1975, month: 03, day: 16, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Utc);
         DateTime expected = baseTime.AddDays(offset);
 
         AdvanceableTimeSource current = TimeSources.Advanceable;
@@ -192,9 +160,7 @@ public sealed class TimeSourceTests : LoggingTestBase
             AdvanceableTimeSource last = current;
 
             current = current.Next();
-            this.Output.WriteLine(
-                $"Advancing from {last.UtcNowAsOffset} to {current.UtcNowAsOffset}"
-            );
+            this.Output.WriteLine($"Advancing from {last.UtcNowAsOffset} to {current.UtcNowAsOffset}");
             --offset;
         }
 
