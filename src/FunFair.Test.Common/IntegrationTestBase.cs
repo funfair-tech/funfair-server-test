@@ -5,11 +5,7 @@ using Xunit;
 
 namespace FunFair.Test.Common;
 
-[SuppressMessage(
-    category: "ReSharper",
-    checkId: "UnusedType.Global",
-    Justification = "Base class for further tests"
-)]
+[SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
 public abstract class IntegrationTestBase : LoggingTestBase
 {
     [SuppressMessage(
@@ -47,8 +43,7 @@ public abstract class IntegrationTestBase : LoggingTestBase
         checkId: "UnusedMember.Global",
         Justification = "May be used in derived test classes"
     )]
-    protected internal IServiceProvider ServiceProvider =>
-        this.RetrieveDependencyInjectionServiceProvider();
+    protected internal IServiceProvider ServiceProvider => this.RetrieveDependencyInjectionServiceProvider();
 
     [SuppressMessage(
         category: "ReSharper",
