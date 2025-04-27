@@ -8,11 +8,7 @@ using Xunit;
 
 namespace FunFair.Test.Common;
 
-[SuppressMessage(
-    category: "ReSharper",
-    checkId: "UnusedType.Global",
-    Justification = "Base class for further tests"
-)]
+[SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
 public abstract class DependencyInjectionTestsBase : IntegrationTestBase
 {
     protected DependencyInjectionTestsBase(
@@ -28,11 +24,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         UnusedVariable(service);
     }
 
-    [SuppressMessage(
-        category: "ReSharper",
-        checkId: "UnusedMember.Global",
-        Justification = "Used in implementations"
-    )]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used in implementations")]
     protected async Task RequireServiceAsync<TService>()
         where TService : class
     {
@@ -43,11 +35,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         this.Logger.LogWaitingForDispose(service.GetType());
     }
 
-    [SuppressMessage(
-        category: "ReSharper",
-        checkId: "UnusedMember.Global",
-        Justification = "Used in implementations"
-    )]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used in implementations")]
     protected void RequireServiceInCollectionFor<TInterface, TService>()
         where TInterface : class
         where TService : class, TInterface
@@ -55,11 +43,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         this.RequireServiceInCollectionForCommon<TInterface, TService>();
     }
 
-    [SuppressMessage(
-        category: "ReSharper",
-        checkId: "UnusedMember.Global",
-        Justification = "Used in implementations"
-    )]
+    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used in implementations")]
     protected async Task RequireServiceInCollectionForAsync<TInterface, TService>()
         where TInterface : class
         where TService : class, TInterface
@@ -80,10 +64,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         this.DumpServices(services);
 
         Assert.NotEmpty(services);
-        Assert.Contains(
-            collection: services,
-            filter: service => service.GetType() == typeof(TService)
-        );
+        Assert.Contains(collection: services, filter: service => service.GetType() == typeof(TService));
     }
 
     private void DumpServices<TInterface>(IReadOnlyList<TInterface> services)
@@ -133,9 +114,6 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     private static bool IsProxyObject(string fullTypeName)
     {
         return StringComparer.Ordinal.Equals(x: fullTypeName, y: "Castle.Proxies.ObjectProxy")
-            || fullTypeName.StartsWith(
-                value: "Castle.Proxies.ObjectProxy_",
-                comparisonType: StringComparison.Ordinal
-            );
+            || fullTypeName.StartsWith(value: "Castle.Proxies.ObjectProxy_", comparisonType: StringComparison.Ordinal);
     }
 }
