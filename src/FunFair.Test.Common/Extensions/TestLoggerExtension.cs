@@ -6,12 +6,7 @@ namespace FunFair.Test.Common.Extensions;
 
 public static class TestLoggerExtension
 {
-    public static void Received(
-        this ILogger logger,
-        LogLevel logLevel,
-        string message,
-        int received = 1
-    )
+    public static void Received(this ILogger logger, LogLevel logLevel, string message, int received = 1)
     {
         logger
             .Received(received)
