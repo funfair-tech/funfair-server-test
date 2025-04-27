@@ -3,8 +3,7 @@ using Xunit;
 
 namespace FunFair.Test.Common.Tests;
 
-public sealed class SqlTypeMapperTestsBaseTests
-    : SqlTypeMapperTestsBase<ExampleRecordTypeMapper, ExampleRecord>
+public sealed class SqlTypeMapperTestsBaseTests : SqlTypeMapperTestsBase<ExampleRecordTypeMapper, ExampleRecord>
 {
     [Fact]
     public void ShouldParseTest()
