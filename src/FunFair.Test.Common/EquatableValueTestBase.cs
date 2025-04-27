@@ -70,12 +70,7 @@ public abstract class EquatableValueTestBase<TObject> : TestBase
 
     private IReadOnlyList<int> GetHashCodes()
     {
-        return
-        [
-            .. Enumerable
-                .Range(start: 0, count: 100)
-                .Select(selector: _ => this.Value1.GetHashCode()),
-        ];
+        return [.. Enumerable.Range(start: 0, count: 100).Select(selector: _ => this.Value1.GetHashCode())];
     }
 
     [Fact]
@@ -105,91 +100,61 @@ public abstract class EquatableValueTestBase<TObject> : TestBase
     [Fact]
     public void OperatorEqualsValue1ObjectIsSameAsEquivalentToValue1Object()
     {
-        Assert.True(
-            this.OperatorEquals(x: this.Value1, y: this.EquivalentToValue1),
-            userMessage: "Should Be Same"
-        );
+        Assert.True(this.OperatorEquals(x: this.Value1, y: this.EquivalentToValue1), userMessage: "Should Be Same");
     }
 
     [Fact]
     public void OperatorEqualsValue1ObjectIsSameAsValue1AliasObject()
     {
-        Assert.True(
-            this.OperatorEquals(x: this.Value1, y: this.Value1Alias),
-            userMessage: "Should Be Same"
-        );
+        Assert.True(this.OperatorEquals(x: this.Value1, y: this.Value1Alias), userMessage: "Should Be Same");
     }
 
     [Fact]
     public void OperatorEqualsValue1ObjectIsSameAsValue1Object()
     {
-        Assert.True(
-            this.OperatorEquals(x: this.Value1, y: this.Value1),
-            userMessage: "Should Be Same"
-        );
+        Assert.True(this.OperatorEquals(x: this.Value1, y: this.Value1), userMessage: "Should Be Same");
     }
 
     [Fact]
     public void OperatorEqualsZeroObjectIsSameAsZeroObject()
     {
-        Assert.True(
-            this.OperatorEquals(x: this.ZeroObject, y: this.ZeroObject),
-            userMessage: "Should Be Same"
-        );
+        Assert.True(this.OperatorEquals(x: this.ZeroObject, y: this.ZeroObject), userMessage: "Should Be Same");
     }
 
     [Fact]
     public void OperatorNotEqualsValue1ObjectIsSameAsEquivalentToValue1Object()
     {
-        Assert.False(
-            this.OperatorNotEquals(x: this.Value1, y: this.EquivalentToValue1),
-            userMessage: "Should Be Same"
-        );
+        Assert.False(this.OperatorNotEquals(x: this.Value1, y: this.EquivalentToValue1), userMessage: "Should Be Same");
     }
 
     [Fact]
     public void OperatorNotEqualsValue1ObjectIsSameAsValue1AliasObject()
     {
-        Assert.False(
-            this.OperatorNotEquals(x: this.Value1, y: this.Value1Alias),
-            userMessage: "Should Be Same"
-        );
+        Assert.False(this.OperatorNotEquals(x: this.Value1, y: this.Value1Alias), userMessage: "Should Be Same");
     }
 
     [Fact]
     public void OperatorNotEqualsValue1ObjectIsSameAsValue1Object()
     {
-        Assert.False(
-            this.OperatorNotEquals(x: this.Value1, y: this.Value1),
-            userMessage: "Should Be Same"
-        );
+        Assert.False(this.OperatorNotEquals(x: this.Value1, y: this.Value1), userMessage: "Should Be Same");
     }
 
     [Fact]
     public void OperatorNotEqualsZeroObjectIsSameAsZeroObject()
     {
-        Assert.False(
-            this.OperatorNotEquals(x: this.ZeroObject, y: this.ZeroObject),
-            userMessage: "Should Be Same"
-        );
+        Assert.False(this.OperatorNotEquals(x: this.ZeroObject, y: this.ZeroObject), userMessage: "Should Be Same");
     }
 
     [Fact]
     public void TypedEqualsValue1ObjectIsSameAsEquivalentToValue1Object()
     {
-        Assert.True(
-            TypedEquals(x: this.Value1, y: this.EquivalentToValue1),
-            userMessage: "Should Be Same"
-        );
+        Assert.True(TypedEquals(x: this.Value1, y: this.EquivalentToValue1), userMessage: "Should Be Same");
     }
 
     [Fact]
     public void TypedEqualsValue1ObjectIsSameAsValue1AliasObject()
     {
-        Assert.True(
-            TypedEquals(x: this.Value1, y: this.Value1Alias),
-            userMessage: "Should Be Same"
-        );
+        Assert.True(TypedEquals(x: this.Value1, y: this.Value1Alias), userMessage: "Should Be Same");
     }
 
     [Fact]
@@ -201,37 +166,25 @@ public abstract class EquatableValueTestBase<TObject> : TestBase
     [Fact]
     public void TypedEqualsZeroObjectIsSameAsZeroObject()
     {
-        Assert.True(
-            TypedEquals(x: this.ZeroObject, y: this.ZeroObject),
-            userMessage: "Should Be Same"
-        );
+        Assert.True(TypedEquals(x: this.ZeroObject, y: this.ZeroObject), userMessage: "Should Be Same");
     }
 
     [Fact]
     public void UntypedEqualsValue1ObjectIsSameAsEquivalentToValue1Object()
     {
-        Assert.True(
-            UntypedEquals(x: this.Value1, y: this.EquivalentToValue1),
-            userMessage: "Should Be Same"
-        );
+        Assert.True(UntypedEquals(x: this.Value1, y: this.EquivalentToValue1), userMessage: "Should Be Same");
     }
 
     [Fact]
     public void UntypedEqualsValue1ObjectIsSameAsEquivalentToValue1ObjectAsObject()
     {
-        Assert.True(
-            UntypedEquals(x: this.Value1, y: this.EquivalentToValue1AsObject),
-            userMessage: "Should Be Same"
-        );
+        Assert.True(UntypedEquals(x: this.Value1, y: this.EquivalentToValue1AsObject), userMessage: "Should Be Same");
     }
 
     [Fact]
     public void UntypedEqualsValue1ObjectIsSameAsValue1AliasObject()
     {
-        Assert.True(
-            UntypedEquals(x: this.Value1, y: this.Value1Alias),
-            userMessage: "Should Be Same"
-        );
+        Assert.True(UntypedEquals(x: this.Value1, y: this.Value1Alias), userMessage: "Should Be Same");
     }
 
     [Fact]
@@ -243,18 +196,12 @@ public abstract class EquatableValueTestBase<TObject> : TestBase
     [Fact]
     public void UntypedEqualsZeroObjectDifferentToAnotherTypeOfObject()
     {
-        Assert.False(
-            UntypedEquals(x: this.ZeroObject, Guid.NewGuid()),
-            userMessage: "Should Be different"
-        );
+        Assert.False(UntypedEquals(x: this.ZeroObject, Guid.NewGuid()), userMessage: "Should Be different");
     }
 
     [Fact]
     public void UntypedEqualsZeroObjectIsSameAsZeroObject()
     {
-        Assert.True(
-            UntypedEquals(x: this.ZeroObject, y: this.ZeroObject),
-            userMessage: "Should Be Same"
-        );
+        Assert.True(UntypedEquals(x: this.ZeroObject, y: this.ZeroObject), userMessage: "Should Be Same");
     }
 }
