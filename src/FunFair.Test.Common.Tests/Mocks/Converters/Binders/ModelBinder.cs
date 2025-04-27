@@ -8,14 +8,8 @@ public sealed class ModelBinder : IModelBinder
 {
     public Task BindModelAsync(ModelBindingContext bindingContext)
     {
-        string modelKindName = CreatePropertyModelName(
-            prefix: null,
-            propertyName: bindingContext.ModelName
-        );
-        string? modelTypeValue = GetModelTypeValue(
-            bindingContext: bindingContext,
-            modelKindName: modelKindName
-        );
+        string modelKindName = CreatePropertyModelName(prefix: null, propertyName: bindingContext.ModelName);
+        string? modelTypeValue = GetModelTypeValue(bindingContext: bindingContext, modelKindName: modelKindName);
 
         if (modelTypeValue is null)
         {
@@ -36,10 +30,7 @@ public sealed class ModelBinder : IModelBinder
         return Task.CompletedTask;
     }
 
-    private static string? GetModelTypeValue(
-        ModelBindingContext bindingContext,
-        string modelKindName
-    )
+    private static string? GetModelTypeValue(ModelBindingContext bindingContext, string modelKindName)
     {
         return bindingContext.ValueProvider.GetValue(modelKindName).FirstValue;
     }
