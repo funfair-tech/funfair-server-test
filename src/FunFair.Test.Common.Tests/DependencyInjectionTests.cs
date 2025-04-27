@@ -67,9 +67,6 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
     private static bool IsProxyObject(string fullTypeName)
     {
         return StringComparer.Ordinal.Equals(x: fullTypeName, y: "Castle.Proxies.ObjectProxy")
-            || fullTypeName.StartsWith(
-                value: "Castle.Proxies.ObjectProxy_",
-                comparisonType: StringComparison.Ordinal
-            );
+            || fullTypeName.StartsWith(value: "Castle.Proxies.ObjectProxy_", comparisonType: StringComparison.Ordinal);
     }
 }
