@@ -57,8 +57,8 @@ public abstract class SqlTypeMapperTestsBase<
         // note special case for byte arrays as NSubstitute whatever you give it always says it received something other than the expected
         IDbDataParameter parameter = new MockParameter();
 
-        TExceptionType test = Assert.Throws<TExceptionType>(
-            () => this.Handler.SetValue(parameter: parameter, value: value)
+        TExceptionType test = Assert.Throws<TExceptionType>(() =>
+            this.Handler.SetValue(parameter: parameter, value: value)
         );
         UnusedVariable(test);
     }
