@@ -1,15 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using FunFair.Test.Common.Tests.Mocks.Converters;
 using FunFair.Test.Common.Tests.Mocks.Converters.JsonConverter;
 using Xunit;
 
 namespace FunFair.Test.Common.Tests;
 
-[SuppressMessage(
-    category: "ReSharper",
-    checkId: "UnusedType.Global",
-    Justification = "Base class for further tests"
-)]
+[SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
 public sealed class JsonConverterStructTestBaseTests : JsonConverterTestBase<ModelConverter, Model>
 {
     public JsonConverterStructTestBaseTests(ITestOutputHelper output)
