@@ -8,7 +8,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.0.79.1041
 - Dependencies - Updated CSharpier.MSBuild to 1.0.0
 - Dependencies - Updated Credfeto.Enumeration to 1.2.81.1087
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.9.0.115408
@@ -16,6 +15,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.runner.visualstudio to 3.1.0
 - Dependencies - Updated xunit.v3 to 2.0.2
 - Dependencies - Updated FluentValidation to 12.0.0
+- Dependencies - Updated FunFair.CodeAnalysis to 7.1.0.1124
 ### Removed
 
 <!--
