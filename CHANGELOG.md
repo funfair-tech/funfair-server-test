@@ -16,6 +16,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.v3 to 2.0.2
 - Dependencies - Updated FluentValidation to 12.0.0
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.0.1124
+- Dependencies - Updated Microsoft.Sbom.Targets to 4.0.2
 ### Removed
 
 <!--
