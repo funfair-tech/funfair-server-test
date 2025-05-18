@@ -18,8 +18,8 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - SDK - Updated DotNet SDK to 9.0.300
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 17.14.15
 - Dependencies - Updated Microsoft.Sbom.Targets to 4.0.3
-- Dependencies - Updated Credfeto.Enumeration to 1.2.85.1130
 - Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.4
+- Dependencies - Updated Credfeto.Enumeration to 1.2.86.1132
 ### Removed
 
 <!--
