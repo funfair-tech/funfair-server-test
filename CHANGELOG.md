@@ -9,7 +9,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated CSharpier.MSBuild to 1.0.0
-- Dependencies - Updated SonarAnalyzer.CSharp to 10.9.0.115408
 - Dependencies - Updated Meziantou.Analyzer to 2.0.201
 - Dependencies - Updated xunit.runner.visualstudio to 3.1.0
 - Dependencies - Updated xunit.v3 to 2.0.2
@@ -20,6 +19,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Microsoft.Sbom.Targets to 4.0.3
 - Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.4
 - Dependencies - Updated Credfeto.Enumeration to 1.2.87.1134
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.10.0.116381
 ### Removed
 
 <!--
