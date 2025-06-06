@@ -58,9 +58,6 @@
     <!-- error NU1903: Warning As Error: Package 'System.Private.Uri' 4.3.0 has a known high severity vulnerability -->
     <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-xhfc-gr8f-ffwc" />
   </ItemGroup>
-  <!--  <ItemGroup>-->
-  <!--    <Content Remove="content\testhost.dll" />-->
-  <!--  </ItemGroup>-->
   <ItemGroup>
     <PackageReference Include="AutoBogus.NSubstitute" Version="2.13.1" />
     <PackageReference Include="Bogus" Version="35.6.3" />
