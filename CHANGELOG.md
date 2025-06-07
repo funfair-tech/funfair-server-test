@@ -10,7 +10,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - Dependencies - Updated CSharpier.MSBuild to 1.0.0
 - Dependencies - Updated Meziantou.Analyzer to 2.0.201
-- Dependencies - Updated xunit.runner.visualstudio to 3.1.0
 - Dependencies - Updated xunit.v3 to 2.0.2
 - Dependencies - Updated FluentValidation to 12.0.0
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.0.1124
@@ -20,6 +19,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.4
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.11.0.117924
 - Dependencies - Updated Credfeto.Enumeration to 1.2.105.1202
+- Dependencies - Updated xunit.runner.visualstudio to 3.1.1
 ### Removed
 
 <!--
