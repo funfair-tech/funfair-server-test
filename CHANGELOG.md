@@ -20,6 +20,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.4
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.11.0.117924
 - Dependencies - Updated Credfeto.Enumeration to 1.2.105.1202
+- Dependencies - Updated xunit.analyzers to 1.22.0
 ### Removed
 
 <!--
