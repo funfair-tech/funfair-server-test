@@ -18,8 +18,8 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.11.0.117924
 - Dependencies - Updated xunit.runner.visualstudio to 3.1.1
 - Dependencies - Updated xunit.v3 to 2.0.3
-- Dependencies - Updated Credfeto.Enumeration to 1.2.106.1206
 - Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.5
+- Dependencies - Updated Credfeto.Enumeration to 1.2.107.1208
 ### Removed
 
 <!--
