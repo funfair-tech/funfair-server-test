@@ -19,7 +19,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.runner.visualstudio to 3.1.1
 - Dependencies - Updated xunit.v3 to 2.0.3
 - Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.5
-- Dependencies - Updated Credfeto.Enumeration to 1.2.107.1208
+- Dependencies - Updated Credfeto.Enumeration to 1.2.108.1210
 ### Removed
 
 <!--
