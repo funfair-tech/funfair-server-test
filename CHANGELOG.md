@@ -19,7 +19,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.v3 to 2.0.3
 - Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.5
 - SDK - Updated DotNet SDK to 9.0.301
-- Dependencies - Updated Credfeto.Enumeration to 1.2.112.1229
+- Dependencies - Updated Credfeto.Enumeration to 1.2.113.1231
 ### Removed
 
 <!--
