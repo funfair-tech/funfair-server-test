@@ -17,9 +17,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.runner.visualstudio to 3.1.1
 - Dependencies - Updated xunit.v3 to 2.0.3
 - SDK - Updated DotNet SDK to 9.0.301
-- Dependencies - Updated Credfeto.Enumeration to 1.2.113.1231
 - Dependencies - Updated Meziantou.Analyzer to 2.0.202
 - Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.6
+- Dependencies - Updated Credfeto.Enumeration to 1.2.114.1235
 ### Removed
 
 <!--
