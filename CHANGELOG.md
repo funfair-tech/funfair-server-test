@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated SonarAnalyzer.CSharp to 10.12.0.118525
-- Dependencies - Updated Credfeto.Enumeration to 1.2.115.1242
-- Dependencies - Updated FunFair.CodeAnalysis to 7.1.2.1228
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.270] - 2025-06-19
+### Changed
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.12.0.118525
+- Dependencies - Updated Credfeto.Enumeration to 1.2.115.1242
+- Dependencies - Updated FunFair.CodeAnalysis to 7.1.2.1228
+
 ## [6.1.269] - 2025-06-17
 ### Changed
 - Dependencies - Updated CSharpier.MSBuild to 1.0.0
