@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.9.1293
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.14.0.120626
+- Dependencies - Updated xunit.runner.visualstudio to 3.1.3
 ### Removed
 
 <!--
