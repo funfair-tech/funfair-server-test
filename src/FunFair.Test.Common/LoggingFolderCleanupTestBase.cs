@@ -12,14 +12,67 @@ public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
     protected LoggingFolderCleanupTestBase(ITestOutputHelper output)
         : base(output)
     {
-        this.TempFolder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-
-        DirectoryInfo created = Directory.CreateDirectory(this.TempFolder);
-
-        this.Output.WriteLine($"Using Temp folder: {created.FullName}");
+        this.TempFolder = CreateTestUniqueTempDir(output);
     }
 
     protected string TempFolder { get; }
+
+    private static string CreateTestUniqueTempDir(ITestOutputHelper output)
+    {
+        string? tempPath = GetTempPath();
+
+        Assert.False(string.IsNullOrEmpty(tempPath), userMessage: "Temp Path is empty");
+        string testTempPath = Path.Combine(path1: tempPath,
+                                           Guid.NewGuid()
+                                               .ToString());
+
+        DirectoryInfo created = Directory.CreateDirectory(testTempPath);
+
+        output.WriteLine($"Using Temp folder: {created.FullName}");
+
+        return testTempPath;
+    }
+
+    private static string? GetTempPath()
+    {
+        if (CheckPath(variable: "XDG_RUNTIME_DIR", out string? tempPath))
+        {
+            return tempPath;
+        }
+
+        if (CheckPath(variable: "TMP", path: out tempPath))
+        {
+            return tempPath;
+        }
+
+        if (CheckPath(variable: "TEMP", path: out tempPath))
+        {
+            return tempPath;
+        }
+
+        if (CheckPath(variable: "TMPDIR", path: out tempPath))
+        {
+            return tempPath;
+        }
+
+        return null;
+    }
+
+    private static bool CheckPath(string variable, [NotNullWhen(true)] out string? path)
+    {
+        string? p = Environment.GetEnvironmentVariable(variable);
+
+        if (!string.IsNullOrEmpty(p))
+        {
+            path = p;
+
+            return true;
+        }
+
+        path = null;
+
+        return false;
+    }
 
     protected override void Dispose(bool disposing)
     {
