@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using FunFair.Test.Common.Tests.Extensions;
 using FunFair.Test.Common.Tests.Mocks;
 using Microsoft.Extensions.Logging;
@@ -8,9 +9,9 @@ using Xunit;
 
 namespace FunFair.Test.Common.Tests;
 
-public sealed class LoggingTestBaseTests : LoggingTestBase
+public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTestBase
 {
-    public LoggingTestBaseTests(ITestOutputHelper output)
+    public LoggingFolderCleanupTestBaseTests(ITestOutputHelper output)
         : base(output)
     {
     }
@@ -60,5 +61,21 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
         {
             this.Output.WriteLine($"* {item.Name}");
         }
+    }
+
+    [Fact]
+    public void CanWriteToFolder()
+    {
+        string filename = Path.Combine(path1: this.TempFolder,
+                                       Guid.NewGuid()
+                                           .ToString());
+
+        byte[] source = "Hello World"u8.ToArray();
+        Assert.False(File.Exists(filename), $"File {filename} already exists before creation");
+        File.WriteAllBytes(path: filename, bytes: source);
+        Assert.True(File.Exists(filename), $"File {filename} doesn't exist when it has just been written");
+        byte[] written = File.ReadAllBytes(filename);
+
+        Assert.Equal(expected: source, actual: written);
     }
 }

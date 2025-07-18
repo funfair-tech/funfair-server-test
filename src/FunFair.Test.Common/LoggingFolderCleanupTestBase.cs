@@ -30,7 +30,9 @@ public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
 
         output.WriteLine($"Using Temp folder: {created.FullName}");
 
-        return testTempPath;
+        Assert.True(condition: created.Exists, $"Temp folder {testTempPath} doesn't exist");
+
+        return created.FullName;
     }
 
     private static string? GetTempPath()
