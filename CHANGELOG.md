@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.1.9.1293
-- Dependencies - Updated SonarAnalyzer.CSharp to 10.14.0.120626
-- Dependencies - Updated xunit.runner.visualstudio to 3.1.3
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.278] - 2025-07-18
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.1.9.1293
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.14.0.120626
+- Dependencies - Updated xunit.runner.visualstudio to 3.1.3
+
 ## [6.1.277] - 2025-07-14
 ### Changed
 - Dependencies - Updated xunit.analyzers to 1.23.0
