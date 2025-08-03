@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.1.12.1328
-- Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.10
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.280] - 2025-08-03
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.1.12.1328
+- Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.10
+
 ## [6.1.279] - 2025-08-01
 ### Changed
 - SDK - Updated DotNet SDK to 9.0.303
