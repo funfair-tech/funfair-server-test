@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.1.16.1341
-- Dependencies - Updated Meziantou.Analyzer to 2.0.212
-- SDK - Updated DotNet SDK to 9.0.304
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.1.282] - 2025-08-09
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.1.16.1341
+- Dependencies - Updated Meziantou.Analyzer to 2.0.212
+- SDK - Updated DotNet SDK to 9.0.304
+
 ## [6.1.281] - 2025-08-07
 ### Changed
 - Dependencies - Updated Credfeto.Enumeration to 1.2.121.1337
