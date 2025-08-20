@@ -2,11 +2,8 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
-// using Meziantou.Xunit;
-
 namespace FunFair.Test.Common.Helpers;
 
-// [DisableParallelization]
 public static class ReferenceObjectHelpers
 {
     [Pure]
