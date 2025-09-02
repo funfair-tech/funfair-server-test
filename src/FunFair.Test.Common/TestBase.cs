@@ -5,6 +5,11 @@ using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Loggers;
+using BenchmarkDotNet.Reports;
+using BenchmarkDotNet.Running;
 using Bogus;
 using FunFair.Test.Common.Helpers;
 using Microsoft.Extensions.Logging;
@@ -76,7 +81,8 @@ public abstract class TestBase
 
         const bool enable = true;
 
-        return rules(new Faker<T>().StrictMode(enable)).Generate(itemCount);
+        return rules(new Faker<T>().StrictMode(enable))
+            .Generate(itemCount);
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
@@ -88,17 +94,14 @@ public abstract class TestBase
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
     protected static T1 GetSubstitute<T1, T2>(params object[] constructorArguments)
-        where T1 : class
-        where T2 : class
+        where T1 : class where T2 : class
     {
         return Substitute.For<T1, T2>(constructorArguments);
     }
 
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
     protected static T1 GetSubstitute<T1, T2, T3>(params object[] constructorArguments)
-        where T1 : class
-        where T2 : class
-        where T3 : class
+        where T1 : class where T2 : class where T3 : class
     {
         return Substitute.For<T1, T2, T3>(constructorArguments);
     }
@@ -122,16 +125,8 @@ public abstract class TestBase
         return Assert.NotNull(value);
     }
 
-    [SuppressMessage(
-        category: "Microsoft.Usage",
-        checkId: "CA1801:ReviewUnusedParameters",
-        Justification = "Needed for Unit Test"
-    )]
-    [SuppressMessage(
-        category: "codecracker.CSharp",
-        checkId: "CC0057:ReviewUnusedParameters",
-        Justification = "Needed for Unit Test"
-    )]
+    [SuppressMessage(category: "Microsoft.Usage", checkId: "CA1801:ReviewUnusedParameters", Justification = "Needed for Unit Test")]
+    [SuppressMessage(category: "codecracker.CSharp", checkId: "CC0057:ReviewUnusedParameters", Justification = "Needed for Unit Test")]
     [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
     [SuppressMessage(category: "ReSharper", checkId: "UnusedParameter.Global", Justification = "Used by test classes")]
     [SuppressMessage(category: "IDE", checkId: "IDE0060: Remove unused params", Justification = "Used by test classes")]
@@ -148,5 +143,19 @@ public abstract class TestBase
         where T : notnull
     {
         return value.FormatValue();
+    }
+
+    protected static (Summary summary, AccumulationLogger logger) Benchmark<T>()
+    {
+        AccumulationLogger logger = new();
+
+        ManualConfig config = ManualConfig.Create(DefaultConfig.Instance)
+                                          .AddLogger(logger)
+                                          .AddDiagnoser(new MemoryDiagnoser(new(false)))
+                                          .WithOptions(ConfigOptions.DisableOptimizationsValidator);
+
+        Summary summary = BenchmarkRunner.Run<T>(config);
+
+        return (summary, logger);
     }
 }
