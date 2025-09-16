@@ -8,12 +8,15 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dotnet 10
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.2.0] - 2025-09-16
+### Changed
+- Dotnet 10
+
 ## [6.1.286] - 2025-09-11
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.22.1366
