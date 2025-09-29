@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Config/">
+    <File Path="../CHANGELOG.md" />
+    <File Path="../README.md" />
+    <File Path="CodeAnalysis.ruleset" />
+    <File Path="FunFair.props" />
+    <File Path="global.json" />
+  </Folder>
+  <Project Path="FunFair.Test.Common.Tests/FunFair.Test.Common.Tests.csproj" />
+  <Project Path="FunFair.Test.Common/FunFair.Test.Common.csproj" />
+</Solution>
