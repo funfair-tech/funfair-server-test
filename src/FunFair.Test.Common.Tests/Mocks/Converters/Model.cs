@@ -5,7 +5,9 @@ namespace FunFair.Test.Common.Tests.Mocks.Converters;
 
 public sealed class Model : IEquatable<Model>
 {
-    public Model() { }
+    public Model()
+    {
+    }
 
     public Model(ModelColor color)
     {
@@ -31,12 +33,19 @@ public sealed class Model : IEquatable<Model>
 
     public override bool Equals(object? obj)
     {
-        return ReferenceEquals(this, objB: obj) || obj is Model other && this.Equals(other);
+        if (ReferenceEquals(this, objB: obj))
+        {
+            return true;
+        }
+
+        return obj is Model other && this.Equals(other);
     }
 
     public override int GetHashCode()
     {
-        return this.Value is not null ? this.Value.GetHashCode() : 0;
+        return this.Value is not null
+            ? this.Value.GetHashCode()
+            : 0;
     }
 
     public static bool operator ==(Model left, Model right)
