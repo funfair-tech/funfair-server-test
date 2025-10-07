@@ -1,4 +1,5 @@
-﻿<RuleSet Name="Custom Rulset" Description="Custom Rulset" ToolsVersion="15.0">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Custom Rulset" Description="Custom Rulset" ToolsVersion="15.0">
     <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
         <!-- CA1001 - ?? -->
         <Rule Id="CA1001" Action="None"/>
@@ -347,7 +348,7 @@
     </Rules>
     <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
         <!-- S125 - Commented out code -->
-        <Rule Id="S125" Action="Error"/>
+        <Rule Id="S125" Action="None"/>
         <!-- S1066 Collapsible "if" statements should be merged -->
         <Rule Id="S1066" Action="None"/>
         <!-- S1075 - URIs should not be hardcoded -->
@@ -515,26 +516,27 @@
         <!-- CC0105 - Use var instead of specifying type name -->
         <Rule Id="CC0105" Action="None"/>
     </Rules>
-    <Rules AnalyzerId="SmartAnalyzers.CSharpExtensions.Annotations" RuleNamespace="SmartAnalyzers.CSharpExtensions.Annotations">
+    <Rules AnalyzerId="SmartAnalyzers.CSharpExtensions.Annotations"
+           RuleNamespace="SmartAnalyzers.CSharpExtensions.Annotations">
         <!-- See https://github.com/cezarypiatek/CSharpExtensions -->
         <!-- CSE001 - Required properties initialization -->
-        <Rule Id="CSE001" Action="Error"/>
+        <Rule Id="CSE001" Action="Error" />
         <!-- CSE002 - InitOnly member modification -->
-        <Rule Id="CSE002" Action="Error"/>
+        <Rule Id="CSE002" Action="Error" />
         <!-- CSE003 - Type should have the same fields as twin type -->
-        <Rule Id="CSE003" Action="Error"/>
+        <Rule Id="CSE003" Action="Error" />
         <!-- CSE004 - Member with InitOnlyOptional requires default value -->
-        <Rule Id="CSE004" Action="Error"/>
+        <Rule Id="CSE004" Action="Error" />
         <!-- CSE005 - Use the return value or discard it explicitly -->
         <Rule Id="CSE005" Action="Info"/>
         <!-- CSE006 - Expression too complex -->
-        <Rule Id="CSE006" Action="Info"/>
+        <Rule Id="CSE006" Action="Info" />
         <!-- CSE007 - Return disposable value unused -->
-        <Rule Id="CSE007" Action="Error"/>
+        <Rule Id="CSE007" Action="Error" />
         <!-- CSE008 - Return async result unused -->
-        <Rule Id="CSE008" Action="Error"/>
+        <Rule Id="CSE008" Action="Error" />
         <!-- CSE009 - Task variable not awaited -->
-        <Rule Id="CSE009" Action="Error"/>
+        <Rule Id="CSE009" Action="Error" />
     </Rules>
     <Rules AnalyzerId="Meziantou.Analyzer" RuleNamespace="Meziantou.Analyzer">
         <!-- See https://github.com/meziantou/Meziantou.Analyzer/tree/main/docs -->
@@ -589,7 +591,7 @@
         <!-- MA0025	- Implement the functionality instead of throwing NotImplementedException -->
         <Rule Id="MA0025" Action="Error"/>
         <!-- MA0026 - Don't leave TODO's scattered around -->
-        <Rule Id="MA0026" Action="Error"/>
+        <Rule Id="MA0026" Action="Info"/>
         <!-- MA0027 - Prefer rethrowing an exception implicitly -->
         <Rule Id="MA0027" Action="Error"/>
         <!-- MA0028 - Optimize StringBuilder usage -->
@@ -1010,10 +1012,10 @@
         <!-- FFS0039 - Only one type should be defined per file. (note class T and class T{T1} are considered ok)  -->
         <Rule Id="FFS0039" Action="Error"/>
         <!-- FFS0040 - File should have the same name as the type that is defined in it -->
-        <Rule Id="FFS0040" Action="Error"/>
+        <Rule Id="FFS0040" Action="Info"/>
         <!-- FFS0041 - Do not use System.Console in test assemblies -->
         <Rule Id="FFS0041" Action="Error"/>
         <!-- FFS0042 - Do not have TODO's in SuppressMessage justifications. -->
-        <Rule Id="FFS0042" Action="Error"/>
+        <Rule Id="FFS0042" Action="Info"/>
     </Rules>
 </RuleSet>
