@@ -5,7 +5,11 @@ using BenchmarkDotNet.Attributes;
 
 namespace FunFair.Test.Common.Tests;
 
-[SuppressMessage(category: "Microsoft.Performance", checkId: "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Benchmarks")]
+[SuppressMessage(
+    category: "Microsoft.Performance",
+    checkId: "CA1812:AvoidUninstantiatedInternalClasses",
+    Justification = "Benchmarks"
+)]
 public abstract class ExampleBenchmarks
 {
     private readonly IReadOnlyList<int> _items = [.. Enumerable.Range(start: 0, count: 100)];
