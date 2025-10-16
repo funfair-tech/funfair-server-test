@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.24.1452
 - Dependencies - Updated Meziantou.Analyzer to 2.0.227
 - Dependencies - Updated Microsoft.Sbom.Targets to 4.1.2
+- Dependencies - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.9.1
 ### Removed
 
 <!--
