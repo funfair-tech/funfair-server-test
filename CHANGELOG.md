@@ -19,6 +19,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.v3 to 3.1.0
 - Dependencies - Updated Bogus to 35.6.4
 - Dependencies - Updated BenchmarkDotNet to 0.15.4
+- Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.15
 ### Removed
 
 <!--
