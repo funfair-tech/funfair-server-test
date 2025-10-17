@@ -17,6 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.analyzers to 1.24.0
 - Dependencies - Updated xunit.runner.visualstudio to 3.1.5
 - Dependencies - Updated xunit.v3 to 3.1.0
+- Dependencies - Updated Bogus to 35.6.4
 ### Removed
 
 <!--
