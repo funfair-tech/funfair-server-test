@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.16
 ### Removed
 
 <!--
