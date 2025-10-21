@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.25.1550
 - Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.16
+- Dependencies - Updated Meziantou.Analyzer to 2.0.228
 ### Removed
 
 <!--
