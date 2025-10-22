@@ -8,15 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-
-- Dependencies - Updated FunFair.CodeAnalysis to 7.1.25.1550
-- Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.16
-- Dependencies - Updated Meziantou.Analyzer to 2.0.228
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.2.2] - 2025-10-22
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.1.25.1550
+- Dependencies - Updated Meziantou.Extensions.Logging.Xunit to 1.1.16
+- Dependencies - Updated Meziantou.Analyzer to 2.0.228
+
 ## [6.2.1] - 2025-10-17
 ### Changed
 - Dependencies - Updated Credfeto.Enumeration to 1.2.129.1430
