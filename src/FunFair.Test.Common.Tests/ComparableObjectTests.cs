@@ -5,7 +5,7 @@ using FunFair.Test.Common.Helpers;
 
 namespace FunFair.Test.Common.Tests;
 
-[SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
+
 public sealed class ComparableObjectTests : ComparableObjectTestBase<string>
 {
     public ComparableObjectTests()
