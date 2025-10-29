@@ -5,7 +5,6 @@ using Xunit;
 
 namespace FunFair.Test.Common;
 
-
 public abstract class IntegrationTestBase : LoggingTestBase
 {
     [SuppressMessage(
