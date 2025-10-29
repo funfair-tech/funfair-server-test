@@ -5,7 +5,7 @@ using Xunit;
 
 namespace FunFair.Test.Common;
 
-[SuppressMessage(category: "ReSharper", checkId: "UnusedType.Global", Justification = "Base class for further tests")]
+
 public abstract class IntegrationTestBase : LoggingTestBase
 {
     [SuppressMessage(
