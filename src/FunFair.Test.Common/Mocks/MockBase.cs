@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace FunFair.Test.Common.Mocks;
 
-
 [SuppressMessage(
     category: "FunFair.CodeAnalysis",
     checkId: "FFS0029: Should be internal",
