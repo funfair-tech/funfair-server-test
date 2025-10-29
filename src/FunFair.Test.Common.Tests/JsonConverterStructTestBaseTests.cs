@@ -5,7 +5,6 @@ using Xunit;
 
 namespace FunFair.Test.Common.Tests;
 
-
 public sealed class JsonConverterStructTestBaseTests : JsonConverterTestBase<ModelConverter, Model>
 {
     public JsonConverterStructTestBaseTests(ITestOutputHelper output)
