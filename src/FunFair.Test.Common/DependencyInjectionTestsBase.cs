@@ -8,7 +8,6 @@ using Xunit;
 
 namespace FunFair.Test.Common;
 
-
 public abstract class DependencyInjectionTestsBase : IntegrationTestBase
 {
     protected DependencyInjectionTestsBase(
@@ -24,7 +23,6 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         UnusedVariable(service);
     }
 
-    
     protected async Task RequireServiceAsync<TService>()
         where TService : class
     {
@@ -35,7 +33,6 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         this.Logger.LogWaitingForDispose(service.GetType());
     }
 
-    
     protected void RequireServiceInCollectionFor<TInterface, TService>()
         where TInterface : class
         where TService : class, TInterface
@@ -43,7 +40,6 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         this.RequireServiceInCollectionForCommon<TInterface, TService>();
     }
 
-    
     protected async Task RequireServiceInCollectionForAsync<TInterface, TService>()
         where TInterface : class
         where TService : class, TInterface
