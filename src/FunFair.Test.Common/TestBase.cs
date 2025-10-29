@@ -27,7 +27,7 @@ public abstract class TestBase
     }
 
     [SuppressMessage("codecracker.CSharp", "CC0091: Make static", Justification = "Simplifies API")]
-    [SuppressMessage("SonarAnalyzer.CSharp", "S2325: Make static", Justification = "Simplifies API")]
+    
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected CancellationToken CancellationToken()
@@ -58,7 +58,7 @@ public abstract class TestBase
         return Task.FromResult(value);
     }
 
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
+    
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static Task<T?> NullResultAsync<T>()
@@ -84,14 +84,14 @@ public abstract class TestBase
         return rules(new Faker<T>().StrictMode(enable)).Generate(itemCount);
     }
 
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
+    
     protected static T GetSubstitute<T>(params object[] constructorArguments)
         where T : class
     {
         return Substitute.For<T>(constructorArguments);
     }
 
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
+    
     protected static T1 GetSubstitute<T1, T2>(params object[] constructorArguments)
         where T1 : class
         where T2 : class
@@ -99,7 +99,7 @@ public abstract class TestBase
         return Substitute.For<T1, T2>(constructorArguments);
     }
 
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
+    
     protected static T1 GetSubstitute<T1, T2, T3>(params object[] constructorArguments)
         where T1 : class
         where T2 : class
@@ -118,7 +118,7 @@ public abstract class TestBase
         return value;
     }
 
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
+    
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static T AssertReallyNotNull<T>([NotNull] T? value)
@@ -137,16 +137,16 @@ public abstract class TestBase
         checkId: "CC0057:ReviewUnusedParameters",
         Justification = "Needed for Unit Test"
     )]
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedParameter.Global", Justification = "Used by test classes")]
-    [SuppressMessage(category: "IDE", checkId: "IDE0060: Remove unused params", Justification = "Used by test classes")]
+    
+    
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static void UnusedVariable<T>(T value)
     {
         // Marking that the variable is unused.
     }
 
-    [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Used by test classes")]
+    
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static string FormatValue<T>(T value)
