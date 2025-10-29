@@ -6,7 +6,6 @@ using Xunit;
 
 namespace FunFair.Test.Common;
 
-
 public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
 {
     protected LoggingFolderCleanupTestBase(ITestOutputHelper output)
