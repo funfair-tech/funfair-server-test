@@ -27,7 +27,6 @@ public abstract class TestBase
     }
 
     [SuppressMessage("codecracker.CSharp", "CC0091: Make static", Justification = "Simplifies API")]
-    
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected CancellationToken CancellationToken()
@@ -58,7 +57,6 @@ public abstract class TestBase
         return Task.FromResult(value);
     }
 
-    
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static Task<T?> NullResultAsync<T>()
@@ -84,14 +82,12 @@ public abstract class TestBase
         return rules(new Faker<T>().StrictMode(enable)).Generate(itemCount);
     }
 
-    
     protected static T GetSubstitute<T>(params object[] constructorArguments)
         where T : class
     {
         return Substitute.For<T>(constructorArguments);
     }
 
-    
     protected static T1 GetSubstitute<T1, T2>(params object[] constructorArguments)
         where T1 : class
         where T2 : class
@@ -99,7 +95,6 @@ public abstract class TestBase
         return Substitute.For<T1, T2>(constructorArguments);
     }
 
-    
     protected static T1 GetSubstitute<T1, T2, T3>(params object[] constructorArguments)
         where T1 : class
         where T2 : class
@@ -118,7 +113,6 @@ public abstract class TestBase
         return value;
     }
 
-    
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static T AssertReallyNotNull<T>([NotNull] T? value)
@@ -137,16 +131,12 @@ public abstract class TestBase
         checkId: "CC0057:ReviewUnusedParameters",
         Justification = "Needed for Unit Test"
     )]
-    
-    
-    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static void UnusedVariable<T>(T value)
     {
         // Marking that the variable is unused.
     }
 
-    
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static string FormatValue<T>(T value)
