@@ -5,7 +5,6 @@ using FunFair.Test.Common.Helpers;
 
 namespace FunFair.Test.Common.Tests;
 
-
 public sealed class ComparableObjectTests : ComparableObjectTestBase<string>
 {
     public ComparableObjectTests()
