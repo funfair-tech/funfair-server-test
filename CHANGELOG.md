@@ -9,7 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated BenchmarkDotNet to 0.15.5
-- Dependencies - Updated Meziantou.Analyzer to 2.0.241
+- Dependencies - Updated Meziantou.Analyzer to 2.0.243
 ### Removed
 
 <!--
