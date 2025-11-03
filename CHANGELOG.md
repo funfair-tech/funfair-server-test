@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated BenchmarkDotNet to 0.15.5
 - Dependencies - Updated Meziantou.Analyzer to 2.0.248
 - Dependencies - Updated xunit.analyzers to 1.25.0
+- Dependencies - Updated xunit.v3 to 3.2.0
 ### Removed
 
 <!--
