@@ -50,6 +50,10 @@
    color: "0e8a16"
    description: "Changes in FunFair.Test.Common.Tests project"
 
+ - name: "funfair-test-source-generator"
+   color: "96f7d2"
+   description: "Changes in FunFair.Test.Source.Generator project"
+
  - name: "github-actions"
    color: "e09cf4"
    description: "Github actions workflow files"
