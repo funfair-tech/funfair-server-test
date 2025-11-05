@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using Meziantou.Extensions.Logging.Xunit.v3;
+using FunFair.Test.Common.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Xunit;
@@ -36,4 +36,7 @@ internal static class LoggingStartup
             .AddFilter(category: "System.Net.Http.HttpClient", level: LogLevel.Warning)
             .SetMinimumLevel(LogLevel.Trace);
     }
+
+
 }
+
