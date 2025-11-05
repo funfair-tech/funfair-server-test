@@ -5,7 +5,11 @@
     <File Path="CodeAnalysis.ruleset" />
     <File Path="FunFair.props" />
     <File Path="global.json" />
+      <File Path="SourceGenerator.props"/>
+      <File Path="KeepGeneratedFiles.props"/>
+      <File Path="UnitTests.props"/>
   </Folder>
   <Project Path="FunFair.Test.Common.Tests/FunFair.Test.Common.Tests.csproj" />
   <Project Path="FunFair.Test.Common/FunFair.Test.Common.csproj" />
+    <Project Path="FunFair.Test.Source.Generator\FunFair.Test.Source.Generator.csproj" Type="Classic C#"/>
 </Solution>
