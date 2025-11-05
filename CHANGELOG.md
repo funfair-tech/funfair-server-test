@@ -8,16 +8,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated BenchmarkDotNet to 0.15.5
-- Dependencies - Updated xunit.analyzers to 1.25.0
-- Dependencies - Updated xunit.v3 to 3.2.0
-- Dependencies - Updated FluentValidation to 12.1.0
-- Dependencies - Updated Meziantou.Analyzer to 2.0.250
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.2.4] - 2025-11-05
+### Changed
+- Dependencies - Updated BenchmarkDotNet to 0.15.5
+- Dependencies - Updated xunit.analyzers to 1.25.0
+- Dependencies - Updated xunit.v3 to 3.2.0
+- Dependencies - Updated FluentValidation to 12.1.0
+- Dependencies - Updated Meziantou.Analyzer to 2.0.250
+
 ## [6.2.3] - 2025-10-27
 ### Changed
 - Dependencies - Updated Meziantou.Analyzer to 2.0.238
