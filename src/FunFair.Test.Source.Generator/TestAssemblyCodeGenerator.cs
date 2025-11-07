@@ -144,18 +144,19 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
 
     private static void GenerateAssemblySettings(in SourceProductionContext sourceProductionContext)
     {
-        CodeBuilder source = new();
-
-        source = source.AppendNamespaces("System.Diagnostics.CodeAnalysis")
-                       .AppendBlankLine()
-                       .AppendLine("[assembly: ExcludeFromCodeCoverage]")
-                       .AppendBlankLine()
-                       .AppendSuppression(category: "Philips.CodeAnalysis.MaintainabilityAnalyzers",
-                                          checkId: "PH2140: Avoid ExcludeFromCodeCoverage",
-                                          justification: "This is a unit test assembly - no need for coverage of the test code itself")
-                       .AppendSuppression(category: "Philips.CodeAnalysis.DuplicateCodeAnalyzer",
-                                          checkId: "PH2071: Duplicate code",
-                                          justification: "This is a unit test assembly - Highly likely there will be duplicate code");
+        CodeBuilder source = new CodeBuilder().AppendNamespaces("System.Diagnostics.CodeAnalysis")
+                                              .AppendBlankLine()
+                                              .AppendLine("[assembly: ExcludeFromCodeCoverage]")
+                                              .AppendBlankLine()
+                                              .AppendSuppression(category: "Philips.CodeAnalysis.MaintainabilityAnalyzers",
+                                                                 checkId: "PH2140: Avoid ExcludeFromCodeCoverage",
+                                                                 justification: "This is a unit test assembly - no need for coverage of the test code itself")
+                                              .AppendSuppression(category: "Philips.CodeAnalysis.DuplicateCodeAnalyzer",
+                                                                 checkId: "PH2071: Duplicate code",
+                                                                 justification: "This is a unit test assembly - Highly likely there will be duplicate code")
+                                              .AppendSuppression(category: "Microsoft.Performance",
+                                                                 checkId: "CA2254: Use a fixed template in logging",
+                                                                 justification: "This is a unit test assembly - Although nice to have a fixed template, its not needed here");
 
         sourceProductionContext.AddSource(hintName: "AssemblySettings.generated.cs", sourceText: source.Text);
     }
