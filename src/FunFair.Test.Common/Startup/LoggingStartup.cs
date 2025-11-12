@@ -36,7 +36,4 @@ internal static class LoggingStartup
             .AddFilter(category: "System.Net.Http.HttpClient", level: LogLevel.Warning)
             .SetMinimumLevel(LogLevel.Trace);
     }
-
-
 }
-
