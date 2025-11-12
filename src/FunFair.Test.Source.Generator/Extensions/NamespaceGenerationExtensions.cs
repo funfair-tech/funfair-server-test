@@ -40,7 +40,7 @@ internal static class NamespaceGenerationExtensions
                      .StartBlock($"internal static class {AppConstants.ClassName}"))
         {
             source = source.AppendLine(
-                "[SuppressMessage(category: \"Meziantou.Analyzer\", checkId: \"MA0109: Add an overload with a Span or Memory parameter\", Justification = \"Won't work here\")]");
+                "");
 
             using (source.StartBlock("public static Task<int> Main(string[] args)"))
             {
