@@ -5,11 +5,11 @@ namespace FunFair.Test.Common.Tests.Extensions
 {
     partial class LogExtensions
     {
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Extensions.Logging.Generators", "10.0.13.307")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Extensions.Logging.Generators", "10.0.13.2411")]
         private static readonly global::System.Action<global::Microsoft.Extensions.Logging.ILogger, global::System.DateTimeOffset, global::System.Exception?> __LogHelloWorldCallback =
             global::Microsoft.Extensions.Logging.LoggerMessage.Define<global::System.DateTimeOffset>(global::Microsoft.Extensions.Logging.LogLevel.Error, new global::Microsoft.Extensions.Logging.EventId(0, nameof(LogHelloWorld)), "Hello World. It's {now}", new global::Microsoft.Extensions.Logging.LogDefineOptions() { SkipEnabledCheck = true }); 
 
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Extensions.Logging.Generators", "10.0.13.307")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Extensions.Logging.Generators", "10.0.13.2411")]
         public static partial void LogHelloWorld(this global::Microsoft.Extensions.Logging.ILogger logger, global::System.DateTimeOffset now)
         {
             if (logger.IsEnabled(global::Microsoft.Extensions.Logging.LogLevel.Error))
