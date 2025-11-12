@@ -12,10 +12,7 @@ internal sealed class XUnitLoggerProvider : ILoggerProvider
     /// <summary>Initializes a new instance of the <see cref="XUnitLoggerProvider" /> class with the specified test output helper.</summary>
     /// <param name="testOutputHelper">The xUnit.net test output helper.</param>
     public XUnitLoggerProvider(ITestOutputHelper testOutputHelper)
-        : this(testOutputHelper: testOutputHelper, options: null)
-    {
-    }
-
+        : this(testOutputHelper: testOutputHelper, options: null) { }
 
     /// <summary>Initializes a new instance of the <see cref="XUnitLoggerProvider" /> class with the specified test output helper and options.</summary>
     /// <param name="testOutputHelper">The xUnit.net test output helper.</param>
@@ -29,11 +26,14 @@ internal sealed class XUnitLoggerProvider : ILoggerProvider
     /// <inheritdoc />
     public ILogger CreateLogger(string categoryName)
     {
-        return new XUnitLogger(testOutputHelper: this._testOutputHelper, scopeProvider: this._scopeProvider, categoryName: categoryName, options: this._options);
+        return new XUnitLogger(
+            testOutputHelper: this._testOutputHelper,
+            scopeProvider: this._scopeProvider,
+            categoryName: categoryName,
+            options: this._options
+        );
     }
 
     /// <inheritdoc />
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 }
