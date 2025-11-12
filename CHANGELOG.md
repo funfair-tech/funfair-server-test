@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - SDK - Updated DotNet SDK to 10.0.100
 - Dependencies - Updated Meziantou.Analyzer to 2.0.252
+- Dependencies - Updated Microsoft.Sbom.Targets to 4.1.3
 ### Removed
 
 <!--
