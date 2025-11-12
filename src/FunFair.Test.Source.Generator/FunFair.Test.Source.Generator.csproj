@@ -5,7 +5,6 @@
     <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
     <DebuggerSupport>true</DebuggerSupport>
-    <Description>Code generator assisting with FF.Test.Common.</Description>
     <DevelopmentDependency>true</DevelopmentDependency>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
     <EnableMicrosoftExtensionsConfigurationBinderSourceGenerator>true</EnableMicrosoftExtensionsConfigurationBinderSourceGenerator>
@@ -36,8 +35,6 @@
     <OptimizationPreference>speed</OptimizationPreference>
     <OutputType>Library</OutputType>
     <PackAsTool>false</PackAsTool>
-    <PackageTags>FunFair, Test Helpers, Test</PackageTags>
-    <RepositoryUrl>https://github.com/funfair-tech/funfair-server-test</RepositoryUrl>
     <RunAOTCompilation>false</RunAOTCompilation>
     <SymbolPackageFormat>symbols.nupkg</SymbolPackageFormat>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -46,6 +43,9 @@
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <UseSystemResourceKeys>true</UseSystemResourceKeys>
     <WarningsAsErrors />
+    <Description>Code generator assisting with FF.Test.Common.</Description>
+    <PackageTags>FunFair, Test Helpers, Test</PackageTags>
+    <RepositoryUrl>https://github.com/funfair-tech/funfair-server-test</RepositoryUrl>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
@@ -67,7 +67,7 @@
     <PackageReference Include="Credfeto.Enumeration.Source.Generation" Version=" 1.2.129.1430" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="CSharpIsNullAnalyzer" Version="0.1.593" PrivateAssets="all" ExcludeAssets="runtime" />
     <PackageReference Include="FunFair.CodeAnalysis" Version="7.1.25.1550" PrivateAssets="All" ExcludeAssets="runtime" />
-    <PackageReference Include="Meziantou.Analyzer" Version="2.0.250" PrivateAssets="All" ExcludeAssets="runtime" />
+    <PackageReference Include="Meziantou.Analyzer" Version="2.0.252" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0" PrivateAssets="All" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" PrivateAssets="all" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.2" PrivateAssets="All" ExcludeAssets="runtime" Condition="$(EnableSbom)=='True'" />
