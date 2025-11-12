@@ -18,7 +18,7 @@ using Xunit.Runner.InProc.SystemConsole;
 
 namespace FunFair.Test.Common.Tests;
 
-[GeneratedCode(tool: "FunFair.Test.Source.Generator", version: "1.0.0.0")]
+[GeneratedCode(tool: "FunFair.Test.Source.Generator", version: "0.0.0.1")]
 internal static class Program
 {
     [SuppressMessage(category: "Meziantou.Analyzer", checkId: "MA0109: Add an overload with a Span or Memory parameter", Justification = "Won't work here")]
