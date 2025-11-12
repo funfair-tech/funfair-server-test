@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using FunFair.Test.Source.Generator.Builders;
 
 namespace FunFair.Test.Source.Generator.Extensions;
@@ -10,8 +10,15 @@ internal static class CodeBuilderExtensions
         return namespaces.Aggregate(seed: codeBuilder, func: (builder, item) => builder.AppendLine($"using {item};"));
     }
 
-    public static CodeBuilder AppendSuppression(this CodeBuilder codeBuilder, string category, string checkId, string justification)
+    public static CodeBuilder AppendSuppression(
+        this CodeBuilder codeBuilder,
+        string category,
+        string checkId,
+        string justification
+    )
     {
-        return codeBuilder.AppendLine($"[assembly: SuppressMessage(category: \"{category}\", checkId: \"{checkId}\", Justification = \"{justification}\")]");
+        return codeBuilder.AppendLine(
+            $"[assembly: SuppressMessage(category: \"{category}\", checkId: \"{checkId}\", Justification = \"{justification}\")]"
+        );
     }
 }
