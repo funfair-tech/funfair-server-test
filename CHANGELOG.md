@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.16.0.128591
 - Dependencies - Updated Meziantou.Analyzer to 2.0.257
 - Dependencies - Updated xunit.analyzers to 1.26.0
+- Dependencies - Updated xunit.v3 to 3.2.1
 ### Removed
 
 <!--
