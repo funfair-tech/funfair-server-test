@@ -21,7 +21,9 @@ public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
         string? tempPath = GetTempPath();
 
         Assert.False(string.IsNullOrEmpty(tempPath), userMessage: "Temp Path is empty");
-        string testTempPath = Path.Combine(path1: tempPath, Guid.NewGuid().ToString());
+        string testTempPath = Path.Combine(path1: tempPath,
+                                           Guid.NewGuid()
+                                               .ToString());
 
         DirectoryInfo created = Directory.CreateDirectory(testTempPath);
 
@@ -77,6 +79,36 @@ public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
     {
         MurderTempFolder(this.TempFolder);
         base.Dispose(disposing);
+    }
+
+    protected string CreateFolderInTempFolder(string name)
+    {
+        string fullPath = Path.Combine(path1: this.TempFolder, path2: name);
+        this.EnsureDirectoryExists(fullPath);
+
+        return fullPath;
+    }
+
+    protected void EnsureDirectoryExists(string fullPath)
+    {
+        if (Directory.Exists(fullPath))
+        {
+            this.Output.WriteLine($"Directory {fullPath} already exists");
+
+            return;
+        }
+
+        try
+        {
+            DirectoryInfo di = Directory.CreateDirectory(fullPath);
+            this.Output.WriteLine($"Directory {fullPath} created as {di.FullName} on {di.CreationTimeUtc}");
+        }
+        catch (Exception exception)
+        {
+            this.Output.WriteLine($"Directory {fullPath} could not be created: {exception.Message}");
+
+            throw;
+        }
     }
 
     private static void MurderTempFolder(string folderToMurder)
