@@ -21,9 +21,7 @@ public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
         string? tempPath = GetTempPath();
 
         Assert.False(string.IsNullOrEmpty(tempPath), userMessage: "Temp Path is empty");
-        string testTempPath = Path.Combine(path1: tempPath,
-                                           Guid.NewGuid()
-                                               .ToString());
+        string testTempPath = Path.Combine(path1: tempPath, Guid.NewGuid().ToString());
 
         DirectoryInfo created = Directory.CreateDirectory(testTempPath);
 
