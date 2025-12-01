@@ -351,6 +351,9 @@ dotnet_diagnostic.IDE0304.severity = error
 dotnet_diagnostic.IDE0305.severity = error
 
 
+#############################################
+# Pull config from CodeAnalysis.ruleset into the below
+#############################################
 dotnet_diagnostic.CA1031.severity = suggestion
 dotnet_diagnostic.CA1062.severity = suggestion
 dotnet_diagnostic.CA1716.severity = suggestion
