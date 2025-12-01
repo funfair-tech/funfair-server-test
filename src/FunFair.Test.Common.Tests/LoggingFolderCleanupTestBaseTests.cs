@@ -13,14 +13,12 @@ namespace FunFair.Test.Common.Tests;
 public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTestBase
 {
     public LoggingFolderCleanupTestBaseTests(ITestOutputHelper output)
-        : base(output) { }
+        : base(output)
+    {
+    }
 
     [Fact]
-    [SuppressMessage(
-        category: "FunFair.CodeAnalysis",
-        checkId: "FFS0005:Avoid DateTimeOffset.UtcNow",
-        Justification = "Unit test"
-    )]
+    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0005:Avoid DateTimeOffset.UtcNow", Justification = "Unit test")]
     public void OutputOutputs()
     {
         DateTimeOffset now = DateTimeOffset.UtcNow;
@@ -36,11 +34,7 @@ public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTest
     }
 
     [Fact]
-    [SuppressMessage(
-        category: "FunFair.CodeAnalysis",
-        checkId: "FFS0005:Avoid DateTimeOffset.UtcNow",
-        Justification = "Unit test"
-    )]
+    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0005:Avoid DateTimeOffset.UtcNow", Justification = "Unit test")]
     public void LoggingOutputs()
     {
         ILogger<LoggingTestBaseTests> logger = this.GetTypedLogger<LoggingTestBaseTests>();
@@ -60,10 +54,7 @@ public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTest
     [Fact]
     public void MakeFaker()
     {
-        IReadOnlyList<ExampleObject> fake = MakeFake<ExampleObject>(
-            rules: rules => rules.RuleFor(property: x => x.Name, setter: (f, _) => f.Company.Bs()),
-            itemCount: 10
-        );
+        IReadOnlyList<ExampleObject> fake = MakeFake<ExampleObject>(rules: rules => rules.RuleFor(property: x => x.Name, setter: (f, _) => f.Company.Bs()), itemCount: 10);
 
         Assert.Equal(expected: 10, actual: fake.Count);
 
@@ -73,7 +64,10 @@ public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTest
     [Fact]
     public void CanWriteToFolder()
     {
-        string filename = Path.Combine(path1: this.TempFolder, Guid.NewGuid().ToString());
+        string directory = this.CreateFolderInTempFolder(Guid.NewGuid()
+                                                             .ToString());
+
+        string filename = Path.Combine(path1: directory, path2: "temp-file.bin");
 
         byte[] source = "Hello World"u8.ToArray();
         Assert.False(File.Exists(filename), $"File {filename} already exists before creation");
