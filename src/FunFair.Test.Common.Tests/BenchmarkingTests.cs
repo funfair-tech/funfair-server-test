@@ -7,9 +7,7 @@ namespace FunFair.Test.Common.Tests;
 public sealed class BenchmarkingTests : LoggingTestBase
 {
     public BenchmarkingTests(ITestOutputHelper output)
-        : base(output)
-    {
-    }
+        : base(output) { }
 
     [Fact]
     public void Run_Benchmarks()
