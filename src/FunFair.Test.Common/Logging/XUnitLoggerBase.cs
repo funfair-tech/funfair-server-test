@@ -34,7 +34,7 @@ internal abstract class XUnitLoggerBase : ILogger
         return this._scopeProvider.Push(state);
     }
 
-    [SuppressMessage(category: "Usage", checkId: "MA0011:IFormatProvider is missing", Justification = "Needed here")]
+    
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
         ITestOutputHelper? testOutputHelper = this._testOutputHelper ?? TestContext.Current.TestOutputHelper;

@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using FunFair.Test.Source.Generator.Builders;
 
 namespace FunFair.Test.Source.Generator.Extensions;
