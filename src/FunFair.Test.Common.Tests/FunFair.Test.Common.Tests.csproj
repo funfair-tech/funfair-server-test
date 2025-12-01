@@ -39,7 +39,7 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <Import Project="$(SolutionDir)UnitTests.props" Condition="Exists('$(SolutionDir)UnitTests.props')" />
-  <Import Project="$(SolutionDir)KeepGeneratedFiles.props" Condition="Exists('$(SolutionDir)KeepGeneratedFiles.props')" />
+  <!--  <Import Project="$(SolutionDir)KeepGeneratedFiles.props" Condition="Exists('$(SolutionDir)KeepGeneratedFiles.props')" />-->
   <ItemGroup>
     <ProjectReference Include="..\FunFair.Test.Common\FunFair.Test.Common.csproj" />
     <ProjectReference Include="..\FunFair.Test.Source.Generator\FunFair.Test.Source.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
