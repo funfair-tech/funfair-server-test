@@ -6,9 +6,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-
-- Methods in LoggingFolderCleanupTestBase to create a folder under the temp folder
 ### Fixed
+### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.2.10] - 2025-12-01
+### Added
+- Methods in LoggingFolderCleanupTestBase to create a folder under the temp folder
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.28.1637
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.16.0.128591
@@ -16,11 +23,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.analyzers to 1.26.0
 - Dependencies - Updated xunit.v3 to 3.2.1
 - Dependencies - Updated BenchmarkDotNet to 0.15.8
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.2.9] - 2025-11-25
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.27.1625
