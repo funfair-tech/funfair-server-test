@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Xunit;
@@ -14,12 +15,7 @@ internal abstract class XUnitLoggerBase : ILogger
     private readonly LoggerExternalScopeProvider _scopeProvider;
     private readonly ITestOutputHelper? _testOutputHelper;
 
-    protected XUnitLoggerBase(
-        ITestOutputHelper? testOutputHelper,
-        LoggerExternalScopeProvider scopeProvider,
-        string? categoryName,
-        in XUnitLoggerOptions options
-    )
+    protected XUnitLoggerBase(ITestOutputHelper? testOutputHelper, LoggerExternalScopeProvider scopeProvider, string? categoryName, in XUnitLoggerOptions options)
     {
         this._testOutputHelper = testOutputHelper;
         this._scopeProvider = scopeProvider;
@@ -39,13 +35,7 @@ internal abstract class XUnitLoggerBase : ILogger
     }
 
     [SuppressMessage(category: "Usage", checkId: "MA0011:IFormatProvider is missing", Justification = "Needed here")]
-    public void Log<TState>(
-        LogLevel logLevel,
-        EventId eventId,
-        TState state,
-        Exception? exception,
-        Func<TState, Exception?, string> formatter
-    )
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
         ITestOutputHelper? testOutputHelper = this._testOutputHelper ?? TestContext.Current.TestOutputHelper;
 
@@ -59,38 +49,41 @@ internal abstract class XUnitLoggerBase : ILogger
         if (this._options.TimestampFormat is not null)
         {
             DateTimeOffset now = this.GetCurrentTimestamp();
-            string timestamp = now.ToString(this._options.TimestampFormat);
-            sb = sb.Append(timestamp).Append(' ');
+            string timestamp = now.ToString(format: this._options.TimestampFormat, formatProvider: CultureInfo.InvariantCulture);
+            sb = sb.Append(timestamp)
+                   .Append(' ');
         }
 
         if (this._options.IncludeLogLevel)
         {
-            sb = sb.Append(GetLogLevelString(logLevel)).Append(' ');
+            sb = sb.Append(GetLogLevelString(logLevel))
+                   .Append(' ');
         }
 
         if (this._options.IncludeCategory)
         {
-            sb = sb.Append('[').Append(this._categoryName).Append("] ");
+            sb = sb.Append('[')
+                   .Append(this._categoryName)
+                   .Append("] ");
         }
 
         sb = sb.Append(formatter(arg1: state, arg2: exception));
 
         if (exception is not null)
         {
-            sb = sb.Append('\n').Append(exception);
+            sb = sb.Append('\n')
+                   .Append(exception);
         }
 
         // Append scopes
         if (this._options.IncludeScopes)
         {
-            this._scopeProvider.ForEachScope(
-                callback: (scope, state) =>
-                {
-                    state.Append("\n => ");
-                    state.Append(scope);
-                },
-                state: sb
-            );
+            this._scopeProvider.ForEachScope(callback: (scope, state) =>
+                                                       {
+                                                           state.Append("\n => ");
+                                                           state.Append(scope);
+                                                       },
+                                             state: sb);
         }
 
         try
@@ -104,19 +97,13 @@ internal abstract class XUnitLoggerBase : ILogger
         }
     }
 
-    [SuppressMessage(
-        "FunFair.CodeAnalysis",
-        "FFS0004: Use IDateTimeSource.UtcNow()",
-        Justification = "Not available here"
-    )]
-    [SuppressMessage(
-        "FunFair.CodeAnalysis",
-        "FFS0005: Use IDateTimeSource.UtcNow()",
-        Justification = "Not available here"
-    )]
+    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0004: Use IDateTimeSource.UtcNow()", Justification = "Not available here")]
+    [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0005: Use IDateTimeSource.UtcNow()", Justification = "Not available here")]
     private DateTimeOffset GetCurrentTimestamp()
     {
-        return this._options.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
+        return this._options.UseUtcTimestamp
+            ? DateTimeOffset.UtcNow
+            : DateTimeOffset.Now;
     }
 
     private static string GetLogLevelString(LogLevel logLevel)
