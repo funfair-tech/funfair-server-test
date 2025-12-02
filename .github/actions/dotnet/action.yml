@@ -177,7 +177,7 @@ runs:
       run: |
         dotnet test \
                   --configuration Release \
-                  --long-running \
+                  --long-running 10 \
                   --report-github \
                   "-p:ContinuousIntegrationBuild=true" \
                   "-p:IsProduction=${{inputs.PRODUCTION_BUILD}}" \
