@@ -79,7 +79,8 @@ public abstract class TestBase
 
         const bool enable = true;
 
-        return rules(new Faker<T>().StrictMode(enable)).Generate(itemCount);
+        return rules(new Faker<T>().StrictMode(enable))
+            .Generate(itemCount);
     }
 
     protected static T GetSubstitute<T>(params object[] constructorArguments)
@@ -89,16 +90,13 @@ public abstract class TestBase
     }
 
     protected static T1 GetSubstitute<T1, T2>(params object[] constructorArguments)
-        where T1 : class
-        where T2 : class
+        where T1 : class where T2 : class
     {
         return Substitute.For<T1, T2>(constructorArguments);
     }
 
     protected static T1 GetSubstitute<T1, T2, T3>(params object[] constructorArguments)
-        where T1 : class
-        where T2 : class
-        where T3 : class
+        where T1 : class where T2 : class where T3 : class
     {
         return Substitute.For<T1, T2, T3>(constructorArguments);
     }
@@ -142,13 +140,14 @@ public abstract class TestBase
 #else
         AccumulationLogger logger = new();
 
-        ManualConfig config = ManualConfig
-            .Create(DefaultConfig.Instance)
-            .AddLogger(logger)
-            .AddDiagnoser(new MemoryDiagnoser(new(false)))
-            .WithOptions(ConfigOptions.DisableOptimizationsValidator);
+        ManualConfig config = ManualConfig.Create(DefaultConfig.Instance)
+                                          .AddLogger(logger)
+                                          .AddDiagnoser(new MemoryDiagnoser(new(false)))
+                                          .WithOptions(ConfigOptions.StopOnFirstError);
 
         Summary summary = BenchmarkRunner.Run<T>(config);
+
+        Assert.False(condition: summary.HasCriticalValidationErrors, logger.GetLog());
 
         return (summary, logger);
 #endif
