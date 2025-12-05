@@ -8,13 +8,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated SonarAnalyzer.CSharp to 10.16.1.129956
-- Dependencies - Updated FluentValidation to 12.1.1
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.2.12] - 2025-12-05
+### Changed
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.16.1.129956
+- Dependencies - Updated FluentValidation to 12.1.1
+
 ## [6.2.11] - 2025-12-02
 ### Changed
 - Better Benchmakrk.net test support
