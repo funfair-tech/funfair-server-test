@@ -8,17 +8,20 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.2.14] - 2025-12-18
+### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.29.1663
 - Dependencies - Updated Credfeto.Enumeration to 1.2.134.1689
 - Dependencies - Updated Meziantou.Analyzer to 2.0.261
 - Dependencies - Updated Microsoft.Sbom.Targets to 4.1.5
 - Dependencies - Updated Roslynator.Analyzers to 4.15.0
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.17.0.131074
-### Removed
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.2.13] - 2025-12-10
 ### Changed
 - SDK - Updated DotNet SDK to 10.0.101
