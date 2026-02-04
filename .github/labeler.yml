@@ -10,10 +10,6 @@
  - any: [ 'CHANGELOG.md' ]
 "Config Change":
  - any: [ 'src/**/*.json', '!src/global.json' ]
-"dotnet":
- - any: [ 'src/**/*.csproj' ]
-"Editorconfig":
- - any: [ '.editorconfig' ]
 "funfair-test-common":
  - any: [ 'src/$FunFair.Test.Common/**/*' ]
 "funfair-test-common-tests":
@@ -21,13 +17,11 @@
 "funfair-test-source-generator":
  - any: [ 'src/$FunFair.Test.Source.Generator/**/*' ]
 "github-actions":
- - any: [ '.github/actions/*.yml', '.github/workflows/*.yml' ]
+ - any: [ '.github/workflows/*.yml' ]
 "Markdown":
  - any: [ './**/*.md' ]
 "Migration Script":
  - any: [ 'tools/MigrationScripts/**/*' ]
-"npm":
- - any: [ './**/package-lock.json', './**/package.json' ]
 "Powershell":
  - any: [ './**/*.ps1', './**/*.psm1' ]
 "Read Me":
@@ -39,6 +33,6 @@
 "SQL":
  - any: [ './**/*.sql', 'db/**/*' ]
 "Static Code Analysis Rules":
- - any: [ '.globalconfig', 'src/CodeAnalysis.ruleset' ]
+ - any: [ 'src/CodeAnalysis.ruleset' ]
 "Unit Tests":
  - any: [ 'src/*.Tests.*/**/*', 'src/*.Tests.Integration.*/**/*', 'src/*.Tests.Integration/**/*', 'src/*.Tests/**/*' ]
