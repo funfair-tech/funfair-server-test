@@ -208,7 +208,8 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
                 category: "Microsoft.Performance",
                 checkId: "CA1873: Evaluation of this argument may be expensive and unnecessary if logging is disabled",
                 justification: "This is a unit test assembly - not so worried about performance"
-            ).AppendSuppression(
+            )
+            .AppendSuppression(
                 category: "Microsoft.Performance",
                 checkId: "CA2254: Use a fixed template in logging",
                 justification: "This is a unit test assembly - Although nice to have a fixed template, its not needed here"
