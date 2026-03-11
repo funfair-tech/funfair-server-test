@@ -53,7 +53,6 @@
     <PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
     <PackageReference Include="Bogus" Version="35.6.5" />
     <PackageReference Include="Castle.Core" Version="5.2.1" />
-    <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="GitHubActionsTestLogger" Version="3.0.1" />
     <PackageReference Include="NonBlocking" Version="2.1.2" />
