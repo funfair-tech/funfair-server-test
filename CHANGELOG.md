@@ -8,15 +8,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Credfeto.Enumeration to 1.2.140.1751
-- Dependencies - Updated FunFair.CodeAnalysis to 7.1.36.1750
-- Dependencies - Updated Meziantou.Analyzer to 3.0.25
-- Dependencies - Updated SonarAnalyzer.CSharp to 10.21.0.135717
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.2.20] - 2026-03-20
+### Changed
+- Dependencies - Updated Credfeto.Enumeration to 1.2.140.1751
+- Dependencies - Updated FunFair.CodeAnalysis to 7.1.36.1750
+- Dependencies - Updated Meziantou.Analyzer to 3.0.25
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.21.0.135717
+
 ## [6.2.19] - 2026-03-13
 ### Changed
 - Dependencies - Updated Meziantou.Analyzer to 3.0.22
