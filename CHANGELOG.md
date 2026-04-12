@@ -8,10 +8,10 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.11.0
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.23.0.137933
 - Dependencies - Updated Meziantou.Analyzer to 3.0.47
 - Dependencies - Updated Philips.CodeAnalysis.DuplicateCodeAnalyzer to 1.12.0
+- Dependencies - Updated Philips.CodeAnalysis.MaintainabilityAnalyzers to 1.12.0
 ### Removed
 
 <!--
