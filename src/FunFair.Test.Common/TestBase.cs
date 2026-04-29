@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
+using BenchmarkDotNet.Validators;
 using Bogus;
 using FunFair.Test.Common.Helpers;
 using Microsoft.Extensions.Logging;
@@ -138,7 +142,21 @@ public abstract class TestBase
     protected static (Summary summary, AccumulationLogger logger) Benchmark<T>()
     {
 #if DEBUG
-        return (summary: new Summary(), logger: new AccumulationLogger());
+        return (
+            summary: new Summary(
+                title: typeof(T).FullName ?? string.Empty,
+                reports: [],
+                hostEnvironmentInfo: HostEnvironmentInfo.GetCurrent(),
+                resultsDirectoryPath: string.Empty,
+                logFilePath: string.Empty,
+                totalTime: TimeSpan.Zero,
+                cultureInfo: CultureInfo.InvariantCulture,
+                validationErrors: [],
+                columnHidingRules: [],
+                summaryStyle: SummaryStyle.Default
+            ),
+            logger: new AccumulationLogger()
+        );
 #else
         AccumulationLogger logger = new();
 
