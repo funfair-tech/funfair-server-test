@@ -6,18 +6,22 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
-- MockDateTimeSources - FakeTimeProvider-based time source factory for use in tests
-- SummaryExtensions - BenchmarkDotNet assertion helpers: AssertNoAllocations and AssertAllocationsAtMost
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.1.40.1922
-- Dependencies - Updated SonarAnalyzer.CSharp to 10.25.0.139117
-- Dependencies - Updated Meziantou.Analyzer to 3.0.56
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.2.22] - 2026-04-29
+### Added
+- MockDateTimeSources - FakeTimeProvider-based time source factory for use in tests
+- SummaryExtensions - BenchmarkDotNet assertion helpers: AssertNoAllocations and AssertAllocationsAtMost
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.1.40.1922
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.25.0.139117
+- Dependencies - Updated Meziantou.Analyzer to 3.0.56
+
 ## [6.2.21] - 2026-04-27
 ### Changed
 - Dependencies - Updated Philips.CodeAnalysis.DuplicateCodeAnalyzer to 2.0.0
