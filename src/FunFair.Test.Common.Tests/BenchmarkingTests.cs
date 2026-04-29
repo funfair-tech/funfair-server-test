@@ -12,8 +12,10 @@ public sealed class BenchmarkingTests : LoggingTestBase
     [Fact]
     public void Run_Benchmarks()
     {
-        (Summary _, AccumulationLogger logger) = Benchmark<ExampleBenchmarks>();
+        (Summary summary, AccumulationLogger logger) = Benchmark<ExampleBenchmarks>();
 
         this.Output.WriteLine(logger.GetLog());
+
+        summary.AssertAllocationsAtMost(maximumBytes: 1024 * 1024);
     }
 }
