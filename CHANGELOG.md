@@ -6,6 +6,8 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 -->
 ## [Unreleased]
 ### Added
+- MockDateTimeSources - FakeTimeProvider-based time source factory for use in tests
+- SummaryExtensions - BenchmarkDotNet assertion helpers: AssertNoAllocations and AssertAllocationsAtMost
 ### Fixed
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.40.1922
