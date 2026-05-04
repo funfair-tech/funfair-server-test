@@ -8,14 +8,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated FunFair.CodeAnalysis to 7.1.41.1934
-- Dependencies - Updated Credfeto.Enumeration to 1.2.142.1836
-- Dependencies - Updated Meziantou.Analyzer to 3.0.61
 ### Removed
 
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.2.23] - 2026-05-04
+### Changed
+- Dependencies - Updated FunFair.CodeAnalysis to 7.1.41.1934
+- Dependencies - Updated Credfeto.Enumeration to 1.2.142.1836
+- Dependencies - Updated Meziantou.Analyzer to 3.0.61
+
 ## [6.2.22] - 2026-04-29
 ### Added
 - MockDateTimeSources - FakeTimeProvider-based time source factory for use in tests
