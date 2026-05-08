@@ -42,7 +42,8 @@ public abstract class IntegrationTestBase : LoggingTestBase
         checkId: "UnusedMember.Global",
         Justification = "May be used in derived test classes"
     )]
-    protected internal IServiceProvider ServiceProvider => this.RetrieveDependencyInjectionServiceProvider();
+    protected internal IServiceProvider ServiceProvider =>
+        this.RetrieveDependencyInjectionServiceProvider();
 
     [SuppressMessage(
         category: "ReSharper",

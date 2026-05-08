@@ -47,7 +47,8 @@ internal abstract class XUnitLoggerBase : ILogger
         Func<TState, Exception?, string> formatter
     )
     {
-        ITestOutputHelper? testOutputHelper = this._testOutputHelper ?? TestContext.Current.TestOutputHelper;
+        ITestOutputHelper? testOutputHelper =
+            this._testOutputHelper ?? TestContext.Current.TestOutputHelper;
 
         if (testOutputHelper is null)
         {

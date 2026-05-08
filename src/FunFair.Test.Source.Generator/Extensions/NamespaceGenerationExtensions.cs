@@ -16,11 +16,15 @@ internal static class NamespaceGenerationExtensions
             ?? namespaceGeneration.Namespace;
     }
 
-    private static string? GetRootNameSpace(AnalyzerConfigOptionsProvider analyzerConfigOptionsProvider)
+    private static string? GetRootNameSpace(
+        AnalyzerConfigOptionsProvider analyzerConfigOptionsProvider
+    )
     {
         return
-            analyzerConfigOptionsProvider.GlobalOptions.TryGetValue(key: "build_property.rootnamespace", out string? ns)
-            && !string.IsNullOrWhiteSpace(ns)
+            analyzerConfigOptionsProvider.GlobalOptions.TryGetValue(
+                key: "build_property.rootnamespace",
+                out string? ns
+            ) && !string.IsNullOrWhiteSpace(ns)
             ? ns
             : null;
     }
@@ -31,7 +35,9 @@ internal static class NamespaceGenerationExtensions
         out string ns
     )
     {
-        ns = namespaceGeneration.GetNamespace(analyzerConfigOptionsProvider: analyzerConfigOptionsProvider);
+        ns = namespaceGeneration.GetNamespace(
+            analyzerConfigOptionsProvider: analyzerConfigOptionsProvider
+        );
 
         CodeBuilder source = new();
 

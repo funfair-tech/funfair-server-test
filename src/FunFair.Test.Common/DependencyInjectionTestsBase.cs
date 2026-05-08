@@ -60,7 +60,10 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
         this.DumpServices(services);
 
         Assert.NotEmpty(services);
-        Assert.Contains(collection: services, filter: service => service.GetType() == typeof(TService));
+        Assert.Contains(
+            collection: services,
+            filter: service => service.GetType() == typeof(TService)
+        );
     }
 
     private void DumpServices<TInterface>(IReadOnlyList<TInterface> services)
@@ -90,7 +93,9 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
 
         this.Output.WriteLine("Found Services:");
 
-        services.ForEach(foundService => this.Output.WriteLine($"* {foundService.GetType().FullName}"));
+        services.ForEach(foundService =>
+            this.Output.WriteLine($"* {foundService.GetType().FullName}")
+        );
 
         return Assert.Single(services);
     }
@@ -104,6 +109,9 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
     private static bool IsProxyObject(string fullTypeName)
     {
         return StringComparer.Ordinal.Equals(x: fullTypeName, y: "Castle.Proxies.ObjectProxy")
-            || fullTypeName.StartsWith(value: "Castle.Proxies.ObjectProxy_", comparisonType: StringComparison.Ordinal);
+            || fullTypeName.StartsWith(
+                value: "Castle.Proxies.ObjectProxy_",
+                comparisonType: StringComparison.Ordinal
+            );
     }
 }

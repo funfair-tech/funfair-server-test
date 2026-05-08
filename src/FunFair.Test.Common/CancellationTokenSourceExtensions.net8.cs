@@ -12,7 +12,10 @@ namespace FunFair.Test.Common;
 )]
 public static partial class CancellationTokenSourceExtensions
 {
-    public static Task CancelAsync(this CancellationTokenSource cancellationTokenSource, bool throwOnFirstException)
+    public static Task CancelAsync(
+        this CancellationTokenSource cancellationTokenSource,
+        bool throwOnFirstException
+    )
     {
         if (throwOnFirstException)
         {

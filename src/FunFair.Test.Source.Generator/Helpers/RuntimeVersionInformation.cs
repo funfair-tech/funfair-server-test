@@ -4,7 +4,8 @@ namespace FunFair.Test.Source.Generator.Helpers;
 
 internal static class RuntimeVersionInformation
 {
-    private static readonly AssemblyName AssemblyName = typeof(TestAssemblyCodeGenerator).Assembly.GetName();
+    private static readonly AssemblyName AssemblyName =
+        typeof(TestAssemblyCodeGenerator).Assembly.GetName();
 
     public static string ToolName { get; } = AssemblyName.Name;
 
