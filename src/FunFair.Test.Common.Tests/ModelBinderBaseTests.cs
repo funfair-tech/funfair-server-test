@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using FunFair.Test.Common.Tests.Mocks.Converters;
 using FunFair.Test.Common.Tests.Mocks.Converters.Binders;
 using Xunit;

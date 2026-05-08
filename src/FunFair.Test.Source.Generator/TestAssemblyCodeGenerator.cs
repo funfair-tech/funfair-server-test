@@ -22,7 +22,10 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        context.RegisterSourceOutput(ExtractNamespaces(context), action: GenerateVersionInformation);
+        context.RegisterSourceOutput(
+            ExtractNamespaces(context),
+            action: GenerateVersionInformation
+        );
     }
 
     private static IncrementalValuesProvider<(
@@ -35,7 +38,9 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
         return context
             .SyntaxProvider.CreateSyntaxProvider(
                 predicate: static (syntaxNode, _) =>
-                    syntaxNode is NamespaceDeclarationSyntax or FileScopedNamespaceDeclarationSyntax,
+                    syntaxNode
+                        is NamespaceDeclarationSyntax
+                            or FileScopedNamespaceDeclarationSyntax,
                 transform: (generatorSyntaxContext, cancellationToken) =>
                     GetNamespace(
                         generatorSyntaxContext: generatorSyntaxContext,
@@ -76,14 +81,19 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            ImmutableDictionary<string, string> attributes = ExtractAttributes(compilation.Assembly);
+            ImmutableDictionary<string, string> attributes = ExtractAttributes(
+                compilation.Assembly
+            );
             cancellationToken.ThrowIfCancellationRequested();
 
             return new(new NamespaceGeneration(assembly: assembly, attributes: attributes));
         }
         catch (Exception exception) when (exception is not OperationCanceledException)
         {
-            return UnhandledException(generatorSyntaxContext: generatorSyntaxContext, exception: exception);
+            return UnhandledException(
+                generatorSyntaxContext: generatorSyntaxContext,
+                exception: exception
+            );
         }
     }
 
@@ -95,7 +105,9 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
         return new(new ErrorInfo(generatorSyntaxContext.Node.GetLocation(), exception: exception));
     }
 
-    private static ImmutableDictionary<string, string> ExtractAttributes(in IAssemblySymbol assemblySymbol)
+    private static ImmutableDictionary<string, string> ExtractAttributes(
+        in IAssemblySymbol assemblySymbol
+    )
     {
         // ! Already filtered out the attributes that are not needed
         return assemblySymbol
@@ -111,7 +123,9 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
         (string key, string value) element
     )
     {
-        return result.ContainsKey(element.key) ? result : result.Add(key: element.key, value: element.value);
+        return result.ContainsKey(element.key)
+            ? result
+            : result.Add(key: element.key, value: element.value);
     }
 
     private static (string key, string value)? ExtractAttributes(AttributeData a)
@@ -131,10 +145,17 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
         return compilation.Assembly.Identity;
     }
 
-    private static void ReportException(Location location, in SourceProductionContext context, Exception exception)
+    private static void ReportException(
+        Location location,
+        in SourceProductionContext context,
+        Exception exception
+    )
     {
         context.ReportDiagnostic(
-            diagnostic: Diagnostic.Create(CreateUnhandledExceptionDiagnostic(exception), location: location)
+            diagnostic: Diagnostic.Create(
+                CreateUnhandledExceptionDiagnostic(exception),
+                location: location
+            )
         );
     }
 
@@ -158,7 +179,11 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
         if (item.Left.ErrorInfo is not null)
         {
             ErrorInfo ei = item.Left.ErrorInfo.Value;
-            ReportException(location: ei.Location, context: sourceProductionContext, exception: ei.Exception);
+            ReportException(
+                location: ei.Location,
+                context: sourceProductionContext,
+                exception: ei.Exception
+            );
 
             return;
         }
@@ -215,9 +240,16 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
                 justification: "This is a unit test assembly - Although nice to have a fixed template, its not needed here"
             );
 
-        AppendOptions(options: analyzerConfigOptionsProvider.GlobalOptions, source: source, context: "Global");
+        AppendOptions(
+            options: analyzerConfigOptionsProvider.GlobalOptions,
+            source: source,
+            context: "Global"
+        );
 
-        sourceProductionContext.AddSource(hintName: "AssemblySettings.generated.cs", sourceText: source.Text);
+        sourceProductionContext.AddSource(
+            hintName: "AssemblySettings.generated.cs",
+            sourceText: source.Text
+        );
     }
 
     private static void GenerateEntryPoint(
@@ -237,10 +269,15 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
             out string ns
         );
 
-        sourceProductionContext.AddSource($"{ns}.{AppConstants.ClassName}.generated.cs", sourceText: source.Text);
+        sourceProductionContext.AddSource(
+            $"{ns}.{AppConstants.ClassName}.generated.cs",
+            sourceText: source.Text
+        );
     }
 
-    private static bool ShouldGenerateEntryPoint(AnalyzerConfigOptionsProvider analyzerConfigOptionsProvider)
+    private static bool ShouldGenerateEntryPoint(
+        AnalyzerConfigOptionsProvider analyzerConfigOptionsProvider
+    )
     {
         return analyzerConfigOptionsProvider.GlobalOptions.TryGetValue(
                 key: "build_property.xunitautogeneratedentrypoint",
@@ -249,7 +286,11 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
     }
 
     [Conditional("DEBUG")]
-    private static void AppendOptions(AnalyzerConfigOptions options, CodeBuilder source, string context)
+    private static void AppendOptions(
+        AnalyzerConfigOptions options,
+        CodeBuilder source,
+        string context
+    )
     {
         foreach (string? thing in options.Keys)
         {

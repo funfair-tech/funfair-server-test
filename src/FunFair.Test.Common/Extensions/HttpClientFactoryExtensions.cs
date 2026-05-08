@@ -14,9 +14,10 @@ namespace FunFair.Test.Common.Extensions;
 public static class HttpClientFactoryExtensions
 {
     private static readonly JsonSerializerOptions SerializerOptions = new();
-    private static readonly IReadOnlyDictionary<string, string> NoHeaders = new Dictionary<string, string>(
-        StringComparer.OrdinalIgnoreCase
-    );
+    private static readonly IReadOnlyDictionary<string, string> NoHeaders = new Dictionary<
+        string,
+        string
+    >(StringComparer.OrdinalIgnoreCase);
 
     private static Uri LocalHostUri { get; } = new("https://localhost");
 
@@ -80,7 +81,11 @@ public static class HttpClientFactoryExtensions
     )
     {
         return new(
-            new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)
+            new FakeHttpMessageHandler(
+                statusCode: httpStatusCode,
+                responseMessage: responseMessage,
+                headers: headers
+            )
         )
         {
             BaseAddress = LocalHostUri,

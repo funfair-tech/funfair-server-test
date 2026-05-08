@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
@@ -38,9 +38,14 @@ public abstract class TestBase
         return GetTestCancellationToken();
     }
 
-    protected CancellationTokenSource CreateCancellationTokenSource(in CancellationToken cancellationToken)
+    protected CancellationTokenSource CreateCancellationTokenSource(
+        in CancellationToken cancellationToken
+    )
     {
-        return CancellationTokenSource.CreateLinkedTokenSource(this.CancellationToken(), cancellationToken);
+        return CancellationTokenSource.CreateLinkedTokenSource(
+            this.CancellationToken(),
+            cancellationToken
+        );
     }
 
     private static CancellationToken GetTestCancellationToken()
