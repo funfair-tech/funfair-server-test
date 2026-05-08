@@ -23,12 +23,24 @@ public static class SummaryExtensions
         AssertMaxAllocations(summary: summary, maximumBytes: maximumBytes, benchmarkName: null);
     }
 
-    public static void AssertAllocationsAtMost(this Summary summary, string benchmarkName, long maximumBytes)
+    public static void AssertAllocationsAtMost(
+        this Summary summary,
+        string benchmarkName,
+        long maximumBytes
+    )
     {
-        AssertMaxAllocations(summary: summary, maximumBytes: maximumBytes, benchmarkName: benchmarkName);
+        AssertMaxAllocations(
+            summary: summary,
+            maximumBytes: maximumBytes,
+            benchmarkName: benchmarkName
+        );
     }
 
-    private static void AssertMaxAllocations(Summary summary, long maximumBytes, string? benchmarkName)
+    private static void AssertMaxAllocations(
+        Summary summary,
+        long maximumBytes,
+        string? benchmarkName
+    )
     {
         bool foundNamed = false;
 
@@ -36,14 +48,24 @@ public static class SummaryExtensions
         {
             string name = report.BenchmarkCase.Descriptor.WorkloadMethodDisplayInfo;
 
-            if (benchmarkName is not null && !string.Equals(a: name, b: benchmarkName, comparisonType: StringComparison.Ordinal))
+            if (
+                benchmarkName is not null
+                && !string.Equals(
+                    a: name,
+                    b: benchmarkName,
+                    comparisonType: StringComparison.Ordinal
+                )
+            )
             {
                 continue;
             }
 
             foundNamed = true;
 
-            if (!report.Metrics.TryGetValue(key: AllocatedMemoryMetricId, value: out Metric? metric) || metric is null)
+            if (
+                !report.Metrics.TryGetValue(key: AllocatedMemoryMetricId, value: out Metric? metric)
+                || metric is null
+            )
             {
                 continue;
             }
@@ -58,7 +80,10 @@ public static class SummaryExtensions
 
         if (benchmarkName is not null && !summary.Reports.IsEmpty)
         {
-            Assert.True(condition: foundNamed, userMessage: $"No benchmark named '{benchmarkName}' was found in the summary");
+            Assert.True(
+                condition: foundNamed,
+                userMessage: $"No benchmark named '{benchmarkName}' was found in the summary"
+            );
         }
     }
 }

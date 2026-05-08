@@ -78,7 +78,10 @@ public abstract class JsonConverterTestBase<
     [Fact]
     public void ShouldNotDeserialize()
     {
-        string doc = JsonSerializer.Serialize(new { value = this.InvalidValue }, options: this._options);
+        string doc = JsonSerializer.Serialize(
+            new { value = this.InvalidValue },
+            options: this._options
+        );
 
         this.Output.WriteLine($"Serialized model as: {doc}");
 

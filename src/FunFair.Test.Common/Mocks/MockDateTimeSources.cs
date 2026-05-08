@@ -1,27 +1,33 @@
 using System;
-using FunFair.Test.Common.Helpers;
 using Microsoft.Extensions.Time.Testing;
 
 namespace FunFair.Test.Common.Mocks;
 
 public static class MockDateTimeSources
 {
-    public static FakeTimeProvider AdvancingDateTimeUseWithCaution { get; } = Get(TimeSources.Advanceable);
+    private static readonly DateTimeOffset PastDate = new(
+        year: 1975,
+        month: 3,
+        day: 16,
+        hour: 0,
+        minute: 0,
+        second: 0,
+        offset: TimeSpan.Zero
+    );
+    private static readonly DateTimeOffset FutureDate = new(
+        year: 2100,
+        month: 3,
+        day: 16,
+        hour: 0,
+        minute: 0,
+        second: 0,
+        offset: TimeSpan.Zero
+    );
 
-    public static FakeTimeProvider Past { get; } = Get(TimeSources.Past);
+    public static FakeTimeProvider Past => new(PastDate);
 
-    public static FakeTimeProvider Future { get; } = Get(TimeSources.Future);
+    public static FakeTimeProvider Future => new(FutureDate);
 
-    public static FakeTimeProvider Get(in FrozenTimeSource startTime)
-    {
-        return new(startTime.UtcNowAsOffset);
-    }
-
-    public static FakeTimeProvider Get(in AdvanceableTimeSource startTime)
-    {
-        FakeTimeProvider provider = new(startTime.UtcNowAsOffset);
-        provider.AutoAdvanceAmount = TimeSpan.FromDays(1);
-
-        return provider;
-    }
+    public static FakeTimeProvider AdvancingDateTimeUseWithCaution =>
+        new(PastDate) { AutoAdvanceAmount = TimeSpan.FromDays(1) };
 }

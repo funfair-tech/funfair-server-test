@@ -4,7 +4,8 @@ using Xunit;
 
 namespace FunFair.Test.Common.Tests;
 
-public sealed class ComplexValidatorTestBaseTests : ComplexValidatorTestBase<TestSimpleValidator, ExampleObject>
+public sealed class ComplexValidatorTestBaseTests
+    : ComplexValidatorTestBase<TestSimpleValidator, ExampleObject>
 {
     public ComplexValidatorTestBaseTests(ITestOutputHelper output)
         : base(output) { }

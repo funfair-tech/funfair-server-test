@@ -99,11 +99,15 @@ public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
         try
         {
             DirectoryInfo di = Directory.CreateDirectory(fullPath);
-            this.Output.WriteLine($"Directory {fullPath} created as {di.FullName} on {di.CreationTimeUtc}");
+            this.Output.WriteLine(
+                $"Directory {fullPath} created as {di.FullName} on {di.CreationTimeUtc}"
+            );
         }
         catch (Exception exception)
         {
-            this.Output.WriteLine($"Directory {fullPath} could not be created: {exception.Message}");
+            this.Output.WriteLine(
+                $"Directory {fullPath} could not be created: {exception.Message}"
+            );
 
             throw;
         }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Project>
-    <PropertyGroup>
-        <NoWarn>NU5100</NoWarn>
-    </PropertyGroup>
+  <PropertyGroup>
+    <NoWarn>NU5100</NoWarn>
+  </PropertyGroup>
 </Project>
