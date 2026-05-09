@@ -9,7 +9,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.42.1940
-- Dependencies - Updated Meziantou.Analyzer to 3.0.76
+- Dependencies - Updated Meziantou.Analyzer to 3.0.77
 ### Removed
 - TimeSources, FrozenTimeSource, and AdvanceableTimeSource custom time abstractions replaced by FakeTimeProvider from Microsoft.Extensions.TimeProvider.Testing
 
