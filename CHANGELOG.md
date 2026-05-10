@@ -8,15 +8,19 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.2.24] - 2026-05-10
+### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.42.1940
 - Dependencies - Updated Meziantou.Analyzer to 3.0.77
 - Dependencies - Updated GitHubActionsTestLogger to 3.0.4
 ### Removed
 - TimeSources, FrozenTimeSource, and AdvanceableTimeSource custom time abstractions replaced by FakeTimeProvider from Microsoft.Extensions.TimeProvider.Testing
 
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 ## [6.2.23] - 2026-05-04
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.1.41.1934
