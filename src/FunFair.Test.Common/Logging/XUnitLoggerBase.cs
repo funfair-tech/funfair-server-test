@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -47,8 +47,7 @@ internal abstract class XUnitLoggerBase : ILogger
         Func<TState, Exception?, string> formatter
     )
     {
-        ITestOutputHelper? testOutputHelper =
-            this._testOutputHelper ?? TestContext.Current.TestOutputHelper;
+        ITestOutputHelper? testOutputHelper = this._testOutputHelper ?? TestContext.Current.TestOutputHelper;
 
         if (testOutputHelper is null)
         {
@@ -108,19 +107,9 @@ internal abstract class XUnitLoggerBase : ILogger
         }
     }
 
-    [SuppressMessage(
-        category: "FunFair.CodeAnalysis",
-        checkId: "FFS0004: Use IDateTimeSource.UtcNow()",
-        Justification = "Not available here"
-    )]
-    [SuppressMessage(
-        category: "FunFair.CodeAnalysis",
-        checkId: "FFS0005: Use IDateTimeSource.UtcNow()",
-        Justification = "Not available here"
-    )]
     private DateTimeOffset GetCurrentTimestamp()
     {
-        return this._options.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
+        return this._options.UseUtcTimestamp ? TimeProvider.System.GetUtcNow() : TimeProvider.System.GetLocalNow();
     }
 
     private static string GetLogLevelString(LogLevel logLevel)

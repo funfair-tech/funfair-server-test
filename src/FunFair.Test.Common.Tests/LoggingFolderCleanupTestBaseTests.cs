@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -16,14 +16,9 @@ public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTest
         : base(output) { }
 
     [Fact]
-    [SuppressMessage(
-        category: "FunFair.CodeAnalysis",
-        checkId: "FFS0005:Avoid DateTimeOffset.UtcNow",
-        Justification = "Unit test"
-    )]
     public void OutputOutputs()
     {
-        DateTimeOffset now = DateTimeOffset.UtcNow;
+        DateTimeOffset now = TimeProvider.System.GetUtcNow();
 
         try
         {
@@ -36,16 +31,11 @@ public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTest
     }
 
     [Fact]
-    [SuppressMessage(
-        category: "FunFair.CodeAnalysis",
-        checkId: "FFS0005:Avoid DateTimeOffset.UtcNow",
-        Justification = "Unit test"
-    )]
     public void LoggingOutputs()
     {
         ILogger<LoggingTestBaseTests> logger = this.GetTypedLogger<LoggingTestBaseTests>();
 
-        DateTimeOffset now = DateTimeOffset.UtcNow;
+        DateTimeOffset now = TimeProvider.System.GetUtcNow();
 
         try
         {
@@ -80,10 +70,7 @@ public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTest
         byte[] source = "Hello World"u8.ToArray();
         Assert.False(File.Exists(filename), $"File {filename} already exists before creation");
         File.WriteAllBytes(path: filename, bytes: source);
-        Assert.True(
-            File.Exists(filename),
-            $"File {filename} doesn't exist when it has just been written"
-        );
+        Assert.True(File.Exists(filename), $"File {filename} doesn't exist when it has just been written");
         byte[] written = File.ReadAllBytes(filename);
 
         Assert.Equal(expected: source, actual: written);
