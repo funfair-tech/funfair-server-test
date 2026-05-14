@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using FunFair.Test.Common.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -13,19 +12,20 @@ internal static class LoggingStartup
         return services.AddLogging(configure: AddFilters);
     }
 
-    [SuppressMessage(
-        category: "Microsoft.Reliability",
-        checkId: "CA2000:DisposeObjectsBeforeLosingScope",
-        Justification = "Lives for program lifetime"
-    )]
-    [SuppressMessage(
-        category: "SmartAnalyzers.CSharpExtensions.Annotations",
-        checkId: "CSE007:DisposeObjectsBeforeLosingScope",
-        Justification = "Lives for program lifetime"
-    )]
     public static void InitializeLogging(ILoggerFactory loggerFactory, ITestOutputHelper output)
     {
-        loggerFactory.AddProvider(new XUnitLoggerProvider(output));
+        XUnitLoggerProvider? provider = null;
+
+        try
+        {
+            provider = new XUnitLoggerProvider(output);
+            loggerFactory.AddProvider(provider);
+            provider = null;
+        }
+        finally
+        {
+            provider?.Dispose();
+        }
     }
 
     private static void AddFilters(ILoggingBuilder builder)

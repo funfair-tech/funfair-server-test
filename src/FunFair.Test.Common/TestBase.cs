@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
@@ -30,22 +30,16 @@ public abstract class TestBase
         Assert.False(condition: false, userMessage: "Because");
     }
 
-    [SuppressMessage("codecracker.CSharp", "CC0091: Make static", Justification = "Simplifies API")]
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected CancellationToken CancellationToken()
+    protected static CancellationToken CancellationToken()
     {
         return GetTestCancellationToken();
     }
 
-    protected CancellationTokenSource CreateCancellationTokenSource(
-        in CancellationToken cancellationToken
-    )
+    protected static CancellationTokenSource CreateCancellationTokenSource(in CancellationToken cancellationToken)
     {
-        return CancellationTokenSource.CreateLinkedTokenSource(
-            this.CancellationToken(),
-            cancellationToken
-        );
+        return CancellationTokenSource.CreateLinkedTokenSource(CancellationToken(), cancellationToken);
     }
 
     private static CancellationToken GetTestCancellationToken()

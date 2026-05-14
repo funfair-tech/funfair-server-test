@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -30,12 +30,12 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
         HttpResponseMessage responseMessage = await client.GetAsync(
             new Uri(uriString: "/test", uriKind: UriKind.Relative),
-            this.CancellationToken()
+            TestBase.CancellationToken()
         );
         Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
 
         string content = await responseMessage.Content.ReadAsStringAsync(
-            cancellationToken: this.CancellationToken()
+            cancellationToken: TestBase.CancellationToken()
         );
         Assert.Equal(expected: expectedContent, actual: content);
     }
@@ -56,7 +56,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
         HttpResponseMessage responseMessage = await client.GetAsync(
             new Uri(uriString: "/test", uriKind: UriKind.Relative),
-            this.CancellationToken()
+            TestBase.CancellationToken()
         );
         Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
     }
@@ -82,7 +82,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
         HttpResponseMessage responseMessage = await client.GetAsync(
             new Uri(uriString: "/test", uriKind: UriKind.Relative),
-            this.CancellationToken()
+            TestBase.CancellationToken()
         );
         Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
     }
@@ -104,7 +104,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
         HttpResponseMessage responseMessage = await client.GetAsync(
             new Uri(uriString: "/test", uriKind: UriKind.Relative),
-            this.CancellationToken()
+            TestBase.CancellationToken()
         );
         Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
     }
@@ -131,7 +131,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
         HttpResponseMessage responseMessage = await client.GetAsync(
             new Uri(uriString: "/test", uriKind: UriKind.Relative),
-            this.CancellationToken()
+            TestBase.CancellationToken()
         );
         Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
     }
@@ -139,10 +139,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     [Fact]
     public async Task MockCreateClientWithResponseTypedJsonSerializerOptionsAsync()
     {
-        JsonSerializerOptions serializerOptions = new()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        };
+        JsonSerializerOptions serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
         const string clientName = "TestExample";
 
@@ -159,7 +156,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
         HttpResponseMessage responseMessage = await client.GetAsync(
             new Uri(uriString: "/test", uriKind: UriKind.Relative),
-            this.CancellationToken()
+            TestBase.CancellationToken()
         );
         Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
     }
@@ -167,10 +164,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     [Fact]
     public async Task MockCreateClientWithResponseTypedWithHeadersSerializerOptionsAsync()
     {
-        JsonSerializerOptions serializerOptions = new()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        };
+        JsonSerializerOptions serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
         const string clientName = "TestExample";
 
         IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
@@ -191,7 +185,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
 
         HttpResponseMessage responseMessage = await client.GetAsync(
             new Uri(uriString: "/test", uriKind: UriKind.Relative),
-            this.CancellationToken()
+            TestBase.CancellationToken()
         );
         Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
     }

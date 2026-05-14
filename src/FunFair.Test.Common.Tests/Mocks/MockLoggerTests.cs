@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FunFair.Test.Common.Extensions;
 using FunFair.Test.Common.Mocks;
 using Microsoft.Extensions.Logging;
@@ -8,12 +8,12 @@ namespace FunFair.Test.Common.Tests.Mocks;
 
 public sealed class MockLoggerTests : TestBase
 {
-    private readonly ILogger _baseLogger;
+    private readonly ILogger<MockLogger<ExampleObject>> _baseLogger;
     private readonly MockLogger<ExampleObject> _logger;
 
     public MockLoggerTests()
     {
-        this._baseLogger = GetSubstitute<ILogger>();
+        this._baseLogger = GetSubstitute<ILogger<MockLogger<ExampleObject>>>();
         this._logger = new(this._baseLogger);
     }
 
@@ -22,35 +22,17 @@ public sealed class MockLoggerTests : TestBase
     {
         this._logger.LogCritical("Critical Error");
 
-        Assert.True(
-            condition: this._logger.CriticalReported,
-            userMessage: "Critical should have been reported"
-        );
-        Assert.False(
-            condition: this._logger.ErrorsReported,
-            userMessage: "Errors should not have been reported"
-        );
-        Assert.False(
-            condition: this._logger.WarningsReported,
-            userMessage: "Warnings should not have been reported"
-        );
+        Assert.True(condition: this._logger.CriticalReported, userMessage: "Critical should have been reported");
+        Assert.False(condition: this._logger.ErrorsReported, userMessage: "Errors should not have been reported");
+        Assert.False(condition: this._logger.WarningsReported, userMessage: "Warnings should not have been reported");
         Assert.False(
             condition: this._logger.InformationReported,
             userMessage: "Information should not have been reported"
         );
-        Assert.False(
-            condition: this._logger.DebugReported,
-            userMessage: "Debug should not have been reported"
-        );
-        Assert.False(
-            condition: this._logger.TraceReported,
-            userMessage: "Trace should not have been reported"
-        );
+        Assert.False(condition: this._logger.DebugReported, userMessage: "Debug should not have been reported");
+        Assert.False(condition: this._logger.TraceReported, userMessage: "Trace should not have been reported");
 
-        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int>
-        {
-            [LogLevel.Critical] = 1,
-        };
+        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Critical] = 1 };
         Assert.Equal(expected: items, actual: this._logger.Seen);
 
         this._baseLogger.Received(logLevel: LogLevel.Critical, message: "Critical Error");
@@ -66,35 +48,17 @@ public sealed class MockLoggerTests : TestBase
     {
         this._logger.LogError("Error");
 
-        Assert.False(
-            condition: this._logger.CriticalReported,
-            userMessage: "Critical should not have been reported"
-        );
-        Assert.True(
-            condition: this._logger.ErrorsReported,
-            userMessage: "Errors should have been reported"
-        );
-        Assert.False(
-            condition: this._logger.WarningsReported,
-            userMessage: "Warnings should not have been reported"
-        );
+        Assert.False(condition: this._logger.CriticalReported, userMessage: "Critical should not have been reported");
+        Assert.True(condition: this._logger.ErrorsReported, userMessage: "Errors should have been reported");
+        Assert.False(condition: this._logger.WarningsReported, userMessage: "Warnings should not have been reported");
         Assert.False(
             condition: this._logger.InformationReported,
             userMessage: "Information should not have been reported"
         );
-        Assert.False(
-            condition: this._logger.DebugReported,
-            userMessage: "Debug should not have been reported"
-        );
-        Assert.False(
-            condition: this._logger.TraceReported,
-            userMessage: "Trace should not have been reported"
-        );
+        Assert.False(condition: this._logger.DebugReported, userMessage: "Debug should not have been reported");
+        Assert.False(condition: this._logger.TraceReported, userMessage: "Trace should not have been reported");
 
-        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int>
-        {
-            [LogLevel.Error] = 1,
-        };
+        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Error] = 1 };
         Assert.Equal(expected: items, actual: this._logger.Seen);
 
         this._baseLogger.DidNotReceive(logLevel: LogLevel.Critical, message: "Critical Error");
@@ -110,35 +74,17 @@ public sealed class MockLoggerTests : TestBase
     {
         this._logger.LogWarning("Warning");
 
-        Assert.False(
-            condition: this._logger.CriticalReported,
-            userMessage: "Critical should not have been reported"
-        );
-        Assert.False(
-            condition: this._logger.ErrorsReported,
-            userMessage: "Errors should not have been reported"
-        );
-        Assert.True(
-            condition: this._logger.WarningsReported,
-            userMessage: "Warnings should have been reported"
-        );
+        Assert.False(condition: this._logger.CriticalReported, userMessage: "Critical should not have been reported");
+        Assert.False(condition: this._logger.ErrorsReported, userMessage: "Errors should not have been reported");
+        Assert.True(condition: this._logger.WarningsReported, userMessage: "Warnings should have been reported");
         Assert.False(
             condition: this._logger.InformationReported,
             userMessage: "Information should not have been reported"
         );
-        Assert.False(
-            condition: this._logger.DebugReported,
-            userMessage: "Debug should not have been reported"
-        );
-        Assert.False(
-            condition: this._logger.TraceReported,
-            userMessage: "Trace should not have been reported"
-        );
+        Assert.False(condition: this._logger.DebugReported, userMessage: "Debug should not have been reported");
+        Assert.False(condition: this._logger.TraceReported, userMessage: "Trace should not have been reported");
 
-        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int>
-        {
-            [LogLevel.Warning] = 1,
-        };
+        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Warning] = 1 };
         Assert.Equal(expected: items, actual: this._logger.Seen);
 
         this._baseLogger.DidNotReceive(logLevel: LogLevel.Critical, message: "Critical Error");
@@ -154,35 +100,14 @@ public sealed class MockLoggerTests : TestBase
     {
         this._logger.LogInformation("Information");
 
-        Assert.False(
-            condition: this._logger.CriticalReported,
-            userMessage: "Critical should have been reported"
-        );
-        Assert.False(
-            condition: this._logger.ErrorsReported,
-            userMessage: "Errors should have been reported"
-        );
-        Assert.False(
-            condition: this._logger.WarningsReported,
-            userMessage: "Warnings should not have been reported"
-        );
-        Assert.True(
-            condition: this._logger.InformationReported,
-            userMessage: "Information should have been reported"
-        );
-        Assert.False(
-            condition: this._logger.DebugReported,
-            userMessage: "Debug should not have been reported"
-        );
-        Assert.False(
-            condition: this._logger.TraceReported,
-            userMessage: "Trace should not have been reported"
-        );
+        Assert.False(condition: this._logger.CriticalReported, userMessage: "Critical should have been reported");
+        Assert.False(condition: this._logger.ErrorsReported, userMessage: "Errors should have been reported");
+        Assert.False(condition: this._logger.WarningsReported, userMessage: "Warnings should not have been reported");
+        Assert.True(condition: this._logger.InformationReported, userMessage: "Information should have been reported");
+        Assert.False(condition: this._logger.DebugReported, userMessage: "Debug should not have been reported");
+        Assert.False(condition: this._logger.TraceReported, userMessage: "Trace should not have been reported");
 
-        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int>
-        {
-            [LogLevel.Information] = 1,
-        };
+        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Information] = 1 };
         Assert.Equal(expected: items, actual: this._logger.Seen);
 
         this._baseLogger.DidNotReceive(logLevel: LogLevel.Critical, message: "Critical Error");
@@ -198,35 +123,14 @@ public sealed class MockLoggerTests : TestBase
     {
         this._logger.LogDebug("Debug");
 
-        Assert.False(
-            condition: this._logger.CriticalReported,
-            userMessage: "Critical should not have been reported"
-        );
-        Assert.False(
-            condition: this._logger.ErrorsReported,
-            userMessage: "Errors should not have been reported"
-        );
-        Assert.False(
-            condition: this._logger.WarningsReported,
-            userMessage: "Warnings should not have been reported"
-        );
-        Assert.False(
-            condition: this._logger.InformationReported,
-            userMessage: "Information should have been reported"
-        );
-        Assert.True(
-            condition: this._logger.DebugReported,
-            userMessage: "Debug should have been reported"
-        );
-        Assert.False(
-            condition: this._logger.TraceReported,
-            userMessage: "Trace should not have been reported"
-        );
+        Assert.False(condition: this._logger.CriticalReported, userMessage: "Critical should not have been reported");
+        Assert.False(condition: this._logger.ErrorsReported, userMessage: "Errors should not have been reported");
+        Assert.False(condition: this._logger.WarningsReported, userMessage: "Warnings should not have been reported");
+        Assert.False(condition: this._logger.InformationReported, userMessage: "Information should have been reported");
+        Assert.True(condition: this._logger.DebugReported, userMessage: "Debug should have been reported");
+        Assert.False(condition: this._logger.TraceReported, userMessage: "Trace should not have been reported");
 
-        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int>
-        {
-            [LogLevel.Debug] = 1,
-        };
+        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Debug] = 1 };
         Assert.Equal(expected: items, actual: this._logger.Seen);
 
         this._baseLogger.DidNotReceive(logLevel: LogLevel.Critical, message: "Critical Error");
@@ -242,35 +146,14 @@ public sealed class MockLoggerTests : TestBase
     {
         this._logger.LogTrace("Trace");
 
-        Assert.False(
-            condition: this._logger.CriticalReported,
-            userMessage: "Critical should not have been reported"
-        );
-        Assert.False(
-            condition: this._logger.ErrorsReported,
-            userMessage: "Errors should not have been reported"
-        );
-        Assert.False(
-            condition: this._logger.WarningsReported,
-            userMessage: "Warnings should not have been reported"
-        );
-        Assert.False(
-            condition: this._logger.InformationReported,
-            userMessage: "Information should have been reported"
-        );
-        Assert.False(
-            condition: this._logger.DebugReported,
-            userMessage: "Debug should have been reported"
-        );
-        Assert.True(
-            condition: this._logger.TraceReported,
-            userMessage: "Trace should have been reported"
-        );
+        Assert.False(condition: this._logger.CriticalReported, userMessage: "Critical should not have been reported");
+        Assert.False(condition: this._logger.ErrorsReported, userMessage: "Errors should not have been reported");
+        Assert.False(condition: this._logger.WarningsReported, userMessage: "Warnings should not have been reported");
+        Assert.False(condition: this._logger.InformationReported, userMessage: "Information should have been reported");
+        Assert.False(condition: this._logger.DebugReported, userMessage: "Debug should have been reported");
+        Assert.True(condition: this._logger.TraceReported, userMessage: "Trace should have been reported");
 
-        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int>
-        {
-            [LogLevel.Trace] = 1,
-        };
+        IReadOnlyDictionary<LogLevel, int> items = new Dictionary<LogLevel, int> { [LogLevel.Trace] = 1 };
         Assert.Equal(expected: items, actual: this._logger.Seen);
 
         this._baseLogger.DidNotReceive(logLevel: LogLevel.Critical, message: "Critical Error");

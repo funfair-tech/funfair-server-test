@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.Logging;
 using Xunit;
 
@@ -15,6 +16,7 @@ internal sealed class XUnitLogger : XUnitLoggerBase
             testOutputHelper: testOutputHelper,
             scopeProvider: scopeProvider,
             categoryName: categoryName,
-            options: options
+            options: options,
+            timeProvider: TimeProvider.System
         ) { }
 }

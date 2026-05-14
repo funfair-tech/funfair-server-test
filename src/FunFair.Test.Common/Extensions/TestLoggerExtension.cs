@@ -1,50 +1,47 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using Xunit;
 
 namespace FunFair.Test.Common.Extensions;
 
 public static class TestLoggerExtension
 {
-    [SuppressMessage(
-        "Microsoft.Performance",
-        "CA1873: Evaluation of this argument may be expensive and unnecessary if logging is disabled",
-        Justification = "This is a unit test assembly - not so worried about performance"
-    )]
-    public static void Received(
-        this ILogger logger,
-        LogLevel logLevel,
-        string message,
-        int received = 1
-    )
+    public static void Received(this ILogger logger, LogLevel logLevel, string message, int received = 1)
     {
-        logger
-            .Received(received)
-            .Log(
-                logLevel: logLevel,
-                Arg.Any<EventId>(),
-                Arg.Is<object>(o => o.ToString() == message),
-                Arg.Any<Exception?>(),
-                Arg.Any<Func<object, Exception?, string>>()
-            );
+        int count = CountLogCalls(logLevel: logLevel, message: message, logger: logger);
+        Assert.Equal(received, count);
     }
 
-    [SuppressMessage(
-        "Microsoft.Performance",
-        "CA1873: Evaluation of this argument may be expensive and unnecessary if logging is disabled",
-        Justification = "This is a unit test assembly - not so worried about performance"
-    )]
     public static void DidNotReceive(this ILogger logger, LogLevel logLevel, string message)
     {
-        logger
-            .DidNotReceive()
-            .Log(
-                logLevel: logLevel,
-                Arg.Any<EventId>(),
-                Arg.Is<object>(o => o.ToString() == message),
-                Arg.Any<Exception?>(),
-                Arg.Any<Func<object, Exception?, string>>()
-            );
+        int count = CountLogCalls(logLevel: logLevel, message: message, logger: logger);
+        Assert.Equal(0, count);
+    }
+
+    private static int CountLogCalls(LogLevel logLevel, string message, ILogger logger)
+    {
+        return logger
+            .ReceivedCalls()
+            .Count(call =>
+            {
+                if (!string.Equals(a: call.GetMethodInfo().Name, b: "Log", comparisonType: StringComparison.Ordinal))
+                {
+                    return false;
+                }
+
+                object?[] args = call.GetArguments();
+
+                if (args.Length < 3 || args[0] is not LogLevel level || level != logLevel)
+                {
+                    return false;
+                }
+
+                object? stateArg = args[2];
+
+                return stateArg is not null
+                    && string.Equals(a: stateArg.ToString(), b: message, comparisonType: StringComparison.Ordinal);
+            });
     }
 }

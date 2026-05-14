@@ -4,5 +4,5 @@ namespace FunFair.Test.Common.Tests.Mocks;
 
 internal static class MockReferenceData
 {
-    public static readonly MockBase<ExampleObject> ExampleObject = new MockExampleObject();
+    public static readonly MockBase<ExampleObject> ExampleObject = MockExampleObject.Create();
 }

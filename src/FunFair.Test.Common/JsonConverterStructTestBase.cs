@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -66,16 +66,11 @@ public abstract class JsonConverterStructTestBase<
     [Fact]
     public void ShouldNotDeserialize()
     {
-        string doc = JsonSerializer.Serialize(
-            new { value = this.InvalidValue },
-            options: this._options
-        );
+        string doc = JsonSerializer.Serialize(new { value = this.InvalidValue }, options: this._options);
 
         this.Output.WriteLine($"Serialized model as: {doc}");
 
-        JsonException exception = Assert.Throws<JsonException>(testCode: () =>
-            this.DeserializeDoc(doc)
-        );
+        JsonException exception = Assert.Throws<JsonException>(testCode: () => this.DeserializeDoc(doc));
         UnusedVariable(exception);
     }
 
@@ -86,11 +81,6 @@ public abstract class JsonConverterStructTestBase<
 
     private readonly struct Model
     {
-        [SuppressMessage(
-            category: "ReSharper",
-            checkId: "UnusedAutoPropertyAccessor.Local",
-            Justification = "For unit tests"
-        )]
         public TObject Value { get; init; }
     }
 }

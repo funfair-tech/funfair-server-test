@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -19,11 +19,6 @@ public abstract class JsonConverterTestBase<
     protected JsonConverterTestBase(ITestOutputHelper output)
         : this(output: output, context: null) { }
 
-    [SuppressMessage(
-        category: "ReSharper",
-        checkId: "UnusedParameter.Local",
-        Justification = "Used in conditional implementations"
-    )]
     protected JsonConverterTestBase(ITestOutputHelper output, JsonSerializerContext? context)
         : base(output)
     {
@@ -78,10 +73,7 @@ public abstract class JsonConverterTestBase<
     [Fact]
     public void ShouldNotDeserialize()
     {
-        string doc = JsonSerializer.Serialize(
-            new { value = this.InvalidValue },
-            options: this._options
-        );
+        string doc = JsonSerializer.Serialize(new { value = this.InvalidValue }, options: this._options);
 
         this.Output.WriteLine($"Serialized model as: {doc}");
 

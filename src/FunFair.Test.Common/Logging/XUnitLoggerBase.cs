@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 using Microsoft.Extensions.Logging;
@@ -14,18 +13,21 @@ internal abstract class XUnitLoggerBase : ILogger
     private readonly XUnitLoggerOptions _options;
     private readonly LoggerExternalScopeProvider _scopeProvider;
     private readonly ITestOutputHelper? _testOutputHelper;
+    private readonly TimeProvider _timeProvider;
 
     protected XUnitLoggerBase(
         ITestOutputHelper? testOutputHelper,
         LoggerExternalScopeProvider scopeProvider,
         string? categoryName,
-        in XUnitLoggerOptions options
+        in XUnitLoggerOptions options,
+        TimeProvider timeProvider
     )
     {
         this._testOutputHelper = testOutputHelper;
         this._scopeProvider = scopeProvider;
         this._categoryName = categoryName;
         this._options = options;
+        this._timeProvider = timeProvider;
     }
 
     public bool IsEnabled(LogLevel logLevel)
@@ -47,8 +49,7 @@ internal abstract class XUnitLoggerBase : ILogger
         Func<TState, Exception?, string> formatter
     )
     {
-        ITestOutputHelper? testOutputHelper =
-            this._testOutputHelper ?? TestContext.Current.TestOutputHelper;
+        ITestOutputHelper? testOutputHelper = this._testOutputHelper ?? TestContext.Current.TestOutputHelper;
 
         if (testOutputHelper is null)
         {
@@ -108,19 +109,9 @@ internal abstract class XUnitLoggerBase : ILogger
         }
     }
 
-    [SuppressMessage(
-        category: "FunFair.CodeAnalysis",
-        checkId: "FFS0004: Use IDateTimeSource.UtcNow()",
-        Justification = "Not available here"
-    )]
-    [SuppressMessage(
-        category: "FunFair.CodeAnalysis",
-        checkId: "FFS0005: Use IDateTimeSource.UtcNow()",
-        Justification = "Not available here"
-    )]
     private DateTimeOffset GetCurrentTimestamp()
     {
-        return this._options.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
+        return this._options.UseUtcTimestamp ? this._timeProvider.GetUtcNow() : this._timeProvider.GetLocalNow();
     }
 
     private static string GetLogLevelString(LogLevel logLevel)

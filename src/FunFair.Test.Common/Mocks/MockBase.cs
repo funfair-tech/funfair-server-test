@@ -1,27 +1,19 @@
+using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 namespace FunFair.Test.Common.Mocks;
 
-[SuppressMessage(
-    category: "FunFair.CodeAnalysis",
-    checkId: "FFS0029: Should be internal",
-    Justification = "Infrastructure"
-)]
-[SuppressMessage(
-    category: "FunFair.CodeAnalysis",
-    checkId: "FFS0030: Should be internal",
-    Justification = "Infrastructure"
-)]
 [DebuggerDisplay("{_value}")]
-public abstract class MockBase<T>
+internal sealed class MockBase<T>
     where T : notnull
 {
+    private readonly Func<T> _nextFactory;
     private readonly T _value;
 
-    protected MockBase(T value)
+    public MockBase(T value, Func<T> nextFactory)
     {
         this._value = value;
+        this._nextFactory = nextFactory;
     }
 
     public static implicit operator T(MockBase<T> instance)
@@ -29,15 +21,13 @@ public abstract class MockBase<T>
         return instance._value;
     }
 
-    public abstract T Next();
+    public T Next()
+    {
+        return this._nextFactory();
+    }
 
-    [SuppressMessage(
-        category: "ToStringWithoutOverrideAnalyzer",
-        checkId: "ExplicitToStringWithoutOverrideAnalyzer: Calling ToString() on object of type 'T' but it does not override ToString()",
-        Justification = "Valid in this case"
-    )]
     public override string ToString()
     {
-        return this._value.ToString() ?? string.Empty;
+        return string.Concat(this._value);
     }
 }

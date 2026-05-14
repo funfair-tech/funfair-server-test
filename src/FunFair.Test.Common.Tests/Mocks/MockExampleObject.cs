@@ -3,13 +3,10 @@ using FunFair.Test.Common.Mocks;
 
 namespace FunFair.Test.Common.Tests.Mocks;
 
-internal sealed class MockExampleObject : MockBase<ExampleObject>
+internal static class MockExampleObject
 {
-    public MockExampleObject()
-        : base(new() { Name = "Test" }) { }
-
-    public override ExampleObject Next()
+    public static MockBase<ExampleObject> Create()
     {
-        return new() { Name = Guid.NewGuid().ToString() };
+        return new(new() { Name = "Test" }, () => new() { Name = Guid.NewGuid().ToString() });
     }
 }
