@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Security
 ### Added
 - Added CapturingLogger<T> and CapturedLogEntry to FunFair.Test.Common.Mocks for capturing log entries in tests (#425)
+- Source generator to automatically suppress ReSharper UnusedMember.Global on protected members of non-sealed test base classes (#421)
 ### Fixed
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.2.0.1978
