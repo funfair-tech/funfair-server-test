@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Source generator to automatically suppress ReSharper UnusedMember.Global on protected members of non-sealed test base classes (#421)
 - Unit tests for protected members of IntegrationTestBase and LoggingTestBase
 ### Fixed
+- TestBase.CancellationToken() now references instance to satisfy CC0091 analyzer, removing non-whitelisted suppression
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.2.0.1978
 - Dependencies - Updated Meziantou.Analyzer to 3.0.88
