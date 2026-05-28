@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Threading.Tasks;
 using FunFair.Test.Common.Tests.Mocks;
 using FunFair.Test.Common.Tests.Mocks.Converters.Binders;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -64,12 +65,27 @@ public sealed class DependencyInjectionTests : DependencyInjectionTestsBase
         Assert.False(IsProxyObject(fullName), userMessage: "Should not be proxy object");
     }
 
+    [Fact]
+    public Task ModelBinderIsRegisteredAsync()
+    {
+        return this.RequireServiceAsync<IModelBinder>();
+    }
+
+    [Fact]
+    public void ModelBinderIsRegisteredInCollection()
+    {
+        this.RequireServiceInCollectionFor<IModelBinder, ModelBinder>();
+    }
+
+    [Fact]
+    public Task ModelBinderIsRegisteredInCollectionAsync()
+    {
+        return this.RequireServiceInCollectionForAsync<IModelBinder, ModelBinder>();
+    }
+
     private static bool IsProxyObject(string fullTypeName)
     {
         return StringComparer.Ordinal.Equals(x: fullTypeName, y: "Castle.Proxies.ObjectProxy")
-            || fullTypeName.StartsWith(
-                value: "Castle.Proxies.ObjectProxy_",
-                comparisonType: StringComparison.Ordinal
-            );
+            || fullTypeName.StartsWith(value: "Castle.Proxies.ObjectProxy_", comparisonType: StringComparison.Ordinal);
     }
 }
