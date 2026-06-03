@@ -7,6 +7,15 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ## [Unreleased]
 ### Security
 ### Added
+### Fixed
+### Changed
+### Removed
+### Deployment Changes
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.3.0] - 2026-06-03
+### Added
 - Added CapturingLogger<T> and CapturedLogEntry to FunFair.Test.Common.Mocks for capturing log entries in tests (#425)
 - Source generator to automatically suppress ReSharper UnusedMember.Global on protected members of non-sealed test base classes (#421)
 - Unit tests for protected members of IntegrationTestBase and LoggingTestBase
@@ -19,11 +28,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.26.0.140279
 - Dependencies - Updated Credfeto.Enumeration to 1.2.143.1876
 - FunFair.Test.Common now references FunFair.Test.Infrastructure; infrastructure types moved to FunFair.Test.Infrastructure.* namespaces
-### Removed
-### Deployment Changes
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
+
 ## [6.2.25] - 2026-05-14
 ### Changed
 - Dependencies - Updated Meziantou.Analyzer to 3.0.84
