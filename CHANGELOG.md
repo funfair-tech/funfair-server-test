@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Added CapturingLogger<T> and CapturedLogEntry to FunFair.Test.Common.Mocks for capturing log entries in tests (#425)
 - Source generator to automatically suppress ReSharper UnusedMember.Global on protected members of non-sealed test base classes (#421)
 - Unit tests for protected members of IntegrationTestBase and LoggingTestBase
+- FunFair.Test.Infrastructure package containing framework-agnostic mock and helper infrastructure (MockBase, MockLogger, CapturingLogger, MockDateTimeSources, SimpleDefaultModelBindingContext, CancellationTokenSourceExtensions, TestServiceCollectionExtensions, HttpClientFactoryExtensions, LoggingExtensions, TestLoggerExtension, JsonOptions, ReferenceObjectHelpers)
 ### Fixed
 - TestBase.CancellationToken() now references instance to satisfy CC0091 analyzer, removing non-whitelisted suppression
 ### Changed
@@ -17,6 +18,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Analyzer to 3.0.88
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.26.0.140279
 - Dependencies - Updated Credfeto.Enumeration to 1.2.143.1876
+- FunFair.Test.Common now references FunFair.Test.Infrastructure; infrastructure types moved to FunFair.Test.Infrastructure.* namespaces
 ### Removed
 ### Deployment Changes
 <!--

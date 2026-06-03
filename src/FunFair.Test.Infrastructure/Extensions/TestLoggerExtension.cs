@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
-namespace FunFair.Test.Common.Extensions;
+namespace FunFair.Test.Infrastructure.Extensions;
 
 public static class TestLoggerExtension
 {

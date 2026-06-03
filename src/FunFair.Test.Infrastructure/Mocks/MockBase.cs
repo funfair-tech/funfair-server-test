@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace FunFair.Test.Common.Mocks;
+namespace FunFair.Test.Infrastructure.Mocks;
 
 [SuppressMessage(
     category: "FunFair.CodeAnalysis",

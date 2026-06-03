@@ -1,14 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using FunFair.Test.Common.Extensions;
-using FunFair.Test.Common.Tests.Mocks;
+using FunFair.Test.Common;
+using FunFair.Test.Infrastructure.Extensions;
+using FunFair.Test.Infrastructure.Tests.Mocks;
 using Xunit;
 
-namespace FunFair.Test.Common.Tests.Extensions;
+namespace FunFair.Test.Infrastructure.Tests.Extensions;
 
 public sealed class HttpClientFactoryExtensionsTests : TestBase
 {
@@ -34,9 +35,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
         );
         Assert.Equal(expected: HttpStatusCode.BadGateway, actual: responseMessage.StatusCode);
 
-        string content = await responseMessage.Content.ReadAsStringAsync(
-            cancellationToken: this.CancellationToken()
-        );
+        string content = await responseMessage.Content.ReadAsStringAsync(cancellationToken: this.CancellationToken());
         Assert.Equal(expected: expectedContent, actual: content);
     }
 
@@ -139,10 +138,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     [Fact]
     public async Task MockCreateClientWithResponseTypedJsonSerializerOptionsAsync()
     {
-        JsonSerializerOptions serializerOptions = new()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        };
+        JsonSerializerOptions serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
         const string clientName = "TestExample";
 
@@ -167,10 +163,7 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
     [Fact]
     public async Task MockCreateClientWithResponseTypedWithHeadersSerializerOptionsAsync()
     {
-        JsonSerializerOptions serializerOptions = new()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        };
+        JsonSerializerOptions serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
         const string clientName = "TestExample";
 
         IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();

@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace FunFair.Test.Common;
+namespace FunFair.Test.Infrastructure;
 
 [SuppressMessage(
     category: "Meziantou.Analyzer",

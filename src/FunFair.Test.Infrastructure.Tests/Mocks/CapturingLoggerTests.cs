@@ -1,10 +1,10 @@
 using System;
 using FunFair.Test.Common;
-using FunFair.Test.Common.Mocks;
+using FunFair.Test.Infrastructure.Mocks;
 using Microsoft.Extensions.Logging;
 using Xunit;
 
-namespace FunFair.Test.Common.Tests.Mocks;
+namespace FunFair.Test.Infrastructure.Tests.Mocks;
 
 public sealed class CapturingLoggerTests : TestBase
 {

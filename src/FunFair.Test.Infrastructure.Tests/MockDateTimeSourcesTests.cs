@@ -1,9 +1,10 @@
-using System;
-using FunFair.Test.Common.Mocks;
+﻿using System;
+using FunFair.Test.Common;
+using FunFair.Test.Infrastructure.Mocks;
 using Microsoft.Extensions.Time.Testing;
 using Xunit;
 
-namespace FunFair.Test.Common.Tests;
+namespace FunFair.Test.Infrastructure.Tests;
 
 public sealed class MockDateTimeSourcesTests : LoggingTestBase
 {
@@ -95,10 +96,7 @@ public sealed class MockDateTimeSourcesTests : LoggingTestBase
             offset: TimeSpan.Zero
         );
 
-        Assert.Equal(
-            expected: expected,
-            actual: MockDateTimeSources.AdvancingDateTimeUseWithCaution.GetUtcNow()
-        );
+        Assert.Equal(expected: expected, actual: MockDateTimeSources.AdvancingDateTimeUseWithCaution.GetUtcNow());
     }
 
     [Fact]

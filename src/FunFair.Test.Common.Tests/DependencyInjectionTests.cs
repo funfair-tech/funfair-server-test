@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FunFair.Test.Common.Tests.Mocks;
 using FunFair.Test.Common.Tests.Mocks.Converters.Binders;
+using FunFair.Test.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;

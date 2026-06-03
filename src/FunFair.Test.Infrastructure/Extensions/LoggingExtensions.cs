@@ -1,9 +1,9 @@
 using System;
 using Microsoft.Extensions.Logging;
 
-namespace FunFair.Test.Common.Extensions;
+namespace FunFair.Test.Infrastructure.Extensions;
 
-internal static partial class LoggingExtensions
+public static partial class LoggingExtensions
 {
     public static void LogWaitingForDispose(this ILogger logger, Type type)
     {

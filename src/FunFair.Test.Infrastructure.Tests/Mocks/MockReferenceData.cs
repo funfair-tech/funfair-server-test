@@ -1,6 +1,6 @@
 using FunFair.Test.Infrastructure.Mocks;
 
-namespace FunFair.Test.Common.Tests.Mocks;
+namespace FunFair.Test.Infrastructure.Tests.Mocks;
 
 internal static class MockReferenceData
 {
