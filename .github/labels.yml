@@ -66,6 +66,14 @@
    color: "0e8a16"
    description: "Changes in FunFair.Test.Common.Tests project"
 
+ - name: "funfair-test-infrastructure"
+   color: "96f7d2"
+   description: "Changes in FunFair.Test.Infrastructure project"
+
+ - name: "funfair-test-infrastructure-tests"
+   color: "0e8a16"
+   description: "Changes in FunFair.Test.Infrastructure.Tests project"
+
  - name: "funfair-test-source-generator"
    color: "96f7d2"
    description: "Changes in FunFair.Test.Source.Generator project"

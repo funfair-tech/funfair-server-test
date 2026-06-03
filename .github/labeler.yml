@@ -18,6 +18,10 @@
  - any: [ 'src/$FunFair.Test.Common/**/*' ]
 "funfair-test-common-tests":
  - any: [ 'src/$FunFair.Test.Common.Tests/**/*' ]
+"funfair-test-infrastructure":
+ - any: [ 'src/$FunFair.Test.Infrastructure/**/*' ]
+"funfair-test-infrastructure-tests":
+ - any: [ 'src/$FunFair.Test.Infrastructure.Tests/**/*' ]
 "funfair-test-source-generator":
  - any: [ 'src/$FunFair.Test.Source.Generator/**/*' ]
 "github-actions":
