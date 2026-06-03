@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using FunFair.Test.Common.Helpers;
+using FunFair.Test.Infrastructure.Helpers;
 using Xunit;
 
 namespace FunFair.Test.Common;
@@ -78,10 +78,7 @@ public abstract class JsonConverterTestBase<
     [Fact]
     public void ShouldNotDeserialize()
     {
-        string doc = JsonSerializer.Serialize(
-            new { value = this.InvalidValue },
-            options: this._options
-        );
+        string doc = JsonSerializer.Serialize(new { value = this.InvalidValue }, options: this._options);
 
         this.Output.WriteLine($"Serialized model as: {doc}");
 

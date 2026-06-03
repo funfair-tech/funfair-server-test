@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NSubstitute;
 
-namespace FunFair.Test.Common.Extensions;
+namespace FunFair.Test.Infrastructure.Extensions;
 
 public static class HttpClientFactoryExtensions
 {

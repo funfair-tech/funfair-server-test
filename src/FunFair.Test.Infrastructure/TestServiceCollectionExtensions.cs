@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 
-namespace FunFair.Test.Common;
+namespace FunFair.Test.Infrastructure;
 
 public static class TestServiceCollectionExtensions
 {

@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
-using FunFair.Test.Common.Mocks;
+using FunFair.Test.Infrastructure.Mocks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NSubstitute;
 using Xunit;
@@ -55,9 +55,6 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
 
         await this._binder.BindModelAsync(bindingContext);
 
-        Assert.False(
-            condition: bindingContext.Result.IsModelSet,
-            userMessage: "Should not have bound"
-        );
+        Assert.False(condition: bindingContext.Result.IsModelSet, userMessage: "Should not have bound");
     }
 }

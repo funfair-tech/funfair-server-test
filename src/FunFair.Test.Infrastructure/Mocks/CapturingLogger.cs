@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 
-namespace FunFair.Test.Common.Mocks;
+namespace FunFair.Test.Infrastructure.Mocks;
 
 public sealed class CapturingLogger<T> : ILogger<T>
 {

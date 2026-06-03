@@ -4,9 +4,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
-namespace FunFair.Test.Common.Helpers;
+namespace FunFair.Test.Infrastructure.Helpers;
 
-internal static class JsonOptions
+public static class JsonOptions
 {
     [Conditional("NET7_0_OR_GREATER")]
     [SuppressMessage(

@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.Time.Testing;
 
-namespace FunFair.Test.Common.Mocks;
+namespace FunFair.Test.Infrastructure.Mocks;
 
 public static class MockDateTimeSources
 {

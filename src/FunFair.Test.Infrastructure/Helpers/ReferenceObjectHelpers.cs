@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
-namespace FunFair.Test.Common.Helpers;
+namespace FunFair.Test.Infrastructure.Helpers;
 
 public static class ReferenceObjectHelpers
 {

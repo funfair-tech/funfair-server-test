@@ -7,7 +7,7 @@ using System.Threading;
 using Microsoft.Extensions.Logging;
 using NonBlocking;
 
-namespace FunFair.Test.Common.Mocks;
+namespace FunFair.Test.Infrastructure.Mocks;
 
 [DebuggerDisplay(
     "Critical: {CriticalReported} Errors: {ErrorsReported} Warnings: {WarningsReported} Trace: {TraceReported} Information: {InformationReported} Debug: {DebugReported}"

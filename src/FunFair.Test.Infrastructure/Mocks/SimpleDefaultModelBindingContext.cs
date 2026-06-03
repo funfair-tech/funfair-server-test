@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
-namespace FunFair.Test.Common.Mocks;
+namespace FunFair.Test.Infrastructure.Mocks;
 
-internal sealed class SimpleDefaultModelBindingContext : ModelBindingContext
+public sealed class SimpleDefaultModelBindingContext : ModelBindingContext
 {
     private const int MAX_MODEL_BINDING_RECURSION_DEPTH = 32;
 
