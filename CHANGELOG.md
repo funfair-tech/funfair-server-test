@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Security
 ### Added
 - ConsoleCapture test helper in FunFair.Test.Infrastructure.Helpers to redirect Console.Out and Console.Error during tests
+- EnvironmentVariableScope test helper in FunFair.Test.Common.Helpers to temporarily set and restore environment variables in tests
 ### Fixed
 ### Changed
 ### Removed
