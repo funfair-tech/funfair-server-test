@@ -7,6 +7,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ## [Unreleased]
 ### Security
 ### Added
+- EnvironmentVariableScope test helper in FunFair.Test.Common.Helpers to temporarily set and restore environment variables in tests
 ### Fixed
 ### Changed
 ### Removed
