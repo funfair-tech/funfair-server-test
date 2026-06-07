@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace FunFair.Test.Common.Helpers;
+namespace FunFair.Test.Infrastructure.Helpers;
 
 public sealed class ConsoleCapture : IDisposable
 {

@@ -1,9 +1,10 @@
 using System;
 using System.IO;
-using FunFair.Test.Common.Helpers;
+using FunFair.Test.Common;
+using FunFair.Test.Infrastructure.Helpers;
 using Xunit;
 
-namespace FunFair.Test.Common.Tests.Helpers;
+namespace FunFair.Test.Infrastructure.Tests.Helpers;
 
 public sealed class ConsoleCaptureTests : TestBase
 {
