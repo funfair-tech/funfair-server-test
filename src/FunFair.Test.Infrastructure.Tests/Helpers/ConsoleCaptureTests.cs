@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using FunFair.Test.Common;
 using FunFair.Test.Infrastructure.Helpers;
@@ -6,6 +7,11 @@ using Xunit;
 
 namespace FunFair.Test.Infrastructure.Tests.Helpers;
 
+[SuppressMessage(
+    category: "FunFair.CodeAnalysis",
+    checkId: "FFS0041:Do not use System.Console in test assemblies",
+    Justification = "Testing that ConsoleCapture correctly intercepts System.Console output"
+)]
 public sealed class ConsoleCaptureTests : TestBase
 {
     [Fact]
