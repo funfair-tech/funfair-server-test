@@ -12,7 +12,6 @@
     <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
-    <FFTestProject>true</FFTestProject>
     <Features>strict;flow-analysis</Features>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <GenerateNeutralResourcesLanguageAttribute>true</GenerateNeutralResourcesLanguageAttribute>
