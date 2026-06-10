@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - EnvironmentVariableScope test helper in FunFair.Test.Common.Helpers to temporarily set and restore environment variables in tests
 ### Fixed
 ### Changed
+- SDK - Updated DotNet SDK to 10.0.301
 ### Removed
 ### Deployment Changes
 <!--
