@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - ConsoleCapture test helper in FunFair.Test.Infrastructure.Helpers to redirect Console.Out and Console.Error during tests
 - EnvironmentVariableScope test helper in FunFair.Test.Common.Helpers to temporarily set and restore environment variables in tests
 ### Fixed
+- Fixed NU5017 error when BenchmarkDotNet builds source generator project outside solution context by using MSBuildThisFileDirectory-relative import paths
 ### Changed
 ### Removed
 ### Deployment Changes
