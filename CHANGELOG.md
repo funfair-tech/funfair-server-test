@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - ConsoleCapture test helper in FunFair.Test.Infrastructure.Helpers to redirect Console.Out and Console.Error during tests
 - EnvironmentVariableScope test helper in FunFair.Test.Common.Helpers to temporarily set and restore environment variables in tests
 ### Fixed
+- LoggingFolderCleanupTestBase now falls back to Path.GetTempPath() when no temp-path environment variable is set, fixing failures in environments where XDG_RUNTIME_DIR, TMP, TEMP and TMPDIR are all absent
 ### Changed
 - SDK - Updated DotNet SDK to 10.0.301
 ### Removed
