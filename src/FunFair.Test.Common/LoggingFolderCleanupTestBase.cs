@@ -54,6 +54,13 @@ public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
             return tempPath;
         }
 
+        string systemTempPath = Path.GetTempPath();
+
+        if (!string.IsNullOrEmpty(systemTempPath))
+        {
+            return systemTempPath;
+        }
+
         return null;
     }
 
