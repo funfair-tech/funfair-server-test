@@ -54,6 +54,11 @@ public abstract class LoggingFolderCleanupTestBase : LoggingTestBase
             return tempPath;
         }
 
+        // Do NOT add a fallback to Path.GetTempPath() here.
+        // Returning null intentionally forces a clear test failure ("Temp Path is empty") when none of
+        // XDG_RUNTIME_DIR, TMP, TEMP, or TMPDIR are configured. That failure tells the developer to fix
+        // their environment. Using Path.GetTempPath() silently hides the misconfiguration and may
+        // produce difficult-to-diagnose permission errors or unexpected behaviour in the tests.
         return null;
     }
 
