@@ -10,6 +10,19 @@ public sealed class CapturingLogger<T> : ILogger<T>
     private readonly List<CapturedLogEntry> _entries = [];
     private readonly Lock _lock = new();
 
+    public bool HasEntries => this.EntryCount != 0;
+
+    public int EntryCount
+    {
+        get
+        {
+            lock (this._lock)
+            {
+                return this._entries.Count;
+            }
+        }
+    }
+
     public IReadOnlyList<CapturedLogEntry> Entries
     {
         get

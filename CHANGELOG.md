@@ -7,8 +7,11 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ## [Unreleased]
 ### Security
 ### Added
+- CapturingLogger<T> now exposes HasEntries and EntryCount properties for allocation-free log checks without copying the full Entries list
 ### Fixed
 ### Changed
+- MockCreateClientWithResponse<T> overloads now share a single serialisation point, preventing accidental use of different JsonSerializerOptions across overloads
+- CancellationTokenSourceExtensions consolidated into a single file
 ### Removed
 ### Deployment Changes
 <!--

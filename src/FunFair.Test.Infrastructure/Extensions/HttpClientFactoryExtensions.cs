@@ -14,10 +14,9 @@ namespace FunFair.Test.Infrastructure.Extensions;
 public static class HttpClientFactoryExtensions
 {
     private static readonly JsonSerializerOptions SerializerOptions = new();
-    private static readonly IReadOnlyDictionary<string, string> NoHeaders = new Dictionary<
-        string,
-        string
-    >(StringComparer.OrdinalIgnoreCase);
+    private static readonly IReadOnlyDictionary<string, string> NoHeaders = new Dictionary<string, string>(
+        StringComparer.OrdinalIgnoreCase
+    );
 
     private static Uri LocalHostUri { get; } = new("https://localhost");
 
@@ -28,8 +27,7 @@ public static class HttpClientFactoryExtensions
         string responseMessage
     )
     {
-        MockCreateClientWithResponse(
-            httpClientFactory: httpClientFactory,
+        httpClientFactory.MockCreateClientWithResponse(
             clientName: clientName,
             httpStatusCode: httpStatusCode,
             responseMessage: responseMessage,
@@ -61,7 +59,7 @@ public static class HttpClientFactoryExtensions
             headers: headers
         );
 
-        httpClientFactory.CreateClient(clientName).Returns(client);
+        _ = httpClientFactory.CreateClient(clientName).Returns(client);
     }
 
     [SuppressMessage(
@@ -81,11 +79,7 @@ public static class HttpClientFactoryExtensions
     )
     {
         return new(
-            new FakeHttpMessageHandler(
-                statusCode: httpStatusCode,
-                responseMessage: responseMessage,
-                headers: headers
-            )
+            new FakeHttpMessageHandler(statusCode: httpStatusCode, responseMessage: responseMessage, headers: headers)
         )
         {
             BaseAddress = LocalHostUri,
@@ -98,8 +92,7 @@ public static class HttpClientFactoryExtensions
         HttpStatusCode httpStatusCode
     )
     {
-        MockCreateClientWithResponse(
-            httpClientFactory: httpClientFactory,
+        httpClientFactory.MockCreateClientWithResponse(
             clientName: clientName,
             httpStatusCode: httpStatusCode,
             responseMessage: string.Empty
@@ -113,8 +106,7 @@ public static class HttpClientFactoryExtensions
         IReadOnlyDictionary<string, string> headers
     )
     {
-        MockCreateClientWithResponse(
-            httpClientFactory: httpClientFactory,
+        httpClientFactory.MockCreateClientWithResponse(
             clientName: clientName,
             httpStatusCode: httpStatusCode,
             responseMessage: string.Empty,
@@ -129,11 +121,11 @@ public static class HttpClientFactoryExtensions
         T responseObject
     )
     {
-        MockCreateClientWithResponse(
-            httpClientFactory: httpClientFactory,
+        httpClientFactory.MockCreateClientWithResponse(
             clientName: clientName,
             httpStatusCode: httpStatusCode,
-            JsonSerializer.Serialize(value: responseObject, options: SerializerOptions),
+            responseObject: responseObject,
+            jsonSerializerOptions: SerializerOptions,
             headers: NoHeaders
         );
     }
@@ -146,11 +138,11 @@ public static class HttpClientFactoryExtensions
         IReadOnlyDictionary<string, string> headers
     )
     {
-        MockCreateClientWithResponse(
-            httpClientFactory: httpClientFactory,
+        httpClientFactory.MockCreateClientWithResponse(
             clientName: clientName,
             httpStatusCode: httpStatusCode,
-            JsonSerializer.Serialize(value: responseObject, options: SerializerOptions),
+            responseObject: responseObject,
+            jsonSerializerOptions: SerializerOptions,
             headers: headers
         );
     }
@@ -163,11 +155,12 @@ public static class HttpClientFactoryExtensions
         JsonSerializerOptions jsonSerializerOptions
     )
     {
-        MockCreateClientWithResponse(
-            httpClientFactory: httpClientFactory,
+        httpClientFactory.MockCreateClientWithResponse(
             clientName: clientName,
             httpStatusCode: httpStatusCode,
-            JsonSerializer.Serialize(value: responseObject, options: jsonSerializerOptions)
+            responseObject: responseObject,
+            jsonSerializerOptions: jsonSerializerOptions,
+            headers: NoHeaders
         );
     }
 
@@ -180,11 +173,11 @@ public static class HttpClientFactoryExtensions
         IReadOnlyDictionary<string, string> headers
     )
     {
-        MockCreateClientWithResponse(
-            httpClientFactory: httpClientFactory,
+        string response = JsonSerializer.Serialize(value: responseObject, options: jsonSerializerOptions);
+        httpClientFactory.MockCreateClientWithResponse(
             clientName: clientName,
             httpStatusCode: httpStatusCode,
-            JsonSerializer.Serialize(value: responseObject, options: jsonSerializerOptions),
+            responseMessage: response,
             headers: headers
         );
     }
@@ -212,6 +205,11 @@ public static class HttpClientFactoryExtensions
             CancellationToken cancellationToken
         )
         {
+            return Task.FromResult(this.CreateHttpResponseMessage());
+        }
+
+        private HttpResponseMessage CreateHttpResponseMessage()
+        {
             HttpResponseMessage httpResponseMessage = new(this._statusCode)
             {
                 Content = new StringContent(this._responseMessage),
@@ -222,7 +220,7 @@ public static class HttpClientFactoryExtensions
                 httpResponseMessage.Headers.Add(name: key, value: value);
             }
 
-            return Task.FromResult(httpResponseMessage);
+            return httpResponseMessage;
         }
     }
 }

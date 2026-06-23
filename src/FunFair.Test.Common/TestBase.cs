@@ -64,7 +64,8 @@ public abstract class TestBase
     protected static Task<T?> NullResultAsync<T>()
         where T : class
     {
-        return FromOptionalResultAsync((T?)null);
+        T? nullValue = null;
+        return FromOptionalResultAsync(nullValue);
     }
 
     [Pure]
