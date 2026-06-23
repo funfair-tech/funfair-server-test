@@ -121,11 +121,11 @@ public static class HttpClientFactoryExtensions
         T responseObject
     )
     {
-        string response = JsonSerializer.Serialize(value: responseObject, options: SerializerOptions);
         httpClientFactory.MockCreateClientWithResponse(
             clientName: clientName,
             httpStatusCode: httpStatusCode,
-            responseMessage: response,
+            responseObject: responseObject,
+            jsonSerializerOptions: SerializerOptions,
             headers: NoHeaders
         );
     }
@@ -138,11 +138,11 @@ public static class HttpClientFactoryExtensions
         IReadOnlyDictionary<string, string> headers
     )
     {
-        string response = JsonSerializer.Serialize(value: responseObject, options: SerializerOptions);
         httpClientFactory.MockCreateClientWithResponse(
             clientName: clientName,
             httpStatusCode: httpStatusCode,
-            responseMessage: response,
+            responseObject: responseObject,
+            jsonSerializerOptions: SerializerOptions,
             headers: headers
         );
     }
@@ -155,12 +155,12 @@ public static class HttpClientFactoryExtensions
         JsonSerializerOptions jsonSerializerOptions
     )
     {
-        string response = JsonSerializer.Serialize(value: responseObject, options: jsonSerializerOptions);
-
         httpClientFactory.MockCreateClientWithResponse(
             clientName: clientName,
             httpStatusCode: httpStatusCode,
-            responseMessage: response
+            responseObject: responseObject,
+            jsonSerializerOptions: jsonSerializerOptions,
+            headers: NoHeaders
         );
     }
 
