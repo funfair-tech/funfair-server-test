@@ -205,6 +205,11 @@ public static class HttpClientFactoryExtensions
             CancellationToken cancellationToken
         )
         {
+            return Task.FromResult(this.CreateHttpResponseMessage());
+        }
+
+        private HttpResponseMessage CreateHttpResponseMessage()
+        {
             HttpResponseMessage httpResponseMessage = new(this._statusCode)
             {
                 Content = new StringContent(this._responseMessage),
@@ -215,7 +220,7 @@ public static class HttpClientFactoryExtensions
                 httpResponseMessage.Headers.Add(name: key, value: value);
             }
 
-            return Task.FromResult(httpResponseMessage);
+            return httpResponseMessage;
         }
     }
 }
