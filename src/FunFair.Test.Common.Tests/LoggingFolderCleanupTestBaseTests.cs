@@ -80,10 +80,7 @@ public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTest
         byte[] source = "Hello World"u8.ToArray();
         Assert.False(File.Exists(filename), $"File {filename} already exists before creation");
         File.WriteAllBytes(path: filename, bytes: source);
-        Assert.True(
-            File.Exists(filename),
-            $"File {filename} doesn't exist when it has just been written"
-        );
+        Assert.True(File.Exists(filename), $"File {filename} doesn't exist when it has just been written");
         byte[] written = File.ReadAllBytes(filename);
 
         Assert.Equal(expected: source, actual: written);
