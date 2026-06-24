@@ -41,9 +41,7 @@ public sealed class ExtendedAssertTest : TestBase
         IReadOnlyList<MockGenericModel<string>> expected = CreateModelList(value: "expected");
         IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "actual");
 
-        Assert.Throws<EqualException>(testCode: () =>
-            ExtendedAssert.DeepEqual(expected: expected, actual: actual)
-        );
+        Assert.Throws<EqualException>(testCode: () => ExtendedAssert.DeepEqual(expected: expected, actual: actual));
     }
 
     [Fact]
@@ -52,9 +50,7 @@ public sealed class ExtendedAssertTest : TestBase
         MockGenericModel<string> expected = CreateModel(value: "expected");
         MockGenericModel<string> actual = CreateModel(value: "actual");
 
-        Assert.Throws<EqualException>(testCode: () =>
-            ExtendedAssert.DeepEqual(expected: expected, actual: actual)
-        );
+        Assert.Throws<EqualException>(testCode: () => ExtendedAssert.DeepEqual(expected: expected, actual: actual));
     }
 
     [Fact]
@@ -78,8 +74,6 @@ public sealed class ExtendedAssertTest : TestBase
         IReadOnlyList<MockGenericModel<string>> expected = [expectedMember];
         IReadOnlyList<MockGenericModel<string>> actual = CreateModelList(value: "actual");
 
-        Assert.Throws<EqualException>(testCode: () =>
-            ExtendedAssert.DeepEqual(expected: expected, actual: actual)
-        );
+        Assert.Throws<EqualException>(testCode: () => ExtendedAssert.DeepEqual(expected: expected, actual: actual));
     }
 }
