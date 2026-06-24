@@ -41,32 +41,18 @@ public abstract class ValidatorTestBase<
         return result;
     }
 
-    public ValidationResult Validate(
-        TObject instance,
-        int expectedErrorCount,
-        string erroringProperty
-    )
+    public ValidationResult Validate(TObject instance, int expectedErrorCount, string erroringProperty)
     {
-        ValidationResult result = this.Validate(
-            instance: instance,
-            expectedErrorCount: expectedErrorCount
-        );
+        ValidationResult result = this.Validate(instance: instance, expectedErrorCount: expectedErrorCount);
 
         AssertOnlyNamedPropertyHasErrors(result: result, erroringProperty: erroringProperty);
 
         return result;
     }
 
-    public ValidationResult Validate(
-        TObject instance,
-        int expectedErrorCount,
-        params string[] erroringProperties
-    )
+    public ValidationResult Validate(TObject instance, int expectedErrorCount, params string[] erroringProperties)
     {
-        ValidationResult result = this.Validate(
-            instance: instance,
-            expectedErrorCount: expectedErrorCount
-        );
+        ValidationResult result = this.Validate(instance: instance, expectedErrorCount: expectedErrorCount);
 
         AssertNamedPropertiesHaveErrors(result: result, erroringProperties: erroringProperties);
 
@@ -82,36 +68,23 @@ public abstract class ValidatorTestBase<
         this.Validate(instance: itemToValidate, expectedErrorCount: 0);
     }
 
-    protected static void AssertOnlyNamedPropertyHasErrors(
-        ValidationResult result,
-        string erroringProperty
-    )
+    protected static void AssertOnlyNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
     {
         Assert.True(
-            result.Errors.TrueForAll(e =>
-                StringComparer.Ordinal.Equals(x: e.PropertyName, y: erroringProperty)
-            ),
+            result.Errors.TrueForAll(e => StringComparer.Ordinal.Equals(x: e.PropertyName, y: erroringProperty)),
             $"Should only have had errors in {erroringProperty}, but found errors in {string.Join(separator: ',', result.Errors.Select(selector: e => e.PropertyName).Distinct(StringComparer.Ordinal))}"
         );
     }
 
-    protected static void AssertNamedPropertyHasErrors(
-        ValidationResult result,
-        string erroringProperty
-    )
+    protected static void AssertNamedPropertyHasErrors(ValidationResult result, string erroringProperty)
     {
         Assert.True(
-            result.Errors.Exists(e =>
-                StringComparer.Ordinal.Equals(x: e.PropertyName, y: erroringProperty)
-            ),
+            result.Errors.Exists(e => StringComparer.Ordinal.Equals(x: e.PropertyName, y: erroringProperty)),
             $"Should have had errors in {erroringProperty}, but not found found errors in {DumpPropertiesInError(result)}"
         );
     }
 
-    protected static void AssertNamedPropertiesHaveErrors(
-        ValidationResult result,
-        params string[] erroringProperties
-    )
+    protected static void AssertNamedPropertiesHaveErrors(ValidationResult result, params string[] erroringProperties)
     {
         Assert.NotEmpty(erroringProperties);
 
@@ -119,10 +92,7 @@ public abstract class ValidatorTestBase<
         AssertHasAllExpectedErrors(result: result, erroringProperties: erroringProperties);
     }
 
-    private static void AssertHasAllUnexpectedErrors(
-        ValidationResult result,
-        IReadOnlyList<string> erroringProperties
-    )
+    private static void AssertHasAllUnexpectedErrors(ValidationResult result, IReadOnlyList<string> erroringProperties)
     {
         bool hasUnexpectedErrors = result.Errors.TrueForAll(error =>
             erroringProperties.Contains(value: error.PropertyName, comparer: StringComparer.Ordinal)
@@ -134,17 +104,11 @@ public abstract class ValidatorTestBase<
         );
     }
 
-    private static void AssertHasAllExpectedErrors(
-        ValidationResult result,
-        string[] erroringProperties
-    )
+    private static void AssertHasAllExpectedErrors(ValidationResult result, string[] erroringProperties)
     {
         bool hasAllExpectedErrors = Array.TrueForAll(
             array: erroringProperties,
-            match: error =>
-                result.Errors.Exists(p =>
-                    StringComparer.Ordinal.Equals(x: p.PropertyName, y: error)
-                )
+            match: error => result.Errors.Exists(p => StringComparer.Ordinal.Equals(x: p.PropertyName, y: error))
         );
         Assert.True(
             condition: hasAllExpectedErrors,
@@ -171,9 +135,7 @@ public abstract class ValidatorTestBase<
         result
             .Errors.OrderBy(keySelector: e => e.PropertyName, comparer: StringComparer.Ordinal)
             .ThenBy(keySelector: e => e.ErrorMessage, comparer: StringComparer.Ordinal)
-            .ForEach(error =>
-                this.Output.WriteLine($" * {error.PropertyName} : {error.ErrorMessage}")
-            );
+            .ForEach(error => this.Output.WriteLine($" * {error.PropertyName} : {error.ErrorMessage}"));
     }
 
     private static string DumpPropertiesInError(ValidationResult result)
@@ -192,13 +154,9 @@ public abstract class ValidatorTestBase<
         return string.Join(separator: ", ", ErroringProperties(erroringProperties));
     }
 
-    private static IOrderedEnumerable<string> ErroringProperties(
-        IReadOnlyList<string> erroringProperties
-    )
+    private static IOrderedEnumerable<string> ErroringProperties(IReadOnlyList<string> erroringProperties)
     {
-        return erroringProperties
-            .Distinct(StringComparer.Ordinal)
-            .Order(StringComparer.OrdinalIgnoreCase);
+        return erroringProperties.Distinct(StringComparer.Ordinal).Order(StringComparer.OrdinalIgnoreCase);
     }
 
     [Fact]
