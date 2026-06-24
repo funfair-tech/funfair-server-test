@@ -50,9 +50,7 @@ public abstract class LoggingTestBase : TestBase
     {
         TaskScheduler.UnobservedTaskException += this.ReportUnhandledException;
 
-        this._serviceProvider = dependencyInjectionRegistration(
-                new ServiceCollection().AddLoggingSupport()
-            )
+        this._serviceProvider = dependencyInjectionRegistration(new ServiceCollection().AddLoggingSupport())
             .BuildServiceProvider();
 
         this._loggerFactory = this._serviceProvider.GetRequiredService<ILoggerFactory>();
@@ -71,9 +69,7 @@ public abstract class LoggingTestBase : TestBase
         // Nothing to do
     }
 
-    private static IServiceCollection NoDependencyInjectionConfiguration(
-        IServiceCollection serviceCollection
-    )
+    private static IServiceCollection NoDependencyInjectionConfiguration(IServiceCollection serviceCollection)
     {
         // Nothing to do
         return serviceCollection;
