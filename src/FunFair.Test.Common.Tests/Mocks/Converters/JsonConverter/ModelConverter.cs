@@ -6,11 +6,7 @@ namespace FunFair.Test.Common.Tests.Mocks.Converters.JsonConverter;
 
 public sealed class ModelConverter : JsonConverter<Model>
 {
-    public override Model Read(
-        ref Utf8JsonReader reader,
-        Type typeToConvert,
-        JsonSerializerOptions options
-    )
+    public override Model Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         string? source = reader.GetString();
 
