@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
 using FunFair.Test.Source.Generator.Builders;
 using FunFair.Test.Source.Generator.Extensions;
