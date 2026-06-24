@@ -1,19 +1,13 @@
-﻿using System.Linq;
+using System.Linq;
 using FunFair.Test.Source.Generator.Builders;
 
 namespace FunFair.Test.Source.Generator.Extensions;
 
 internal static class CodeBuilderExtensions
 {
-    public static CodeBuilder AppendNamespaces(
-        this CodeBuilder codeBuilder,
-        params string[] namespaces
-    )
+    public static CodeBuilder AppendNamespaces(this CodeBuilder codeBuilder, params string[] namespaces)
     {
-        return namespaces.Aggregate(
-            seed: codeBuilder,
-            func: (builder, item) => builder.AppendLine($"using {item};")
-        );
+        return namespaces.Aggregate(seed: codeBuilder, func: (builder, item) => builder.AppendLine($"using {item};"));
     }
 
     public static CodeBuilder AppendSuppression(
