@@ -13,6 +13,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - MockCreateClientWithResponse<T> overloads now share a single serialisation point, preventing accidental use of different JsonSerializerOptions across overloads
 - CancellationTokenSourceExtensions consolidated into a single file
 - Dependencies - Updated Credfeto.Enumeration to 1.2.148.2012
+- Dependencies - Updated Meziantou.Analyzer to 3.0.114
 ### Removed
 ### Deployment Changes
 <!--
