@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - MockCreateClientWithResponse<T> overloads now share a single serialisation point, preventing accidental use of different JsonSerializerOptions across overloads
 - CancellationTokenSourceExtensions consolidated into a single file
+- Dependencies - Updated Credfeto.Enumeration to 1.2.148.2012
 ### Removed
 ### Deployment Changes
 <!--
