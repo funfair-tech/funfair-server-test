@@ -5,7 +5,6 @@ using BenchmarkDotNet.Attributes;
 
 namespace FunFair.Test.Common.Tests;
 
-
 public class ExampleBenchmarks
 {
     private readonly IReadOnlyList<int> _items = [.. Enumerable.Range(start: 0, count: 100)];
