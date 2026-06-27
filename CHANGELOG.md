@@ -7,8 +7,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ## [Unreleased]
 ### Security
 ### Added
-- CapturingLogger<T> now exposes HasEntries and EntryCount properties for allocation-free log checks without copying the full Entries list
 ### Fixed
+### Changed
+### Removed
+### Deployment Changes
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.3.2] - 2026-06-27
+### Added
+- CapturingLogger<T> now exposes HasEntries and EntryCount properties for allocation-free log checks without copying the full Entries list
 ### Changed
 - MockCreateClientWithResponse<T> overloads now share a single serialisation point, preventing accidental use of different JsonSerializerOptions across overloads
 - CancellationTokenSourceExtensions consolidated into a single file
@@ -18,11 +26,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Analyzer to 3.0.115
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.27.0.140913
 - Dependencies - Updated Microsoft.Extensions to 10.7.0
-### Removed
-### Deployment Changes
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
+
 ## [6.3.1] - 2026-06-15
 ### Added
 - ConsoleCapture test helper in FunFair.Test.Infrastructure.Helpers to redirect Console.Out and Console.Error during tests
