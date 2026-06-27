@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using BenchmarkDotNet.Reports;
 using Xunit;
 
@@ -36,10 +36,7 @@ public static class SummaryExtensions
         {
             string name = report.BenchmarkCase.Descriptor.WorkloadMethodDisplayInfo;
 
-            if (
-                benchmarkName is not null
-                && !string.Equals(a: name, b: benchmarkName, comparisonType: StringComparison.Ordinal)
-            )
+            if (benchmarkName is not null && !StringComparer.Ordinal.Equals(x: name, y: benchmarkName))
             {
                 continue;
             }
