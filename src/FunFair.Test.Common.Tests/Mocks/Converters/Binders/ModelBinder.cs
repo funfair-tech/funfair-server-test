@@ -47,13 +47,25 @@ public sealed class ModelBinder : IModelBinder
             return prefix;
         }
 
-        if (propertyName.StartsWith('['))
-        {
-            // The propertyName might represent an indexer access, in which case combining
-            // with a 'dot' would be invalid. This case occurs only when called from ValidationVisitor.
-            return prefix + propertyName;
-        }
+        return IsIndexerAccess(propertyName)
+            ? IndexerPropertyName(prefix: prefix, propertyName: propertyName)
+            : NormalPropertyName(prefix: prefix, propertyName: propertyName);
+    }
 
+    private static string NormalPropertyName(string prefix, string propertyName)
+    {
         return prefix + "." + propertyName;
+    }
+
+    private static string IndexerPropertyName(string prefix, string propertyName)
+    {
+        // The propertyName might represent an indexer access, in which case combining
+        // with a 'dot' would be invalid. This case occurs only when called from ValidationVisitor.
+        return prefix + propertyName;
+    }
+
+    private static bool IsIndexerAccess(in ReadOnlySpan<char> propertyName)
+    {
+        return propertyName[0] == '[';
     }
 }
