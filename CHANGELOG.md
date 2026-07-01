@@ -9,14 +9,17 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Credfeto.Enumeration to 1.2.149.2059
-- Dependencies - Updated FunFair.CodeAnalysis to 7.2.3.2091
-- Dependencies - Updated Meziantou.Analyzer to 3.0.117
 ### Removed
 ### Deployment Changes
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.3.3] - 2026-07-01
+### Changed
+- Dependencies - Updated Credfeto.Enumeration to 1.2.149.2059
+- Dependencies - Updated FunFair.CodeAnalysis to 7.2.3.2091
+- Dependencies - Updated Meziantou.Analyzer to 3.0.117
+
 ## [6.3.2] - 2026-06-27
 ### Added
 - CapturingLogger<T> now exposes HasEntries and EntryCount properties for allocation-free log checks without copying the full Entries list
