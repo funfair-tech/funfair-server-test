@@ -15,7 +15,6 @@ using BenchmarkDotNet.Running;
 using Bogus;
 using FunFair.Test.Common.Helpers;
 using Microsoft.Extensions.Logging;
-using NSubstitute;
 using Xunit;
 
 namespace FunFair.Test.Common;
@@ -88,14 +87,14 @@ public abstract class TestBase
     protected static T GetSubstitute<T>(params object[] constructorArguments)
         where T : class
     {
-        return Substitute.For<T>(constructorArguments);
+        return SubstituteFactory.Create<T>(constructorArguments);
     }
 
     protected static T1 GetSubstitute<T1, T2>(params object[] constructorArguments)
         where T1 : class
         where T2 : class
     {
-        return Substitute.For<T1, T2>(constructorArguments);
+        return SubstituteFactory.Create<T1, T2>(constructorArguments);
     }
 
     protected static T1 GetSubstitute<T1, T2, T3>(params object[] constructorArguments)
@@ -103,7 +102,7 @@ public abstract class TestBase
         where T2 : class
         where T3 : class
     {
-        return Substitute.For<T1, T2, T3>(constructorArguments);
+        return SubstituteFactory.Create<T1, T2, T3>(constructorArguments);
     }
 
     [Pure]
