@@ -8,6 +8,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Security
 ### Added
 ### Fixed
+- Fixed benchmark tests failing under slow/emulated CI runners by giving BenchmarkDotNet a configurable build timeout (default 10 minutes, overridable via FUNFAIR_TEST_BENCHMARK_BUILD_TIMEOUT_SECONDS) instead of its hardcoded 120 second default
 ### Changed
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.28.0.143324
 - Dependencies - Updated Microsoft.CodeAnalysis.Analyzers to 5.6.0
