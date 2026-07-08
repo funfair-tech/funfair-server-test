@@ -10,7 +10,8 @@ using Xunit;
 
 namespace FunFair.Test.Common.Helpers;
 
-internal static partial class BenchmarkingHelpers
+// Must stay behaviourally compatible with BenchmarkingHelpers.Debug.cs's Benchmark<T>() (same signature, fake result).
+internal static class BenchmarkingHelpers
 {
     private const string BENCHMARK_BUILD_TIMEOUT_SECONDS_ENVIRONMENT_VARIABLE =
         "FUNFAIR_TEST_BENCHMARK_BUILD_TIMEOUT_SECONDS";
@@ -39,14 +40,22 @@ internal static partial class BenchmarkingHelpers
     {
         string? value = Environment.GetEnvironmentVariable(BENCHMARK_BUILD_TIMEOUT_SECONDS_ENVIRONMENT_VARIABLE);
 
+        if (string.IsNullOrEmpty(value))
+        {
+            return DefaultBenchmarkBuildTimeout;
+        }
+
         if (
-            !string.IsNullOrEmpty(value)
-            && int.TryParse(value, style: NumberStyles.Integer, provider: CultureInfo.InvariantCulture, out int seconds)
+            int.TryParse(value, style: NumberStyles.Integer, provider: CultureInfo.InvariantCulture, out int seconds)
             && seconds > 0
         )
         {
             return TimeSpan.FromSeconds(seconds);
         }
+
+        Console.Error.WriteLine(
+            $"Ignoring invalid {BENCHMARK_BUILD_TIMEOUT_SECONDS_ENVIRONMENT_VARIABLE} value '{value}': expected a positive integer number of seconds. Using default of {DefaultBenchmarkBuildTimeout}."
+        );
 
         return DefaultBenchmarkBuildTimeout;
     }

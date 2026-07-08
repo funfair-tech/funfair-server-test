@@ -7,7 +7,8 @@ using BenchmarkDotNet.Reports;
 
 namespace FunFair.Test.Common.Helpers;
 
-internal static partial class BenchmarkingHelpers
+// Must stay behaviourally compatible with BenchmarkingHelpers.Release.cs's Benchmark<T>() (same signature, real result).
+internal static class BenchmarkingHelpers
 {
     public static (Summary summary, AccumulationLogger logger) Benchmark<T>()
     {
