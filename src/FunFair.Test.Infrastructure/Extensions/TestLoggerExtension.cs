@@ -19,7 +19,7 @@ public static class TestLoggerExtension
             .Log(
                 logLevel: logLevel,
                 Arg.Any<EventId>(),
-                Arg.Is<object>(o => o.ToString() == message),
+                Arg.Is<object>(o => o!.ToString() == message),
                 Arg.Any<Exception?>(),
                 Arg.Any<Func<object, Exception?, string>>()
             );
@@ -37,7 +37,7 @@ public static class TestLoggerExtension
             .Log(
                 logLevel: logLevel,
                 Arg.Any<EventId>(),
-                Arg.Is<object>(o => o.ToString() == message),
+                Arg.Is<object>(o => o!.ToString() == message),
                 Arg.Any<Exception?>(),
                 Arg.Any<Func<object, Exception?, string>>()
             );
