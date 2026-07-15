@@ -14,6 +14,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Analyzer to 3.0.123
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.29.0.143774
 - Dependencies - Updated Microsoft.Extensions to 10.8.0
+- Dependencies - Updated NSubstitute to 6.0.0
 ### Removed
 ### Deployment Changes
 <!--
