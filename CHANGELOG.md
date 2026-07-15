@@ -9,17 +9,20 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+### Removed
+### Deployment Changes
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.3.6] - 2026-07-15
+### Changed
 - SDK - Updated DotNet SDK to 10.0.302
 - Dependencies - Updated FunFair.CodeAnalysis to 7.2.8.2196
 - Dependencies - Updated Meziantou.Analyzer to 3.0.123
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.29.0.143774
 - Dependencies - Updated Microsoft.Extensions to 10.8.0
 - Dependencies - Updated NSubstitute to 6.0.0
-### Removed
-### Deployment Changes
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
+
 ## [6.3.5] - 2026-07-14
 ### Changed
 - Dependencies - Updated Meziantou.Analyzer to 3.0.122
