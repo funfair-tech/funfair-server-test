@@ -10,9 +10,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.2.11.2216
-- Dependencies - Updated SonarAnalyzer.CSharp to 10.30.0.144632
 - Target net10.0 exclusively, dropping net9.0 multi-targeting
 - Dependencies - Updated Meziantou.Analyzer to 3.0.137
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.31.0.145097
 ### Deprecated
 ### Removed
 ### Deployment Changes
