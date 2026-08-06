@@ -20,7 +20,7 @@ internal sealed class XUnitLoggerProvider : ILoggerProvider
     public XUnitLoggerProvider(ITestOutputHelper testOutputHelper, XUnitLoggerOptions? options)
     {
         this._testOutputHelper = testOutputHelper;
-        this._options = options ?? new XUnitLoggerOptions();
+        this._options = options ?? XUnitLoggerOptions.Default;
     }
 
     /// <inheritdoc />
