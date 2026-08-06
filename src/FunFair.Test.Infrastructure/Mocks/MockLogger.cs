@@ -26,7 +26,7 @@ public sealed class MockLogger<T> : ILogger<T>
             ILogger logger
     )
     {
-        this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        this._logger = logger;
         this._seen = new();
     }
 
