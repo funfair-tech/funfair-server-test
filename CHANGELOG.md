@@ -1636,6 +1636,7 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 - FF-1679 - Move common test base classes and infrastructure into Test.Common
 
 ## [1.2.0] - 2019-12-06
+- FF-1258 - Updated to .net core 3.1.100
 
 ## [1.1.0] - 2019-12-02
 ### Changed
