@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FunFair.Test.Infrastructure.Mocks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NSubstitute;
@@ -16,7 +15,7 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
 
     protected ModelBinderTestsBase(TBinder binder)
     {
-        this._binder = binder ?? throw new ArgumentNullException(nameof(binder));
+        this._binder = binder;
 
         this._valueProvider = GetSubstitute<IValueProvider>();
     }
@@ -33,8 +32,6 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
 
     protected async Task MustConvertAsync(string value, TDataType expected)
     {
-        Assert.NotNull(value);
-
         this.MockValueProvider(value);
 
         ModelBindingContext bindingContext = this.MockBindingContext();
@@ -47,8 +44,6 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
 
     protected async Task MustNotConvertAsync(string value)
     {
-        Assert.NotNull(value);
-
         this.MockValueProvider(value);
 
         ModelBindingContext bindingContext = this.MockBindingContext();
