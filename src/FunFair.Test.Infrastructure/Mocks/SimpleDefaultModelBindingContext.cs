@@ -114,7 +114,6 @@ public sealed class SimpleDefaultModelBindingContext : ModelBindingContext
             FieldName = binderModelName ?? modelName,
             ModelName = binderModelName ?? modelName,
 
-            //OriginalModelName = binderModelName ?? modelName,
             IsTopLevelObject = true,
             ModelMetadata = metadata,
             ModelState = actionContext.ModelState,

@@ -197,7 +197,7 @@ public static class HttpClientFactoryExtensions
         {
             this._statusCode = statusCode;
             this._responseMessage = responseMessage;
-            this._headers = headers ?? throw new ArgumentNullException(nameof(headers));
+            this._headers = headers;
         }
 
         protected override Task<HttpResponseMessage> SendAsync(

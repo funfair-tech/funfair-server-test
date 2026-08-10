@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using FunFair.Test.Infrastructure.Helpers;
 
 namespace FunFair.Test.Common.Tests.Mocks.Converters;
 
@@ -16,17 +17,7 @@ public sealed class Model : IEquatable<Model>
 
     public bool Equals(Model? other)
     {
-        if (other is null)
-        {
-            return false;
-        }
-
-        if (ReferenceEquals(this, objB: other))
-        {
-            return true;
-        }
-
-        return this.Value == other.Value;
+        return ReferenceObjectHelpers.AreEqual(left: this, right: other, eq: (l, r) => l.Value == r.Value);
     }
 
     public override bool Equals(object? obj)
