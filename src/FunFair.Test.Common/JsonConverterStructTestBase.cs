@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using FunFair.Test.Infrastructure.Helpers;
 using Xunit;
 
 namespace FunFair.Test.Common;
@@ -19,13 +20,7 @@ public abstract class JsonConverterStructTestBase<
         : base(output)
     {
         JsonConverter converter = new TConverter();
-        this._options = new()
-        {
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-            PropertyNameCaseInsensitive = false,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            Converters = { converter },
-        };
+        this._options = JsonOptions.CreateDefault(converter);
     }
 
     protected virtual string InvalidValue { get; } = Guid.NewGuid().ToString();
@@ -39,7 +34,6 @@ public abstract class JsonConverterStructTestBase<
 
         Model sourceModel = new() { Value = instance };
 
-        // banana!
         string doc = JsonSerializer.Serialize(value: sourceModel, options: this._options);
         Assert.NotEmpty(doc);
 
