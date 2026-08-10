@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 - Test.Common - Fixed XUnitLoggerProvider falling back to UseUtcTimestamp false instead of the intended Default (true) when no logger options are supplied
+- Test.Infrastructure - Fixed CA1873 code-scanning alert on ILogger test-verification helpers (Received/DidNotReceive)
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.2.11.2216
 - Target net10.0 exclusively, dropping net9.0 multi-targeting
