@@ -17,7 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Target net10.0 exclusively, dropping net9.0 multi-targeting
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.31.0.145097
 - Test.Common/Test.Infrastructure - Removed duplicated validator test-base logic, dead null-guards on non-nullable parameters, and stale comments
-- Dependencies - Updated Meziantou.Analyzer to 3.0.140
+- Dependencies - Updated Meziantou.Analyzer to 3.0.141
 ### Deprecated
 ### Removed
 ### Deployment Changes
