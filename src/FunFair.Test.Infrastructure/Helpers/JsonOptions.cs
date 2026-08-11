@@ -30,4 +30,15 @@ public static class JsonOptions
 
         options.TypeInfoResolver = JsonTypeInfoResolver.Combine(options.TypeInfoResolver, context);
     }
+
+    public static JsonSerializerOptions CreateDefault(JsonConverter converter)
+    {
+        return new()
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            PropertyNameCaseInsensitive = false,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = { converter },
+        };
+    }
 }

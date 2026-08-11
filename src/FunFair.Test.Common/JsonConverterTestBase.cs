@@ -28,13 +28,7 @@ public abstract class JsonConverterTestBase<
         : base(output)
     {
         JsonConverter converter = new TConverter();
-        this._options = new()
-        {
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-            PropertyNameCaseInsensitive = false,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            Converters = { converter },
-        };
+        this._options = JsonOptions.CreateDefault(converter);
 
         JsonOptions.AddContext(options: this._options, context: context);
     }
@@ -50,7 +44,6 @@ public abstract class JsonConverterTestBase<
 
         Model sourceModel = new() { Value = instance };
 
-        // banana!
         string doc = JsonSerializer.Serialize(value: sourceModel, options: this._options);
         Assert.NotEmpty(doc);
 
