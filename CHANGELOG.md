@@ -15,10 +15,10 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.2.11.2216
 - Target net10.0 exclusively, dropping net9.0 multi-targeting
-- Dependencies - Updated SonarAnalyzer.CSharp to 10.31.0.145097
 - Test.Common/Test.Infrastructure - Removed duplicated validator test-base logic, dead null-guards on non-nullable parameters, and stale comments
 - Dependencies - Updated Roslynator.Analyzers to 4.16.0
 - Dependencies - Updated Meziantou.Analyzer to 3.0.142
+- Dependencies - Updated SonarAnalyzer.CSharp to 10.32.0.713
 ### Deprecated
 ### Removed
 ### Deployment Changes
