@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 - Test.Common - Fixed XUnitLoggerProvider falling back to UseUtcTimestamp false instead of the intended Default (true) when no logger options are supplied
+- Test.Infrastructure - Fixed CA1873 code-scanning alert on ILogger test-verification helpers (Received/DidNotReceive)
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.2.11.2216
 - Target net10.0 exclusively, dropping net9.0 multi-targeting
@@ -19,6 +20,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Roslynator.Analyzers to 4.16.0
 - Dependencies - Updated Meziantou.Analyzer to 3.0.142
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.32.0.713
+- Dependencies - Updated NSubstitute to 6.1.0
 ### Deprecated
 ### Removed
 ### Deployment Changes
