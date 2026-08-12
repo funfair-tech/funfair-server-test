@@ -11,6 +11,15 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Security
 ### Added
 ### Fixed
+### Changed
+### Deprecated
+### Removed
+### Deployment Changes
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+## [6.3.8] - 2026-08-12
+### Fixed
 - Test.Common - Fixed XUnitLoggerProvider falling back to UseUtcTimestamp false instead of the intended Default (true) when no logger options are supplied
 - Test.Infrastructure - Fixed CA1873 code-scanning alert on ILogger test-verification helpers (Received/DidNotReceive)
 ### Changed
@@ -23,12 +32,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - SDK - Updated DotNet SDK to 10.0.400
 - Dependencies - Updated Meziantou.Analyzer to 3.0.147
 - Dependencies - Updated Microsoft.Extensions to 10.9.0
-### Deprecated
-### Removed
-### Deployment Changes
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
+
 ## [6.3.7] - 2026-07-16
 ### Changed
 - Dependencies - Updated Credfeto.Enumeration to 1.2.151.2192
