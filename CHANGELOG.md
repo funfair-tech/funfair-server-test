@@ -17,6 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.runner.visualstudio to 4.0.0
 - Dependencies - Updated xunit.v3 to 4.0.0
 - Dependencies - Updated Meziantou.Analyzer to 3.0.159
+- Dependencies - Updated Roslynator.Analyzers to 4.16.1
 ### Deprecated
 ### Removed
 ### Deployment Changes
