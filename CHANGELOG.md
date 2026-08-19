@@ -18,6 +18,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.v3 to 4.0.0
 - Dependencies - Updated Roslynator.Analyzers to 4.16.1
 - Dependencies - Updated Meziantou.Analyzer to 3.0.165
+- Dependencies - Updated Microsoft.CodeAnalysis.Analyzers to 5.9.0
 ### Deprecated
 ### Removed
 ### Deployment Changes
