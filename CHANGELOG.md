@@ -12,13 +12,16 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Switched xunit.v3 test packages to their AOT variants (xunit.v3.aot.mtp-v2, xunit.v3.assert.aot, xunit.v3.extensibility.core.aot)
 ### Deprecated
 ### Removed
 ### Deployment Changes
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.4.0] - 2026-08-20
+### Changed
+- Switched xunit.v3 test packages to their AOT variants (xunit.v3.aot.mtp-v2, xunit.v3.assert.aot, xunit.v3.extensibility.core.aot)
+
 ## [6.3.9] - 2026-08-19
 ### Changed
 - Dependencies - Updated FunFair.CodeAnalysis to 7.2.12.2288
@@ -1657,7 +1660,6 @@ Releases that have at least been deployed to staging, BUT NOT necessarily releas
 - FF-1679 - Move common test base classes and infrastructure into Test.Common
 
 ## [1.2.0] - 2019-12-06
-- FF-1258 - Updated to .net core 3.1.100
 
 ## [1.1.0] - 2019-12-02
 ### Changed
