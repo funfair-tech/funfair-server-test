@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
+- Switched xunit.v3 test packages to their AOT variants (xunit.v3.aot.mtp-v2, xunit.v3.assert.aot, xunit.v3.extensibility.core.aot)
 ### Deprecated
 ### Removed
 ### Deployment Changes
