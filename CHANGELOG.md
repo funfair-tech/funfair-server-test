@@ -12,15 +12,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Dependencies - Updated Credfeto.Enumeration to 1.2.152.2216
-- Dependencies - Updated FunFair.CodeAnalysis to 7.2.13.2323
-- Dependencies - Updated Meziantou.Analyzer to 3.0.173
 ### Deprecated
 ### Removed
 ### Deployment Changes
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+## [6.4.1] - 2026-08-20
+### Changed
+- Dependencies - Updated Credfeto.Enumeration to 1.2.152.2216
+- Dependencies - Updated FunFair.CodeAnalysis to 7.2.13.2323
+- Dependencies - Updated Meziantou.Analyzer to 3.0.173
+
 ## [6.4.0] - 2026-08-20
 ### Changed
 - Switched xunit.v3 test packages to their AOT variants (xunit.v3.aot.mtp-v2, xunit.v3.assert.aot, xunit.v3.extensibility.core.aot)
