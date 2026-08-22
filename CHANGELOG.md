@@ -13,6 +13,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 ### Changed
 - Dependencies - Updated CSharpIsNullAnalyzer to 0.2.19
+- Dependencies - Updated Meziantou.Analyzer to 3.0.177
 ### Deprecated
 ### Removed
 ### Deployment Changes
