@@ -8,22 +8,13 @@ namespace FunFair.Test.Source.Generator.Tests.Models;
 public sealed class NamespaceGenerationTests : TestBase
 {
     [Fact]
-    public void Namespace_ReturnsAssemblyName()
-    {
-        AssemblyIdentity assembly = new(name: "SampleAssembly");
-
-        NamespaceGeneration generation = new(assembly: assembly);
-
-        Assert.Equal(expected: "SampleAssembly", actual: generation.Namespace);
-    }
-
-    [Fact]
-    public void Assembly_ReturnsConstructorValue()
+    public void Constructor_ExposesAssemblyAndDerivedNamespace()
     {
         AssemblyIdentity assembly = new(name: "SampleAssembly");
 
         NamespaceGeneration generation = new(assembly: assembly);
 
         Assert.Equal(expected: assembly, actual: generation.Assembly);
+        Assert.Equal(expected: "SampleAssembly", actual: generation.Namespace);
     }
 }

@@ -15,18 +15,14 @@ public sealed class CodeBuilderTests : TestBase
         Assert.Equal(expected: "hello" + Environment.NewLine, actual: builder.Text.ToString());
     }
 
-    [Fact]
-    public void AppendLine_WithWhitespaceText_AddsBlankLineInstead()
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    // CA1822: unlike the [Fact] methods in this suite, this [Theory] method uses only its parameter and
+    // CodeBuilder, so the analyzer requires static rather than the TestBase-instance convention.
+    public static void AppendLine_WithEmptyOrWhitespaceText_AddsBlankLineInstead(string text)
     {
-        CodeBuilder builder = new CodeBuilder().AppendLine("   ");
-
-        Assert.Equal(expected: Environment.NewLine, actual: builder.Text.ToString());
-    }
-
-    [Fact]
-    public void AppendLine_WithEmptyText_AddsBlankLineInstead()
-    {
-        CodeBuilder builder = new CodeBuilder().AppendLine(string.Empty);
+        CodeBuilder builder = new CodeBuilder().AppendLine(text);
 
         Assert.Equal(expected: Environment.NewLine, actual: builder.Text.ToString());
     }

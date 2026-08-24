@@ -14,7 +14,7 @@ internal static class GeneratorTestHelpers
 {
     private static readonly Lazy<IReadOnlyList<MetadataReference>> References = new(BuildReferences);
 
-    public static Compilation CreateCompilation(string source)
+    private static Compilation CreateCompilation(string source)
     {
         SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(
             text: source,
@@ -40,7 +40,7 @@ internal static class GeneratorTestHelpers
         ];
     }
 
-    public static GeneratorDriverRunResult RunGenerator(
+    private static GeneratorDriverRunResult RunGenerator(
         IIncrementalGenerator generator,
         Compilation compilation,
         ImmutableDictionary<string, string>? globalOptions = null

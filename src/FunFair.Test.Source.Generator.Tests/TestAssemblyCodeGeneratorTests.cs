@@ -61,13 +61,10 @@ public sealed class TestAssemblyCodeGeneratorTests : TestBase
             """
         );
 
-        int assemblySettingsCount = result
-            .Results.Single()
-            .GeneratedSources.Count(source =>
-                StringComparer.Ordinal.Equals(x: source.HintName, y: AssemblySettingsHintName)
-            );
-
-        Assert.Equal(expected: 1, actual: assemblySettingsCount);
+        Assert.Single(
+            result.Results.Single().GeneratedSources,
+            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: AssemblySettingsHintName)
+        );
     }
 
     [Fact]

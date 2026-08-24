@@ -20,7 +20,6 @@
     <IsTrimmable>false</IsTrimmable>
     <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
     <LangVersion>latest</LangVersion>
-    <NetStandardCompatFacadeAssemblyNames>;System.Buffers;System.Memory;System.Numerics.Vectors;System.Runtime.CompilerServices.Unsafe;System.Text.Encoding.CodePages;System.Threading.Tasks.Extensions;</NetStandardCompatFacadeAssemblyNames>
     <NuGetAudit>true</NuGetAudit>
     <NuGetAuditLevel>low</NuGetAuditLevel>
     <NuGetAuditMode>all</NuGetAuditMode>
@@ -37,6 +36,7 @@
     <UseSystemResourceKeys>true</UseSystemResourceKeys>
     <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
     <WarningsAsErrors />
+    <_NetStandardCompatFacadeAssemblyNames>;System.Buffers;System.Memory;System.Numerics.Vectors;System.Runtime.CompilerServices.Unsafe;System.Text.Encoding.CodePages;System.Threading.Tasks.Extensions;</_NetStandardCompatFacadeAssemblyNames>
   </PropertyGroup>
   <Import Project="$(SolutionDir)UnitTests.props" Condition="Exists('$(SolutionDir)UnitTests.props')" />
   <!-- FunFair.Test.Source.Generator targets netstandard2.0 (required for Roslyn generator host compatibility).
@@ -59,8 +59,8 @@
        the conflict at all; net10.0 doesn't need any of them. -->
   <Target Name="RemoveNetStandardCompatFacades" BeforeTargets="ResolveAssemblyReferences">
     <ItemGroup>
-      <Reference Remove="@(Reference)" Condition="$(NetStandardCompatFacadeAssemblyNames.Contains(';%(Reference.FileName);'))" />
-      <_ResolvedProjectReferencePaths Remove="@(_ResolvedProjectReferencePaths)" Condition="$(NetStandardCompatFacadeAssemblyNames.Contains(';%(_ResolvedProjectReferencePaths.FileName);'))" />
+      <Reference Remove="@(Reference)" Condition="$(_NetStandardCompatFacadeAssemblyNames.Contains(';%(Reference.FileName);'))" />
+      <_ResolvedProjectReferencePaths Remove="@(_ResolvedProjectReferencePaths)" Condition="$(_NetStandardCompatFacadeAssemblyNames.Contains(';%(_ResolvedProjectReferencePaths.FileName);'))" />
     </ItemGroup>
   </Target>
   <ItemGroup>
