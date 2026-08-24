@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
 namespace FunFair.Test.Source.Generator.Tests;
@@ -40,75 +37,24 @@ internal static class GeneratorTestHelpers
         ];
     }
 
-    private static GeneratorDriverRunResult RunGenerator(
-        IIncrementalGenerator generator,
-        Compilation compilation,
-        ImmutableDictionary<string, string>? globalOptions = null
-    )
+    public static GeneratorDriverRunResult RunGenerator(IIncrementalGenerator generator, string source)
     {
         GeneratorDriver driver = CSharpGeneratorDriver.Create(
             generators: [generator.AsSourceGenerator()],
             additionalTexts: null,
             parseOptions: null,
-            optionsProvider: new TestAnalyzerConfigOptionsProvider(globalOptions ?? [])
+            optionsProvider: null
         );
 
-        driver = driver.RunGenerators(compilation, cancellationToken: TestContext.Current.CancellationToken);
-
-        return driver.GetRunResult();
-    }
-
-    public static GeneratorDriverRunResult RunGenerator(
-        IIncrementalGenerator generator,
-        string source,
-        ImmutableDictionary<string, string>? globalOptions = null
-    )
-    {
-        GeneratorDriverRunResult result = RunGenerator(
-            generator: generator,
-            compilation: CreateCompilation(source),
-            globalOptions: globalOptions
+        driver = driver.RunGenerators(
+            CreateCompilation(source),
+            cancellationToken: TestContext.Current.CancellationToken
         );
+
+        GeneratorDriverRunResult result = driver.GetRunResult();
 
         Assert.Empty(result.Diagnostics);
 
         return result;
-    }
-
-    private sealed class TestAnalyzerConfigOptionsProvider : AnalyzerConfigOptionsProvider
-    {
-        public TestAnalyzerConfigOptionsProvider(ImmutableDictionary<string, string> globalOptions)
-        {
-            this.GlobalOptions = new TestAnalyzerConfigOptions(globalOptions);
-        }
-
-        public override AnalyzerConfigOptions GlobalOptions { get; }
-
-        public override AnalyzerConfigOptions GetOptions(SyntaxTree tree)
-        {
-            return this.GlobalOptions;
-        }
-
-        public override AnalyzerConfigOptions GetOptions(AdditionalText textFile)
-        {
-            return this.GlobalOptions;
-        }
-    }
-
-    private sealed class TestAnalyzerConfigOptions : AnalyzerConfigOptions
-    {
-        private readonly ImmutableDictionary<string, string> _options;
-
-        public TestAnalyzerConfigOptions(ImmutableDictionary<string, string> options)
-        {
-            this._options = options;
-        }
-
-        public override IEnumerable<string> Keys => this._options.Keys;
-
-        public override bool TryGetValue(string key, [NotNullWhen(true)] out string? value)
-        {
-            return this._options.TryGetValue(key: key, value: out value!);
-        }
     }
 }
