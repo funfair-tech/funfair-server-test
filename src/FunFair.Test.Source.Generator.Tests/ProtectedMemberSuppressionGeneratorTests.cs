@@ -8,7 +8,7 @@ namespace FunFair.Test.Source.Generator.Tests;
 
 public sealed class ProtectedMemberSuppressionGeneratorTests : TestBase
 {
-    private const string SuppressionsHintName = "ProtectedMemberSuppressions.generated.cs";
+    private const string SUPPRESSIONS_HINT_NAME = "ProtectedMemberSuppressions.generated.cs";
 
     [Theory]
     [InlineData(
@@ -73,7 +73,7 @@ public sealed class ProtectedMemberSuppressionGeneratorTests : TestBase
 
         GeneratedSourceResult generated = Assert.Single(
             result.Results.Single().GeneratedSources,
-            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: SuppressionsHintName)
+            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: SUPPRESSIONS_HINT_NAME)
         );
 
         string text = generated.SourceText.ToString();
@@ -113,7 +113,7 @@ public sealed class ProtectedMemberSuppressionGeneratorTests : TestBase
 
         GeneratedSourceResult generated = Assert.Single(
             result.Results.Single().GeneratedSources,
-            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: SuppressionsHintName)
+            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: SUPPRESSIONS_HINT_NAME)
         );
 
         string text = generated.SourceText.ToString();
