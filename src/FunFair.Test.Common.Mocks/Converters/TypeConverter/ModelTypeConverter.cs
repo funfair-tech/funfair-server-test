@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
-namespace FunFair.Test.Common.Tests.Mocks.Converters.TypeConverter;
+namespace FunFair.Test.Common.Mocks.Converters.TypeConverter;
 
 public sealed class ModelTypeConverter : System.ComponentModel.TypeConverter
 {

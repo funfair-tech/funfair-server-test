@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace FunFair.Test.Common.Tests.Mocks;
+namespace FunFair.Test.Common.Mocks;
 
-internal sealed class MockGenericModel<T>
+public sealed class MockGenericModel<T>
 {
     public MockGenericModel(T value)
     {
