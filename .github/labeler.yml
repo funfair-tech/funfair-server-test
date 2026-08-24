@@ -18,6 +18,8 @@
   - any: ['.editorconfig']
 "funfair-test-common":
   - any: ['src/FunFair.Test.Common/**/*']
+"funfair-test-common-mocks":
+  - any: ['src/FunFair.Test.Common.Mocks/**/*']
 "funfair-test-common-tests":
   - any: ['src/FunFair.Test.Common.Tests/**/*']
 "funfair-test-infrastructure":

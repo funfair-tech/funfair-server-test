@@ -68,6 +68,10 @@
   color: "96f7d2"
   description: "Changes in FunFair.Test.Common project"
 
+- name: "funfair-test-common-mocks"
+  color: "0e8a16"
+  description: "Changes in FunFair.Test.Common.Mocks project"
+
 - name: "funfair-test-common-tests"
   color: "0e8a16"
   description: "Changes in FunFair.Test.Common.Tests project"
