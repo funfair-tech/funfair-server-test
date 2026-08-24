@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace FunFair.Test.Common.Tests.Mocks.Converters;
+namespace FunFair.Test.Common.Mocks.Converters;
 
 public enum ModelColor
 {

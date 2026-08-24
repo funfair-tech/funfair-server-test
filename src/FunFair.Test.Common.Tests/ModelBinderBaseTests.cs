@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using FunFair.Test.Common.Tests.Mocks.Converters;
-using FunFair.Test.Common.Tests.Mocks.Converters.Binders;
+using FunFair.Test.Common.Mocks.Converters;
+using FunFair.Test.Common.Mocks.Converters.Binders;
 using Xunit;
 
 namespace FunFair.Test.Common.Tests;

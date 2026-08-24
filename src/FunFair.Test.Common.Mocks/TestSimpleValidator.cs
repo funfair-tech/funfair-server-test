@@ -1,7 +1,6 @@
 using FluentValidation;
-using FunFair.Test.Common.Tests.Mocks;
 
-namespace FunFair.Test.Common.Tests;
+namespace FunFair.Test.Common.Mocks;
 
 public sealed class TestSimpleValidator : AbstractValidator<ExampleObject>
 {

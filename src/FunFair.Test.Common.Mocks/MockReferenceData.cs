@@ -1,8 +1,8 @@
 using FunFair.Test.Infrastructure.Mocks;
 
-namespace FunFair.Test.Common.Tests.Mocks;
+namespace FunFair.Test.Common.Mocks;
 
-internal static class MockReferenceData
+public static class MockReferenceData
 {
     public static readonly MockBase<ExampleObject> ExampleObject = new MockExampleObject();
 }

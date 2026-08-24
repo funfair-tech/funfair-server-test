@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace FunFair.Test.Common.Tests.Mocks;
+namespace FunFair.Test.Common.Mocks;
 
 public sealed class ExampleObject
 {

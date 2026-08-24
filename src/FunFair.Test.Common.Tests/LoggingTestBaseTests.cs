@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using FunFair.Test.Common.Tests.Extensions;
-using FunFair.Test.Common.Tests.Mocks;
+using FunFair.Test.Common.Mocks;
+using FunFair.Test.Common.Mocks.Extensions;
 using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Internal;

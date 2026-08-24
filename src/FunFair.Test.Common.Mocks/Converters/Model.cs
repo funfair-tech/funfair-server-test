@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using FunFair.Test.Infrastructure.Helpers;
 
-namespace FunFair.Test.Common.Tests.Mocks.Converters;
+namespace FunFair.Test.Common.Mocks.Converters;
 
 public sealed class Model : IEquatable<Model>
 {
@@ -13,7 +13,7 @@ public sealed class Model : IEquatable<Model>
         this.Value = color;
     }
 
-    internal ModelColor? Value { get; init; }
+    public ModelColor? Value { get; init; }
 
     public bool Equals(Model? other)
     {

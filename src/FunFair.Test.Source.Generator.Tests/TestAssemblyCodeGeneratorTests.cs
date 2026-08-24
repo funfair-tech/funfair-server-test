@@ -8,7 +8,7 @@ namespace FunFair.Test.Source.Generator.Tests;
 
 public sealed class TestAssemblyCodeGeneratorTests : TestBase
 {
-    private const string AssemblySettingsHintName = "AssemblySettings.generated.cs";
+    private const string ASSEMBLY_SETTINGS_HINT_NAME = "AssemblySettings.generated.cs";
 
     [Fact]
     public void SingleNamespace_GeneratesAssemblySettings()
@@ -24,7 +24,7 @@ public sealed class TestAssemblyCodeGeneratorTests : TestBase
 
         GeneratedSourceResult generated = Assert.Single(
             result.Results.Single().GeneratedSources,
-            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: AssemblySettingsHintName)
+            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: ASSEMBLY_SETTINGS_HINT_NAME)
         );
 
         string text = generated.SourceText.ToString();
@@ -63,7 +63,7 @@ public sealed class TestAssemblyCodeGeneratorTests : TestBase
 
         Assert.Single(
             result.Results.Single().GeneratedSources,
-            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: AssemblySettingsHintName)
+            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: ASSEMBLY_SETTINGS_HINT_NAME)
         );
     }
 
