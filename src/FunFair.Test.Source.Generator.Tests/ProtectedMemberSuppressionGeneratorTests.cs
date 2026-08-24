@@ -20,7 +20,7 @@ public sealed class ProtectedMemberSuppressionGeneratorTests : TestBase
                 protected void DoSomething() { }
             }
             """,
-        1
+        "DoSomething"
     )]
     [InlineData(
         """
@@ -33,15 +33,39 @@ public sealed class ProtectedMemberSuppressionGeneratorTests : TestBase
                 protected void SecondMethod() { }
             }
             """,
-        2
+        "FirstMethod,SecondMethod"
+    )]
+    [InlineData(
+        """
+            namespace Sample;
+
+            public abstract class Example
+            {
+                protected internal void ProtectedInternalMethod() { }
+            }
+            """,
+        "ProtectedInternalMethod"
+    )]
+    [InlineData(
+        """
+            namespace Sample;
+
+            public abstract class Example
+            {
+                private protected void PrivateProtectedMethod() { }
+            }
+            """,
+        "PrivateProtectedMethod"
     )]
     // CA1822: unlike the [Fact] methods in this suite, these [Theory] methods use only their parameters and
     // GeneratorTestHelpers, so the analyzer requires static rather than the TestBase-instance convention.
     public static void ClassWithProtectedMembers_GeneratesSuppressionForEach(
         string source,
-        int expectedSuppressionCount
+        string expectedMemberNamesCsv
     )
     {
+        string[] expectedMemberNames = expectedMemberNamesCsv.Split(',');
+
         GeneratorDriverRunResult result = GeneratorTestHelpers.RunGenerator(
             generator: new ProtectedMemberSuppressionGenerator(),
             source: source
@@ -55,11 +79,21 @@ public sealed class ProtectedMemberSuppressionGeneratorTests : TestBase
         string text = generated.SourceText.ToString();
 
         Assert.Contains("UnusedMember.Global", text, StringComparison.Ordinal);
-        Assert.Equal(
-            expected: expectedSuppressionCount,
-            actual: text.Split(separator: '\n')
-                .Count(line => line.Contains("SuppressMessage", StringComparison.Ordinal))
-        );
+
+        string[] suppressionLines =
+        [
+            .. text.Split(separator: '\n').Where(line => line.Contains("SuppressMessage", StringComparison.Ordinal)),
+        ];
+
+        Assert.Equal(expected: expectedMemberNames.Length, actual: suppressionLines.Length);
+
+        foreach (string memberName in expectedMemberNames)
+        {
+            Assert.Contains(
+                suppressionLines,
+                line => line.Contains($"Target = \"~M:Sample.Example.{memberName}", StringComparison.Ordinal)
+            );
+        }
     }
 
     [Theory]
