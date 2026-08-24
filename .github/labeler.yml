@@ -26,6 +26,8 @@
   - any: ['src/FunFair.Test.Infrastructure.Tests/**/*']
 "funfair-test-source-generator":
   - any: ['src/FunFair.Test.Source.Generator/**/*']
+"funfair-test-source-generator-tests":
+  - any: ['src/FunFair.Test.Source.Generator.Tests/**/*']
 "github-actions":
   - any: ['.github/actions/*.yml', '.github/workflows/*.yml']
 "Markdown":
