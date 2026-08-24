@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace FunFair.Test.Common.Tests.Mocks.Converters.Binders;
+namespace FunFair.Test.Common.Mocks.Converters.Binders;
 
 public sealed class ModelBinder : IModelBinder
 {

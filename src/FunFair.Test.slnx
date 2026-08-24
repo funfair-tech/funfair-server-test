@@ -9,6 +9,7 @@
     <File Path="KeepGeneratedFiles.props" />
     <File Path="UnitTests.props" />
   </Folder>
+  <Project Path="FunFair.Test.Common.Mocks/FunFair.Test.Common.Mocks.csproj" />
   <Project Path="FunFair.Test.Common.Tests/FunFair.Test.Common.Tests.csproj" />
   <Project Path="FunFair.Test.Common/FunFair.Test.Common.csproj" />
   <Project Path="FunFair.Test.Infrastructure.Tests/FunFair.Test.Infrastructure.Tests.csproj" />

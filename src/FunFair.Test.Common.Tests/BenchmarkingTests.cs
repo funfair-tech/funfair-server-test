@@ -1,5 +1,7 @@
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Reports;
+using FunFair.Test.Common.Mocks;
+using FunFair.Test.Common.Mocks.Benchmarks;
 using Xunit;
 
 namespace FunFair.Test.Common.Tests;

@@ -1,5 +1,5 @@
-using FunFair.Test.Common.Tests.Mocks.Converters;
-using FunFair.Test.Common.Tests.Mocks.Converters.JsonConverter;
+using FunFair.Test.Common.Mocks.Converters;
+using FunFair.Test.Common.Mocks.Converters.JsonConverter;
 using Xunit;
 
 namespace FunFair.Test.Common.Tests;

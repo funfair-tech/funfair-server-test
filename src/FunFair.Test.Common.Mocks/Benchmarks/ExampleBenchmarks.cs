@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 
-namespace FunFair.Test.Common.Tests;
+namespace FunFair.Test.Common.Mocks.Benchmarks;
 
 public class ExampleBenchmarks
 {
