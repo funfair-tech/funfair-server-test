@@ -96,6 +96,33 @@ public sealed class ProtectedMemberSuppressionGeneratorTests : TestBase
         }
     }
 
+    [Fact]
+    public void ClassWithProtectedProperty_GeneratesSuppressionForPropertyAndAccessors()
+    {
+        GeneratorDriverRunResult result = GeneratorTestHelpers.RunGenerator(
+            generator: new ProtectedMemberSuppressionGenerator(),
+            source: """
+            namespace Sample;
+
+            public abstract class Example
+            {
+                protected int Value { get; set; }
+            }
+            """
+        );
+
+        GeneratedSourceResult generated = Assert.Single(
+            result.Results.Single().GeneratedSources,
+            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: SuppressionsHintName)
+        );
+
+        string text = generated.SourceText.ToString();
+
+        Assert.Contains("Target = \"~P:Sample.Example.Value", text, StringComparison.Ordinal);
+        Assert.Contains("Target = \"~M:Sample.Example.get_Value", text, StringComparison.Ordinal);
+        Assert.Contains("Target = \"~M:Sample.Example.set_Value(System.Int32)", text, StringComparison.Ordinal);
+    }
+
     [Theory]
     [InlineData(
         """
