@@ -1,0 +1,98 @@
+using System;
+using System.Linq;
+using FunFair.Test.Common;
+using Microsoft.CodeAnalysis;
+using Xunit;
+
+namespace FunFair.Test.Source.Generator.Tests;
+
+public sealed class ProtectedMemberSuppressionGeneratorTests : TestBase
+{
+    private const string SuppressionsHintName = "ProtectedMemberSuppressions.generated.cs";
+
+    [Theory]
+    [InlineData(
+        """
+            namespace Sample;
+
+            public abstract class Example
+            {
+                protected void DoSomething() { }
+            }
+            """,
+        1
+    )]
+    [InlineData(
+        """
+            namespace Sample;
+
+            public abstract class Example
+            {
+                protected void FirstMethod() { }
+
+                protected void SecondMethod() { }
+            }
+            """,
+        2
+    )]
+    // CA1822: unlike the [Fact] methods in this suite, these [Theory] methods use only their parameters and
+    // GeneratorTestHelpers, so the analyzer requires static rather than the TestBase-instance convention.
+    public static void ClassWithProtectedMembers_GeneratesSuppressionForEach(
+        string source,
+        int expectedSuppressionCount
+    )
+    {
+        GeneratorDriverRunResult result = GeneratorTestHelpers.RunGenerator(
+            generator: new ProtectedMemberSuppressionGenerator(),
+            source: source
+        );
+
+        GeneratedSourceResult generated = Assert.Single(
+            result.Results.Single().GeneratedSources,
+            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: SuppressionsHintName)
+        );
+
+        string text = generated.SourceText.ToString();
+
+        Assert.Contains("UnusedMember.Global", text, StringComparison.Ordinal);
+        Assert.Equal(
+            expected: expectedSuppressionCount,
+            actual: text.Split(separator: '\n')
+                .Count(line => line.Contains("SuppressMessage", StringComparison.Ordinal))
+        );
+    }
+
+    [Theory]
+    [InlineData(
+        """
+            namespace Sample;
+
+            public sealed class Example
+            {
+                protected void DoSomething() { }
+            }
+            """
+    )]
+    [InlineData(
+        """
+            namespace Sample;
+
+            public abstract class Example
+            {
+                public void DoSomethingPublic() { }
+
+                private void DoSomethingPrivate() { }
+            }
+            """
+    )]
+    // CA1822: see the comment on ClassWithProtectedMembers_GeneratesSuppressionForEach above.
+    public static void NoEligibleProtectedMembers_GeneratesNothing(string source)
+    {
+        GeneratorDriverRunResult result = GeneratorTestHelpers.RunGenerator(
+            generator: new ProtectedMemberSuppressionGenerator(),
+            source: source
+        );
+
+        Assert.Empty(result.Results.Single().GeneratedSources);
+    }
+}

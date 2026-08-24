@@ -13,5 +13,6 @@
   <Project Path="FunFair.Test.Common/FunFair.Test.Common.csproj" />
   <Project Path="FunFair.Test.Infrastructure.Tests/FunFair.Test.Infrastructure.Tests.csproj" />
   <Project Path="FunFair.Test.Infrastructure/FunFair.Test.Infrastructure.csproj" />
+  <Project Path="FunFair.Test.Source.Generator.Tests/FunFair.Test.Source.Generator.Tests.csproj" />
   <Project Path="FunFair.Test.Source.Generator\FunFair.Test.Source.Generator.csproj" />
 </Solution>
