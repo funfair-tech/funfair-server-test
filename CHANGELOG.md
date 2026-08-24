@@ -11,7 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Security
 ### Added
 - Added unit test coverage for FunFair.Test.Source.Generator (TestAssemblyCodeGenerator and ProtectedMemberSuppressionGenerator), which previously had none. Internal test-only change - no public API or behaviour change for consumers.
-- TBD - to be finalized after review
+- Added FunFair.Test.Common.Mocks, a new class library holding the non-test support code (mocks, fakes, converters, test-data helpers) previously embedded inside FunFair.Test.Common.Tests. Internal restructuring only - no public API or behaviour change for consumers of the published packages.
 ### Fixed
 ### Changed
 - Dependencies - Updated CSharpIsNullAnalyzer to 0.2.19
