@@ -18,7 +18,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.33.0.1635
 ### Deprecated
 ### Removed
-- TBD - to be finalized after review
+- Removed the dead GenerateEntryPoint code path from FunFair.Test.Source.Generator (existed only to work around xunit/xunit#3435, now fixed), and the now-unreachable CodeBuilder helpers/attribute-extraction machinery left behind once it was gone. Internal cleanup only - no public API or behaviour change for consumers.
 ### Deployment Changes
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
