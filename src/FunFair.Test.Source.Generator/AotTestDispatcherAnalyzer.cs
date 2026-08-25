@@ -208,9 +208,16 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             .OfType<IMethodSymbol>()
             .FirstOrDefault(method =>
                 IsDispatcherShape(method: method, classSymbol: classSymbol, symbols: symbols)
-                && method.GetAttributes().Any(a => IsAttributeOfType(a, symbols.TheoryAttribute))
-                && method.GetAttributes().Any(a => IsAttributeOfType(a, symbols.MemberDataAttribute))
+                && IsTheoryWithMemberData(method: method, symbols: symbols)
             );
+    }
+
+    private static bool IsTheoryWithMemberData(IMethodSymbol method, WellKnownSymbols symbols)
+    {
+        ImmutableArray<AttributeData> attributes = method.GetAttributes();
+
+        return attributes.Any(a => IsAttributeOfType(a, symbols.TheoryAttribute))
+            && attributes.Any(a => IsAttributeOfType(a, symbols.MemberDataAttribute));
     }
 
     private static bool IsDispatcherShape(IMethodSymbol method, INamedTypeSymbol classSymbol, WellKnownSymbols symbols)
@@ -261,9 +268,8 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
         INamedTypeSymbol providerType =
             memberDataAttribute
-                .NamedArguments.Where(namedArg => StringComparer.Ordinal.Equals(namedArg.Key, "MemberType"))
-                .Select(namedArg => namedArg.Value.Value as INamedTypeSymbol)
-                .FirstOrDefault(t => t is not null)
+                .NamedArguments.FirstOrDefault(namedArg => StringComparer.Ordinal.Equals(namedArg.Key, "MemberType"))
+                .Value.Value as INamedTypeSymbol
             ?? classSymbol;
 
         bool isLocal =
@@ -364,23 +370,19 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
         public ImmutableArray<string> GetOrAdd(INamedTypeSymbol baseType, WellKnownSymbols symbols)
         {
-            INamedTypeSymbol key = baseType.OriginalDefinition;
-
-            if (this._cache.TryGetValue(key, out ImmutableArray<string> cached))
-            {
-                return cached;
-            }
-
-            ImmutableArray<string> factNames =
-            [
-                .. key.GetMembers()
-                    .OfType<IMethodSymbol>()
-                    .Where(m => IsFactOrTheory(method: m, symbols: symbols))
-                    .Select(m => m.Name)
-                    .Distinct(StringComparer.Ordinal),
-            ];
-
-            return ImmutableInterlocked.GetOrAdd(location: ref this._cache, key: key, value: factNames);
+            return ImmutableInterlocked.GetOrAdd(
+                location: ref this._cache,
+                key: baseType.OriginalDefinition,
+                valueFactory: static (key, s) =>
+                    [
+                        .. key.GetMembers()
+                            .OfType<IMethodSymbol>()
+                            .Where(m => IsFactOrTheory(method: m, symbols: s))
+                            .Select(m => m.Name)
+                            .Distinct(StringComparer.Ordinal),
+                    ],
+                factoryArgument: symbols
+            );
         }
 
         private static bool IsFactOrTheory(IMethodSymbol method, WellKnownSymbols symbols)
