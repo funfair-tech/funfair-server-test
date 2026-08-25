@@ -292,7 +292,9 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return null;
         }
 
-        return CollectNameofTargets(providerMethod, cancellationToken);
+        HashSet<string> names = CollectNameofTargets(providerMethod, cancellationToken);
+
+        return names.Count == 0 ? null : names;
     }
 
     [SuppressMessage(

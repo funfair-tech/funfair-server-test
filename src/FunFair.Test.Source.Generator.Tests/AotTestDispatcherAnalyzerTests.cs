@@ -127,6 +127,45 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
+    public async Task DispatcherWithProviderUsingStringLiteralCaseNames_AbstainsFromCompletenessCheck()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [Xunit.Fact]
+                    public void FactOne() { }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using System.Collections.Generic;
+                using Xunit;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    public static IEnumerable<object[]> Cases()
+                    {
+                        yield return ["FactOne", (Action<Leaf>)(t => { })];
+                    }
+
+                    [Theory]
+                    [MemberData(nameof(Cases))]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
     public async Task AbstractClassDerivingFromAffectedBase_ReportsNothing()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
