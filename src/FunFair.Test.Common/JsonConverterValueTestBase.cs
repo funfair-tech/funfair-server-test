@@ -7,7 +7,7 @@ using Xunit;
 
 namespace FunFair.Test.Common;
 
-public abstract class JsonConverterStructTestBase<
+public abstract class JsonConverterValueTestBase<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TConverter,
     TObject
 > : LoggingTestBase
@@ -16,7 +16,7 @@ public abstract class JsonConverterStructTestBase<
 {
     private readonly JsonSerializerOptions _options;
 
-    protected JsonConverterStructTestBase(ITestOutputHelper output)
+    protected JsonConverterValueTestBase(ITestOutputHelper output)
         : base(output)
     {
         JsonConverter converter = new TConverter();

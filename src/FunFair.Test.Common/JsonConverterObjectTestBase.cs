@@ -7,7 +7,7 @@ using Xunit;
 
 namespace FunFair.Test.Common;
 
-public abstract class JsonConverterTestBase<
+public abstract class JsonConverterObjectTestBase<
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TConverter,
     TObject
 > : LoggingTestBase
@@ -16,7 +16,7 @@ public abstract class JsonConverterTestBase<
 {
     private readonly JsonSerializerOptions _options;
 
-    protected JsonConverterTestBase(ITestOutputHelper output)
+    protected JsonConverterObjectTestBase(ITestOutputHelper output)
         : this(output: output, context: null) { }
 
     [SuppressMessage(
@@ -24,7 +24,7 @@ public abstract class JsonConverterTestBase<
         checkId: "UnusedParameter.Local",
         Justification = "Used in conditional implementations"
     )]
-    protected JsonConverterTestBase(ITestOutputHelper output, JsonSerializerContext? context)
+    protected JsonConverterObjectTestBase(ITestOutputHelper output, JsonSerializerContext? context)
         : base(output)
     {
         JsonConverter converter = new TConverter();

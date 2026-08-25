@@ -6,19 +6,19 @@ using Xunit;
 
 namespace FunFair.Test.Common.Tests;
 
-public sealed class JsonConverterStructTestBaseTests : JsonConverterTestBase<ModelConverter, Model>
+public sealed class JsonConverterValueTestBaseTests : JsonConverterValueTestBase<ModelValueConverter, ModelValue>
 {
-    public JsonConverterStructTestBaseTests(ITestOutputHelper output)
+    public JsonConverterValueTestBaseTests(ITestOutputHelper output)
         : base(output) { }
 
     protected override string InvalidValue { get; } = "banana";
 
-    protected override Model CreateInstance()
+    protected override ModelValue CreateInstance()
     {
-        return new() { Value = ModelColor.BLUE };
+        return new(ModelColor.BLUE);
     }
 
-    public static TheoryData<string, Action<JsonConverterStructTestBaseTests>> BaseCaseData() =>
+    public static TheoryData<string, Action<JsonConverterValueTestBaseTests>> BaseCaseData() =>
         new()
         {
             { nameof(RoundTrip), t => t.RoundTrip() },
@@ -28,7 +28,7 @@ public sealed class JsonConverterStructTestBaseTests : JsonConverterTestBase<Mod
 
     [Theory]
     [MemberData(nameof(BaseCaseData))]
-    public void CommonTests(string name, Action<JsonConverterStructTestBaseTests> action)
+    public void CommonTests(string name, Action<JsonConverterValueTestBaseTests> action)
     {
         Assert.NotEmpty(name);
         action(this);

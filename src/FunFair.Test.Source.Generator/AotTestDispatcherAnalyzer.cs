@@ -21,8 +21,8 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         "ComparableValueTestBase",
         "EquatableObjectTestBase",
         "EquatableValueTestBase",
-        "JsonConverterTestBase",
-        "JsonConverterStructTestBase",
+        "JsonConverterObjectTestBase",
+        "JsonConverterValueTestBase",
         "ValidatorTestBase"
     );
 
