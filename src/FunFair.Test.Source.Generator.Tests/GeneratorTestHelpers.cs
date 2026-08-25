@@ -63,8 +63,17 @@ internal static class GeneratorTestHelpers
 
     public static Task<ImmutableArray<Diagnostic>> RunAnalyzerAsync(DiagnosticAnalyzer analyzer, string source)
     {
-        CompilationWithAnalyzers compilationWithAnalyzers = CreateCompilation(source).WithAnalyzers([analyzer]);
+        Compilation compilation = CreateCompilation(source);
+
+        Assert.Empty(compilation.GetDiagnostics(TestContext.Current.CancellationToken).Where(IsError));
+
+        CompilationWithAnalyzers compilationWithAnalyzers = compilation.WithAnalyzers([analyzer]);
 
         return compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync(TestContext.Current.CancellationToken);
+    }
+
+    private static bool IsError(Diagnostic diagnostic)
+    {
+        return diagnostic.Severity == DiagnosticSeverity.Error;
     }
 }
