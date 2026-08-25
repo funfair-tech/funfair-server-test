@@ -376,4 +376,51 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
         Assert.Equal(expected: "FTS002", actual: diagnostic.Id);
         Assert.Contains("FactOne", diagnostic.GetMessage(), StringComparison.Ordinal);
     }
+
+    [Fact]
+    public async Task DispatcherWithProviderDeclaredOnNestedTypeWithinLeaf_ChecksCompleteness()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [Xunit.Fact]
+                    public void FactOne() { }
+
+                    [Xunit.Fact]
+                    public void FactTwo() { }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using System.Collections.Generic;
+                using Xunit;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    public static class Cases
+                    {
+                        public static IEnumerable<object[]> All()
+                        {
+                            yield return [nameof(Leaf.FactOne), (Action<Leaf>)(t => { })];
+                        }
+                    }
+
+                    [Theory]
+                    [MemberData(nameof(Cases.All), MemberType = typeof(Cases))]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS002", actual: diagnostic.Id);
+        Assert.Contains("FactTwo", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
 }
