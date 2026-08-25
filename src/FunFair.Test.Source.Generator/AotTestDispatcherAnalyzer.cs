@@ -60,6 +60,12 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     private static void OnCompilationStart(CompilationStartAnalysisContext context)
     {
         WellKnownSymbols symbols = new(context.Compilation);
+
+        if (!symbols.IsComplete)
+        {
+            return;
+        }
+
         FactNameCache factNamesByBaseType = new();
 
         context.RegisterSymbolAction(
@@ -359,6 +365,12 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         public INamedTypeSymbol? MemberDataAttribute { get; }
 
         public INamedTypeSymbol? ActionType { get; }
+
+        public bool IsComplete =>
+            this.FactAttribute is not null
+            && this.TheoryAttribute is not null
+            && this.MemberDataAttribute is not null
+            && this.ActionType is not null;
     }
 
     private sealed class FactNameCache
