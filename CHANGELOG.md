@@ -19,6 +19,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Analyzer to 3.0.177
 - Dependencies - Updated Roslynator.Analyzers to 5.0.0
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.33.0.1635
+- BREAKING: Renamed JsonConverterTestBase<TConverter, TObject> to JsonConverterObjectTestBase<TConverter, TObject> and JsonConverterStructTestBase<TConverter, TObject> to JsonConverterValueTestBase<TConverter, TObject>, matching the Object/Value naming convention already used by ComparableObjectTestBase/ComparableValueTestBase and EquatableObjectTestBase/EquatableValueTestBase. Consumers deriving from either base class need to update to the new type name on next upgrade.
 ### Deprecated
 ### Removed
 - Removed the dead GenerateEntryPoint code path from FunFair.Test.Source.Generator (existed only to work around xunit/xunit#3435, now fixed), and the now-unreachable CodeBuilder helpers/attribute-extraction machinery left behind once it was gone. Internal cleanup only - no public API or behaviour change for consumers.
