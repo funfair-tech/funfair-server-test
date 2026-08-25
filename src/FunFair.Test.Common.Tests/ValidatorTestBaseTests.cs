@@ -1,4 +1,6 @@
+using System;
 using FluentValidation.Results;
+using FunFair.Test.Common;
 using FunFair.Test.Common.Mocks;
 using Xunit;
 
@@ -46,5 +48,16 @@ public sealed class ValidatorTestBaseTests : ValidatorTestBase<TestSimpleValidat
         AssertNamedPropertiesHaveErrors(result: validationResult, nameof(ExampleObject.Name));
         AssertNamedPropertyHasErrors(result: validationResult, nameof(ExampleObject.Name));
         AssertOnlyNamedPropertyHasErrors(result: validationResult, nameof(ExampleObject.Name));
+    }
+
+    public static TheoryData<string, Action<ValidatorTestBaseTests>> BaseCaseData() =>
+        new() { { nameof(EverythingValid), t => t.EverythingValid() } };
+
+    [Theory]
+    [MemberData(nameof(BaseCaseData))]
+    public void CommonTests(string name, Action<ValidatorTestBaseTests> action)
+    {
+        Assert.NotEmpty(name);
+        action(this);
     }
 }
