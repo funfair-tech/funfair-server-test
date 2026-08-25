@@ -34,7 +34,10 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             + "methods will not be discoverable under AOT test discovery",
         category: CATEGORY,
         defaultSeverity: DiagnosticSeverity.Error,
-        isEnabledByDefault: true
+        isEnabledByDefault: true,
+        description: null,
+        helpLinkUri: null,
+        WellKnownDiagnosticTags.CompilationEnd
     );
 
     private static readonly DiagnosticDescriptor IncompleteDispatcherRule = new(
@@ -44,7 +47,10 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             + "inherited test method '{1}'",
         category: CATEGORY,
         defaultSeverity: DiagnosticSeverity.Error,
-        isEnabledByDefault: true
+        isEnabledByDefault: true,
+        description: null,
+        helpLinkUri: null,
+        WellKnownDiagnosticTags.CompilationEnd
     );
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
@@ -61,23 +67,28 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     {
         WellKnownSymbols symbols = new(context.Compilation);
         FactNameCache factNamesByBaseType = new();
+        CompilationState state = new();
 
-        context.RegisterSymbolAction(
-            symbolContext => AnalyzeClass(symbolContext, symbols: symbols, factNamesByBaseType: factNamesByBaseType),
-            SymbolKind.NamedType
+        context.RegisterSymbolAction(symbolContext => RecordType(symbolContext, state: state), SymbolKind.NamedType);
+
+        context.RegisterCompilationEndAction(endContext =>
+            AnalyzeCandidates(endContext, symbols: symbols, factNamesByBaseType: factNamesByBaseType, state: state)
         );
     }
 
-    private static void AnalyzeClass(
-        in SymbolAnalysisContext context,
-        WellKnownSymbols symbols,
-        FactNameCache factNamesByBaseType
-    )
+    private static void RecordType(in SymbolAnalysisContext context, CompilationState state)
     {
-        if (
-            context.Symbol
-            is not INamedTypeSymbol { TypeKind: TypeKind.Class, IsSealed: true, IsAbstract: false } classSymbol
-        )
+        if (context.Symbol is not INamedTypeSymbol { TypeKind: TypeKind.Class } classSymbol)
+        {
+            return;
+        }
+
+        if (classSymbol.BaseType is { } baseType)
+        {
+            state.RecordDerivedType(baseType);
+        }
+
+        if (classSymbol.IsAbstract)
         {
             return;
         }
@@ -93,26 +104,60 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        IMethodSymbol? dispatcher = FindDispatcher(classSymbol: classSymbol, symbols: symbols);
+        state.AddCandidate(
+            new(classSymbol: classSymbol, affectedBaseType: affectedBaseType, baseChain: commonBaseChain)
+        );
+    }
+
+    private static void AnalyzeCandidates(
+        in CompilationAnalysisContext context,
+        WellKnownSymbols symbols,
+        FactNameCache factNamesByBaseType,
+        CompilationState state
+    )
+    {
+        foreach (CandidateClass candidate in state.Candidates)
+        {
+            if (!candidate.ClassSymbol.IsSealed && state.HasDerivedTypesInCompilation(candidate.ClassSymbol))
+            {
+                continue;
+            }
+
+            AnalyzeCandidate(context, candidate: candidate, symbols: symbols, factNamesByBaseType: factNamesByBaseType);
+        }
+    }
+
+    private static void AnalyzeCandidate(
+        in CompilationAnalysisContext context,
+        CandidateClass candidate,
+        WellKnownSymbols symbols,
+        FactNameCache factNamesByBaseType
+    )
+    {
+        IMethodSymbol? dispatcher = FindDispatcher(classSymbol: candidate.ClassSymbol, symbols: symbols);
 
         if (dispatcher is null)
         {
-            ReportMissingDispatcher(context, classSymbol: classSymbol, affectedBaseType: affectedBaseType);
+            ReportMissingDispatcher(
+                context,
+                classSymbol: candidate.ClassSymbol,
+                affectedBaseType: candidate.AffectedBaseType
+            );
             return;
         }
 
         ReportIncompleteDispatcherCases(
             context,
-            classSymbol: classSymbol,
+            classSymbol: candidate.ClassSymbol,
             dispatcher: dispatcher,
-            baseChain: commonBaseChain,
+            baseChain: candidate.BaseChain,
             symbols: symbols,
             factNamesByBaseType: factNamesByBaseType
         );
     }
 
     private static void ReportMissingDispatcher(
-        in SymbolAnalysisContext context,
+        in CompilationAnalysisContext context,
         INamedTypeSymbol classSymbol,
         INamedTypeSymbol affectedBaseType
     )
@@ -128,7 +173,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     }
 
     private static void ReportIncompleteDispatcherCases(
-        in SymbolAnalysisContext context,
+        in CompilationAnalysisContext context,
         INamedTypeSymbol classSymbol,
         IMethodSymbol dispatcher,
         IReadOnlyList<INamedTypeSymbol> baseChain,
@@ -340,6 +385,59 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             MemberAccessExpressionSyntax memberAccess => memberAccess.Name.Identifier.Text,
             _ => null,
         };
+    }
+
+    private sealed class CandidateClass
+    {
+        public CandidateClass(
+            INamedTypeSymbol classSymbol,
+            INamedTypeSymbol affectedBaseType,
+            IReadOnlyList<INamedTypeSymbol> baseChain
+        )
+        {
+            this.ClassSymbol = classSymbol;
+            this.AffectedBaseType = affectedBaseType;
+            this.BaseChain = baseChain;
+        }
+
+        public INamedTypeSymbol ClassSymbol { get; }
+
+        public INamedTypeSymbol AffectedBaseType { get; }
+
+        public IReadOnlyList<INamedTypeSymbol> BaseChain { get; }
+    }
+
+    private sealed class CompilationState
+    {
+        private ImmutableHashSet<INamedTypeSymbol> _baseTypesWithDerivedTypes =
+            ImmutableHashSet.Create<INamedTypeSymbol>(SymbolEqualityComparer.Default);
+
+        private ImmutableList<CandidateClass> _candidates = [];
+
+        public IReadOnlyList<CandidateClass> Candidates => this._candidates;
+
+        public void RecordDerivedType(INamedTypeSymbol baseType)
+        {
+            ImmutableInterlocked.Update(
+                location: ref this._baseTypesWithDerivedTypes,
+                transformer: static (set, bt) => set.Add(bt),
+                transformerArgument: baseType.OriginalDefinition
+            );
+        }
+
+        public void AddCandidate(CandidateClass candidate)
+        {
+            ImmutableInterlocked.Update(
+                location: ref this._candidates,
+                transformer: static (list, c) => list.Add(c),
+                transformerArgument: candidate
+            );
+        }
+
+        public bool HasDerivedTypesInCompilation(INamedTypeSymbol type)
+        {
+            return this._baseTypesWithDerivedTypes.Contains(type.OriginalDefinition);
+        }
     }
 
     private sealed class WellKnownSymbols

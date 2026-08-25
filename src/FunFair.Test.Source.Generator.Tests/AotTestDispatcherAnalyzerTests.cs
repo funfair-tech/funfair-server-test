@@ -204,6 +204,66 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
+    public async Task NonSealedConcreteLeafWithNoFurtherDerivationAndNoDispatcher_ReportsMissingDispatcher()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [Xunit.Fact]
+                    public void FactOne() { }
+                }
+            }
+
+            namespace Sample
+            {
+                public class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                }
+            }
+            """
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS001", actual: diagnostic.Id);
+        Assert.Contains("Leaf", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task NonSealedConcreteClassFurtherDerivedInCompilation_ExemptsIntermediateFromDispatcherCheck()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [Xunit.Fact]
+                    public void FactOne() { }
+                }
+            }
+
+            namespace Sample
+            {
+                public class ConsumerOwnedConcreteIntermediate : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                }
+
+                public sealed class Leaf : ConsumerOwnedConcreteIntermediate
+                {
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
     public async Task DispatcherWithProviderDeclaredOnAffectedBase_AbstainsFromCompletenessCheck()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
