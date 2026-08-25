@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
 namespace FunFair.Test.Source.Generator.Tests;
@@ -56,5 +59,12 @@ internal static class GeneratorTestHelpers
         Assert.Empty(result.Diagnostics);
 
         return result;
+    }
+
+    public static Task<ImmutableArray<Diagnostic>> RunAnalyzerAsync(DiagnosticAnalyzer analyzer, string source)
+    {
+        CompilationWithAnalyzers compilationWithAnalyzers = CreateCompilation(source).WithAnalyzers([analyzer]);
+
+        return compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync(TestContext.Current.CancellationToken);
     }
 }
