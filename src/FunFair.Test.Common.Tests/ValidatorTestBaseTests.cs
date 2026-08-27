@@ -51,7 +51,7 @@ public sealed class ValidatorTestBaseTests : ValidatorTestBase<TestSimpleValidat
     }
 
     public static TheoryData<string, Action<ValidatorTestBaseTests>> BaseCaseData() =>
-        new() { { nameof(EverythingValid), t => t.EverythingValid() } };
+        BuildDispatcherCases<ValidatorTestBaseTests>().ToTheoryData();
 
     [Theory]
     [MemberData(nameof(BaseCaseData))]

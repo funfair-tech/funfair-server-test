@@ -19,12 +19,7 @@ public sealed class JsonConverterObjectTestBaseTests : JsonConverterObjectTestBa
     }
 
     public static TheoryData<string, Action<JsonConverterObjectTestBaseTests>> BaseCaseData() =>
-        new()
-        {
-            { nameof(RoundTrip), t => t.RoundTrip() },
-            { nameof(Serializes), t => t.Serializes() },
-            { nameof(ShouldNotDeserialize), t => t.ShouldNotDeserialize() },
-        };
+        BuildDispatcherCases<JsonConverterObjectTestBaseTests>().ToTheoryData();
 
     [Theory]
     [MemberData(nameof(BaseCaseData))]
