@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
+using static FunFair.Test.Common.DispatcherCaseData;
 
 namespace FunFair.Test.Common;
 
@@ -328,5 +330,75 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     public void UntypedCompareToValue2GreaterThanValue1()
     {
         Assert.True(UntypedCompareTo(l: this.Value2, r: this.Value1) > 0, userMessage: "Should be greater than 0");
+    }
+
+    // Single source of truth for the AOT dispatcher case table (see FunFair.Test.Source.Generator's
+    // AotTestDispatcherAnalyzer, FTS002); see EquatableObjectTestBase<TObject>.BuildDispatcherCases for why this
+    // must stay an ordinary static generic method rather than a [MemberData] provider itself.
+    [SuppressMessage(
+        category: "Meziantou.Analyzer",
+        checkId: "MA0051:Method is too long",
+        Justification = "Flat data table of AOT test cases, not control-flow complexity"
+    )]
+    [SuppressMessage(
+        category: "Microsoft.Design",
+        checkId: "CA1000:Do not declare static members on generic types",
+        Justification = "Not a [MemberData] provider itself - a shared helper closed leaf classes call via "
+            + "ComparableObjectTestBase<T>.BuildDispatcherCases<TSelf>(), avoiding a hand-copied case table per leaf"
+    )]
+    [SuppressMessage(
+        category: "Philips.CodeAnalysis.DuplicateCodeAnalyzer",
+        checkId: "PH2071:Duplicate code",
+        Justification = "Structurally mirrors ComparableValueTestBase<T>.BuildDispatcherCases by design - the "
+            + "object/struct dispatcher hierarchies intentionally cover the same named test cases"
+    )]
+    public static new (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+        where TSelf : ComparableObjectTestBase<TObject>
+    {
+        return
+        [
+            .. EquatableObjectTestBase<TObject>.BuildDispatcherCases<TSelf>(),
+            Case<TSelf>(t => t.OperatorGreaterOrEqualToThanNullObjectIsNotGreaterOrEquivalentToNullObject()),
+            Case<TSelf>(t => t.OperatorGreaterThanNullObjectIsGreaterThanValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanNullObjectIsNotGreaterThanNullObject()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToNullObjectIsGreaterThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToNullObject()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToValue2()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue2IsGreaterThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue2IsNotGreaterThanOrEquivalentToNullObject()),
+            Case<TSelf>(t => t.OperatorGreaterThanValue1IsNotGreaterThanNullObject()),
+            Case<TSelf>(t => t.OperatorGreaterThanValue1IsNotGreaterThanValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanValue1IsNotGreaterThanValue2()),
+            Case<TSelf>(t => t.OperatorGreaterThanValue2IsGreaterThanValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanValue2IsNotGreaterThanNullObject()),
+            Case<TSelf>(t => t.OperatorLessOrEqualToThanNullObjectIsLessThanOrEquivalentToNullObject()),
+            Case<TSelf>(t => t.OperatorLessThanNullObjectIsLessThanNullObject()),
+            Case<TSelf>(t => t.OperatorLessThanNullObjectIsNotLessThanValue1()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToNullObjectIsNotLessThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToNullObject()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToValue2()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsNotLessThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue2IsLessThanOrEquivalentToNullObject()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue2IsNotLessThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorLessThanValue1IsLessThanNullObject()),
+            Case<TSelf>(t => t.OperatorLessThanValue1IsLessThanValue2()),
+            Case<TSelf>(t => t.OperatorLessThanValue1IsNotLessThanValue1()),
+            Case<TSelf>(t => t.OperatorLessThanValue2IsLessThanNullObject()),
+            Case<TSelf>(t => t.OperatorLessThanValue2IsNotLessThanValue1()),
+            Case<TSelf>(t => t.TypedCompareToValue1EqualToEquivalentToValue1()),
+            Case<TSelf>(t => t.TypedCompareToValue1GreaterThanNullObject()),
+            Case<TSelf>(t => t.TypedCompareToValue1LessThanValue2()),
+            Case<TSelf>(t => t.TypedCompareToValue2GreaterThanValue1()),
+            Case<TSelf>(t => t.UntypedCompareToValue1EqualsUnTypedValue1Alias()),
+            Case<TSelf>(t => t.UntypedCompareToValue1EqualToEquivalentToValue1()),
+            Case<TSelf>(t => t.UntypedCompareToValue1GreaterThanToNullObject()),
+            Case<TSelf>(t => t.UntypedCompareToValue1LessThanValue2()),
+            Case<TSelf>(t => t.UntypedCompareToValue1ToOtherTypedObjectThrowsArgumentException()),
+            Case<TSelf>(t => t.UntypedCompareToValue2GreaterThanUnTypedValue1Alias()),
+            Case<TSelf>(t => t.UntypedCompareToValue2GreaterThanValue1()),
+        ];
     }
 }

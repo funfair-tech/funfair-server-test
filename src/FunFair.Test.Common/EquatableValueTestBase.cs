@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Xunit;
+using static FunFair.Test.Common.DispatcherCaseData;
 
 namespace FunFair.Test.Common;
 
@@ -209,5 +211,56 @@ public abstract class EquatableValueTestBase<TObject> : TestBase
     public void UntypedEqualsZeroObjectIsSameAsZeroObject()
     {
         Assert.True(UntypedEquals(x: this.ZeroObject, y: this.ZeroObject), userMessage: "Should Be Same");
+    }
+
+    // Single source of truth for the AOT dispatcher case table (see FunFair.Test.Source.Generator's
+    // AotTestDispatcherAnalyzer, FTS002); see EquatableObjectTestBase<TObject>.BuildDispatcherCases for why this
+    // must stay an ordinary static generic method rather than a [MemberData] provider itself.
+    [SuppressMessage(
+        category: "Meziantou.Analyzer",
+        checkId: "MA0051:Method is too long",
+        Justification = "Flat data table of AOT test cases, not control-flow complexity"
+    )]
+    [SuppressMessage(
+        category: "Microsoft.Design",
+        checkId: "CA1000:Do not declare static members on generic types",
+        Justification = "Not a [MemberData] provider itself - a shared helper closed leaf classes call via "
+            + "EquatableValueTestBase<T>.BuildDispatcherCases<TSelf>(), avoiding a hand-copied case table per leaf"
+    )]
+    [SuppressMessage(
+        category: "Philips.CodeAnalysis.DuplicateCodeAnalyzer",
+        checkId: "PH2071:Duplicate code",
+        Justification = "Structurally mirrors EquatableObjectTestBase<T>.BuildDispatcherCases by design - the "
+            + "object/struct dispatcher hierarchies intentionally cover the same named test cases"
+    )]
+    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+        where TSelf : EquatableValueTestBase<TObject>
+    {
+        return
+        [
+            Case<TSelf>(t => t.GetHashCodeSameNoMatterHowManyTimesCalled()),
+            Case<TSelf>(t => t.GetHashCodeValue1ObjectIsSameAsEquivalentToValue1Object()),
+            Case<TSelf>(t => t.GetHashCodeValue1ObjectIsSameAsValue1AliasObject()),
+            Case<TSelf>(t => t.GetHashCodeValue1ObjectIsSameAsValue1Object()),
+            Case<TSelf>(t => t.GetHashCodeZeroObjectIsSameAsZeroObject()),
+            Case<TSelf>(t => t.OperatorEqualsValue1ObjectIsSameAsEquivalentToValue1Object()),
+            Case<TSelf>(t => t.OperatorEqualsValue1ObjectIsSameAsValue1AliasObject()),
+            Case<TSelf>(t => t.OperatorEqualsValue1ObjectIsSameAsValue1Object()),
+            Case<TSelf>(t => t.OperatorEqualsZeroObjectIsSameAsZeroObject()),
+            Case<TSelf>(t => t.OperatorNotEqualsValue1ObjectIsSameAsEquivalentToValue1Object()),
+            Case<TSelf>(t => t.OperatorNotEqualsValue1ObjectIsSameAsValue1AliasObject()),
+            Case<TSelf>(t => t.OperatorNotEqualsValue1ObjectIsSameAsValue1Object()),
+            Case<TSelf>(t => t.OperatorNotEqualsZeroObjectIsSameAsZeroObject()),
+            Case<TSelf>(t => t.TypedEqualsValue1ObjectIsSameAsEquivalentToValue1Object()),
+            Case<TSelf>(t => t.TypedEqualsValue1ObjectIsSameAsValue1AliasObject()),
+            Case<TSelf>(t => t.TypedEqualsValue1ObjectIsSameAsValue1Object()),
+            Case<TSelf>(t => t.TypedEqualsZeroObjectIsSameAsZeroObject()),
+            Case<TSelf>(t => t.UntypedEqualsValue1ObjectIsSameAsEquivalentToValue1Object()),
+            Case<TSelf>(t => t.UntypedEqualsValue1ObjectIsSameAsEquivalentToValue1ObjectAsObject()),
+            Case<TSelf>(t => t.UntypedEqualsValue1ObjectIsSameAsValue1AliasObject()),
+            Case<TSelf>(t => t.UntypedEqualsValue1ObjectIsSameAsValue1Object()),
+            Case<TSelf>(t => t.UntypedEqualsZeroObjectDifferentToAnotherTypeOfObject()),
+            Case<TSelf>(t => t.UntypedEqualsZeroObjectIsSameAsZeroObject()),
+        ];
     }
 }

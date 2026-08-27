@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using Xunit;
+using static FunFair.Test.Common.DispatcherCaseData;
 
 namespace FunFair.Test.Common;
 
@@ -211,5 +213,57 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
     public void UntypedCompareToValue2GreaterThanValue1()
     {
         Assert.True(UntypedCompareTo(l: this.Value2, r: this.Value1) > 0, userMessage: "Should be greater than 0");
+    }
+
+    // Single source of truth for the AOT dispatcher case table (see FunFair.Test.Source.Generator's
+    // AotTestDispatcherAnalyzer, FTS002); see EquatableObjectTestBase<TObject>.BuildDispatcherCases for why this
+    // must stay an ordinary static generic method rather than a [MemberData] provider itself.
+    [SuppressMessage(
+        category: "Meziantou.Analyzer",
+        checkId: "MA0051:Method is too long",
+        Justification = "Flat data table of AOT test cases, not control-flow complexity"
+    )]
+    [SuppressMessage(
+        category: "Microsoft.Design",
+        checkId: "CA1000:Do not declare static members on generic types",
+        Justification = "Not a [MemberData] provider itself - a shared helper closed leaf classes call via "
+            + "ComparableValueTestBase<T>.BuildDispatcherCases<TSelf>(), avoiding a hand-copied case table per leaf"
+    )]
+    [SuppressMessage(
+        category: "Philips.CodeAnalysis.DuplicateCodeAnalyzer",
+        checkId: "PH2071:Duplicate code",
+        Justification = "Structurally mirrors ComparableObjectTestBase<T>.BuildDispatcherCases by design - the "
+            + "object/struct dispatcher hierarchies intentionally cover the same named test cases"
+    )]
+    public static new (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+        where TSelf : ComparableValueTestBase<TObject>
+    {
+        return
+        [
+            .. EquatableValueTestBase<TObject>.BuildDispatcherCases<TSelf>(),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToValue2()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue2IsGreaterThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanValue1IsNotGreaterThanValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanValue1IsNotGreaterThanValue2()),
+            Case<TSelf>(t => t.OperatorGreaterThanValue2IsGreaterThanValue1()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToValue2()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsNotLessThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue2IsNotLessThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorLessThanValue1IsLessThanValue2()),
+            Case<TSelf>(t => t.OperatorLessThanValue1IsNotLessThanValue1()),
+            Case<TSelf>(t => t.OperatorLessThanValue2IsNotLessThanValue1()),
+            Case<TSelf>(t => t.TypedCompareToValue1EqualToEquivalentToValue1()),
+            Case<TSelf>(t => t.TypedCompareToValue1LessThanValue2()),
+            Case<TSelf>(t => t.TypedCompareToValue2GreaterThanValue1()),
+            Case<TSelf>(t => t.UntypedCompareToValue1EqualsUnTypedValue1Alias()),
+            Case<TSelf>(t => t.UntypedCompareToValue1EqualToEquivalentToValue1()),
+            Case<TSelf>(t => t.UntypedCompareToValue1LessThanValue2()),
+            Case<TSelf>(t => t.UntypedCompareToValue1ToOtherTypedObjectThrowsArgumentException()),
+            Case<TSelf>(t => t.UntypedCompareToValue2GreaterThanUnTypedValue1Alias()),
+            Case<TSelf>(t => t.UntypedCompareToValue2GreaterThanValue1()),
+        ];
     }
 }
