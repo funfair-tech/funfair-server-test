@@ -53,14 +53,9 @@ internal static class GeneratorTestHelpers
     {
         return
         [
-            .. AppDomain
-                .CurrentDomain.GetAssemblies()
-                .Where(assembly =>
-                    !assembly.IsDynamic
-                    && !string.IsNullOrWhiteSpace(assembly.Location)
-                    && assembly.GetName().Name?.Contains("xunit", StringComparison.OrdinalIgnoreCase) != true
-                )
-                .Select(assembly => (MetadataReference)MetadataReference.CreateFromFile(assembly.Location)),
+            .. References.Value.Where(reference =>
+                reference.Display?.Contains("xunit", StringComparison.OrdinalIgnoreCase) != true
+            ),
         ];
     }
 
