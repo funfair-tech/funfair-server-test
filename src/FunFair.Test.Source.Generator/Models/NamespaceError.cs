@@ -5,7 +5,7 @@ namespace FunFair.Test.Source.Generator.Models;
 
 [DebuggerDisplay("{NamespaceInfo} {ErrorInfo}")]
 [StructLayout(LayoutKind.Auto)]
-internal readonly record struct NamespaceError
+public readonly record struct NamespaceError
 {
     public NamespaceError()
         : this(namespaceInfo: null, errorInfo: null) { }

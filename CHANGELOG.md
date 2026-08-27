@@ -20,6 +20,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.33.0.1635
 - BREAKING: Renamed JsonConverterTestBase<TConverter, TObject> to JsonConverterObjectTestBase<TConverter, TObject> and JsonConverterStructTestBase<TConverter, TObject> to JsonConverterValueTestBase<TConverter, TObject>, matching the Object/Value naming convention already used by ComparableObjectTestBase/ComparableValueTestBase and EquatableObjectTestBase/EquatableValueTestBase. Consumers deriving from either base class need to update to the new type name on next upgrade.
 - Dependencies - Updated Meziantou.Analyzer to 3.0.189
+- Adopted the org-owned Credfeto.SourceGeneration.Helpers package in FunFair.Test.Source.Generator, replacing the duplicated local CodeBuilder helper. Internal consolidation - no change to generated output; the shipped generator package now also carries Credfeto.SourceGeneration.Helpers.dll alongside the generator DLL.
 ### Deprecated
 ### Removed
 - Removed the dead GenerateEntryPoint code path from FunFair.Test.Source.Generator (existed only to work around xunit/xunit#3435, now fixed), and the now-unreachable CodeBuilder helpers/attribute-extraction machinery left behind once it was gone. Internal cleanup only - no public API or behaviour change for consumers.
@@ -27,6 +28,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+
 ## [6.4.1] - 2026-08-20
 ### Changed
 - Dependencies - Updated Credfeto.Enumeration to 1.2.152.2216

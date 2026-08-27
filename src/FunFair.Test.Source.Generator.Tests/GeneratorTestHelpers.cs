@@ -14,7 +14,16 @@ internal static class GeneratorTestHelpers
 {
     private static readonly Lazy<IReadOnlyList<MetadataReference>> References = new(BuildReferences);
 
+    private static readonly Lazy<IReadOnlyList<MetadataReference>> ReferencesWithoutXunit = new(
+        BuildReferencesWithoutXunit
+    );
+
     private static Compilation CreateCompilation(string source)
+    {
+        return CreateCompilation(source: source, references: References.Value);
+    }
+
+    private static Compilation CreateCompilation(string source, IReadOnlyList<MetadataReference> references)
     {
         SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(
             text: source,
@@ -24,7 +33,7 @@ internal static class GeneratorTestHelpers
         return CSharpCompilation.Create(
             assemblyName: "GeneratorTestAssembly",
             syntaxTrees: [syntaxTree],
-            references: References.Value,
+            references: references,
             options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
         );
     }
@@ -37,6 +46,16 @@ internal static class GeneratorTestHelpers
                 .CurrentDomain.GetAssemblies()
                 .Where(assembly => !assembly.IsDynamic && !string.IsNullOrWhiteSpace(assembly.Location))
                 .Select(assembly => (MetadataReference)MetadataReference.CreateFromFile(assembly.Location)),
+        ];
+    }
+
+    private static IReadOnlyList<MetadataReference> BuildReferencesWithoutXunit()
+    {
+        return
+        [
+            .. References.Value.Where(reference =>
+                reference.Display?.Contains("xunit", StringComparison.OrdinalIgnoreCase) != true
+            ),
         ];
     }
 
@@ -63,7 +82,27 @@ internal static class GeneratorTestHelpers
 
     public static Task<ImmutableArray<Diagnostic>> RunAnalyzerAsync(DiagnosticAnalyzer analyzer, string source)
     {
-        Compilation compilation = CreateCompilation(source);
+        return RunAnalyzerAsync(analyzer: analyzer, source: source, references: References.Value);
+    }
+
+    // Simulates the analyzer running on a project with no xunit reference at all (e.g. a non-test
+    // project that only picks up this analyzer package transitively) - AotTestDispatcherAnalyzer must
+    // no-op rather than crash when xunit's types aren't resolvable.
+    public static Task<ImmutableArray<Diagnostic>> RunAnalyzerWithoutXunitReferenceAsync(
+        DiagnosticAnalyzer analyzer,
+        string source
+    )
+    {
+        return RunAnalyzerAsync(analyzer: analyzer, source: source, references: ReferencesWithoutXunit.Value);
+    }
+
+    private static Task<ImmutableArray<Diagnostic>> RunAnalyzerAsync(
+        DiagnosticAnalyzer analyzer,
+        string source,
+        IReadOnlyList<MetadataReference> references
+    )
+    {
+        Compilation compilation = CreateCompilation(source: source, references: references);
 
         Assert.Empty(compilation.GetDiagnostics(TestContext.Current.CancellationToken).Where(IsError));
 
