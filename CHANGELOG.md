@@ -10,10 +10,20 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ## [Unreleased]
 ### Security
 ### Added
+### Fixed
+### Changed
+### Deprecated
+### Removed
+### Deployment Changes
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+
+## [6.4.2] - 2026-08-27
+### Added
 - Added unit test coverage for FunFair.Test.Source.Generator (TestAssemblyCodeGenerator and ProtectedMemberSuppressionGenerator), which previously had none. Internal test-only change - no public API or behaviour change for consumers.
 - Added FunFair.Test.Common.Mocks, a new class library holding the non-test support code (mocks, fakes, converters, test-data helpers) previously embedded inside FunFair.Test.Common.Tests. Internal restructuring only - no public API or behaviour change for consumers of the published packages.
 - AOT test dispatcher analyzer (FTS001/FTS002) enforcing discoverable inherited [Fact]/[Theory] methods on FunFair.Test.Common leaf test classes under xUnit v3 AOT test discovery
-### Fixed
 ### Changed
 - Dependencies - Updated CSharpIsNullAnalyzer to 0.2.19
 - Dependencies - Updated Roslynator.Analyzers to 5.0.0
@@ -21,13 +31,8 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - BREAKING: Renamed JsonConverterTestBase<TConverter, TObject> to JsonConverterObjectTestBase<TConverter, TObject> and JsonConverterStructTestBase<TConverter, TObject> to JsonConverterValueTestBase<TConverter, TObject>, matching the Object/Value naming convention already used by ComparableObjectTestBase/ComparableValueTestBase and EquatableObjectTestBase/EquatableValueTestBase. Consumers deriving from either base class need to update to the new type name on next upgrade.
 - Dependencies - Updated Meziantou.Analyzer to 3.0.189
 - Adopted the org-owned Credfeto.SourceGeneration.Helpers package in FunFair.Test.Source.Generator, replacing the duplicated local CodeBuilder helper. Internal consolidation - no change to generated output; the shipped generator package now also carries Credfeto.SourceGeneration.Helpers.dll alongside the generator DLL.
-### Deprecated
 ### Removed
 - Removed the dead GenerateEntryPoint code path from FunFair.Test.Source.Generator (existed only to work around xunit/xunit#3435, now fixed), and the now-unreachable CodeBuilder helpers/attribute-extraction machinery left behind once it was gone. Internal cleanup only - no public API or behaviour change for consumers.
-### Deployment Changes
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 
 ## [6.4.1] - 2026-08-20
 ### Changed
