@@ -423,4 +423,198 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
         Assert.Equal(expected: "FTS002", actual: diagnostic.Id);
         Assert.Contains("FactTwo", diagnostic.GetMessage(), StringComparison.Ordinal);
     }
+
+    [Fact]
+    public async Task CompilationWithoutXunitReference_ReportsNothing()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerWithoutXunitReferenceAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace Sample;
+
+            public sealed class Leaf
+            {
+                public void SomeMethod() { }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task AffectedBaseWithNoFactOrTheoryMethods_ReportsNothing()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using System.Collections.Generic;
+                using Xunit;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    public static IEnumerable<object[]> Cases()
+                    {
+                        yield break;
+                    }
+
+                    [Theory]
+                    [MemberData(nameof(Cases))]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task CandidateMethodsWithWrongDispatcherShape_AreNotRecognisedAsDispatcher()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [Xunit.Fact]
+                    public void FactOne() { }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    public void FirstParamIsNotAString(int name, Action<Leaf> action) { }
+
+                    public void SecondParamIsNotAnAction(string name, object notAnAction) { }
+                }
+            }
+            """
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS001", actual: diagnostic.Id);
+    }
+
+    [Fact]
+    public async Task DispatcherWithNullMemberDataName_AbstainsFromCompletenessCheck()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [Xunit.Fact]
+                    public void FactOne() { }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using Xunit;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    [Theory]
+                    [MemberData(null)]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task DispatcherWithMemberDataNamingNonExistentMember_AbstainsFromCompletenessCheck()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [Xunit.Fact]
+                    public void FactOne() { }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using Xunit;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    [Theory]
+                    [MemberData("NoSuchMember")]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task ProviderMethodWithNonSimpleNameofTarget_IgnoresThatTargetWithoutAffectingRealNames()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [Xunit.Fact]
+                    public void FactOne() { }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using System.Collections.Generic;
+                using Xunit;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    public static IEnumerable<object[]> Cases()
+                    {
+                        _ = nameof(List<int>);
+                        yield return [nameof(FactOne), (Action<Leaf>)(t => { })];
+                    }
+
+                    [Theory]
+                    [MemberData(nameof(Cases))]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
 }
