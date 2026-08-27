@@ -66,8 +66,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Credfeto.SourceGeneration.Helpers" Version="0.0.4.213" GeneratePathProperty="true" IncludeAssets="compile;runtime" PrivateAssets="all" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="$(PkgCredfeto_SourceGeneration_Helpers)\lib\netstandard2.0\Credfeto.SourceGeneration.Helpers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
   <ItemGroup>
