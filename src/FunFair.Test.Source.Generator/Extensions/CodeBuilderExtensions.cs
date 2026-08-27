@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using FunFair.Test.Source.Generator.Builders;
+using Credfeto.SourceGeneration.Helpers.Builders;
 
 namespace FunFair.Test.Source.Generator.Extensions;
 

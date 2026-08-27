@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using FunFair.Test.Source.Generator.Builders;
+using Credfeto.SourceGeneration.Helpers.Builders;
 using FunFair.Test.Source.Generator.Extensions;
 using FunFair.Test.Source.Generator.Helpers;
 using FunFair.Test.Source.Generator.Models;

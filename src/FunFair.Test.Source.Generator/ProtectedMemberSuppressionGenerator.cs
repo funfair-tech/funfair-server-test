@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
-using FunFair.Test.Source.Generator.Builders;
+using Credfeto.SourceGeneration.Helpers.Builders;
 using FunFair.Test.Source.Generator.Extensions;
 using FunFair.Test.Source.Generator.Models;
 using Microsoft.CodeAnalysis;
