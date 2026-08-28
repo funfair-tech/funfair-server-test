@@ -12,7 +12,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 ### Changed
-- Each affected FunFair.Test.Common base class (EquatableObjectTestBase, ComparableObjectTestBase, EquatableValueTestBase, ComparableValueTestBase, JsonConverterObjectTestBase, JsonConverterValueTestBase, ValidatorTestBase) now owns a single BuildDispatcherCases<TSelf>() method producing its AOT dispatcher case table once via a Case<TSelf>(t => t.Method()) helper (using CallerArgumentExpression to capture the method name at compile time, not reflection), instead of every leaf class hand-copying the full nameof/lambda table; leaf classes' BaseCaseData() collapses to a one-line delegation
 ### Deprecated
 ### Removed
 ### Deployment Changes
@@ -20,6 +19,10 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 <!--
 Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
 -->
+
+## [6.4.3] - 2026-08-28
+### Changed
+- Each affected FunFair.Test.Common base class (EquatableObjectTestBase, ComparableObjectTestBase, EquatableValueTestBase, ComparableValueTestBase, JsonConverterObjectTestBase, JsonConverterValueTestBase, ValidatorTestBase) now owns a single BuildDispatcherCases<TSelf>() method producing its AOT dispatcher case table once via a Case<TSelf>(t => t.Method()) helper (using CallerArgumentExpression to capture the method name at compile time, not reflection), instead of every leaf class hand-copying the full nameof/lambda table; leaf classes' BaseCaseData() collapses to a one-line delegation
 
 ## [6.4.2] - 2026-08-27
 ### Added
