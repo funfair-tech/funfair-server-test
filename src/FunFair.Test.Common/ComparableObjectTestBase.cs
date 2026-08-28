@@ -39,7 +39,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     }
 
     [Fact]
-    public void OperatorGreaterOrEqualToThanNullObjectIsNotGreaterOrEquivalentToNullObject()
+    public void OperatorGreaterOrEqualToThanNullObjectIsGreaterOrEquivalentToNullObject()
     {
         Assert.True(
             this.OperatorGreaterThanOrEqualTo(l: this.Value1, r: this.NullObject),
@@ -48,19 +48,19 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     }
 
     [Fact]
-    public void OperatorGreaterThanNullObjectIsGreaterThanValue1()
+    public void OperatorGreaterThanNullObjectIsNotGreaterThanValue1()
     {
         Assert.False(this.OperatorGreaterThan(l: this.NullObject, r: this.Value2), userMessage: "NullObject > Value2");
     }
 
     [Fact]
-    public void OperatorGreaterThanNullObjectIsNotGreaterThanNullObject()
+    public void OperatorGreaterThanNullObjectIsGreaterThanNullObject()
     {
         Assert.True(this.OperatorGreaterThan(l: this.Value1, r: this.NullObject), userMessage: "NullObject > Value1");
     }
 
     [Fact]
-    public void OperatorGreaterThanOrEqualToNullObjectIsGreaterThanOrEquivalentToValue1()
+    public void OperatorGreaterThanOrEqualToNullObjectIsNotGreaterThanOrEquivalentToValue1()
     {
         Assert.False(
             this.OperatorGreaterThanOrEqualTo(l: this.NullObject, r: this.Value2),
@@ -78,7 +78,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     }
 
     [Fact]
-    public void OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToNullObject()
+    public void OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToNullObject()
     {
         Assert.True(
             this.OperatorGreaterThanOrEqualTo(l: this.Value1, r: this.NullObject),
@@ -108,7 +108,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     }
 
     [Fact]
-    public void OperatorGreaterThanOrEqualToValue2IsNotGreaterThanOrEquivalentToNullObject()
+    public void OperatorGreaterThanOrEqualToValue2IsGreaterThanOrEquivalentToNullObject()
     {
         Assert.True(
             this.OperatorGreaterThanOrEqualTo(l: this.Value2, r: this.NullObject),
@@ -117,7 +117,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     }
 
     [Fact]
-    public void OperatorGreaterThanValue1IsNotGreaterThanNullObject()
+    public void OperatorGreaterThanValue1IsGreaterThanNullObject()
     {
         Assert.True(this.OperatorGreaterThan(l: this.Value1, r: this.NullObject), userMessage: "Value1 > NullObject");
     }
@@ -141,13 +141,13 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     }
 
     [Fact]
-    public void OperatorGreaterThanValue2IsNotGreaterThanNullObject()
+    public void OperatorGreaterThanValue2IsGreaterThanNullObject()
     {
         Assert.True(this.OperatorGreaterThan(l: this.Value2, r: this.NullObject), userMessage: "Value2 > NullObject");
     }
 
     [Fact]
-    public void OperatorLessOrEqualToThanNullObjectIsLessThanOrEquivalentToNullObject()
+    public void OperatorLessOrEqualToThanNullObjectIsNotLessThanOrEquivalentToNullObject()
     {
         Assert.False(
             this.OperatorLessThanOrEqualTo(l: this.Value1, r: this.NullObject),
@@ -156,19 +156,19 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     }
 
     [Fact]
-    public void OperatorLessThanNullObjectIsLessThanNullObject()
+    public void OperatorLessThanNullObjectIsNotLessThanNullObject()
     {
         Assert.False(this.OperatorLessThan(l: this.Value1, r: this.NullObject), userMessage: "NullObject < Value1");
     }
 
     [Fact]
-    public void OperatorLessThanNullObjectIsNotLessThanValue1()
+    public void OperatorLessThanNullObjectIsLessThanValue1()
     {
         Assert.True(this.OperatorLessThan(l: this.NullObject, r: this.Value2), userMessage: "NullObject < Value2");
     }
 
     [Fact]
-    public void OperatorLessThanOrEqualToNullObjectIsNotLessThanOrEquivalentToValue1()
+    public void OperatorLessThanOrEqualToNullObjectIsLessThanOrEquivalentToValue1()
     {
         Assert.True(
             this.OperatorLessThanOrEqualTo(l: this.NullObject, r: this.Value2),
@@ -177,7 +177,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     }
 
     [Fact]
-    public void OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToNullObject()
+    public void OperatorLessThanOrEqualToValue1IsNotLessThanOrEquivalentToNullObject()
     {
         Assert.False(
             this.OperatorLessThanOrEqualTo(l: this.Value1, r: this.NullObject),
@@ -207,7 +207,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     }
 
     [Fact]
-    public void OperatorLessThanOrEqualToValue2IsLessThanOrEquivalentToNullObject()
+    public void OperatorLessThanOrEqualToValue2IsNotLessThanOrEquivalentToNullObject()
     {
         Assert.False(
             this.OperatorLessThanOrEqualTo(l: this.Value2, r: this.NullObject),
@@ -222,7 +222,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     }
 
     [Fact]
-    public void OperatorLessThanValue1IsLessThanNullObject()
+    public void OperatorLessThanValue1IsNotLessThanNullObject()
     {
         Assert.False(this.OperatorLessThan(l: this.Value1, r: this.NullObject), userMessage: "Value1 < NullObject");
     }
@@ -240,7 +240,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
     }
 
     [Fact]
-    public void OperatorLessThanValue2IsLessThanNullObject()
+    public void OperatorLessThanValue2IsNotLessThanNullObject()
     {
         Assert.False(this.OperatorLessThan(l: this.Value2, r: this.NullObject), userMessage: "Value2 < NullObject");
     }
@@ -358,35 +358,35 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         return
         [
             .. EquatableObjectTestBase<TObject>.BuildDispatcherCases<TSelf>(),
-            Case<TSelf>(t => t.OperatorGreaterOrEqualToThanNullObjectIsNotGreaterOrEquivalentToNullObject()),
-            Case<TSelf>(t => t.OperatorGreaterThanNullObjectIsGreaterThanValue1()),
-            Case<TSelf>(t => t.OperatorGreaterThanNullObjectIsNotGreaterThanNullObject()),
-            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToNullObjectIsGreaterThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorGreaterOrEqualToThanNullObjectIsGreaterOrEquivalentToNullObject()),
+            Case<TSelf>(t => t.OperatorGreaterThanNullObjectIsNotGreaterThanValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanNullObjectIsGreaterThanNullObject()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToNullObjectIsNotGreaterThanOrEquivalentToValue1()),
             Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToValue1()),
-            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToNullObject()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToNullObject()),
             Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToValue1()),
             Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToValue2()),
             Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue2IsGreaterThanOrEquivalentToValue1()),
-            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue2IsNotGreaterThanOrEquivalentToNullObject()),
-            Case<TSelf>(t => t.OperatorGreaterThanValue1IsNotGreaterThanNullObject()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue2IsGreaterThanOrEquivalentToNullObject()),
+            Case<TSelf>(t => t.OperatorGreaterThanValue1IsGreaterThanNullObject()),
             Case<TSelf>(t => t.OperatorGreaterThanValue1IsNotGreaterThanValue1()),
             Case<TSelf>(t => t.OperatorGreaterThanValue1IsNotGreaterThanValue2()),
             Case<TSelf>(t => t.OperatorGreaterThanValue2IsGreaterThanValue1()),
-            Case<TSelf>(t => t.OperatorGreaterThanValue2IsNotGreaterThanNullObject()),
-            Case<TSelf>(t => t.OperatorLessOrEqualToThanNullObjectIsLessThanOrEquivalentToNullObject()),
-            Case<TSelf>(t => t.OperatorLessThanNullObjectIsLessThanNullObject()),
-            Case<TSelf>(t => t.OperatorLessThanNullObjectIsNotLessThanValue1()),
-            Case<TSelf>(t => t.OperatorLessThanOrEqualToNullObjectIsNotLessThanOrEquivalentToValue1()),
-            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToNullObject()),
+            Case<TSelf>(t => t.OperatorGreaterThanValue2IsGreaterThanNullObject()),
+            Case<TSelf>(t => t.OperatorLessOrEqualToThanNullObjectIsNotLessThanOrEquivalentToNullObject()),
+            Case<TSelf>(t => t.OperatorLessThanNullObjectIsNotLessThanNullObject()),
+            Case<TSelf>(t => t.OperatorLessThanNullObjectIsLessThanValue1()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToNullObjectIsLessThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsNotLessThanOrEquivalentToNullObject()),
             Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToValue1()),
             Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToValue2()),
             Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsNotLessThanOrEquivalentToValue1()),
-            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue2IsLessThanOrEquivalentToNullObject()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue2IsNotLessThanOrEquivalentToNullObject()),
             Case<TSelf>(t => t.OperatorLessThanOrEqualToValue2IsNotLessThanOrEquivalentToValue1()),
-            Case<TSelf>(t => t.OperatorLessThanValue1IsLessThanNullObject()),
+            Case<TSelf>(t => t.OperatorLessThanValue1IsNotLessThanNullObject()),
             Case<TSelf>(t => t.OperatorLessThanValue1IsLessThanValue2()),
             Case<TSelf>(t => t.OperatorLessThanValue1IsNotLessThanValue1()),
-            Case<TSelf>(t => t.OperatorLessThanValue2IsLessThanNullObject()),
+            Case<TSelf>(t => t.OperatorLessThanValue2IsNotLessThanNullObject()),
             Case<TSelf>(t => t.OperatorLessThanValue2IsNotLessThanValue1()),
             Case<TSelf>(t => t.TypedCompareToValue1EqualToEquivalentToValue1()),
             Case<TSelf>(t => t.TypedCompareToValue1GreaterThanNullObject()),
