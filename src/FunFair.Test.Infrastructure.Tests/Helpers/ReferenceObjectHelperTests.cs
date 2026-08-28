@@ -80,7 +80,7 @@ public sealed class ReferenceObjectHelperTests : TestBase
         MockGenericModel<int>? left = null;
         MockGenericModel<int> right = new(value: 1);
 
-        Assert.Equal(expected: 1, ReferenceObjectHelpers.Compare(left: left, right: right, cmp: this._compare));
+        Assert.Equal(expected: -1, ReferenceObjectHelpers.Compare(left: left, right: right, cmp: this._compare));
     }
 
     [Fact]
@@ -107,7 +107,7 @@ public sealed class ReferenceObjectHelperTests : TestBase
         MockGenericModel<int> left = new(value: 1);
         MockGenericModel<int>? right = null;
 
-        Assert.Equal(expected: -1, ReferenceObjectHelpers.Compare(left: left, right: right, cmp: this._compare));
+        Assert.Equal(expected: 1, ReferenceObjectHelpers.Compare(left: left, right: right, cmp: this._compare));
     }
 
     [Fact]

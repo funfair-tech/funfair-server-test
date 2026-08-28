@@ -30,12 +30,12 @@ public static class ReferenceObjectHelpers
             return 0;
         }
 
-        if (right is null)
+        if (left is null)
         {
             return -1;
         }
 
-        if (left is null)
+        if (right is null)
         {
             return 1;
         }
