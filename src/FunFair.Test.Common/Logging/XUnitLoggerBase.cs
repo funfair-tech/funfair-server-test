@@ -13,7 +13,6 @@ internal abstract class XUnitLoggerBase : ILogger
     private readonly XUnitLoggerOptions _options;
     private readonly LoggerExternalScopeProvider _scopeProvider;
     private readonly ITestOutputHelper? _testOutputHelper;
-    private readonly TimeProvider _timeProvider = TimeProvider.System;
 
     protected XUnitLoggerBase(
         ITestOutputHelper? testOutputHelper,
@@ -109,7 +108,7 @@ internal abstract class XUnitLoggerBase : ILogger
 
     private DateTimeOffset GetCurrentTimestamp()
     {
-        return this._options.GetCurrentTimestamp(this._timeProvider);
+        return this._options.GetCurrentTimestamp(TimeProvider.System);
     }
 
     private static string GetLogLevelString(LogLevel logLevel)
