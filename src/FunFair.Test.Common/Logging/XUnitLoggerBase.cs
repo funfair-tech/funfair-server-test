@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 using Microsoft.Extensions.Logging;
@@ -107,19 +106,9 @@ internal abstract class XUnitLoggerBase : ILogger
         }
     }
 
-    [SuppressMessage(
-        category: "FunFair.CodeAnalysis",
-        checkId: "FFS0004: Use IDateTimeSource.UtcNow()",
-        Justification = "Not available here"
-    )]
-    [SuppressMessage(
-        category: "FunFair.CodeAnalysis",
-        checkId: "FFS0005: Use IDateTimeSource.UtcNow()",
-        Justification = "Not available here"
-    )]
     private DateTimeOffset GetCurrentTimestamp()
     {
-        return this._options.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
+        return this._options.GetCurrentTimestamp(TimeProvider.System);
     }
 
     private static string GetLogLevelString(LogLevel logLevel)

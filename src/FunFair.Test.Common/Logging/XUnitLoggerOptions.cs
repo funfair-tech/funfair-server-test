@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
@@ -15,4 +16,9 @@ internal readonly record struct XUnitLoggerOptions(
 )
 {
     public static XUnitLoggerOptions Default { get; } = new(false, false, false, null, true);
+
+    public DateTimeOffset GetCurrentTimestamp(TimeProvider timeProvider)
+    {
+        return this.UseUtcTimestamp ? timeProvider.GetUtcNow() : timeProvider.GetLocalNow();
+    }
 };
