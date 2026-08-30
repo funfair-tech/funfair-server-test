@@ -14,7 +14,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Corrected inverted null-ordering semantics in ReferenceObjectHelpers.Compare and ComparableObjectTestBase's comparison operator tests: null now sorts as less than any value (matching Comparer<T>.Default/IComparable convention) instead of greater, consistent with the class's own CompareTo tests. BREAKING CHANGE: consumers whose comparison operators were written to satisfy the previous inverted assertions will need updating to the standard convention.
 - Use TimeProvider.System instead of DateTimeOffset.UtcNow/Now directly in XUnitLoggerBase, resolving an analyzer-suppression conflict (FFS0004/FFS0005 vs FFS0049).
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 3.0.190
+- Dependencies - Updated Meziantou.Analyzer to 3.0.194
 ### Deprecated
 ### Removed
 ### Deployment Changes
