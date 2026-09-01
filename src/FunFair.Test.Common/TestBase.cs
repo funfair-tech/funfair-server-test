@@ -17,11 +17,7 @@ namespace FunFair.Test.Common;
 
 public abstract class TestBase
 {
-    protected TestBase()
-    {
-        // Nothing to do here!
-        Assert.False(condition: false, userMessage: "Because");
-    }
+    protected TestBase() { }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected CancellationToken CancellationToken()

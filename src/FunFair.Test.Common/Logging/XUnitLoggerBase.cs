@@ -82,7 +82,6 @@ internal abstract class XUnitLoggerBase : ILogger
             sb = sb.Append('\n').Append(exception);
         }
 
-        // Append scopes
         if (this._options.IncludeScopes)
         {
             this._scopeProvider.ForEachScope(

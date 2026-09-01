@@ -31,8 +31,6 @@ public static class ExtendedAssert
         JsonSerializerOptions jsonSerializerOptions
     )
     {
-        string expectedString = JsonSerializer.Serialize(value: expected, options: jsonSerializerOptions);
-        string actualString = JsonSerializer.Serialize(value: actual, options: jsonSerializerOptions);
-        Assert.Equal(expected: expectedString, actual: actualString);
+        DeepEqual<IReadOnlyList<T>>(expected: expected, actual: actual, jsonSerializerOptions: jsonSerializerOptions);
     }
 }
