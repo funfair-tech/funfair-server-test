@@ -8,21 +8,32 @@ public static class TestLoggerExtension
 {
     public static void Received(this ILogger logger, LogLevel logLevel, string message, int received = 1)
     {
-        EventId eventId = Arg.Any<EventId>();
-        object state = Arg.Is<object>(o => StringComparer.Ordinal.Equals(x: o.ToString(), y: message));
-        Exception? exception = Arg.Any<Exception?>();
-        Func<object, Exception?, string> formatter = Arg.Any<Func<object, Exception?, string>>();
+        (EventId eventId, object state, Exception? exception, Func<object, Exception?, string> formatter) =
+            BuildLogArgMatchers(message);
 
         logger.Received(received).Log(logLevel: logLevel, eventId, state, exception, formatter);
     }
 
     public static void DidNotReceive(this ILogger logger, LogLevel logLevel, string message)
     {
+        (EventId eventId, object state, Exception? exception, Func<object, Exception?, string> formatter) =
+            BuildLogArgMatchers(message);
+
+        logger.DidNotReceive().Log(logLevel: logLevel, eventId, state, exception, formatter);
+    }
+
+    private static (
+        EventId EventId,
+        object State,
+        Exception? Exception,
+        Func<object, Exception?, string> Formatter
+    ) BuildLogArgMatchers(string message)
+    {
         EventId eventId = Arg.Any<EventId>();
         object state = Arg.Is<object>(o => StringComparer.Ordinal.Equals(x: o.ToString(), y: message));
         Exception? exception = Arg.Any<Exception?>();
         Func<object, Exception?, string> formatter = Arg.Any<Func<object, Exception?, string>>();
 
-        logger.DidNotReceive().Log(logLevel: logLevel, eventId, state, exception, formatter);
+        return (eventId, state, exception, formatter);
     }
 }

@@ -78,7 +78,7 @@ public abstract class ComplexValidatorTestBase<
     {
         Assert.True(
             result.Errors.Exists(e => StringComparer.Ordinal.Equals(x: e.PropertyName, y: erroringProperty)),
-            $"Should have had errors in {erroringProperty}, but not found found errors in {DumpPropertiesInError(result)}"
+            $"Should have had errors in {erroringProperty}, but found errors in {DumpPropertiesInError(result)}"
         );
     }
 
@@ -96,12 +96,12 @@ public abstract class ComplexValidatorTestBase<
 
         Assert.True(
             condition: hasUnexpectedErrors,
-            $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}"
+            $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but found errors in {DumpPropertiesInError(result)}"
         );
 
         Assert.True(
             condition: hasAllExpectedErrors,
-            $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but not found found errors in {DumpPropertiesInError(result)}"
+            $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but found errors in {DumpPropertiesInError(result)}"
         );
     }
 

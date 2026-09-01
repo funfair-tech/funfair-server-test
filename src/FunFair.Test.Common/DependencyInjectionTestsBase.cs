@@ -88,9 +88,7 @@ public abstract class DependencyInjectionTestsBase : IntegrationTestBase
 
         IReadOnlyList<TInterface> services = this.GetServices<TInterface>();
 
-        this.Output.WriteLine("Found Services:");
-
-        services.ForEach(foundService => this.Output.WriteLine($"* {foundService.GetType().FullName}"));
+        this.DumpServices(services);
 
         return Assert.Single(services);
     }
