@@ -16,9 +16,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Use TimeProvider.System instead of DateTimeOffset.UtcNow/Now directly in XUnitLoggerBase, resolving an analyzer-suppression conflict (FFS0004/FFS0005 vs FFS0049).
 - Corrected a duplicated-word typo ("but not found found errors in") in ComplexValidatorTestBase assertion failure messages
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 3.0.200
 - Simplified internal test-infrastructure code: removed duplicate service-dump logic in DependencyInjectionTestsBase, replaced hand-rolled model-name construction in ModelBinder with the framework's ModelNames.CreatePropertyModelName, extracted a shared argument-matcher helper in TestLoggerExtension, removed a no-op assertion from TestBase's constructor, removed a redundant comment in XUnitLoggerBase, made ExtendedAssert's IReadOnlyList<T> DeepEqual overload delegate to the generic overload, and removed a dead commented-out suppression from CompatibilitySuppressions.xml referencing a type that has since moved namespaces
 - Dependencies - Updated Nullable.Extended.Analyzer to 1.16.6891
+- Dependencies - Updated Meziantou.Analyzer to 3.0.203
 ### Deprecated
 ### Removed
 ### Deployment Changes
