@@ -42,7 +42,6 @@
   <ItemGroup>
     <ProjectReference Include="..\FunFair.Test.Common.Mocks\FunFair.Test.Common.Mocks.csproj" />
     <ProjectReference Include="..\FunFair.Test.Common\FunFair.Test.Common.csproj" />
-    <ProjectReference Include="..\FunFair.Test.Source.Generator\FunFair.Test.Source.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NSubstitute" Version="6.2.0" IncludeAssets="compile;runtime" />
