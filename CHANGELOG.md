@@ -10,6 +10,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ## [Unreleased]
 ### Security
 ### Added
+### Fixed
+### Changed
+### Deprecated
+### Removed
+### Deployment Changes
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+
+## [6.4.4] - 2026-09-06
+### Added
 - Added test coverage for previously-untested TestBase members: the struct overload of AssertReallyNotNull, FormatValue, the two- and three-interface GetSubstitute overloads, CreateCancellationTokenSource, FromOptionalResultAsync/NullResultAsync, and the base GetTypedLogger implementation
 ### Fixed
 - Corrected inverted null-ordering semantics in ReferenceObjectHelpers.Compare and ComparableObjectTestBase's comparison operator tests: null now sorts as less than any value (matching Comparer<T>.Default/IComparable convention) instead of greater, consistent with the class's own CompareTo tests. BREAKING CHANGE: consumers whose comparison operators were written to satisfy the previous inverted assertions will need updating to the standard convention.
@@ -20,13 +32,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Nullable.Extended.Analyzer to 1.16.6891
 - Dependencies - Updated Credfeto.Enumeration to 1.2.153.2254
 - Dependencies - Updated Meziantou.Analyzer to 3.0.217
-### Deprecated
-### Removed
-### Deployment Changes
-
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 
 ## [6.4.3] - 2026-08-28
 ### Changed
