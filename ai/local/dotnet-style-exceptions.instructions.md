@@ -6,7 +6,7 @@ Rider's code inspection surfaces some findings this repo deliberately does not a
 
 ## Never Convert to Primary Constructors
 
-Do not convert a `class` or `struct` to use a primary constructor, regardless of what Rider or `/simplify` suggests. This applies repo-wide, not just to existing code.
+Do not convert a `class` or `struct` to use a primary constructor, regardless of what Rider or `/simplify` suggests. This applies repo-wide, not just to existing code. Unlike the other entries below, this is a deliberate team style preference, not a workaround for an analyzer false positive or bug; it has no re-evaluation trigger and does not expire.
 
 ## Extension Blocks (C# 14) Not Yet Analyzer-Safe
 
@@ -26,4 +26,4 @@ Rider flags `FunFair.Test.Infrastructure/Mocks/MockBase.cs`'s `MockBase<T>` with
 
 ## `ExcludeFromCodeCoverage` Suggestion Is a False Positive on Test-Infrastructure Assemblies
 
-The same reasoning as `MockBase<T>` above applies to `FunFair.Test.Common/AssemblySettings.cs` and `FunFair.Test.Infrastructure/AssemblySettings.cs`'s `[assembly: ExcludeFromCodeCoverage]`: Rider's "Avoid the ExcludeFromCodeCoverage attribute" finding does not apply. Both assemblies are test infrastructure, not coverage-ratchet targets, and both already carry an explicit `[assembly: SuppressMessage(category: "Philips.CodeAnalysis.MaintainabilityAnalyzers", checkId: "PH2140: Avoid ExcludeFromCodeCoverage", ...)]` with justification.
+As with `MockBase<T>` above, Rider's "Avoid the ExcludeFromCodeCoverage attribute" finding does not apply to `FunFair.Test.Common/AssemblySettings.cs` and `FunFair.Test.Infrastructure/AssemblySettings.cs`'s `[assembly: ExcludeFromCodeCoverage]`, though for a different reason: both assemblies are test infrastructure, not coverage-ratchet targets, and both already carry an explicit `[assembly: SuppressMessage(category: "Philips.CodeAnalysis.MaintainabilityAnalyzers", checkId: "PH2140: Avoid ExcludeFromCodeCoverage", ...)]` with justification.
