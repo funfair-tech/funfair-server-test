@@ -4,6 +4,8 @@
 
 Rider's code inspection surfaces some findings this repo deliberately does not act on. Recorded here so future work does not re-propose the same fix.
 
+`src/FunFair.Test.slnx.DotSettings` already sets solution-wide Rider inspection severities (e.g. `ConvertToUsingDeclaration` and `ConvertConstructorToMemberInitializers` are set to `DO_NOT_SHOW`), so a per-inspection severity override is an available mechanism, not a new one, for the `MockBase<T>` and `ExcludeFromCodeCoverage` entries below (their IDs are not yet identified). It has not been used here: it is solution-wide, silencing the inspection for every file rather than the two specific members it's justified for, so it needs the repo owner's explicit sign-off before use, same as any other new suppression under this repo's Warning Suppression rules. This markdown note is the interim record until that happens.
+
 ## Never Convert to Primary Constructors
 
 Do not convert a `class` or `struct` to use a primary constructor, regardless of what Rider or `/simplify` suggests. This applies repo-wide, not just to existing code. Unlike the other entries below, this is a deliberate team style preference, not a workaround for an analyzer false positive or bug; it has no re-evaluation trigger and does not expire.
