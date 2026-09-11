@@ -12,8 +12,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 - Use forward-slash path separators in MSBuild files for cross-platform compatibility
-- Use TimeProvider.System instead of DateTimeOffset.UtcNow in logging tests
 - Rename async test methods to end in Async in AotTestDispatcherAnalyzerTests
+- Use MockDateTimeSources.Past instead of DateTimeOffset.UtcNow in logging tests
+- Correct wrong logger category in LoggingFolderCleanupTestBaseTests.LoggingOutputs
 ### Changed
 ### Deprecated
 ### Removed
