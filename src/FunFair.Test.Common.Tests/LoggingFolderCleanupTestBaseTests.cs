@@ -32,7 +32,7 @@ public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTest
     [Fact]
     public void LoggingOutputs()
     {
-        ILogger<LoggingTestBaseTests> logger = this.GetTypedLogger<LoggingTestBaseTests>();
+        ILogger<LoggingFolderCleanupTestBaseTests> logger = this.GetTypedLogger<LoggingFolderCleanupTestBaseTests>();
 
         DateTimeOffset now = TimeProvider.System.GetUtcNow();
 
