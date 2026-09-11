@@ -12,6 +12,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Added
 ### Fixed
 - Use forward-slash path separators in MSBuild files for cross-platform compatibility
+- Use TimeProvider.System instead of DateTimeOffset.UtcNow in logging tests
 ### Changed
 ### Deprecated
 ### Removed
