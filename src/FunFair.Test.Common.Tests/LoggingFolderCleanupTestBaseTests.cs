@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using FunFair.Test.Common.Mocks;
 using FunFair.Test.Common.Mocks.Extensions;
@@ -16,14 +15,9 @@ public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTest
         : base(output) { }
 
     [Fact]
-    [SuppressMessage(
-        category: "FunFair.CodeAnalysis",
-        checkId: "FFS0005:Avoid DateTimeOffset.UtcNow",
-        Justification = "Unit test"
-    )]
     public void OutputOutputs()
     {
-        DateTimeOffset now = DateTimeOffset.UtcNow;
+        DateTimeOffset now = TimeProvider.System.GetUtcNow();
 
         try
         {
@@ -36,16 +30,11 @@ public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTest
     }
 
     [Fact]
-    [SuppressMessage(
-        category: "FunFair.CodeAnalysis",
-        checkId: "FFS0005:Avoid DateTimeOffset.UtcNow",
-        Justification = "Unit test"
-    )]
     public void LoggingOutputs()
     {
         ILogger<LoggingTestBaseTests> logger = this.GetTypedLogger<LoggingTestBaseTests>();
 
-        DateTimeOffset now = DateTimeOffset.UtcNow;
+        DateTimeOffset now = TimeProvider.System.GetUtcNow();
 
         try
         {
