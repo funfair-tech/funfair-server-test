@@ -11,6 +11,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Security
 ### Added
 ### Fixed
+- Use forward-slash path separators in MSBuild files for cross-platform compatibility
 ### Changed
 ### Deprecated
 ### Removed
