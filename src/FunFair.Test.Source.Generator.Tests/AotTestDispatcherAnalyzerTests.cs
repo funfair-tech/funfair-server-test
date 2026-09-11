@@ -10,7 +10,7 @@ namespace FunFair.Test.Source.Generator.Tests;
 public sealed class AotTestDispatcherAnalyzerTests : TestBase
 {
     [Fact]
-    public async Task SealedClassDerivingFromAffectedBaseWithNoDispatcher_ReportsMissingDispatcher()
+    public async Task SealedClassDerivingFromAffectedBaseWithNoDispatcher_ReportsMissingDispatcherAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -40,7 +40,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task SealedClassWithCompleteDispatcher_ReportsNothing()
+    public async Task SealedClassWithCompleteDispatcher_ReportsNothingAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -83,7 +83,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task SealedClassWithIncompleteDispatcher_ReportsMissingCase()
+    public async Task SealedClassWithIncompleteDispatcher_ReportsMissingCaseAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -127,7 +127,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task DispatcherWithProviderUsingStringLiteralCaseNames_AbstainsFromCompletenessCheck()
+    public async Task DispatcherWithProviderUsingStringLiteralCaseNames_AbstainsFromCompletenessCheckAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -166,7 +166,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task AbstractClassDerivingFromAffectedBase_ReportsNothing()
+    public async Task AbstractClassDerivingFromAffectedBase_ReportsNothingAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -193,7 +193,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task SealedClassUnrelatedToAffectedBases_ReportsNothing()
+    public async Task SealedClassUnrelatedToAffectedBases_ReportsNothingAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -212,7 +212,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task ConsumerOwnedIntermediateBetweenLeafAndAffectedBase_ReportsNothing()
+    public async Task ConsumerOwnedIntermediateBetweenLeafAndAffectedBase_ReportsNothingAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -243,7 +243,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task DispatcherWithProviderDeclaredOnAffectedBase_AbstainsFromCompletenessCheck()
+    public async Task DispatcherWithProviderDeclaredOnAffectedBase_AbstainsFromCompletenessCheckAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -286,7 +286,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task DispatcherWithProviderDeclaredOnUnrelatedExternalType_AbstainsFromCompletenessCheck()
+    public async Task DispatcherWithProviderDeclaredOnUnrelatedExternalType_AbstainsFromCompletenessCheckAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -331,7 +331,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task CompletenessCheck_IncludesFactsFromEntireFunFairTestCommonChain()
+    public async Task CompletenessCheck_IncludesFactsFromEntireFunFairTestCommonChainAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -378,7 +378,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task DispatcherWithProviderDeclaredOnNestedTypeWithinLeaf_ChecksCompleteness()
+    public async Task DispatcherWithProviderDeclaredOnNestedTypeWithinLeaf_ChecksCompletenessAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -425,7 +425,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task CompilationWithoutXunitReference_ReportsNothing()
+    public async Task CompilationWithoutXunitReference_ReportsNothingAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerWithoutXunitReferenceAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -443,7 +443,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task AffectedBaseWithNoFactOrTheoryMethods_ReportsNothing()
+    public async Task AffectedBaseWithNoFactOrTheoryMethods_ReportsNothingAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -480,7 +480,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task CandidateMethodsWithWrongDispatcherShape_AreNotRecognisedAsDispatcher()
+    public async Task CandidateMethodsWithWrongDispatcherShape_AreNotRecognisedAsDispatcherAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -513,7 +513,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task DispatcherWithNullMemberDataName_AbstainsFromCompletenessCheck()
+    public async Task DispatcherWithNullMemberDataName_AbstainsFromCompletenessCheckAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -546,7 +546,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task DispatcherWithMemberDataNamingNonExistentMember_AbstainsFromCompletenessCheck()
+    public async Task DispatcherWithMemberDataNamingNonExistentMember_AbstainsFromCompletenessCheckAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -579,7 +579,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task ProviderMethodWithNonSimpleNameofTarget_IgnoresThatTargetWithoutAffectingRealNames()
+    public async Task ProviderMethodWithNonSimpleNameofTarget_IgnoresThatTargetWithoutAffectingRealNamesAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
