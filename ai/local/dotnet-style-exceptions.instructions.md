@@ -8,7 +8,7 @@ Rider's code inspection surfaces some findings this repo deliberately does not a
 
 ## Never Convert to Primary Constructors
 
-Do not convert a `class` or `struct` to use a primary constructor, regardless of what Rider or `/simplify` suggests. This applies repo-wide, not just to existing code. Unlike the other entries below, this is a deliberate team style preference, not a workaround for an analyzer false positive or bug; it has no re-evaluation trigger and does not expire.
+Do not convert a `class` or `struct` to use a primary constructor, regardless of what Rider or `/simplify` suggests. This applies repo-wide, not just to existing code. Unlike the other entries below, this is a deliberate team style preference, not a workaround for an analyzer false positive or bug; it has no re-evaluation trigger and does not expire. The `src/FunFair.Test.slnx.DotSettings` mechanism noted above could silence Rider's live suggestion too, subject to the same repo-owner sign-off.
 
 ## Extension Blocks (C# 14) Not Yet Analyzer-Safe
 
