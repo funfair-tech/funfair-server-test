@@ -2,7 +2,7 @@
   <Folder Name="/Config/">
     <File Path="../CHANGELOG.md" />
     <File Path="../README.md" />
-    <File Path="..\.editorconfig" />
+    <File Path="../.editorconfig" />
     <File Path="FunFair.props" />
     <File Path="global.json" />
     <File Path="SourceGenerator.props" />
@@ -15,5 +15,5 @@
   <Project Path="FunFair.Test.Infrastructure.Tests/FunFair.Test.Infrastructure.Tests.csproj" />
   <Project Path="FunFair.Test.Infrastructure/FunFair.Test.Infrastructure.csproj" />
   <Project Path="FunFair.Test.Source.Generator.Tests/FunFair.Test.Source.Generator.Tests.csproj" />
-  <Project Path="FunFair.Test.Source.Generator\FunFair.Test.Source.Generator.csproj" />
+  <Project Path="FunFair.Test.Source.Generator/FunFair.Test.Source.Generator.csproj" />
 </Solution>
