@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FunFair.Test.Common.Mocks;
 using FunFair.Test.Common.Mocks.Extensions;
+using FunFair.Test.Infrastructure.Mocks;
 using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Internal;
@@ -16,7 +17,7 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
     [Fact]
     public void OutputOutputs()
     {
-        DateTimeOffset now = TimeProvider.System.GetUtcNow();
+        DateTimeOffset now = MockDateTimeSources.Past.GetUtcNow();
 
         try
         {
@@ -33,7 +34,7 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
     {
         ILogger<LoggingTestBaseTests> logger = this.GetTypedLogger<LoggingTestBaseTests>();
 
-        DateTimeOffset now = TimeProvider.System.GetUtcNow();
+        DateTimeOffset now = MockDateTimeSources.Past.GetUtcNow();
 
         try
         {
