@@ -69,7 +69,7 @@ public abstract class TestBase
     protected static IReadOnlyList<T> MakeFake<T>(Func<Faker<T>, Faker<T>> rules, int itemCount)
         where T : class
     {
-        Assert.True(itemCount > 0, userMessage: "Must generate at least one ");
+        Assert.True(itemCount > 0, userMessage: "Must generate at least one item");
 
         const bool enable = true;
 

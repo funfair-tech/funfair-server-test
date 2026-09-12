@@ -86,7 +86,7 @@ public abstract class ComplexValidatorTestBase<
     {
         Assert.NotEmpty(erroringProperties);
 
-        bool hasUnexpectedErrors = result.Errors.TrueForAll(error =>
+        bool hasNoUnexpectedErrors = result.Errors.TrueForAll(error =>
             erroringProperties.Contains(value: error.PropertyName, comparer: StringComparer.Ordinal)
         );
         bool hasAllExpectedErrors = Array.TrueForAll(
@@ -95,8 +95,8 @@ public abstract class ComplexValidatorTestBase<
         );
 
         Assert.True(
-            condition: hasUnexpectedErrors,
-            $"Should have had errors in {DumpExpectedPropertiesInError(erroringProperties)}, but found errors in {DumpPropertiesInError(result)}"
+            condition: hasNoUnexpectedErrors,
+            $"Should not have had errors outside {DumpExpectedPropertiesInError(erroringProperties)}, but found errors in {DumpPropertiesInError(result)}"
         );
 
         Assert.True(
