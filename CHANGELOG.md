@@ -15,6 +15,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Rename async test methods to end in Async in AotTestDispatcherAnalyzerTests
 - Use MockDateTimeSources.Past instead of DateTimeOffset.UtcNow in logging tests
 - Correct wrong logger category in LoggingFolderCleanupTestBaseTests.LoggingOutputs
+- TBD - to be finalized after review
 ### Changed
 - Dependencies - Updated Meziantou.Analyzer to 3.0.253
 ### Deprecated
