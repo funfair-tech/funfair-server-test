@@ -80,7 +80,7 @@ internal abstract class XUnitLoggerBase : ILogger
             message.Length
             + (timestamp is null ? 0 : timestamp.Length + 1)
             + (logLevelText is null ? 0 : logLevelText.Length + 1)
-            + (this._options.IncludeCategory ? (this._categoryName?.Length ?? 0) + 3 : 0)
+            + (this._options.IncludeCategory ? (this._categoryName?.Length ?? 0) + "[".Length + "] ".Length : 0)
             + (exceptionText is null ? 0 : exceptionText.Length + 1);
 
         StringBuilder sb = new(capacity: capacity);
