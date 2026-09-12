@@ -109,7 +109,7 @@ public abstract class EquatableObjectTestBase<TObject> : TestBase
     [Fact]
     public void OperatorEqualsNullObjectSameAsNullObject()
     {
-        Assert.True(this.OperatorEquals(x: this.NullObject, y: this.NullObject), userMessage: "Should Be different");
+        Assert.True(this.OperatorEquals(x: this.NullObject, y: this.NullObject), userMessage: "Should Be Same");
     }
 
     [Fact]
@@ -155,10 +155,7 @@ public abstract class EquatableObjectTestBase<TObject> : TestBase
     [Fact]
     public void OperatorNotEqualsNullObjectSameAsNullObject()
     {
-        Assert.False(
-            this.OperatorNotEquals(x: this.NullObject, y: this.NullObject),
-            userMessage: "Should Be different"
-        );
+        Assert.False(this.OperatorNotEquals(x: this.NullObject, y: this.NullObject), userMessage: "Should Be Same");
     }
 
     [Fact]

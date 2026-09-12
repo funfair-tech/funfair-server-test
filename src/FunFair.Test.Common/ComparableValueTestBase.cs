@@ -66,7 +66,7 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
     }
 
     [Fact]
-    public void OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToValue1()
+    public void OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToItself()
     {
         Assert.True(this.OperatorGreaterThanOrEqualTo(l: this.Value1, r: this.Value1), userMessage: "Value1 >= Value1");
     }
@@ -120,7 +120,7 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
     }
 
     [Fact]
-    public void OperatorLessThanOrEqualToValue1IsNotLessThanOrEquivalentToValue1()
+    public void OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToItself()
     {
         Assert.True(this.OperatorLessThanOrEqualTo(l: this.Value1, r: this.Value1), userMessage: "Value1 <= Value1");
     }
@@ -205,7 +205,7 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
     {
         Assert.True(
             UntypedCompareTo(l: this.Value2, r: this.EquivalentToValue1AsObject) > 0,
-            userMessage: "Should be greater than to 0"
+            userMessage: "Should be greater than 0"
         );
     }
 
@@ -242,7 +242,7 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
         [
             .. EquatableValueTestBase<TObject>.BuildDispatcherCases<TSelf>(),
             Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToValue1()),
-            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToItself()),
             Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToValue2()),
             Case<TSelf>(t => t.OperatorGreaterThanOrEqualToValue2IsGreaterThanOrEquivalentToValue1()),
             Case<TSelf>(t => t.OperatorGreaterThanValue1IsNotGreaterThanValue1()),
@@ -250,7 +250,7 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
             Case<TSelf>(t => t.OperatorGreaterThanValue2IsGreaterThanValue1()),
             Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToValue1()),
             Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToValue2()),
-            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsNotLessThanOrEquivalentToValue1()),
+            Case<TSelf>(t => t.OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToItself()),
             Case<TSelf>(t => t.OperatorLessThanOrEqualToValue2IsNotLessThanOrEquivalentToValue1()),
             Case<TSelf>(t => t.OperatorLessThanValue1IsLessThanValue2()),
             Case<TSelf>(t => t.OperatorLessThanValue1IsNotLessThanValue1()),
