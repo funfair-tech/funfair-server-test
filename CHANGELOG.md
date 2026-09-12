@@ -17,7 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Correct wrong logger category in LoggingFolderCleanupTestBaseTests.LoggingOutputs
 - Correct misleading test names, reversed/incorrect assertion messages in shared test base classes (renames may affect consumer test filters/quarantines)
 ### Changed
-- Dependencies - Updated Meziantou.Analyzer to 3.0.253
+- Dependencies - Updated Meziantou.Analyzer to 3.0.255
 ### Deprecated
 ### Removed
 ### Deployment Changes
