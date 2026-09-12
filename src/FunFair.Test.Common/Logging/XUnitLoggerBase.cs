@@ -53,7 +53,29 @@ internal abstract class XUnitLoggerBase : ILogger
             return;
         }
 
-        StringBuilder sb = new();
+        string message = formatter(arg1: state, arg2: exception);
+
+        if (
+            exception is null
+            && this._options.TimestampFormat is null
+            && !this._options.IncludeLogLevel
+            && !this._options.IncludeCategory
+            && !this._options.IncludeScopes
+        )
+        {
+            WriteLine(testOutputHelper: testOutputHelper, message: message);
+
+            return;
+        }
+
+        string formatted = this.BuildFormattedMessage(logLevel: logLevel, message: message, exception: exception);
+
+        WriteLine(testOutputHelper: testOutputHelper, message: formatted);
+    }
+
+    private string BuildFormattedMessage(LogLevel logLevel, string message, Exception? exception)
+    {
+        StringBuilder sb = new(capacity: message.Length);
 
         if (this._options.TimestampFormat is not null)
         {
@@ -75,7 +97,7 @@ internal abstract class XUnitLoggerBase : ILogger
             sb = sb.Append('[').Append(this._categoryName).Append("] ");
         }
 
-        sb = sb.Append(formatter(arg1: state, arg2: exception));
+        sb = sb.Append(message);
 
         if (exception is not null)
         {
@@ -94,9 +116,14 @@ internal abstract class XUnitLoggerBase : ILogger
             );
         }
 
+        return sb.ToString();
+    }
+
+    private static void WriteLine(ITestOutputHelper testOutputHelper, string message)
+    {
         try
         {
-            testOutputHelper.WriteLine(sb.ToString());
+            testOutputHelper.WriteLine(message);
         }
         catch (Exception ex)
         {

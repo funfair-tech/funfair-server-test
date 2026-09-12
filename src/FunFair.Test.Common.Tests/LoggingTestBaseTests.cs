@@ -47,6 +47,23 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
     }
 
     [Fact]
+    public void LoggingWithExceptionOutputs()
+    {
+        ILogger<LoggingTestBaseTests> logger = this.GetTypedLogger<LoggingTestBaseTests>();
+
+        DateTimeOffset now = MockDateTimeSources.Past.GetUtcNow();
+
+        try
+        {
+            logger.LogHelloWorldFailed(now, new InvalidOperationException("Boom"));
+        }
+        catch (Exception exception)
+        {
+            throw new FormatException(message: "Twit", innerException: exception);
+        }
+    }
+
+    [Fact]
     public void MakeFaker()
     {
         IReadOnlyList<ExampleObject> fake = MakeFake<ExampleObject>(
