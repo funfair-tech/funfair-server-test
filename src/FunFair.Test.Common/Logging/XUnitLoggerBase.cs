@@ -75,12 +75,13 @@ internal abstract class XUnitLoggerBase : ILogger
                 .ToString(format: this._options.TimestampFormat, formatProvider: CultureInfo.InvariantCulture);
         string? exceptionText = exception?.ToString();
         string? logLevelText = this._options.IncludeLogLevel ? GetLogLevelString(logLevel) : null;
+        string? categoryText = this._options.IncludeCategory ? $"[{this._categoryName}] " : null;
 
         int capacity =
             message.Length
             + (timestamp is null ? 0 : timestamp.Length + 1)
             + (logLevelText is null ? 0 : logLevelText.Length + 1)
-            + (this._options.IncludeCategory ? (this._categoryName?.Length ?? 0) + "[".Length + "] ".Length : 0)
+            + (categoryText?.Length ?? 0)
             + (exceptionText is null ? 0 : exceptionText.Length + 1);
 
         StringBuilder sb = new(capacity: capacity);
@@ -95,9 +96,9 @@ internal abstract class XUnitLoggerBase : ILogger
             sb = sb.Append(logLevelText).Append(' ');
         }
 
-        if (this._options.IncludeCategory)
+        if (categoryText is not null)
         {
-            sb = sb.Append('[').Append(this._categoryName).Append("] ");
+            sb = sb.Append(categoryText);
         }
 
         sb = sb.Append(message);
