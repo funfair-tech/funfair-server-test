@@ -58,8 +58,8 @@
     <PackageReference Include="Castle.Core" Version="5.2.1" IncludeAssets="compile;runtime" />
     <PackageReference Include="FluentValidation" Version="12.1.1" IncludeAssets="compile;runtime" />
     <PackageReference Include="NSubstitute" Version="6.2.0" IncludeAssets="compile;runtime" />
-    <PackageReference Include="xunit.v3.assert.aot" Version="4.0.0" IncludeAssets="compile;runtime" />
-    <PackageReference Include="xunit.v3.extensibility.core.aot" Version="4.0.0" IncludeAssets="compile;runtime" />
+    <PackageReference Include="xunit.v3.assert.aot" Version="4.0.1" IncludeAssets="compile;runtime" />
+    <PackageReference Include="xunit.v3.extensibility.core.aot" Version="4.0.1" IncludeAssets="compile;runtime" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" ExcludeAssets="runtime" />
