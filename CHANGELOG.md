@@ -16,6 +16,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Use MockDateTimeSources.Past instead of DateTimeOffset.UtcNow in logging tests
 - Correct wrong logger category in LoggingFolderCleanupTestBaseTests.LoggingOutputs
 - Correct misleading test names, reversed/incorrect assertion messages in shared test base classes (renames may affect consumer test filters/quarantines)
+- TBD - to be finalized after review
 ### Changed
 - Dependencies - Updated xunit.analyzers to 2.1.0
 - Dependencies - Updated xunit.v3 to 4.0.1
