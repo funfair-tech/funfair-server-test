@@ -55,13 +55,7 @@ internal abstract class XUnitLoggerBase : ILogger
 
         string message = formatter(arg1: state, arg2: exception);
 
-        if (
-            exception is null
-            && this._options.TimestampFormat is null
-            && !this._options.IncludeLogLevel
-            && !this._options.IncludeCategory
-            && !this._options.IncludeScopes
-        )
+        if (exception is null && !this._options.RequiresFormatting)
         {
             WriteLine(testOutputHelper: testOutputHelper, message: message);
 
@@ -75,15 +69,23 @@ internal abstract class XUnitLoggerBase : ILogger
 
     private string BuildFormattedMessage(LogLevel logLevel, string message, Exception? exception)
     {
-        StringBuilder sb = new(capacity: message.Length);
+        string? timestamp = this._options.TimestampFormat is null
+            ? null
+            : this.GetCurrentTimestamp()
+                .ToString(format: this._options.TimestampFormat, formatProvider: CultureInfo.InvariantCulture);
+        string? exceptionText = exception?.ToString();
 
-        if (this._options.TimestampFormat is not null)
+        int capacity =
+            message.Length
+            + (timestamp is null ? 0 : timestamp.Length + 1)
+            + (this._options.IncludeLogLevel ? 5 : 0)
+            + (this._options.IncludeCategory ? (this._categoryName?.Length ?? 0) + 3 : 0)
+            + (exceptionText is null ? 0 : exceptionText.Length + 1);
+
+        StringBuilder sb = new(capacity: capacity);
+
+        if (timestamp is not null)
         {
-            DateTimeOffset now = this.GetCurrentTimestamp();
-            string timestamp = now.ToString(
-                format: this._options.TimestampFormat,
-                formatProvider: CultureInfo.InvariantCulture
-            );
             sb = sb.Append(timestamp).Append(' ');
         }
 
@@ -99,9 +101,9 @@ internal abstract class XUnitLoggerBase : ILogger
 
         sb = sb.Append(message);
 
-        if (exception is not null)
+        if (exceptionText is not null)
         {
-            sb = sb.Append('\n').Append(exception);
+            sb = sb.Append('\n').Append(exceptionText);
         }
 
         if (this._options.IncludeScopes)

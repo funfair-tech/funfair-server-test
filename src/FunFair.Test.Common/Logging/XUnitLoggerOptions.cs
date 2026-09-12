@@ -17,6 +17,9 @@ internal readonly record struct XUnitLoggerOptions(
 {
     public static XUnitLoggerOptions Default { get; } = new(false, false, false, null, true);
 
+    public bool RequiresFormatting =>
+        this.TimestampFormat is not null || this.IncludeLogLevel || this.IncludeCategory || this.IncludeScopes;
+
     public DateTimeOffset GetCurrentTimestamp(TimeProvider timeProvider)
     {
         return this.UseUtcTimestamp ? timeProvider.GetUtcNow() : timeProvider.GetLocalNow();
