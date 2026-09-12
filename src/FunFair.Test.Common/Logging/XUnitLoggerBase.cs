@@ -9,7 +9,7 @@ namespace FunFair.Test.Common.Logging;
 
 internal abstract class XUnitLoggerBase : ILogger
 {
-    private readonly string? _categoryName;
+    private readonly string? _categoryText;
     private readonly XUnitLoggerOptions _options;
     private readonly LoggerExternalScopeProvider _scopeProvider;
     private readonly ITestOutputHelper? _testOutputHelper;
@@ -23,7 +23,7 @@ internal abstract class XUnitLoggerBase : ILogger
     {
         this._testOutputHelper = testOutputHelper;
         this._scopeProvider = scopeProvider;
-        this._categoryName = categoryName;
+        this._categoryText = options.IncludeCategory ? $"[{categoryName}] " : null;
         this._options = options;
     }
 
@@ -75,37 +75,36 @@ internal abstract class XUnitLoggerBase : ILogger
                 .ToString(format: this._options.TimestampFormat, formatProvider: CultureInfo.InvariantCulture);
         string? exceptionText = exception?.ToString();
         string? logLevelText = this._options.IncludeLogLevel ? GetLogLevelString(logLevel) : null;
-        string? categoryText = this._options.IncludeCategory ? $"[{this._categoryName}] " : null;
 
         int capacity =
             message.Length
-            + (timestamp is null ? 0 : timestamp.Length + 1)
-            + (logLevelText is null ? 0 : logLevelText.Length + 1)
-            + (categoryText?.Length ?? 0)
-            + (exceptionText is null ? 0 : exceptionText.Length + 1);
+            + LengthWithSeparator(timestamp, separatorLength: 1)
+            + LengthWithSeparator(logLevelText, separatorLength: 1)
+            + LengthWithSeparator(this._categoryText)
+            + LengthWithSeparator(exceptionText, separatorLength: 1);
 
         StringBuilder sb = new(capacity: capacity);
 
         if (timestamp is not null)
         {
-            sb = sb.Append(timestamp).Append(' ');
+            sb.Append(timestamp).Append(' ');
         }
 
         if (logLevelText is not null)
         {
-            sb = sb.Append(logLevelText).Append(' ');
+            sb.Append(logLevelText).Append(' ');
         }
 
-        if (categoryText is not null)
+        if (this._categoryText is not null)
         {
-            sb = sb.Append(categoryText);
+            sb.Append(this._categoryText);
         }
 
-        sb = sb.Append(message);
+        sb.Append(message);
 
         if (exceptionText is not null)
         {
-            sb = sb.Append('\n').Append(exceptionText);
+            sb.Append('\n').Append(exceptionText);
         }
 
         if (this._options.IncludeScopes)
@@ -139,6 +138,11 @@ internal abstract class XUnitLoggerBase : ILogger
     private DateTimeOffset GetCurrentTimestamp()
     {
         return this._options.GetCurrentTimestamp(TimeProvider.System);
+    }
+
+    private static int LengthWithSeparator(string? value, int separatorLength = 0)
+    {
+        return value is null ? 0 : value.Length + separatorLength;
     }
 
     private static string GetLogLevelString(LogLevel logLevel)
