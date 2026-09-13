@@ -55,7 +55,7 @@ internal abstract class XUnitLoggerBase : ILogger
 
         string message = formatter(arg1: state, arg2: exception);
 
-        if (exception is null && !this._options.RequiresFormatting)
+        if (!this.NeedsFormatting(exception))
         {
             WriteLine(testOutputHelper: testOutputHelper, message: message);
 
@@ -65,6 +65,11 @@ internal abstract class XUnitLoggerBase : ILogger
         string formatted = this.BuildFormattedMessage(logLevel: logLevel, message: message, exception: exception);
 
         WriteLine(testOutputHelper: testOutputHelper, message: formatted);
+    }
+
+    private bool NeedsFormatting(Exception? exception)
+    {
+        return exception is not null || this._options.RequiresFormatting;
     }
 
     private string BuildFormattedMessage(LogLevel logLevel, string message, Exception? exception)
