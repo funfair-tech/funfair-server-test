@@ -95,12 +95,7 @@ internal abstract class XUnitLoggerBase : ILogger
             sb.Append(logLevelText).Append(' ');
         }
 
-        if (this._categoryText is not null)
-        {
-            sb.Append(this._categoryText);
-        }
-
-        sb.Append(message);
+        sb.Append(this._categoryText).Append(message);
 
         if (exceptionText is not null)
         {
