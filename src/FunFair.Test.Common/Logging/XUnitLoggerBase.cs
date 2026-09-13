@@ -9,7 +9,7 @@ namespace FunFair.Test.Common.Logging;
 
 internal abstract class XUnitLoggerBase : ILogger
 {
-    private readonly string? _categoryName;
+    private readonly string? _categoryText;
     private readonly XUnitLoggerOptions _options;
     private readonly LoggerExternalScopeProvider _scopeProvider;
     private readonly ITestOutputHelper? _testOutputHelper;
@@ -23,7 +23,7 @@ internal abstract class XUnitLoggerBase : ILogger
     {
         this._testOutputHelper = testOutputHelper;
         this._scopeProvider = scopeProvider;
-        this._categoryName = categoryName;
+        this._categoryText = options.IncludeCategory ? $"[{categoryName}] " : null;
         this._options = options;
     }
 
@@ -53,33 +53,58 @@ internal abstract class XUnitLoggerBase : ILogger
             return;
         }
 
-        StringBuilder sb = new();
+        string message = formatter(arg1: state, arg2: exception);
 
-        if (this._options.TimestampFormat is not null)
+        if (!this.NeedsFormatting(exception))
         {
-            DateTimeOffset now = this.GetCurrentTimestamp();
-            string timestamp = now.ToString(
-                format: this._options.TimestampFormat,
-                formatProvider: CultureInfo.InvariantCulture
-            );
-            sb = sb.Append(timestamp).Append(' ');
+            WriteLine(testOutputHelper: testOutputHelper, message: message);
+
+            return;
         }
 
-        if (this._options.IncludeLogLevel)
+        string formatted = this.BuildFormattedMessage(logLevel: logLevel, message: message, exception: exception);
+
+        WriteLine(testOutputHelper: testOutputHelper, message: formatted);
+    }
+
+    private bool NeedsFormatting(Exception? exception)
+    {
+        return exception is not null || this._options.RequiresFormatting;
+    }
+
+    private string BuildFormattedMessage(LogLevel logLevel, string message, Exception? exception)
+    {
+        string? timestamp = this._options.TimestampFormat is null
+            ? null
+            : this.GetCurrentTimestamp()
+                .ToString(format: this._options.TimestampFormat, formatProvider: CultureInfo.InvariantCulture);
+        string? exceptionText = exception?.ToString();
+        string? logLevelText = this._options.IncludeLogLevel ? GetLogLevelString(logLevel) : null;
+
+        int capacity =
+            message.Length
+            + LengthWithSeparator(timestamp, separatorLength: 1)
+            + LengthWithSeparator(logLevelText, separatorLength: 1)
+            + LengthWithSeparator(this._categoryText)
+            + LengthWithSeparator(exceptionText, separatorLength: 1);
+
+        StringBuilder sb = new(capacity: capacity);
+
+        if (timestamp is not null)
         {
-            sb = sb.Append(GetLogLevelString(logLevel)).Append(' ');
+            sb.Append(timestamp).Append(' ');
         }
 
-        if (this._options.IncludeCategory)
+        if (logLevelText is not null)
         {
-            sb = sb.Append('[').Append(this._categoryName).Append("] ");
+            sb.Append(logLevelText).Append(' ');
         }
 
-        sb = sb.Append(formatter(arg1: state, arg2: exception));
+        sb.Append(this._categoryText).Append(message);
 
-        if (exception is not null)
+        if (exceptionText is not null)
         {
-            sb = sb.Append('\n').Append(exception);
+            sb.Append('\n').Append(exceptionText);
         }
 
         if (this._options.IncludeScopes)
@@ -94,9 +119,14 @@ internal abstract class XUnitLoggerBase : ILogger
             );
         }
 
+        return sb.ToString();
+    }
+
+    private static void WriteLine(ITestOutputHelper testOutputHelper, string message)
+    {
         try
         {
-            testOutputHelper.WriteLine(sb.ToString());
+            testOutputHelper.WriteLine(message);
         }
         catch (Exception ex)
         {
@@ -108,6 +138,11 @@ internal abstract class XUnitLoggerBase : ILogger
     private DateTimeOffset GetCurrentTimestamp()
     {
         return this._options.GetCurrentTimestamp(TimeProvider.System);
+    }
+
+    private static int LengthWithSeparator(string? value, int separatorLength = 0)
+    {
+        return value is null ? 0 : value.Length + separatorLength;
     }
 
     private static string GetLogLevelString(LogLevel logLevel)
