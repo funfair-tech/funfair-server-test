@@ -21,6 +21,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.analyzers to 2.1.0
 - Dependencies - Updated xunit.v3 to 4.0.1
 - Dependencies - Updated Meziantou.Analyzer to 3.0.262
+- Dependencies - Updated Microsoft.Sbom.Targets to 4.1.12
 ### Deprecated
 ### Removed
 ### Deployment Changes
