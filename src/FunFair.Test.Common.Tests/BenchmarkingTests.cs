@@ -15,7 +15,7 @@ public sealed class BenchmarkingTests : LoggingTestBase
     public async Task Run_BenchmarksAsync()
     {
         (Summary summary, AccumulationLogger logger) = await BenchmarkAsync<ExampleBenchmarks>(
-            TestContext.Current.CancellationToken
+            this.CancellationToken()
         );
 
         this.Output.WriteLine(logger.GetLog());
