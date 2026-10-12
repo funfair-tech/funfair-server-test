@@ -10,7 +10,7 @@
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
-    <Features>strict;flow-analysis</Features>
+    <Features>strict;flow-analysis;runtime-async=on</Features>
     <GenerateNeutralResourcesLanguageAttribute>true</GenerateNeutralResourcesLanguageAttribute>
     <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
     <IlcOptimizationPreference>Size</IlcOptimizationPreference>
@@ -27,7 +27,7 @@
     <OptimizationPreference>speed</OptimizationPreference>
     <OutputType>Exe</OutputType>
     <RunAOTCompilation>false</RunAOTCompilation>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
     <TieredCompilation>true</TieredCompilation>
     <TieredPGO>true</TieredPGO>
@@ -37,6 +37,7 @@
     <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
     <WarningsAsErrors />
     <_NetStandardCompatFacadeAssemblyNames>;System.Buffers;System.Memory;System.Numerics.Vectors;System.Runtime.CompilerServices.Unsafe;System.Text.Encoding.CodePages;System.Threading.Tasks.Extensions;</_NetStandardCompatFacadeAssemblyNames>
+    <_NetStandardRoslynDependencyAssemblyNames>;System.Collections.Immutable;System.Reflection.Metadata;</_NetStandardRoslynDependencyAssemblyNames>
   </PropertyGroup>
   <Import Project="$(SolutionDir)UnitTests.props" Condition="Exists('$(SolutionDir)UnitTests.props')" />
   <!-- FunFair.Test.Source.Generator targets netstandard2.0 (required for Roslyn generator host compatibility).
@@ -47,20 +48,26 @@
        generator-as-analyzer (emitting AssemblySettings.generated.cs/ProtectedMemberSuppressions.generated.cs for
        this project too, same as its siblings) and generator-as-compile-time-type. ReferenceOutputAssembly="true"
        also pulls FunFair.Test.Source.Generator's netstandard2.0 compile-time reference-assembly facades (part of
-       the netstandard2.0 contract, not normal transitive NuGet packages) into this net10.0 project's
-       compile-reference closure. net10.0 already provides all of these in-box at a higher version, so MSBuild logs
+       the netstandard2.0 contract, not normal transitive NuGet packages) into this net11.0 project's
+       compile-reference closure. net11.0 already provides all of these in-box at a higher version, so MSBuild logs
        an MSB3243 "no way to resolve conflict" for each one (escalated to a build-breaking error by this project's
        Release-config settings) and one of them (System.Threading.Tasks.Extensions, whose netstandard2.0 ValueTask
-       collides with net10.0's own in System.Runtime) additionally fails compilation outright (CS0433) inside
+       collides with net11.0's own in System.Runtime) additionally fails compilation outright (CS0433) inside
        xunit's AOT-generated code. ResolveAssemblyReferences (RAR) logs the MSB3243 conflict warning as a side
        effect of its own internal resolution algorithm the moment it runs, so removing items afterwards (even
        BeforeTargets="CoreCompile", which runs after RAR) does not stop the warning from being logged - only from
        reaching Csc. Strip all of them from the candidate reference items before RAR itself runs, so it never sees
-       the conflict at all; net10.0 doesn't need any of them. -->
+       the conflict at all; net11.0 doesn't need any of them. System.Collections.Immutable and
+       System.Reflection.Metadata (_NetStandardRoslynDependencyAssemblyNames) arrive the same way as Roslyn's
+       netstandard2.0 package dependencies, versioned with the runtime Roslyn was built against, so they collide
+       (MSB3243, then CS0433 on ImmutableArray<T>) once this project targets a newer runtime. Unlike the facades,
+       the in-box copies are the real implementations this project compiles against, so these are stripped only
+       from the project-reference paths and never from the framework Reference items. -->
   <Target Name="RemoveNetStandardCompatFacades" BeforeTargets="ResolveAssemblyReferences">
     <ItemGroup>
       <Reference Remove="@(Reference)" Condition="$(_NetStandardCompatFacadeAssemblyNames.Contains(';%(Reference.FileName);'))" />
       <_ResolvedProjectReferencePaths Remove="@(_ResolvedProjectReferencePaths)" Condition="$(_NetStandardCompatFacadeAssemblyNames.Contains(';%(_ResolvedProjectReferencePaths.FileName);'))" />
+      <_ResolvedProjectReferencePaths Remove="@(_ResolvedProjectReferencePaths)" Condition="$(_NetStandardRoslynDependencyAssemblyNames.Contains(';%(_ResolvedProjectReferencePaths.FileName);'))" />
     </ItemGroup>
   </Target>
   <ItemGroup>

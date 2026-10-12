@@ -22,8 +22,8 @@ public static class DispatcherCaseData
         [CallerArgumentExpression(nameof(action))] string expressionText = ""
     )
     {
-        int openParen = expressionText.LastIndexOf('(');
-        int dot = expressionText.LastIndexOf('.', openParen);
+        int openParen = expressionText.LastIndexOf('(', StringComparison.Ordinal);
+        int dot = expressionText.LastIndexOf('.', openParen, StringComparison.Ordinal);
 
         return (expressionText[(dot + 1)..openParen], action);
     }

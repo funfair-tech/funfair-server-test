@@ -50,8 +50,10 @@ public sealed class ValidatorTestBaseTests : ValidatorTestBase<TestSimpleValidat
         AssertOnlyNamedPropertyHasErrors(result: validationResult, nameof(ExampleObject.Name));
     }
 
-    public static TheoryData<string, Action<ValidatorTestBaseTests>> BaseCaseData() =>
-        BuildDispatcherCases<ValidatorTestBaseTests>().ToTheoryData();
+    public static TheoryData<string, Action<ValidatorTestBaseTests>> BaseCaseData()
+    {
+        return BuildDispatcherCases<ValidatorTestBaseTests>().ToTheoryData();
+    }
 
     [Theory]
     [MemberData(nameof(BaseCaseData))]

@@ -307,7 +307,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         CancellationToken cancellationToken
     )
     {
-        HashSet<string> names = new(StringComparer.Ordinal);
+        HashSet<string> names = [with(StringComparer.Ordinal)];
 
         foreach (SyntaxReference syntaxRef in providerMethod.DeclaringSyntaxReferences)
         {

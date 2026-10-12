@@ -39,5 +39,8 @@ public abstract class ValidatorTestBase<
             + "table per leaf"
     )]
     public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
-        where TSelf : ValidatorTestBase<TValidator, TObject> => [Case<TSelf>(t => t.EverythingValid())];
+        where TSelf : ValidatorTestBase<TValidator, TObject>
+    {
+        return [Case<TSelf>(t => t.EverythingValid())];
+    }
 }
