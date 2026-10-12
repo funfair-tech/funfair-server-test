@@ -33,11 +33,7 @@ internal static class BenchmarkingHelpers
             .WithOptions(ConfigOptions.StopOnFirstError)
             .WithBuildTimeout(GetBenchmarkBuildTimeout());
 
-        Summary summary = await BenchmarkRunner.RunAsync<T>(
-            config: config,
-            args: [],
-            cancellationToken: cancellationToken
-        );
+        Summary summary = await BenchmarkRunner.RunAsync<T>(config: config, cancellationToken: cancellationToken);
 
         Assert.False(condition: summary.HasCriticalValidationErrors, logger.GetLog());
 
