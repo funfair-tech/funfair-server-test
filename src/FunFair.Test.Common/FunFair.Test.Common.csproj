@@ -13,7 +13,7 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
     <FFTestProject>true</FFTestProject>
-    <Features>strict;flow-analysis</Features>
+    <Features>strict;flow-analysis;runtime-async=on</Features>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <GenerateNeutralResourcesLanguageAttribute>true</GenerateNeutralResourcesLanguageAttribute>
     <GenerateSBOM>true</GenerateSBOM>
@@ -38,7 +38,7 @@
     <RepositoryUrl>https://github.com/funfair-tech/funfair-server-test</RepositoryUrl>
     <RunAOTCompilation>false</RunAOTCompilation>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
     <TieredCompilation>true</TieredCompilation>
     <TieredPGO>true</TieredPGO>
@@ -74,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoBogus.NSubstitute" Version="2.13.1" IncludeAssets="compile;runtime" />
-    <PackageReference Include="BenchmarkDotNet" Version="0.15.8" IncludeAssets="compile;runtime;buildTransitive" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.16.0-preview.2" IncludeAssets="compile;runtime;buildTransitive" />
     <PackageReference Include="Bogus" Version="35.6.5" IncludeAssets="compile;runtime" />
     <PackageReference Include="Castle.Core" Version="5.2.1" IncludeAssets="compile;runtime" />
     <PackageReference Include="FluentValidation" Version="12.2.0" IncludeAssets="compile;runtime" />
