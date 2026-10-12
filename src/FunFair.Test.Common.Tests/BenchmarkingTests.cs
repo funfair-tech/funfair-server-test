@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Reports;
 using FunFair.Test.Common.Mocks.Benchmarks;
@@ -11,9 +12,11 @@ public sealed class BenchmarkingTests : LoggingTestBase
         : base(output) { }
 
     [Fact]
-    public void Run_Benchmarks()
+    public async Task Run_BenchmarksAsync()
     {
-        (Summary summary, AccumulationLogger logger) = Benchmark<ExampleBenchmarks>();
+        (Summary summary, AccumulationLogger logger) = await BenchmarkAsync<ExampleBenchmarks>(
+            TestContext.Current.CancellationToken
+        );
 
         this.Output.WriteLine(logger.GetLog());
 

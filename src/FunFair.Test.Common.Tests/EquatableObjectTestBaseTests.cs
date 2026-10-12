@@ -26,8 +26,10 @@ public sealed class EquatableObjectTestBaseTests : EquatableObjectTestBase<strin
         Assert.Equal(expected: this.Value1, actual: this.Value1Alias);
     }
 
-    public static TheoryData<string, Action<EquatableObjectTestBaseTests>> BaseCaseData() =>
-        BuildDispatcherCases<EquatableObjectTestBaseTests>().ToTheoryData();
+    public static TheoryData<string, Action<EquatableObjectTestBaseTests>> BaseCaseData()
+    {
+        return BuildDispatcherCases<EquatableObjectTestBaseTests>().ToTheoryData();
+    }
 
     [Theory]
     [MemberData(nameof(BaseCaseData))]
