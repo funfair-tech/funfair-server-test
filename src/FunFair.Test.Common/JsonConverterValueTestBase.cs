@@ -85,8 +85,15 @@ public abstract class JsonConverterValueTestBase<
             + "hand-copied case table per leaf"
     )]
     public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
-        where TSelf : JsonConverterValueTestBase<TConverter, TObject> =>
-        [Case<TSelf>(t => t.RoundTrip()), Case<TSelf>(t => t.Serializes()), Case<TSelf>(t => t.ShouldNotDeserialize())];
+        where TSelf : JsonConverterValueTestBase<TConverter, TObject>
+    {
+        return
+        [
+            Case<TSelf>(t => t.RoundTrip()),
+            Case<TSelf>(t => t.Serializes()),
+            Case<TSelf>(t => t.ShouldNotDeserialize()),
+        ];
+    }
 
     private readonly struct Model
     {

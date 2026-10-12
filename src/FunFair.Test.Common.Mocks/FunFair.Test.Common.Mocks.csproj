@@ -11,7 +11,7 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
     <FFTestProject>true</FFTestProject>
-    <Features>strict;flow-analysis</Features>
+    <Features>strict;flow-analysis;runtime-async=on</Features>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <GenerateNeutralResourcesLanguageAttribute>true</GenerateNeutralResourcesLanguageAttribute>
     <IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
@@ -31,7 +31,7 @@
     <OptimizationPreference>speed</OptimizationPreference>
     <OutputType>Library</OutputType>
     <RunAOTCompilation>false</RunAOTCompilation>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
     <TieredCompilation>true</TieredCompilation>
     <TieredPGO>true</TieredPGO>
@@ -46,7 +46,7 @@
     <ProjectReference Include="../FunFair.Test.Infrastructure/FunFair.Test.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.15.8" IncludeAssets="compile;runtime;buildTransitive" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.16.0-preview.2" IncludeAssets="compile;runtime;buildTransitive" />
     <PackageReference Include="FluentValidation" Version="12.2.0" IncludeAssets="compile;runtime" />
   </ItemGroup>
   <ItemGroup>

@@ -129,8 +129,10 @@ public abstract class TestBase
         return value.FormatValue();
     }
 
-    protected static (Summary summary, AccumulationLogger logger) Benchmark<T>()
+    protected static ValueTask<(Summary summary, AccumulationLogger logger)> BenchmarkAsync<T>(
+        CancellationToken cancellationToken
+    )
     {
-        return BenchmarkingHelpers.Benchmark<T>();
+        return BenchmarkingHelpers.BenchmarkAsync<T>(cancellationToken);
     }
 }

@@ -27,7 +27,7 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
         AnalyzerConfigOptionsProvider Right
     )> ExtractNamespaces(in IncrementalGeneratorInitializationContext context)
     {
-        HashSet<string> assembliesToGenerateVersionInformation = new(StringComparer.Ordinal);
+        HashSet<string> assembliesToGenerateVersionInformation = [with(StringComparer.Ordinal)];
 
         return context
             .SyntaxProvider.CreateSyntaxProvider(
