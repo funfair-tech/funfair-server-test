@@ -23,6 +23,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Microsoft.Sbom.Targets to 4.1.13
 - Dependencies - Updated Meziantou.Analyzer to 3.0.290
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.35.0.4138
+- SDK - Updated DotNet SDK to 10.0.402
 ### Deprecated
 ### Removed
 ### Deployment Changes
