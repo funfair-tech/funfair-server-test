@@ -23,6 +23,10 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Microsoft.Sbom.Targets to 4.1.13
 - Dependencies - Updated Meziantou.Analyzer to 3.0.290
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.35.0.4138
+- SDK - Updated DotNet SDK to 11.0.100-rc.1
+- Runtime - Retargeted all projects to net11.0 with runtime-async enabled
+- Dependencies - Updated BenchmarkDotNet to 0.16.0-preview.2
+- BREAKING: TestBase.Benchmark<T>() replaced by async BenchmarkAsync<T>(CancellationToken) returning ValueTask. Consumers must await BenchmarkAsync<T>() with a cancellation token instead of calling the synchronous Benchmark<T>().
 ### Deprecated
 ### Removed
 ### Deployment Changes

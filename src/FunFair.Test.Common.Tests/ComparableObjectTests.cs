@@ -41,8 +41,10 @@ public sealed class ComparableObjectTests : ComparableObjectTestBase<string>
         return ReferenceObjectHelpers.Compare(left: l, right: r, cmp: StringComparer.Ordinal.Compare) < 0;
     }
 
-    public static TheoryData<string, Action<ComparableObjectTests>> BaseCaseData() =>
-        BuildDispatcherCases<ComparableObjectTests>().ToTheoryData();
+    public static TheoryData<string, Action<ComparableObjectTests>> BaseCaseData()
+    {
+        return BuildDispatcherCases<ComparableObjectTests>().ToTheoryData();
+    }
 
     [Theory]
     [MemberData(nameof(BaseCaseData))]

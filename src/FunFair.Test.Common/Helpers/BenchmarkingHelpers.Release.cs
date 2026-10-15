@@ -1,6 +1,8 @@
 #if !DEBUG
 using System;
 using System.Globalization;
+using System.Threading;
+using System.Threading.Tasks;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Loggers;
@@ -10,7 +12,7 @@ using Xunit;
 
 namespace FunFair.Test.Common.Helpers;
 
-// Must stay behaviourally compatible with BenchmarkingHelpers.Debug.cs's Benchmark<T>() (same signature, fake result).
+// Must stay behaviourally compatible with BenchmarkingHelpers.Debug.cs's BenchmarkAsync<T>() (same signature, fake result).
 internal static class BenchmarkingHelpers
 {
     private const string BENCHMARK_BUILD_TIMEOUT_SECONDS_ENVIRONMENT_VARIABLE =
@@ -18,7 +20,9 @@ internal static class BenchmarkingHelpers
 
     private static readonly TimeSpan DefaultBenchmarkBuildTimeout = TimeSpan.FromMinutes(10);
 
-    public static (Summary summary, AccumulationLogger logger) Benchmark<T>()
+    public static async ValueTask<(Summary summary, AccumulationLogger logger)> BenchmarkAsync<T>(
+        CancellationToken cancellationToken
+    )
     {
         AccumulationLogger logger = new();
 
@@ -29,7 +33,7 @@ internal static class BenchmarkingHelpers
             .WithOptions(ConfigOptions.StopOnFirstError)
             .WithBuildTimeout(GetBenchmarkBuildTimeout());
 
-        Summary summary = BenchmarkRunner.Run<T>(config);
+        Summary summary = await BenchmarkRunner.RunAsync<T>(config: config, cancellationToken: cancellationToken);
 
         Assert.False(condition: summary.HasCriticalValidationErrors, logger.GetLog());
 
