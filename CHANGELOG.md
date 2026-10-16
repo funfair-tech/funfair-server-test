@@ -27,6 +27,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Meziantou.Analyzer to 3.0.303
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 18.12.1
 - Dependencies - Updated Roslynator.Analyzers to 5.0.1
+- Dependencies - Updated xunit.runner.visualstudio to 4.0.1
 ### Deprecated
 ### Removed
 ### Deployment Changes
