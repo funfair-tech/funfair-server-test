@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.15.8" IncludeAssets="compile;runtime" />
-    <PackageReference Include="FluentValidation" Version="12.1.1" IncludeAssets="compile;runtime" />
+    <PackageReference Include="FluentValidation" Version="12.2.0" IncludeAssets="compile;runtime" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" ExcludeAssets="runtime" />
