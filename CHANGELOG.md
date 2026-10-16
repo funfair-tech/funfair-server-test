@@ -29,6 +29,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Roslynator.Analyzers to 5.0.1
 - Dependencies - Updated xunit.runner.visualstudio to 4.0.1
 - Dependencies - Updated FluentValidation to 12.2.0
+- Dependencies - Updated Microsoft.Extensions to 10.11.0
 ### Deprecated
 ### Removed
 ### Deployment Changes
