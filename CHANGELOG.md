@@ -19,7 +19,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Avoid unnecessary StringBuilder allocation in XUnitLoggerBase.Log on the common no-option, no-exception path, and pre-size the StringBuilder from the formatted message length on the remaining path
 ### Changed
 - Dependencies - Updated xunit.analyzers to 2.1.0
-- Dependencies - Updated xunit.v3 to 4.0.1
 - Dependencies - Updated Microsoft.Sbom.Targets to 4.1.13
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.35.0.4138
 - SDK - Updated DotNet SDK to 10.0.402
@@ -30,6 +29,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated xunit.runner.visualstudio to 4.0.1
 - Dependencies - Updated FluentValidation to 12.2.0
 - Dependencies - Updated Microsoft.Extensions to 10.11.0
+- Dependencies - Updated xunit.v3 to 4.0.2
 ### Deprecated
 ### Removed
 ### Deployment Changes
