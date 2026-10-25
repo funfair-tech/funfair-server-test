@@ -6,7 +6,7 @@
     <DebuggerSupport>true</DebuggerSupport>
     <Description>FunFair Common Test Infrastructure - framework-agnostic mocks, helpers, and extensions for building tests.</Description>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
-    <EnableMicrosoftExtensionsConfigurationBinderSourceGenerator>true</EnableMicrosoftExtensionsConfigurationBinderSourceGenerator>
+    <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnablePackageValidation>true</EnablePackageValidation>
     <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
