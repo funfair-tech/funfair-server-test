@@ -5,7 +5,7 @@
     <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
     <DebuggerSupport>true</DebuggerSupport>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
-    <EnableMicrosoftExtensionsConfigurationBinderSourceGenerator>true</EnableMicrosoftExtensionsConfigurationBinderSourceGenerator>
+    <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
@@ -46,7 +46,7 @@
     <ProjectReference Include="../FunFair.Test.Infrastructure/FunFair.Test.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.15.8" IncludeAssets="compile;runtime" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.8" IncludeAssets="compile;runtime;buildTransitive" />
     <PackageReference Include="FluentValidation" Version="12.2.0" IncludeAssets="compile;runtime" />
   </ItemGroup>
   <ItemGroup>
