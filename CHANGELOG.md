@@ -23,13 +23,13 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.35.0.4138
 - SDK - Updated DotNet SDK to 10.0.402
 - Dependencies - Updated FunFair.CodeAnalysis to 7.2.20.2501
-- Dependencies - Updated Meziantou.Analyzer to 3.0.303
 - Dependencies - Updated Microsoft.VisualStudio.Threading.Analyzers to 18.12.1
 - Dependencies - Updated Roslynator.Analyzers to 5.0.1
 - Dependencies - Updated xunit.runner.visualstudio to 4.0.1
 - Dependencies - Updated FluentValidation to 12.2.0
 - Dependencies - Updated Microsoft.Extensions to 10.11.0
 - Dependencies - Updated xunit.analyzers to 2.2.0
+- Dependencies - Updated Meziantou.Analyzer to 3.0.316
 ### Deprecated
 ### Removed
 ### Deployment Changes
