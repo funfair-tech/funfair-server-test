@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using FunFair.Test.Common;
 using Microsoft.CodeAnalysis;
@@ -178,5 +179,41 @@ public sealed class ProtectedMemberSuppressionGeneratorTests : TestBase
         );
 
         Assert.Empty(result.Results.Single().GeneratedSources);
+    }
+
+    [Theory]
+    [InlineData("true", false)]
+    [InlineData("false", true)]
+    // CA1822: see the comment on ClassWithProtectedMembers_GeneratesSuppressionForEach above.
+    public static void BuildProperty_DecidesWhetherProtectedMembersAreCollected(
+        string disableSourceGenerators,
+        bool expectCollected
+    )
+    {
+        GeneratorDriverRunResult result = GeneratorTestHelpers.RunGeneratorTrackingSteps(
+            generator: new ProtectedMemberSuppressionGenerator(),
+            source: """
+            namespace Sample;
+
+            public abstract class Example
+            {
+                protected void DoSomething() { }
+            }
+            """,
+            globalOptions: new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["build_property.FunFairTestDisableSourceGenerators"] = disableSourceGenerators,
+            }
+        );
+
+        bool collected =
+            result
+                .Results.Single()
+                .TrackedSteps.TryGetValue(
+                    key: ProtectedMemberSuppressionGenerator.CollectProtectedMembersStep,
+                    out ImmutableArray<IncrementalGeneratorRunStep> steps
+                ) && steps.Any(step => !step.Outputs.IsEmpty);
+
+        Assert.Equal(expected: expectCollected, actual: collected);
     }
 }
