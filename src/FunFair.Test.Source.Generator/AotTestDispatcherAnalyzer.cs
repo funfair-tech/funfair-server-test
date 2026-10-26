@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -19,6 +18,8 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     private const string BUILDER_METHOD_NAME = "BuildDispatcherCases";
 
     private const string CASE_METHOD_NAME = "Case";
+
+    private const string TO_THEORY_DATA_METHOD_NAME = "ToTheoryData";
 
     private static readonly DiagnosticDescriptor MissingDispatcherRule = new(
         id: "FTS001",
@@ -116,6 +117,19 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                 ),
             SymbolKind.NamedType
         );
+
+        // Checked from the provider's own declaration rather than the leaf's symbol action: only a syntax node action
+        // has a SemanticModel to resolve each Case(...) through, and Compilation.GetSemanticModel is off-limits in an
+        // analyzer (RS1030).
+        context.RegisterSyntaxNodeAction(
+            nodeContext =>
+                AnalyzeDispatcherCaseProvider(
+                    nodeContext,
+                    symbols: symbols,
+                    dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
+                ),
+            SyntaxKind.MethodDeclaration
+        );
     }
 
     private static void AnalyzeClass(
@@ -124,41 +138,68 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         DispatchedTestNameCache dispatchedTestNamesByBaseType
     )
     {
-        if (
-            context.Symbol
-            is not INamedTypeSymbol { TypeKind: TypeKind.Class, IsSealed: true, IsAbstract: false } classSymbol
-        )
+        if (context.Symbol is not INamedTypeSymbol classSymbol || !IsLeafClass(classSymbol))
         {
             return;
         }
 
-        IReadOnlyList<INamedTypeSymbol> baseChain = CollectBaseChain(classSymbol);
-
-        INamedTypeSymbol? affectedBaseType = baseChain.FirstOrDefault(bt =>
-            !dispatchedTestNamesByBaseType.GetOrAdd(baseType: bt, symbols: symbols).IsEmpty
-        );
+        INamedTypeSymbol? affectedBaseType = CollectBaseChain(classSymbol)
+            .FirstOrDefault(bt => !dispatchedTestNamesByBaseType.GetOrAdd(baseType: bt, symbols: symbols).IsEmpty);
 
         if (affectedBaseType is null)
         {
             return;
         }
 
-        IMethodSymbol? dispatcher = FindDispatcher(classSymbol: classSymbol, symbols: symbols);
-
-        if (dispatcher is null)
+        if (FindDispatcher(classSymbol: classSymbol, symbols: symbols) is null)
         {
             ReportMissingDispatcher(context, classSymbol: classSymbol, affectedBaseType: affectedBaseType);
+        }
+    }
+
+    private static bool IsLeafClass(INamedTypeSymbol classSymbol)
+    {
+        return classSymbol is { TypeKind: TypeKind.Class, IsSealed: true, IsAbstract: false };
+    }
+
+    private static void AnalyzeDispatcherCaseProvider(
+        in SyntaxNodeAnalysisContext context,
+        WellKnownSymbols symbols,
+        DispatchedTestNameCache dispatchedTestNamesByBaseType
+    )
+    {
+        // [MemberData] only binds to static members, so the cheap syntactic check filters out almost every method.
+        if (
+            context.Node is not MethodDeclarationSyntax providerSyntax
+            || !providerSyntax.Modifiers.Any(SyntaxKind.StaticKeyword)
+            || context.SemanticModel.GetDeclaredSymbol(providerSyntax, context.CancellationToken)
+                is not { ContainingType: { } providerType } providerMethod
+        )
+        {
             return;
         }
 
+        // A local provider is declared on the leaf itself or on a type nested directly inside it.
         ReportIncompleteDispatcherCases(
             context,
-            classSymbol: classSymbol,
-            dispatcher: dispatcher,
-            baseChain: baseChain,
+            classSymbol: providerType,
+            providerMethod: providerMethod,
+            providerSyntax: providerSyntax,
             symbols: symbols,
             dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
         );
+
+        if (providerType.ContainingType is { } outerType)
+        {
+            ReportIncompleteDispatcherCases(
+                context,
+                classSymbol: outerType,
+                providerMethod: providerMethod,
+                providerSyntax: providerSyntax,
+                symbols: symbols,
+                dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
+            );
+        }
     }
 
     private static void AnalyzeDispatcherCaseBuilder(
@@ -200,7 +241,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         }
 
         HashSet<string> caseNames = CollectCaseNames(
-            builderSyntax: builderSyntax,
+            methodSyntax: builderSyntax,
             semanticModel: context.SemanticModel,
             symbols: symbols,
             cancellationToken: context.CancellationToken
@@ -284,7 +325,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     }
 
     private static HashSet<string> CollectCaseNames(
-        MethodDeclarationSyntax builderSyntax,
+        MethodDeclarationSyntax methodSyntax,
         SemanticModel semanticModel,
         WellKnownSymbols symbols,
         CancellationToken cancellationToken
@@ -292,7 +333,15 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     {
         HashSet<string> names = new(StringComparer.Ordinal);
 
-        foreach (InvocationExpressionSyntax invocation in ReturnedCollectionInvocations(builderSyntax))
+        foreach (
+            InvocationExpressionSyntax invocation in ReturnedCollectionElements(
+                    methodSyntax: methodSyntax,
+                    semanticModel: semanticModel,
+                    symbols: symbols,
+                    cancellationToken: cancellationToken
+                )
+                .OfType<InvocationExpressionSyntax>()
+        )
         {
             if (
                 !IsDispatcherCase(
@@ -317,13 +366,17 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         return names;
     }
 
-    // Only the elements of the collection the builder itself returns are dispatched; a Case(...) evaluated anywhere
+    // Only the elements of the collection the method itself returns are dispatched; a Case(...) evaluated anywhere
     // else (a discard, or the body of a lambda or local function) never reaches a leaf class's [MemberData].
-    private static IEnumerable<InvocationExpressionSyntax> ReturnedCollectionInvocations(
-        MethodDeclarationSyntax builderSyntax
+    // Yields each element's expression, or the SpreadElementSyntax itself for a spread.
+    private static IEnumerable<SyntaxNode> ReturnedCollectionElements(
+        MethodDeclarationSyntax methodSyntax,
+        SemanticModel semanticModel,
+        WellKnownSymbols symbols,
+        CancellationToken cancellationToken
     )
     {
-        return builderSyntax
+        return methodSyntax
             .DescendantNodes(descendIntoChildren: static node =>
                 node is not (AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax)
             )
@@ -335,10 +388,51 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                     _ => null,
                 }
             )
-            .OfType<CollectionExpressionSyntax>()
-            .SelectMany(static collection => collection.Elements.OfType<ExpressionElementSyntax>())
-            .Select(static element => element.Expression)
-            .OfType<InvocationExpressionSyntax>();
+            .OfType<ExpressionSyntax>()
+            .Select(returned =>
+                UnwrapToTheoryData(
+                    returned: returned,
+                    semanticModel: semanticModel,
+                    symbols: symbols,
+                    cancellationToken: cancellationToken
+                )
+            )
+            .SelectMany(CollectionElements);
+    }
+
+    // A [MemberData] provider converts its case collection with "<collection>.ToTheoryData()", so the cases are the
+    // receiver's elements.
+    private static ExpressionSyntax UnwrapToTheoryData(
+        ExpressionSyntax returned,
+        SemanticModel semanticModel,
+        WellKnownSymbols symbols,
+        CancellationToken cancellationToken
+    )
+    {
+        return
+            returned is InvocationExpressionSyntax { Expression: MemberAccessExpressionSyntax memberAccess } invocation
+            && semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is IMethodSymbol method
+            && IsDispatcherCaseDataMethod(
+                method: method.ReducedFrom ?? method,
+                methodName: TO_THEORY_DATA_METHOD_NAME,
+                symbols: symbols
+            )
+            ? memberAccess.Expression
+            : returned;
+    }
+
+    private static IEnumerable<SyntaxNode> CollectionElements(ExpressionSyntax collection)
+    {
+        return collection switch
+        {
+            CollectionExpressionSyntax collectionExpression => collectionExpression.Elements.Select(
+                static SyntaxNode (element) =>
+                    element is ExpressionElementSyntax expressionElement ? expressionElement.Expression : element
+            ),
+            ArrayCreationExpressionSyntax { Initializer: { } initializer } => initializer.Expressions,
+            ImplicitArrayCreationExpressionSyntax implicitArray => implicitArray.Initializer.Expressions,
+            _ => [],
+        };
     }
 
     private static bool IsDispatcherCase(
@@ -349,7 +443,12 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     )
     {
         return semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is IMethodSymbol method
-            && StringComparer.Ordinal.Equals(method.Name, CASE_METHOD_NAME)
+            && IsDispatcherCaseDataMethod(method: method, methodName: CASE_METHOD_NAME, symbols: symbols);
+    }
+
+    private static bool IsDispatcherCaseDataMethod(IMethodSymbol method, string methodName, WellKnownSymbols symbols)
+    {
+        return StringComparer.Ordinal.Equals(method.Name, methodName)
             && SymbolEqualityComparer.Default.Equals(method.ContainingType, symbols.DispatcherCaseDataType);
     }
 
@@ -386,17 +485,37 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     }
 
     private static void ReportIncompleteDispatcherCases(
-        in SymbolAnalysisContext context,
+        in SyntaxNodeAnalysisContext context,
         INamedTypeSymbol classSymbol,
-        IMethodSymbol dispatcher,
-        IReadOnlyList<INamedTypeSymbol> baseChain,
+        IMethodSymbol providerMethod,
+        MethodDeclarationSyntax providerSyntax,
         WellKnownSymbols symbols,
         DispatchedTestNameCache dispatchedTestNamesByBaseType
     )
     {
-        HashSet<string>? declaredCaseNames = TryGetLocallyDeclaredCaseNames(
-            classSymbol: classSymbol,
-            dispatcher: dispatcher,
+        if (!IsLeafClass(classSymbol))
+        {
+            return;
+        }
+
+        IMethodSymbol? dispatcher = FindDispatcher(classSymbol: classSymbol, symbols: symbols);
+
+        if (
+            dispatcher is null
+            || !IsProviderOf(
+                dispatcher: dispatcher,
+                classSymbol: classSymbol,
+                providerMethod: providerMethod,
+                symbols: symbols
+            )
+        )
+        {
+            return;
+        }
+
+        HashSet<string>? declaredCaseNames = TryGetDeclaredCaseNames(
+            providerSyntax: providerSyntax,
+            semanticModel: context.SemanticModel,
             symbols: symbols,
             cancellationToken: context.CancellationToken
         );
@@ -407,7 +526,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         }
 
         foreach (
-            string testName in baseChain
+            string testName in CollectBaseChain(classSymbol)
                 .SelectMany(bt => dispatchedTestNamesByBaseType.GetOrAdd(baseType: bt, symbols: symbols))
                 .Distinct(StringComparer.Ordinal)
                 .Where(testName => !declaredCaseNames.Contains(testName))
@@ -493,25 +612,25 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         return isActionDelegate && SymbolEqualityComparer.Default.Equals(actionType.TypeArguments[0], classSymbol);
     }
 
-    private static HashSet<string>? TryGetLocallyDeclaredCaseNames(
-        INamedTypeSymbol classSymbol,
+    // The caller only passes the leaf itself or a type nested directly inside it as the provider's owner, so matching
+    // the [MemberData] target to this provider also establishes that the provider is local to the leaf.
+    private static bool IsProviderOf(
         IMethodSymbol dispatcher,
-        WellKnownSymbols symbols,
-        CancellationToken cancellationToken
+        INamedTypeSymbol classSymbol,
+        IMethodSymbol providerMethod,
+        WellKnownSymbols symbols
     )
     {
         AttributeData? memberDataAttribute = dispatcher
             .GetAttributes()
             .FirstOrDefault(a => IsAttributeOfType(a, symbols.MemberDataAttribute));
 
-        if (memberDataAttribute is null || memberDataAttribute.ConstructorArguments.Length == 0)
+        if (
+            memberDataAttribute?.ConstructorArguments.IsEmpty != false
+            || memberDataAttribute.ConstructorArguments[0].Value is not string memberName
+        )
         {
-            return null;
-        }
-
-        if (memberDataAttribute.ConstructorArguments[0].Value is not string memberName)
-        {
-            return null;
+            return false;
         }
 
         INamedTypeSymbol providerType =
@@ -520,66 +639,63 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                 .Value.Value as INamedTypeSymbol
             ?? classSymbol;
 
-        bool isLocal =
-            SymbolEqualityComparer.Default.Equals(providerType, classSymbol)
-            || SymbolEqualityComparer.Default.Equals(providerType.ContainingType, classSymbol);
+        return SymbolEqualityComparer.Default.Equals(
+            providerType.GetMembers(memberName).OfType<IMethodSymbol>().FirstOrDefault(),
+            providerMethod
+        );
+    }
 
-        if (!isLocal)
+    // Null means the provider's cases cannot be listed from its own source, so the check abstains: a provider that
+    // delegates with "BuildDispatcherCases<TSelf>().ToTheoryData()" (or spreads it) gets its cases from a base
+    // builder, whose completeness FTS003 checks where that base is declared.
+    private static HashSet<string>? TryGetDeclaredCaseNames(
+        MethodDeclarationSyntax providerSyntax,
+        SemanticModel semanticModel,
+        WellKnownSymbols symbols,
+        CancellationToken cancellationToken
+    )
+    {
+        bool spreadsOtherCases = ReturnedCollectionElements(
+                methodSyntax: providerSyntax,
+                semanticModel: semanticModel,
+                symbols: symbols,
+                cancellationToken: cancellationToken
+            )
+            .OfType<SpreadElementSyntax>()
+            .Any();
+
+        if (spreadsOtherCases)
         {
             return null;
         }
 
-        if (providerType.GetMembers(memberName).OfType<IMethodSymbol>().FirstOrDefault() is not { } providerMethod)
-        {
-            return null;
-        }
+        HashSet<string> names = CollectCaseNames(
+            methodSyntax: providerSyntax,
+            semanticModel: semanticModel,
+            symbols: symbols,
+            cancellationToken: cancellationToken
+        );
 
-        HashSet<string> names = CollectNameofTargets(providerMethod, cancellationToken);
+        names.UnionWith(CollectNameofTargets(providerSyntax));
 
         return names.Count == 0 ? null : names;
     }
 
-    [SuppressMessage(
-        category: "Meziantou.Analyzer",
-        checkId: "MA0045:Use GetSyntaxAsync instead of GetSyntax and make method async",
-        Justification = "Diagnostic analyzer symbol actions must be synchronous"
-    )]
-    private static HashSet<string> CollectNameofTargets(
-        IMethodSymbol providerMethod,
-        CancellationToken cancellationToken
-    )
+    private static IEnumerable<string> CollectNameofTargets(MethodDeclarationSyntax providerSyntax)
     {
-        HashSet<string> names = new(StringComparer.Ordinal);
+        return providerSyntax
+            .DescendantNodes()
+            .OfType<InvocationExpressionSyntax>()
+            .Where(IsNameofInvocation)
+            .Select(static invocation => ExtractSimpleName(invocation.ArgumentList.Arguments[0].Expression))
+            .OfType<string>();
+    }
 
-        foreach (SyntaxReference syntaxRef in providerMethod.DeclaringSyntaxReferences)
-        {
-            SyntaxNode node = syntaxRef.GetSyntax(cancellationToken);
-
-            foreach (
-                InvocationExpressionSyntax invocation in node.DescendantNodesAndSelf()
-                    .OfType<InvocationExpressionSyntax>()
-            )
-            {
-                if (invocation.Expression is not IdentifierNameSyntax { Identifier.Text: "nameof" })
-                {
-                    continue;
-                }
-
-                if (invocation.ArgumentList.Arguments.Count != 1)
-                {
-                    continue;
-                }
-
-                string? name = ExtractSimpleName(invocation.ArgumentList.Arguments[0].Expression);
-
-                if (name is not null)
-                {
-                    names.Add(name);
-                }
-            }
-        }
-
-        return names;
+    private static bool IsNameofInvocation(InvocationExpressionSyntax invocation)
+    {
+        return invocation.Expression is IdentifierNameSyntax identifier
+            && StringComparer.Ordinal.Equals(identifier.Identifier.Text, "nameof")
+            && invocation.ArgumentList.Arguments.Count == 1;
     }
 
     private static string? ExtractSimpleName(ExpressionSyntax expression)
