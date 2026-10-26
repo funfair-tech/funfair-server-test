@@ -554,6 +554,236 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
+    public async Task DispatcherWithLocalCaseHelperProviderMissingCase_ReportsMissingCaseAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using Xunit;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    public static TheoryData<string, Action<Leaf>> Cases() =>
+                        new[] { Case<Leaf>(t => t.FactOne()) }.ToTheoryData();
+
+                    [Theory]
+                    [MemberData(nameof(Cases))]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS002", actual: diagnostic.Id);
+        Assert.Contains("FactTwo", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task DispatcherWithCompleteLocalCaseHelperProvider_ReportsNothingAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using Xunit;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    public static TheoryData<string, Action<Leaf>> Cases()
+                    {
+                        return new (string Name, Action<Leaf> Action)[]
+                        {
+                            Case<Leaf>(t => t.FactOne()),
+                            Case<Leaf>(t => t.FactTwo()),
+                        }.ToTheoryData();
+                    }
+
+                    [Theory]
+                    [MemberData(nameof(Cases))]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task DispatcherWithProviderDelegatingToBaseBuilder_AbstainsFromCompletenessCheckAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : EquatableObjectTestBase<T>
+                    {
+                        return [Case<TSelf>(t => t.FactOne()), Case<TSelf>(t => t.FactTwo())];
+                    }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using Xunit;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    public static TheoryData<string, Action<Leaf>> Cases() => BuildDispatcherCases<Leaf>().ToTheoryData();
+
+                    [Theory]
+                    [MemberData(nameof(Cases))]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task DispatcherWithProviderSpreadingBaseBuilderAlongsideLocalCase_AbstainsFromCompletenessCheckAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : EquatableObjectTestBase<T>
+                    {
+                        return [Case<TSelf>(t => t.FactOne()), Case<TSelf>(t => t.FactTwo())];
+                    }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using Xunit;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    public void Extra() { }
+
+                    public static (string Name, Action<Leaf> Action)[] Cases() =>
+                        [.. BuildDispatcherCases<Leaf>(), Case<Leaf>(t => t.Extra())];
+
+                    [Theory]
+                    [MemberData(nameof(Cases))]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task StaticMethodNotTargetedByDispatcherMemberData_IsNotCheckedForCompletenessAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using Xunit;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    public static TheoryData<string, Action<Leaf>> Cases() =>
+                        new[] { Case<Leaf>(t => t.FactOne()), Case<Leaf>(t => t.FactTwo()) }.ToTheoryData();
+
+                    public static TheoryData<string, Action<Leaf>> UnusedSubset() =>
+                        new[] { Case<Leaf>(t => t.FactOne()) }.ToTheoryData();
+
+                    [Theory]
+                    [MemberData(nameof(Cases))]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
     public async Task CompilationWithoutXunitReference_ReportsNothingAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerWithoutXunitReferenceAsync(
@@ -653,16 +883,25 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
                 {
                     [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
                 }
             }
 
             namespace Sample
             {
                 using System;
+                using System.Collections.Generic;
                 using Xunit;
 
                 public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
                 {
+                    public static IEnumerable<object[]> Cases()
+                    {
+                        yield return [nameof(FactOne), (Action<Leaf>)(t => { })];
+                    }
+
                     [Theory]
                     [MemberData(null)]
                     public void CommonTests(string name, Action<Leaf> action) { }
@@ -686,16 +925,25 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
                 {
                     [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
                 }
             }
 
             namespace Sample
             {
                 using System;
+                using System.Collections.Generic;
                 using Xunit;
 
                 public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
                 {
+                    public static IEnumerable<object[]> Cases()
+                    {
+                        yield return [nameof(FactOne), (Action<Leaf>)(t => { })];
+                    }
+
                     [Theory]
                     [MemberData("NoSuchMember")]
                     public void CommonTests(string name, Action<Leaf> action) { }
