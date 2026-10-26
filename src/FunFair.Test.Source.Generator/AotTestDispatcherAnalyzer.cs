@@ -117,6 +117,28 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
+        context.RegisterSyntaxNodeAction(
+            nodeContext =>
+                AnalyzePropertyDeclaration(
+                    nodeContext,
+                    symbols: symbols,
+                    dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
+                    dispatchersByLeafType: dispatchersByLeafType
+                ),
+            SyntaxKind.PropertyDeclaration
+        );
+
+        context.RegisterSyntaxNodeAction(
+            nodeContext =>
+                AnalyzeFieldDeclaration(
+                    nodeContext,
+                    symbols: symbols,
+                    dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
+                    dispatchersByLeafType: dispatchersByLeafType
+                ),
+            SyntaxKind.FieldDeclaration
+        );
+
         context.RegisterSymbolAction(
             symbolContext =>
                 AnalyzeClass(
@@ -173,7 +195,83 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             AnalyzeDispatcherCaseProvider(
                 context,
                 providerSyntax: methodSyntax,
-                providerMethod: methodSymbol,
+                providerMember: methodSymbol,
+                providerType: containingType,
+                symbols: symbols,
+                dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
+                dispatchersByLeafType: dispatchersByLeafType
+            );
+        }
+    }
+
+    // A [MemberData] provider can equally be a static property or field; an instance one cannot be a provider. Each
+    // callback is registered for its one syntax kind, so the node is always of the type it casts to.
+    private static void AnalyzePropertyDeclaration(
+        in SyntaxNodeAnalysisContext context,
+        WellKnownSymbols symbols,
+        DispatchedTestNameCache dispatchedTestNamesByBaseType,
+        DispatcherCache dispatchersByLeafType
+    )
+    {
+        PropertyDeclarationSyntax propertySyntax = (PropertyDeclarationSyntax)context.Node;
+
+        if (propertySyntax.Modifiers.Any(SyntaxKind.StaticKeyword))
+        {
+            AnalyzeDataMemberProvider(
+                context,
+                providerSyntax: propertySyntax,
+                symbols: symbols,
+                dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
+                dispatchersByLeafType: dispatchersByLeafType
+            );
+        }
+    }
+
+    // A field is resolved per declarator, as that is the node a field's symbol is declared on, and each declarator is
+    // its own provider.
+    private static void AnalyzeFieldDeclaration(
+        in SyntaxNodeAnalysisContext context,
+        WellKnownSymbols symbols,
+        DispatchedTestNameCache dispatchedTestNamesByBaseType,
+        DispatcherCache dispatchersByLeafType
+    )
+    {
+        FieldDeclarationSyntax fieldSyntax = (FieldDeclarationSyntax)context.Node;
+
+        if (!fieldSyntax.Modifiers.Any(SyntaxKind.StaticKeyword))
+        {
+            return;
+        }
+
+        foreach (VariableDeclaratorSyntax declarator in fieldSyntax.Declaration.Variables)
+        {
+            AnalyzeDataMemberProvider(
+                context,
+                providerSyntax: declarator,
+                symbols: symbols,
+                dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
+                dispatchersByLeafType: dispatchersByLeafType
+            );
+        }
+    }
+
+    private static void AnalyzeDataMemberProvider(
+        in SyntaxNodeAnalysisContext context,
+        SyntaxNode providerSyntax,
+        WellKnownSymbols symbols,
+        DispatchedTestNameCache dispatchedTestNamesByBaseType,
+        DispatcherCache dispatchersByLeafType
+    )
+    {
+        if (
+            context.SemanticModel.GetDeclaredSymbol(providerSyntax, context.CancellationToken) is
+            { ContainingType: { } containingType } providerMember
+        )
+        {
+            AnalyzeDispatcherCaseProvider(
+                context,
+                providerSyntax: providerSyntax,
+                providerMember: providerMember,
                 providerType: containingType,
                 symbols: symbols,
                 dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
@@ -215,8 +313,8 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
     private static void AnalyzeDispatcherCaseProvider(
         in SyntaxNodeAnalysisContext context,
-        MethodDeclarationSyntax providerSyntax,
-        IMethodSymbol providerMethod,
+        SyntaxNode providerSyntax,
+        ISymbol providerMember,
         INamedTypeSymbol providerType,
         WellKnownSymbols symbols,
         DispatchedTestNameCache dispatchedTestNamesByBaseType,
@@ -227,7 +325,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         ReportIncompleteDispatcherCases(
             context,
             classSymbol: providerType,
-            providerMethod: providerMethod,
+            providerMember: providerMember,
             providerSyntax: providerSyntax,
             symbols: symbols,
             dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
@@ -239,7 +337,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             ReportIncompleteDispatcherCases(
                 context,
                 classSymbol: outerType,
-                providerMethod: providerMethod,
+                providerMember: providerMember,
                 providerSyntax: providerSyntax,
                 symbols: symbols,
                 dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
@@ -257,7 +355,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     )
     {
         CaseCompositionShape shape = CaseCompositionShape.Read(
-            methodSyntax: builderSyntax,
+            memberSyntax: builderSyntax,
             semanticModel: context.SemanticModel,
             symbols: symbols,
             cancellationToken: context.CancellationToken
@@ -399,8 +497,8 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     private static void ReportIncompleteDispatcherCases(
         in SyntaxNodeAnalysisContext context,
         INamedTypeSymbol classSymbol,
-        IMethodSymbol providerMethod,
-        MethodDeclarationSyntax providerSyntax,
+        ISymbol providerMember,
+        SyntaxNode providerSyntax,
         WellKnownSymbols symbols,
         DispatchedTestNameCache dispatchedTestNamesByBaseType,
         DispatcherCache dispatchersByLeafType
@@ -418,7 +516,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             || !IsProviderOf(
                 dispatcher: dispatcher,
                 classSymbol: classSymbol,
-                providerMethod: providerMethod,
+                providerMember: providerMember,
                 symbols: symbols
             )
         )
@@ -490,7 +588,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     private static bool IsProviderOf(
         IMethodSymbol dispatcher,
         INamedTypeSymbol classSymbol,
-        IMethodSymbol providerMethod,
+        ISymbol providerMember,
         WellKnownSymbols symbols
     )
     {
@@ -512,9 +610,10 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                 .Value.Value as INamedTypeSymbol
             ?? classSymbol;
 
+        // Matched by kind, so a method provider is still matched against the first method of that name, as before.
         return SymbolEqualityComparer.Default.Equals(
-            providerType.GetMembers(memberName).OfType<IMethodSymbol>().FirstOrDefault(),
-            providerMethod
+            providerType.GetMembers(memberName).FirstOrDefault(member => member.Kind == providerMember.Kind),
+            providerMember
         );
     }
 
@@ -522,7 +621,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     // composes in (a provider that delegates with "BuildDispatcherCases<TSelf>().ToTheoryData()", or spreads or
     // concatenates it). Null means the cover cannot be worked out from the provider's own source, so the check abstains.
     private static HashSet<string>? TryGetCoveredCaseNames(
-        MethodDeclarationSyntax providerSyntax,
+        SyntaxNode providerSyntax,
         SemanticModel semanticModel,
         INamedTypeSymbol classSymbol,
         WellKnownSymbols symbols,
@@ -531,7 +630,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     )
     {
         CaseCompositionShape shape = CaseCompositionShape.Read(
-            methodSyntax: providerSyntax,
+            memberSyntax: providerSyntax,
             semanticModel: semanticModel,
             symbols: symbols,
             cancellationToken: cancellationToken
@@ -602,7 +701,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static IEnumerable<string> CollectNameofTargets(MethodDeclarationSyntax providerSyntax)
+    private static IEnumerable<string> CollectNameofTargets(SyntaxNode providerSyntax)
     {
         return providerSyntax
             .DescendantNodes()
@@ -633,11 +732,12 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     // array creations and argument-less collection initialisers (whose elements are read), spreads, Concat, Append,
     // Prepend, ToArray, ToList and Empty from System.Linq.Enumerable, Array.Empty, DispatcherCaseData.ToTheoryData, a
     // static BuildDispatcherCases call (recorded, not read into) and a local initialised with any of these that is
-    // read nowhere else; an iterator's "yield return" elements are read the same way. Anything else leaves the shape
-    // unrecognised, so every check built on it abstains: they are errors that cannot be suppressed, and a guess could
-    // fail a build whose cases are complete. An element is read when it is a DispatcherCaseData.Case call or a
-    // (name, action) tuple literal; any other tuple-typed element leaves the shape unrecognised, except as
-    // MayHoldUnseenCase describes.
+    // read nowhere else; an iterator's "yield return" elements are read the same way. A property provider's getter (or
+    // its getter-only initialiser) and a readonly field provider's initialiser are read as a method's return is.
+    // Anything else leaves the shape unrecognised, so every check built on it abstains: they are errors that cannot be
+    // suppressed, and a guess could fail a build whose cases are complete. An element is read when it is a
+    // DispatcherCaseData.Case call, a (name, action) tuple literal or a collection initialiser's { name, action } Add
+    // element; any other tuple-typed element leaves the shape unrecognised, except as MayHoldUnseenCase describes.
     private sealed class CaseCompositionShape
     {
         private const string EMPTY_METHOD_NAME = "Empty";
@@ -658,20 +758,20 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
         private readonly List<IMethodSymbol> _composedBuilders = [];
 
-        private readonly MethodDeclarationSyntax _methodSyntax;
+        private readonly SyntaxNode _memberSyntax;
 
         private readonly SemanticModel _semanticModel;
 
         private readonly WellKnownSymbols _symbols;
 
         private CaseCompositionShape(
-            MethodDeclarationSyntax methodSyntax,
+            SyntaxNode memberSyntax,
             SemanticModel semanticModel,
             WellKnownSymbols symbols,
             CancellationToken cancellationToken
         )
         {
-            this._methodSyntax = methodSyntax;
+            this._memberSyntax = memberSyntax;
             this._semanticModel = semanticModel;
             this._symbols = symbols;
             this._cancellationToken = cancellationToken;
@@ -694,27 +794,30 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         }
 
         public static CaseCompositionShape Read(
-            MethodDeclarationSyntax methodSyntax,
+            SyntaxNode memberSyntax,
             SemanticModel semanticModel,
             WellKnownSymbols symbols,
             CancellationToken cancellationToken
         )
         {
             CaseCompositionShape shape = new(
-                methodSyntax: methodSyntax,
+                memberSyntax: memberSyntax,
                 semanticModel: semanticModel,
                 symbols: symbols,
                 cancellationToken: cancellationToken
             );
 
-            foreach (ExpressionSyntax returned in ReturnedExpressions(methodSyntax))
+            bool readsAnything = false;
+
+            foreach (ExpressionSyntax returned in ProvidedExpressions(memberSyntax))
             {
+                readsAnything = true;
                 shape.ReadSequence(returned);
             }
 
             bool isIterator = false;
 
-            foreach (ExpressionSyntax yielded in YieldedExpressions(methodSyntax))
+            foreach (ExpressionSyntax yielded in YieldedExpressions(memberSyntax))
             {
                 isIterator = true;
                 shape.ReadElement(element: yielded, isYielded: true);
@@ -727,21 +830,61 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                 shape.IsRecognised = false;
             }
 
+            // A property or field that provides nothing readable, or whose value can be replaced, may hold any cases.
+            bool providesNothing = !readsAnything && !isIterator;
+
+            if (memberSyntax is not MethodDeclarationSyntax && (providesNothing || MayBeReassigned(memberSyntax)))
+            {
+                shape.IsRecognised = false;
+            }
+
             return shape;
         }
 
-        // Only what the method itself returns or yields is dispatched; a Case(...) evaluated anywhere else (a discard,
+        // Only what the member itself returns or yields is dispatched; a Case(...) evaluated anywhere else (a discard,
         // or the body of a lambda or local function) never reaches a leaf class's [MemberData].
-        private static IEnumerable<SyntaxNode> OwnBodyNodes(MethodDeclarationSyntax methodSyntax)
+        private static IEnumerable<SyntaxNode> OwnBodyNodes(SyntaxNode memberSyntax)
         {
-            return methodSyntax.DescendantNodes(descendIntoChildren: static node =>
+            return memberSyntax.DescendantNodes(descendIntoChildren: static node =>
                 node is not (AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax)
             );
         }
 
-        private static IEnumerable<ExpressionSyntax> ReturnedExpressions(MethodDeclarationSyntax methodSyntax)
+        // A field's only value is its own initialiser (not that of a local inside it), and a property's is what its
+        // getter returns or, for an auto-property, its initialiser.
+        private static IEnumerable<ExpressionSyntax> ProvidedExpressions(SyntaxNode memberSyntax)
         {
-            return OwnBodyNodes(methodSyntax)
+            return memberSyntax switch
+            {
+                VariableDeclaratorSyntax declarator => InitialValue(declarator.Initializer),
+                PropertyDeclarationSyntax property => ReturnedExpressions(property)
+                    .Concat(InitialValue(property.Initializer)),
+                _ => ReturnedExpressions(memberSyntax),
+            };
+        }
+
+        private static IEnumerable<ExpressionSyntax> InitialValue(EqualsValueClauseSyntax? initializer)
+        {
+            return initializer is null ? [] : [initializer.Value];
+        }
+
+        // A non-readonly field or a settable auto-property can be given other cases after its initialiser has run.
+        private static bool MayBeReassigned(SyntaxNode memberSyntax)
+        {
+            return memberSyntax switch
+            {
+                VariableDeclaratorSyntax { Parent.Parent: FieldDeclarationSyntax field } => !field.Modifiers.Any(
+                    SyntaxKind.ReadOnlyKeyword
+                ),
+                PropertyDeclarationSyntax { Initializer: not null, AccessorList: { } accessorList } =>
+                    accessorList.Accessors.Any(static accessor => accessor.IsKind(SyntaxKind.SetAccessorDeclaration)),
+                _ => false,
+            };
+        }
+
+        private static IEnumerable<ExpressionSyntax> ReturnedExpressions(SyntaxNode memberSyntax)
+        {
+            return OwnBodyNodes(memberSyntax)
                 .Select(static node =>
                     node switch
                     {
@@ -755,9 +898,9 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
         // Each "yield return" is one element; a provider's yielded object[] rows add no name, leaving its nameof(...)
         // names to speak for it as before.
-        private static IEnumerable<ExpressionSyntax> YieldedExpressions(MethodDeclarationSyntax methodSyntax)
+        private static IEnumerable<ExpressionSyntax> YieldedExpressions(SyntaxNode memberSyntax)
         {
-            return OwnBodyNodes(methodSyntax)
+            return OwnBodyNodes(memberSyntax)
                 .OfType<YieldStatementSyntax>()
                 .Where(static yieldStatement => yieldStatement.IsKind(SyntaxKind.YieldReturnStatement))
                 .Select(static yieldStatement => yieldStatement.Expression)
@@ -852,12 +995,12 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             this.IsRecognised = false;
         }
 
-        // Null for a local that is not declared by a plain declarator in this method (a foreach or pattern variable,
+        // Null for a local that is not declared by a plain declarator in this member (a foreach or pattern variable,
         // an out var), which has no initialiser to follow.
         private VariableDeclaratorSyntax? FindDeclarator(ILocalSymbol local)
         {
             return this
-                ._methodSyntax.DescendantNodes()
+                ._memberSyntax.DescendantNodes()
                 .OfType<VariableDeclaratorSyntax>()
                 .FirstOrDefault(declarator =>
                     SymbolEqualityComparer.Default.Equals(
@@ -869,7 +1012,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
         private bool IsReferencedOnce(ILocalSymbol local)
         {
-            return this._methodSyntax.DescendantNodes()
+            return this._memberSyntax.DescendantNodes()
                     .OfType<IdentifierNameSyntax>()
                     .Where(identifier =>
                         StringComparer.Ordinal.Equals(identifier.Identifier.ValueText, local.Name)
@@ -975,7 +1118,17 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             // Checked on syntax: a tuple literal holding a lambda has no natural type for the fallback below to see.
             if (element is TupleExpressionSyntax { Arguments.Count: 2 } tuple)
             {
-                this.ReadTupleLiteral(tuple);
+                this.ReadCaseName(tuple.Arguments[0].Expression);
+
+                return;
+            }
+
+            if (
+                element is InitializerExpressionSyntax addElement
+                && addElement.IsKind(SyntaxKind.ComplexElementInitializerExpression)
+            )
+            {
+                this.ReadAddElement(addElement);
 
                 return;
             }
@@ -1001,14 +1154,26 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        // ToTheoryData dispatches a (name, action) tuple under its first element verbatim, whatever the action calls;
-        // tuple element labels do not reorder it, so the name is always the first argument.
-        private void ReadTupleLiteral(TupleExpressionSyntax tuple)
+        // A collection initialiser's "{ name, action }" element is an Add(name, action) call, which TheoryData dispatches
+        // under its name; an Add of any other arity is not a case this check knows how to name.
+        private void ReadAddElement(InitializerExpressionSyntax element)
         {
-            Optional<object?> name = this._semanticModel.GetConstantValue(
-                tuple.Arguments[0].Expression,
-                this._cancellationToken
-            );
+            if (element.Expressions.Count != 2)
+            {
+                this.IsRecognised = false;
+
+                return;
+            }
+
+            this.ReadCaseName(element.Expressions[0]);
+        }
+
+        // ToTheoryData dispatches a (name, action) tuple under its first element verbatim, whatever the action calls;
+        // tuple element labels do not reorder it, so the name is always the first argument. An Add element's name is
+        // its first argument in the same way.
+        private void ReadCaseName(ExpressionSyntax nameExpression)
+        {
+            Optional<object?> name = this._semanticModel.GetConstantValue(nameExpression, this._cancellationToken);
 
             if (!name.HasValue)
             {
