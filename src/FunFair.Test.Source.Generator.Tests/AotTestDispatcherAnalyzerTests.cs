@@ -1631,6 +1631,123 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
         Assert.Contains("'EquatableObjectTestBase.", diagnostic.GetMessage(), StringComparison.Ordinal);
     }
 
+    [Fact]
+    public async Task DerivedBuilderOmittingBuilderlessIntermediatesCase_ReportsIncompleteBuilderAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBuilderOverBuilderlessIntermediateSource(
+                childMembers: "[FunFair.Test.Common.DispatchedTest] public void FactThree() { }",
+                childCases: "Case<TSelf>(t => t.FactThree())"
+            )
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactTwo");
+        Assert.Contains("'ChildTestBase.", diagnostics[0].GetMessage(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task DerivedBuilderWithoutOwnTestsOmittingBuilderlessIntermediatesCase_ReportsIncompleteBuilderAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBuilderOverBuilderlessIntermediateSource(childMembers: "", childCases: "")
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactTwo");
+    }
+
+    [Fact]
+    public async Task DerivedBuilderListingBuilderlessIntermediatesCase_ReportsNothingAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBuilderOverBuilderlessIntermediateSource(
+                childMembers: "[FunFair.Test.Common.DispatchedTest] public void FactThree() { }",
+                childCases: "Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactThree())"
+            )
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task BuilderOmittingBuilderlessBaseCaseWithNoAncestorBuilder_ReportsIncompleteBuilderAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public abstract class ParentTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+                }
+
+                public abstract class ChildTestBase<T> : ParentTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : ChildTestBase<T>
+                    {
+                        return [Case<TSelf>(t => t.FactTwo())];
+                    }
+                }
+            }
+            """
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactOne");
+    }
+
+    // GrandparentTestBase has a builder, ParentTestBase has a [DispatchedTest] method but no builder, and
+    // ChildTestBase's builder composes in the grandparent's: ParentTestBase's FactTwo is the child builder's to list.
+    private static string BuildBuilderOverBuilderlessIntermediateSource(string childMembers, string childCases)
+    {
+        return $$"""
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public abstract class GrandparentTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : GrandparentTestBase<T>
+                    {
+                        return [Case<TSelf>(t => t.FactOne())];
+                    }
+                }
+
+                public abstract class ParentTestBase<T> : GrandparentTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+                }
+
+                public abstract class ChildTestBase<T> : ParentTestBase<T>
+                {
+                    {{childMembers}}
+
+                    public static new (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : ChildTestBase<T>
+                    {
+                        return [.. GrandparentTestBase<T>.BuildDispatcherCases<TSelf>(), {{childCases}}];
+                    }
+                }
+            }
+            """;
+    }
+
     [Theory]
     [InlineData(
         "return EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>().Concat([Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactThree())]).ToArray();"
