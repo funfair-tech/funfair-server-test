@@ -659,4 +659,297 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
 
         Assert.Empty(diagnostics);
     }
+
+    [Fact]
+    public async Task BaseBuilderMissingDispatchedTestCase_ReportsIncompleteBuilderAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+
+                    public void NotDispatched() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : EquatableObjectTestBase<T>
+                    {
+                        return [Case<TSelf>(t => t.FactOne()), Case<TSelf>(t => t.NotDispatched())];
+                    }
+                }
+            }
+            """
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS003", actual: diagnostic.Id);
+        Assert.Contains("EquatableObjectTestBase", diagnostic.GetMessage(), StringComparison.Ordinal);
+        Assert.Contains("'FactTwo'", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task ExpressionBodiedBaseBuilderMissingDispatchedTestCase_ReportsIncompleteBuilderAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+
+                public abstract class ValidatorTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    protected abstract void EverythingValid();
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    protected void SomethingInvalid() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : ValidatorTestBase<T> => [DispatcherCaseData.Case<TSelf>(t => t.EverythingValid())];
+                }
+            }
+            """
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS003", actual: diagnostic.Id);
+        Assert.Contains("'SomethingInvalid'", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task BaseBuilderCaseWhoseCallIsNotTheDispatchedTest_ReportsIncompleteBuilderAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public int FactOne() => 1;
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : EquatableObjectTestBase<T>
+                    {
+                        return [Case<TSelf>(t => t.FactOne().ToString(System.Globalization.CultureInfo.InvariantCulture))];
+                    }
+                }
+            }
+            """
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS003", actual: diagnostic.Id);
+        Assert.Contains("'FactOne'", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task CompleteBaseBuilder_ReportsNothingAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : EquatableObjectTestBase<T>
+                    {
+                        _ = ((Func<int>)(() => 1))();
+
+                        return
+                        [
+                            Case<TSelf>(t => t.FactOne()),
+                            Case<TSelf>(t => { t.FactTwo(); }),
+                            Case<TSelf>(null!),
+                            ("Unrelated", t => { }),
+                        ];
+                    }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task DerivedBuilderSpreadingParentBuilder_ReportsNothingAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : EquatableObjectTestBase<T>
+                    {
+                        return [Case<TSelf>(t => t.FactOne())];
+                    }
+                }
+
+                public abstract class ComparableObjectTestBase<T> : EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+
+                    public static new (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : ComparableObjectTestBase<T>
+                    {
+                        return [.. EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>(), Case<TSelf>(t => t.FactTwo())];
+                    }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task DerivedBuilderNotSpreadingParentBuilder_ReportsMissingParentSpreadAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : EquatableObjectTestBase<T>
+                    {
+                        return [Case<TSelf>(t => t.FactOne())];
+                    }
+                }
+
+                public abstract class ComparableObjectTestBase<T> : EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+
+                    public static new (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : ComparableObjectTestBase<T>
+                    {
+                        return [.. Array.Empty<(string Name, Action<TSelf> Action)>(), Case<TSelf>(t => t.FactTwo())];
+                    }
+                }
+            }
+            """
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS004", actual: diagnostic.Id);
+        Assert.Contains("ComparableObjectTestBase", diagnostic.GetMessage(), StringComparison.Ordinal);
+        Assert.Contains("EquatableObjectTestBase", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task TypeWithBuilderButNoDispatchedTests_ReportsNothingAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+
+                public abstract class JsonConverterObjectTestBase<T>
+                {
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : JsonConverterObjectTestBase<T> => [];
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task IncompleteBaseBuilderWithoutXunitReference_StillReportsIncompleteBuilderAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerWithoutXunitReferenceAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : EquatableObjectTestBase<T> => [];
+                }
+            }
+            """
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS003", actual: diagnostic.Id);
+    }
+
+    [Fact]
+    public async Task InstanceMethodNamedLikeBuilder_IsNotTreatedAsCaseBuilderAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    public int BuildDispatcherCases() => 0;
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
 }

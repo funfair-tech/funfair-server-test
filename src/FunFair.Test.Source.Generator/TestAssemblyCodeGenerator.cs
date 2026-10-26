@@ -116,6 +116,11 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
         (NamespaceError Left, AnalyzerConfigOptionsProvider Right) item
     )
     {
+        if (item.Right.AreSourceGeneratorsDisabled())
+        {
+            return;
+        }
+
         if (item.Left.ErrorInfo is not null)
         {
             ErrorInfo ei = item.Left.ErrorInfo.Value;

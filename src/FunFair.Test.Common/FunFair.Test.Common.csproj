@@ -51,6 +51,21 @@
   <ItemGroup>
     <ProjectReference Include="../FunFair.Test.Infrastructure/FunFair.Test.Infrastructure.csproj" />
   </ItemGroup>
+  <!-- Build-only: runs AotTestDispatcherAnalyzer over this project's own base classes, the only compilation where
+       their BuildDispatcherCases<TSelf>() bodies exist as source (consumers see them only as metadata), so FTS003/
+       FTS004 can check every [DispatchedTest] method is listed. ReferenceOutputAssembly="false" and
+       PrivateAssets="all" keep it out of this project's compile references and its package dependencies; consumers
+       still get the analyzer only by referencing the FunFair.Test.Source.Generator package themselves.
+       FunFairTestDisableSourceGenerators switches off the same assembly's test-assembly generators, which would
+       otherwise add [assembly: ExcludeFromCodeCoverage] (already declared in AssemblySettings.cs) and test-assembly
+       SuppressMessage attributes to this shipped library. -->
+  <PropertyGroup>
+    <FunFairTestDisableSourceGenerators>true</FunFairTestDisableSourceGenerators>
+  </PropertyGroup>
+  <ItemGroup>
+    <CompilerVisibleProperty Include="FunFairTestDisableSourceGenerators" />
+    <ProjectReference Include="../FunFair.Test.Source.Generator/FunFair.Test.Source.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoBogus.NSubstitute" Version="2.13.1" IncludeAssets="compile;runtime" />
     <PackageReference Include="BenchmarkDotNet" Version="0.15.8" IncludeAssets="compile;runtime;buildTransitive" />

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using FunFair.Test.Common;
 using Microsoft.CodeAnalysis;
@@ -152,6 +153,28 @@ public sealed class ProtectedMemberSuppressionGeneratorTests : TestBase
         GeneratorDriverRunResult result = GeneratorTestHelpers.RunGenerator(
             generator: new ProtectedMemberSuppressionGenerator(),
             source: source
+        );
+
+        Assert.Empty(result.Results.Single().GeneratedSources);
+    }
+
+    [Fact]
+    public void GeneratorsDisabledByBuildProperty_GeneratesNothing()
+    {
+        GeneratorDriverRunResult result = GeneratorTestHelpers.RunGenerator(
+            generator: new ProtectedMemberSuppressionGenerator(),
+            source: """
+            namespace Sample;
+
+            public abstract class Example
+            {
+                protected void DoSomething() { }
+            }
+            """,
+            globalOptions: new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["build_property.FunFairTestDisableSourceGenerators"] = "true",
+            }
         );
 
         Assert.Empty(result.Results.Single().GeneratedSources);

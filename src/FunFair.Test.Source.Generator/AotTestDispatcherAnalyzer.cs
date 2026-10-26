@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -14,6 +15,10 @@ namespace FunFair.Test.Source.Generator;
 public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 {
     private const string CATEGORY = "AotDiscoverability";
+
+    private const string BUILDER_METHOD_NAME = "BuildDispatcherCases";
+
+    private const string CASE_METHOD_NAME = "Case";
 
     private static readonly ImmutableHashSet<string> AffectedBaseClassNames = ImmutableHashSet.Create(
         StringComparer.Ordinal,
@@ -47,8 +52,34 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         isEnabledByDefault: true
     );
 
+    private static readonly DiagnosticDescriptor IncompleteCaseBuilderRule = new(
+        id: "FTS003",
+        title: "Incomplete AOT test dispatcher case builder",
+        messageFormat: "'{0}."
+            + BUILDER_METHOD_NAME
+            + "' does not list a case for [DispatchedTest] method '{1}' - "
+            + "leaf classes delegating to it will not run that test",
+        category: CATEGORY,
+        defaultSeverity: DiagnosticSeverity.Error,
+        isEnabledByDefault: true
+    );
+
+    private static readonly DiagnosticDescriptor MissingParentCaseBuilderSpreadRule = new(
+        id: "FTS004",
+        title: "AOT test dispatcher case builder does not include its parent's cases",
+        messageFormat: "'{0}."
+            + BUILDER_METHOD_NAME
+            + "' does not spread '{1}."
+            + BUILDER_METHOD_NAME
+            + "' - "
+            + "leaf classes delegating to it will not run the inherited [DispatchedTest] methods",
+        category: CATEGORY,
+        defaultSeverity: DiagnosticSeverity.Error,
+        isEnabledByDefault: true
+    );
+
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-    [MissingDispatcherRule, IncompleteDispatcherRule];
+    [MissingDispatcherRule, IncompleteDispatcherRule, IncompleteCaseBuilderRule, MissingParentCaseBuilderSpreadRule];
 
     public override void Initialize(AnalysisContext context)
     {
@@ -60,13 +91,28 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     private static void OnCompilationStart(CompilationStartAnalysisContext context)
     {
         WellKnownSymbols symbols = new(context.Compilation);
+        DispatchedTestNameCache dispatchedTestNamesByBaseType = new();
+
+        // Gated on [DispatchedTest] alone rather than IsComplete: the base classes' own compilation
+        // (FunFair.Test.Common) is where this check has to run, as consumers only see the builders as metadata, and
+        // it does not necessarily reference the xunit types the leaf-class checks below need.
+        if (symbols.DispatchedTestAttribute is not null)
+        {
+            context.RegisterSyntaxNodeAction(
+                nodeContext =>
+                    AnalyzeDispatcherCaseBuilder(
+                        nodeContext,
+                        symbols: symbols,
+                        dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
+                    ),
+                SyntaxKind.MethodDeclaration
+            );
+        }
 
         if (!symbols.IsComplete)
         {
             return;
         }
-
-        DispatchedTestNameCache dispatchedTestNamesByBaseType = new();
 
         context.RegisterSymbolAction(
             symbolContext =>
@@ -120,6 +166,153 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             symbols: symbols,
             dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
         );
+    }
+
+    private static void AnalyzeDispatcherCaseBuilder(
+        in SyntaxNodeAnalysisContext context,
+        WellKnownSymbols symbols,
+        DispatchedTestNameCache dispatchedTestNamesByBaseType
+    )
+    {
+        if (context.Node is not MethodDeclarationSyntax { Identifier.Text: BUILDER_METHOD_NAME } builderSyntax)
+        {
+            return;
+        }
+
+        if (
+            context.SemanticModel.GetDeclaredSymbol(builderSyntax, context.CancellationToken)
+            is not { IsStatic: true, ContainingType: { } typeSymbol }
+        )
+        {
+            return;
+        }
+
+        Location location = builderSyntax.Identifier.GetLocation();
+
+        ReportMissingParentCaseBuilderSpread(
+            context,
+            typeSymbol: typeSymbol,
+            builderSyntax: builderSyntax,
+            location: location
+        );
+
+        ImmutableArray<string> dispatchedTestNames = dispatchedTestNamesByBaseType.GetOrAdd(
+            baseType: typeSymbol,
+            symbols: symbols
+        );
+
+        if (dispatchedTestNames.IsEmpty)
+        {
+            return;
+        }
+
+        HashSet<string> caseNames = CollectCaseNames(builderSyntax);
+
+        foreach (string testName in dispatchedTestNames.Where(testName => !caseNames.Contains(testName)))
+        {
+            context.ReportDiagnostic(Diagnostic.Create(IncompleteCaseBuilderRule, location, typeSymbol.Name, testName));
+        }
+    }
+
+    // A parent's [DispatchedTest] methods are covered by spreading the parent's own builder, which is checked
+    // against those methods where the parent itself is compiled; so a derived builder only has to list the methods
+    // it declares, provided it spreads the nearest ancestor builder.
+    private static void ReportMissingParentCaseBuilderSpread(
+        in SyntaxNodeAnalysisContext context,
+        INamedTypeSymbol typeSymbol,
+        MethodDeclarationSyntax builderSyntax,
+        Location location
+    )
+    {
+        INamedTypeSymbol? parentWithBuilder = FindNearestAncestorWithCaseBuilder(typeSymbol);
+
+        if (parentWithBuilder is null)
+        {
+            return;
+        }
+
+        bool spreadsParentBuilder = builderSyntax
+            .DescendantNodes()
+            .OfType<SpreadElementSyntax>()
+            .Any(spread =>
+                spread.Expression is InvocationExpressionSyntax invocation
+                && StringComparer.Ordinal.Equals(GetInvokedMethodName(invocation), BUILDER_METHOD_NAME)
+            );
+
+        if (!spreadsParentBuilder)
+        {
+            context.ReportDiagnostic(
+                Diagnostic.Create(MissingParentCaseBuilderSpreadRule, location, typeSymbol.Name, parentWithBuilder.Name)
+            );
+        }
+    }
+
+    private static INamedTypeSymbol? FindNearestAncestorWithCaseBuilder(INamedTypeSymbol typeSymbol)
+    {
+        for (INamedTypeSymbol? current = typeSymbol.BaseType; current is not null; current = current.BaseType)
+        {
+            if (current.GetMembers(BUILDER_METHOD_NAME).OfType<IMethodSymbol>().Any(method => method.IsStatic))
+            {
+                return current;
+            }
+        }
+
+        return null;
+    }
+
+    private static HashSet<string> CollectCaseNames(MethodDeclarationSyntax builderSyntax)
+    {
+        HashSet<string> names = new(StringComparer.Ordinal);
+
+        foreach (
+            InvocationExpressionSyntax invocation in builderSyntax
+                .DescendantNodes()
+                .OfType<InvocationExpressionSyntax>()
+        )
+        {
+            if (
+                !StringComparer.Ordinal.Equals(GetInvokedMethodName(invocation), CASE_METHOD_NAME)
+                || invocation.ArgumentList.Arguments.Count == 0
+            )
+            {
+                continue;
+            }
+
+            string? name = ExtractCaseName(invocation.ArgumentList.Arguments[0].Expression.ToString());
+
+            if (name is not null)
+            {
+                names.Add(name);
+            }
+        }
+
+        return names;
+    }
+
+    // Mirrors DispatcherCaseData.Case's own parsing of its CallerArgumentExpression text, so the name checked here
+    // is exactly the name the case is dispatched under at runtime (e.g. "t => t.X().Y()" dispatches as "Y").
+    private static string? ExtractCaseName(string expressionText)
+    {
+        int openParen = expressionText.LastIndexOf('(');
+
+        if (openParen < 0)
+        {
+            return null;
+        }
+
+        int dot = expressionText.LastIndexOf(value: '.', startIndex: openParen);
+
+        return expressionText.Substring(startIndex: dot + 1, length: openParen - dot - 1);
+    }
+
+    private static string? GetInvokedMethodName(InvocationExpressionSyntax invocation)
+    {
+        return invocation.Expression switch
+        {
+            SimpleNameSyntax name => name.Identifier.Text,
+            MemberAccessExpressionSyntax memberAccess => memberAccess.Name.Identifier.Text,
+            _ => null,
+        };
     }
 
     private static void ReportMissingDispatcher(

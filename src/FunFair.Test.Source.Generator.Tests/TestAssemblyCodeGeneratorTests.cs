@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using FunFair.Test.Common;
 using Microsoft.CodeAnalysis;
@@ -78,5 +79,50 @@ public sealed class TestAssemblyCodeGeneratorTests : TestBase
         );
 
         Assert.Empty(result.Results.Single().GeneratedSources);
+    }
+
+    [Theory]
+    [InlineData("true")]
+    [InlineData("True")]
+    // CA1822: see the comment on
+    // ProtectedMemberSuppressionGeneratorTests.ClassWithProtectedMembers_GeneratesSuppressionForEach.
+    public static void GeneratorsDisabledByBuildProperty_GeneratesNothing(string value)
+    {
+        GeneratorDriverRunResult result = GeneratorTestHelpers.RunGenerator(
+            generator: new TestAssemblyCodeGenerator(),
+            source: """
+            namespace Sample;
+
+            public sealed class Example { }
+            """,
+            globalOptions: new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["build_property.FunFairTestDisableSourceGenerators"] = value,
+            }
+        );
+
+        Assert.Empty(result.Results.Single().GeneratedSources);
+    }
+
+    [Fact]
+    public void GeneratorsNotDisabledByBuildProperty_GeneratesAssemblySettings()
+    {
+        GeneratorDriverRunResult result = GeneratorTestHelpers.RunGenerator(
+            generator: new TestAssemblyCodeGenerator(),
+            source: """
+            namespace Sample;
+
+            public sealed class Example { }
+            """,
+            globalOptions: new Dictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["build_property.FunFairTestDisableSourceGenerators"] = "false",
+            }
+        );
+
+        Assert.Single(
+            result.Results.Single().GeneratedSources,
+            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: ASSEMBLY_SETTINGS_HINT_NAME)
+        );
     }
 }
