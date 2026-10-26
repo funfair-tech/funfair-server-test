@@ -30,8 +30,8 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         id: "FTS001",
         title: "Missing AOT test dispatcher",
         messageFormat: "Class '{0}' derives from '{1}' but does not declare an AOT test dispatcher "
-            + "([Theory] + [MemberData] method with an Action<{0}> second parameter) - inherited [Fact]/[Theory] "
-            + "methods will not be discoverable under AOT test discovery",
+            + "([Theory] + [MemberData] method with an Action<{0}> second parameter) - inherited [DispatchedTest] "
+            + "methods will not be run",
         category: CATEGORY,
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true
