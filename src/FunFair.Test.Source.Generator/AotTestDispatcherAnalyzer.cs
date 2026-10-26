@@ -20,17 +20,6 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
     private const string CASE_METHOD_NAME = "Case";
 
-    private static readonly ImmutableHashSet<string> AffectedBaseClassNames = ImmutableHashSet.Create(
-        StringComparer.Ordinal,
-        "ComparableObjectTestBase",
-        "ComparableValueTestBase",
-        "EquatableObjectTestBase",
-        "EquatableValueTestBase",
-        "JsonConverterObjectTestBase",
-        "JsonConverterValueTestBase",
-        "ValidatorTestBase"
-    );
-
     private static readonly DiagnosticDescriptor MissingDispatcherRule = new(
         id: "FTS001",
         title: "Missing AOT test dispatcher",
@@ -139,10 +128,10 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        IReadOnlyList<INamedTypeSymbol> commonBaseChain = CollectFunFairTestCommonBaseChain(classSymbol);
+        IReadOnlyList<INamedTypeSymbol> baseChain = CollectBaseChain(classSymbol);
 
-        INamedTypeSymbol? affectedBaseType = commonBaseChain.FirstOrDefault(bt =>
-            AffectedBaseClassNames.Contains(bt.OriginalDefinition.Name)
+        INamedTypeSymbol? affectedBaseType = baseChain.FirstOrDefault(bt =>
+            !dispatchedTestNamesByBaseType.GetOrAdd(baseType: bt, symbols: symbols).IsEmpty
         );
 
         if (affectedBaseType is null)
@@ -162,7 +151,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             context,
             classSymbol: classSymbol,
             dispatcher: dispatcher,
-            baseChain: commonBaseChain,
+            baseChain: baseChain,
             symbols: symbols,
             dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
         );
@@ -377,26 +366,23 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static IReadOnlyList<INamedTypeSymbol> CollectFunFairTestCommonBaseChain(INamedTypeSymbol classSymbol)
+    // Every base type is walked, not just FunFair.Test.Common's: a consumer's own intermediate base carrying
+    // [DispatchedTest] methods is just as invisible to AOT discovery, and an intermediate between the leaf and a
+    // FunFair.Test.Common base must not hide the inherited methods from the check.
+    private static IReadOnlyList<INamedTypeSymbol> CollectBaseChain(INamedTypeSymbol classSymbol)
     {
         List<INamedTypeSymbol> chain = [];
-        INamedTypeSymbol? current = classSymbol.BaseType;
 
-        while (current is not null && IsFunFairTestCommonType(current))
+        for (
+            INamedTypeSymbol? current = classSymbol.BaseType;
+            current is not null && current.SpecialType != SpecialType.System_Object;
+            current = current.BaseType
+        )
         {
             chain.Add(current);
-            current = current.BaseType;
         }
 
         return chain;
-    }
-
-    private static bool IsFunFairTestCommonType(INamedTypeSymbol type)
-    {
-        return StringComparer.Ordinal.Equals(
-            type.OriginalDefinition.ContainingNamespace?.ToDisplayString(),
-            "FunFair.Test.Common"
-        );
     }
 
     private static bool IsAttributeOfType(AttributeData attribute, INamedTypeSymbol? attributeType)

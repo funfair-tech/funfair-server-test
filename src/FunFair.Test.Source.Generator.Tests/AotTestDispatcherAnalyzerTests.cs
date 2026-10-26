@@ -40,6 +40,90 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
+    public async Task SealedClassDerivingFromConsumerBaseWithDispatchedTestsAndNoDispatcher_ReportsMissingDispatcherAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace Sample
+            {
+                public abstract class CustomTestBase
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+                }
+
+                public sealed class Leaf : CustomTestBase
+                {
+                }
+            }
+            """
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS001", actual: diagnostic.Id);
+        Assert.Contains("Leaf", diagnostic.GetMessage(), StringComparison.Ordinal);
+        Assert.Contains("CustomTestBase", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task SealedClassDerivingFromUnlistedFunFairBaseWithDispatchedTestsAndNoDispatcher_ReportsMissingDispatcherAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class SomeNewTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+                }
+            }
+
+            namespace Sample
+            {
+                public sealed class Leaf : FunFair.Test.Common.SomeNewTestBase<string>
+                {
+                }
+            }
+            """
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS001", actual: diagnostic.Id);
+        Assert.Contains("Leaf", diagnostic.GetMessage(), StringComparison.Ordinal);
+        Assert.Contains("SomeNewTestBase", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task SealedClassDerivingFromBaseWithNoDispatchedTestsAndNoDispatcher_ReportsNothingAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [Xunit.Fact]
+                    public void NotDispatched() { }
+                }
+            }
+
+            namespace Sample
+            {
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
     public async Task SealedClassWithCompleteDispatcher_ReportsNothingAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
@@ -254,7 +338,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task ConsumerOwnedIntermediateBetweenLeafAndAffectedBase_ReportsNothingAsync()
+    public async Task ConsumerOwnedIntermediateBetweenLeafAndAffectedBase_ReportsMissingDispatcherAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -281,7 +365,9 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             """
         );
 
-        Assert.Empty(diagnostics);
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS001", actual: diagnostic.Id);
+        Assert.Contains("EquatableObjectTestBase", diagnostic.GetMessage(), StringComparison.Ordinal);
     }
 
     [Fact]
