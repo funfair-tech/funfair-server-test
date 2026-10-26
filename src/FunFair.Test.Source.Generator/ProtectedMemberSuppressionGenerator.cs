@@ -39,11 +39,15 @@ public sealed class ProtectedMemberSuppressionGenerator : IIncrementalGenerator
             .Collect()
             .Select(static (allArrays, _) => allArrays.SelectMany(static arr => arr).Distinct().ToImmutableArray());
 
+        IncrementalValueProvider<bool> sourceGeneratorsDisabled = context.AnalyzerConfigOptionsProvider.Select(
+            static (provider, _) => provider.AreSourceGeneratorsDisabled()
+        );
+
         context.RegisterSourceOutput(
-            allMembers.Combine(context.AnalyzerConfigOptionsProvider),
+            allMembers.Combine(sourceGeneratorsDisabled),
             static (ctx, item) =>
             {
-                if (item.Right.AreSourceGeneratorsDisabled())
+                if (item.Right)
                 {
                     return;
                 }
