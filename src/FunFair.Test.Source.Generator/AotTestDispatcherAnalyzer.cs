@@ -171,8 +171,9 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        // Not gated on IsComplete: the base classes' own compilation (FunFair.Test.Common) is where this check has to
-        // run, as consumers only see the builders as metadata, and it does not necessarily reference the xunit types
+        // Not gated on IsComplete: a builder can only be checked in the compilation that declares it as source, which
+        // for FunFair.Test.Common's base classes is that project alone (consumers only see those builders as
+        // metadata), and such a compilation, a consumer's included, does not necessarily reference the xunit types
         // the leaf-class checks need.
         if (!context.IsGeneratedCode && IsCaseBuilder(method: methodSymbol, symbols: symbols))
         {

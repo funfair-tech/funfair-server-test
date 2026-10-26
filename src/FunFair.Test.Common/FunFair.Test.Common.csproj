@@ -48,9 +48,11 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <Import Project="$(SolutionDir)FunFair.props" Condition="Exists('$(SolutionDir)FunFair.props')" />
-  <!-- Build-only: runs AotTestDispatcherAnalyzer over this project's own base classes, the only compilation where
-       their BuildDispatcherCases<TSelf>() bodies exist as source (consumers see them only as metadata), so FTS003/
-       FTS004 can check every [DispatchedTest] method is listed. ReferenceOutputAssembly="false" and
+  <!-- Build-only (not packed): runs AotTestDispatcherAnalyzer over this project's own base classes, the only
+       compilation where their BuildDispatcherCases<TSelf>() bodies exist as source (consumers see them only as
+       metadata), so FTS003/FTS004 can check every [DispatchedTest] method is listed. The same rules also run in any
+       consumer compilation that references FunFair.Test.Source.Generator and declares builders of its own; this
+       reference only makes sure these base classes' builders are checked too. ReferenceOutputAssembly="false" and
        PrivateAssets="all" keep it out of this project's compile references and its package dependencies; consumers
        still get the analyzer only by referencing the FunFair.Test.Source.Generator package themselves.
        FunFairTestDisableSourceGenerators switches off the same assembly's test-assembly generators, which would
