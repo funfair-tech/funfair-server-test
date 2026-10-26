@@ -80,23 +80,27 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     private static void OnCompilationStart(CompilationStartAnalysisContext context)
     {
         WellKnownSymbols symbols = new(context.Compilation);
+
+        // Without [DispatchedTest] no base type can have dispatched tests, so neither check can ever report.
+        if (symbols.DispatchedTestAttribute is null)
+        {
+            return;
+        }
+
         DispatchedTestNameCache dispatchedTestNamesByBaseType = new();
 
-        // Gated on [DispatchedTest] alone rather than IsComplete: the base classes' own compilation
-        // (FunFair.Test.Common) is where this check has to run, as consumers only see the builders as metadata, and
-        // it does not necessarily reference the xunit types the leaf-class checks below need.
-        if (symbols.DispatchedTestAttribute is not null)
-        {
-            context.RegisterSyntaxNodeAction(
-                nodeContext =>
-                    AnalyzeDispatcherCaseBuilder(
-                        nodeContext,
-                        symbols: symbols,
-                        dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
-                    ),
-                SyntaxKind.MethodDeclaration
-            );
-        }
+        // Not gated on IsComplete: the base classes' own compilation (FunFair.Test.Common) is where this check has to
+        // run, as consumers only see the builders as metadata, and it does not necessarily reference the xunit types
+        // the leaf-class checks below need.
+        context.RegisterSyntaxNodeAction(
+            nodeContext =>
+                AnalyzeDispatcherCaseBuilder(
+                    nodeContext,
+                    symbols: symbols,
+                    dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
+                ),
+            SyntaxKind.MethodDeclaration
+        );
 
         if (!symbols.IsComplete)
         {
