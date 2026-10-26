@@ -57,6 +57,11 @@
     <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
   </ItemGroup>
   <ItemGroup>
+    <!-- build/ rather than buildTransitive/: the analyzers only reach direct references, so the property that
+         controls them is made compiler-visible in exactly the same projects. -->
+    <None Update="build/FunFair.Test.Source.Generator.props" Pack="true" PackagePath="build/FunFair.Test.Source.Generator.props" />
+  </ItemGroup>
+  <ItemGroup>
     <!-- error NU1903: Warning As Error: Package 'System.Private.Uri' 4.3.0 has a known high severity vulnerability -->
     <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-5f2m-466j-3848" />
     <!-- error NU1902: Warning As Error: Package 'System.Private.Uri' 4.3.0 has a known moderate severity vulnerability -->

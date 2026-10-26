@@ -48,9 +48,6 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <Import Project="$(SolutionDir)FunFair.props" Condition="Exists('$(SolutionDir)FunFair.props')" />
-  <ItemGroup>
-    <ProjectReference Include="../FunFair.Test.Infrastructure/FunFair.Test.Infrastructure.csproj" />
-  </ItemGroup>
   <!-- Build-only: runs AotTestDispatcherAnalyzer over this project's own base classes, the only compilation where
        their BuildDispatcherCases<TSelf>() bodies exist as source (consumers see them only as metadata), so FTS003/
        FTS004 can check every [DispatchedTest] method is listed. ReferenceOutputAssembly="false" and
@@ -58,12 +55,15 @@
        still get the analyzer only by referencing the FunFair.Test.Source.Generator package themselves.
        FunFairTestDisableSourceGenerators switches off the same assembly's test-assembly generators, which would
        otherwise add [assembly: ExcludeFromCodeCoverage] (already declared in AssemblySettings.cs) and test-assembly
-       SuppressMessage attributes to this shipped library. -->
+       SuppressMessage attributes to this shipped library. A ProjectReference does not get the package's build/ props,
+       so they are imported directly; that also checks the shipped props on every build, because without the
+       declaration the generated [assembly: ExcludeFromCodeCoverage] duplicates AssemblySettings.cs and fails CS0579. -->
+  <Import Project="../FunFair.Test.Source.Generator/build/FunFair.Test.Source.Generator.props" />
   <PropertyGroup>
     <FunFairTestDisableSourceGenerators>true</FunFairTestDisableSourceGenerators>
   </PropertyGroup>
   <ItemGroup>
-    <CompilerVisibleProperty Include="FunFairTestDisableSourceGenerators" />
+    <ProjectReference Include="../FunFair.Test.Infrastructure/FunFair.Test.Infrastructure.csproj" />
     <ProjectReference Include="../FunFair.Test.Source.Generator/FunFair.Test.Source.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
