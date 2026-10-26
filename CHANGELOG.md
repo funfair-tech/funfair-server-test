@@ -17,6 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Correct wrong logger category in LoggingFolderCleanupTestBaseTests.LoggingOutputs
 - Correct misleading test names, reversed/incorrect assertion messages in shared test base classes (renames may affect consumer test filters/quarantines)
 - Avoid unnecessary StringBuilder allocation in XUnitLoggerBase.Log on the common no-option, no-exception path, and pre-size the StringBuilder from the formatted message length on the remaining path
+- TBD - to be finalized after review
 ### Changed
 - Dependencies - Updated Microsoft.Sbom.Targets to 4.1.13
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.35.0.4138
