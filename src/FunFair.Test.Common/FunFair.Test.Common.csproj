@@ -63,6 +63,10 @@
     <FunFairTestDisableSourceGenerators>true</FunFairTestDisableSourceGenerators>
   </PropertyGroup>
   <ItemGroup>
+    <!-- Also compiled into FunFair.Test.Source.Generator, so the analyzer checks case names with the same parser. -->
+    <Compile Include="../Shared/DispatcherCaseName.cs" Link="Shared/DispatcherCaseName.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="../FunFair.Test.Infrastructure/FunFair.Test.Infrastructure.csproj" />
     <ProjectReference Include="../FunFair.Test.Source.Generator/FunFair.Test.Source.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
   </ItemGroup>

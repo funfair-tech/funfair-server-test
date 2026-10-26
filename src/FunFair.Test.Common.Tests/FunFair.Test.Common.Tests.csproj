@@ -45,6 +45,10 @@
        test project: this assembly declares no [assembly: ...] attributes of its own, so the generated
        AssemblySettings.generated.cs and ProtectedMemberSuppressions.generated.cs duplicate nothing. -->
   <ItemGroup>
+    <!-- The parser is internal to both assemblies that ship it, so DispatcherCaseNameTests compiles its own copy. -->
+    <Compile Include="../Shared/DispatcherCaseName.cs" Link="Shared/DispatcherCaseName.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="../FunFair.Test.Common.Mocks/FunFair.Test.Common.Mocks.csproj" />
     <ProjectReference Include="../FunFair.Test.Common/FunFair.Test.Common.csproj" />
     <ProjectReference Include="../FunFair.Test.Source.Generator/FunFair.Test.Source.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
