@@ -293,15 +293,18 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         DispatchedTestNameCache dispatchedTestNamesByBaseType
     )
     {
-        ImmutableArray<string> dispatchedTestNames = dispatchedTestNamesByBaseType.GetOrAdd(
-            baseType: typeSymbol,
-            symbols: symbols
-        );
+        IReadOnlyList<string> dispatchedTestNames =
+        [
+            .. CollectBuilderSlice(typeSymbol)
+                .SelectMany(type => dispatchedTestNamesByBaseType.GetOrAdd(baseType: type, symbols: symbols))
+                .Distinct(StringComparer.Ordinal),
+        ];
 
-        // Only an ancestor's builder is known to hold none of this type's own cases; any other builder composed in
-        // (an unrelated type's, or this one's own) could list them, so the check abstains rather than guess.
+        // Only an ancestor's builder is known to hold none of this builder's slice's cases (its TSelf constraint is
+        // the ancestor, so it cannot call a method declared below it); any other builder composed in (an unrelated
+        // type's, or this one's own) could list them, so the check abstains rather than guess.
         if (
-            dispatchedTestNames.IsEmpty
+            dispatchedTestNames.Count == 0
             || shape.HasUnknowableCaseName
             || !shape.ComposedBuilders.All(builder => IsAncestorOf(ancestor: builder.ContainingType, type: typeSymbol))
         )
@@ -315,9 +318,9 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    // A parent's [DispatchedTest] methods are covered by composing in the parent's own builder, which is checked
-    // against those methods where the parent itself is compiled; so a derived builder only has to list the methods
-    // it declares, provided it composes in the nearest ancestor builder.
+    // An ancestor builder's [DispatchedTest] methods are covered by composing in that builder, which is checked
+    // against them where the ancestor itself is compiled; so a derived builder only has to list its slice's methods
+    // (see CollectBuilderSlice), provided it composes in the nearest ancestor builder.
     private static void ReportMissingParentCaseBuilderSpread(
         in SyntaxNodeAnalysisContext context,
         INamedTypeSymbol typeSymbol,
@@ -342,15 +345,20 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
     private static INamedTypeSymbol? FindNearestAncestorWithCaseBuilder(INamedTypeSymbol typeSymbol)
     {
-        for (INamedTypeSymbol? current = typeSymbol.BaseType; current is not null; current = current.BaseType)
-        {
-            if (current.GetMembers(BUILDER_METHOD_NAME).OfType<IMethodSymbol>().Any(method => method.IsStatic))
-            {
-                return current;
-            }
-        }
+        return CollectBaseChain(typeSymbol).FirstOrDefault(HasCaseBuilder);
+    }
 
-        return null;
+    // The types whose [DispatchedTest] methods a builder declared on typeSymbol must list itself: its own and those of
+    // every ancestor up to, but not including, the nearest one with a builder of its own. Nothing else lists an
+    // intermediate without a builder, so leaving it to the ancestor builder would drop its methods from every leaf.
+    private static IEnumerable<INamedTypeSymbol> CollectBuilderSlice(INamedTypeSymbol typeSymbol)
+    {
+        return CollectBaseChain(typeSymbol).TakeWhile(type => !HasCaseBuilder(type)).Prepend(typeSymbol);
+    }
+
+    private static bool HasCaseBuilder(INamedTypeSymbol type)
+    {
+        return type.GetMembers(BUILDER_METHOD_NAME).OfType<IMethodSymbol>().Any(method => method.IsStatic);
     }
 
     // Resolved rather than matched by name, so a grandparent's, an unrelated type's or the builder's own
@@ -568,19 +576,30 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             || IsAncestorOf(ancestor: builder.ContainingType, type: classSymbol);
     }
 
-    // FTS003 and FTS004 hold each builder to listing its own type's [DispatchedTest] methods and composing in its
-    // parent's builder, so a builder covers its owner's methods and, through that chain, every ancestor's. A type
-    // between the leaf and the owner is not covered, which is how a delegation that skips past a nearer ancestor's
-    // [DispatchedTest] methods is caught.
+    // FTS003 and FTS004 hold each builder to listing its slice's [DispatchedTest] methods (its owner's and those of
+    // the builder-less ancestors above it) and composing in the nearest ancestor builder, so a builder covers its own
+    // slice and, through that chain, every ancestor builder's. A type between the leaf and the owner is not covered,
+    // which is how a delegation that skips past a nearer ancestor's [DispatchedTest] methods is caught.
     private static IEnumerable<string> CollectBuilderCover(
         INamedTypeSymbol owner,
         WellKnownSymbols symbols,
         DispatchedTestNameCache dispatchedTestNamesByBaseType
     )
     {
-        return CollectBaseChain(owner)
-            .Prepend(owner)
-            .SelectMany(type => dispatchedTestNamesByBaseType.GetOrAdd(baseType: type, symbols: symbols));
+        for (
+            INamedTypeSymbol? builderOwner = owner;
+            builderOwner is not null;
+            builderOwner = FindNearestAncestorWithCaseBuilder(builderOwner)
+        )
+        {
+            foreach (INamedTypeSymbol type in CollectBuilderSlice(builderOwner))
+            {
+                foreach (string testName in dispatchedTestNamesByBaseType.GetOrAdd(baseType: type, symbols: symbols))
+                {
+                    yield return testName;
+                }
+            }
+        }
     }
 
     private static IEnumerable<string> CollectNameofTargets(MethodDeclarationSyntax providerSyntax)
