@@ -336,11 +336,6 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                 .Distinct(StringComparer.Ordinal),
         ];
 
-        if (baseDispatchedTestNames.Count == 0)
-        {
-            return;
-        }
-
         HashSet<string>? declaredCaseNames = TryGetLocallyDeclaredCaseNames(
             classSymbol: classSymbol,
             dispatcher: dispatcher,
