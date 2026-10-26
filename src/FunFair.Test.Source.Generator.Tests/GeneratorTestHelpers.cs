@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using FunFair.Test.Source.Generator.Tests.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -61,11 +62,33 @@ internal static class GeneratorTestHelpers
 
     public static GeneratorDriverRunResult RunGenerator(IIncrementalGenerator generator, string source)
     {
+        return RunGenerator(generator: generator, source: source, optionsProvider: null);
+    }
+
+    public static GeneratorDriverRunResult RunGenerator(
+        IIncrementalGenerator generator,
+        string source,
+        IReadOnlyDictionary<string, string> globalOptions
+    )
+    {
+        return RunGenerator(
+            generator: generator,
+            source: source,
+            optionsProvider: new TestAnalyzerConfigOptionsProvider(new TestAnalyzerConfigOptions(globalOptions))
+        );
+    }
+
+    private static GeneratorDriverRunResult RunGenerator(
+        IIncrementalGenerator generator,
+        string source,
+        AnalyzerConfigOptionsProvider? optionsProvider
+    )
+    {
         GeneratorDriver driver = CSharpGeneratorDriver.Create(
             generators: [generator.AsSourceGenerator()],
             additionalTexts: null,
             parseOptions: null,
-            optionsProvider: null
+            optionsProvider: optionsProvider
         );
 
         driver = driver.RunGenerators(

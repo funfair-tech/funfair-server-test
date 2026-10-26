@@ -39,7 +39,18 @@ public sealed class ProtectedMemberSuppressionGenerator : IIncrementalGenerator
             .Collect()
             .Select(static (allArrays, _) => allArrays.SelectMany(static arr => arr).Distinct().ToImmutableArray());
 
-        context.RegisterSourceOutput(allMembers, GenerateSuppressions);
+        context.RegisterSourceOutput(
+            allMembers.Combine(context.AnalyzerConfigOptionsProvider),
+            static (ctx, item) =>
+            {
+                if (item.Right.AreSourceGeneratorsDisabled())
+                {
+                    return;
+                }
+
+                GenerateSuppressions(ctx: ctx, members: item.Left);
+            }
+        );
     }
 
     private static ImmutableArray<ProtectedMemberInfo> CollectProtectedMembers(INamedTypeSymbol typeSymbol)
@@ -76,7 +87,10 @@ public sealed class ProtectedMemberSuppressionGenerator : IIncrementalGenerator
         return members.ToImmutable();
     }
 
-    private static void GenerateSuppressions(SourceProductionContext ctx, ImmutableArray<ProtectedMemberInfo> members)
+    private static void GenerateSuppressions(
+        in SourceProductionContext ctx,
+        in ImmutableArray<ProtectedMemberInfo> members
+    )
     {
         if (members.IsEmpty)
         {
