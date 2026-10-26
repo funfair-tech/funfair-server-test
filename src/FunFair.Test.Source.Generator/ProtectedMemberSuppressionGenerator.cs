@@ -21,22 +21,22 @@ public sealed class ProtectedMemberSuppressionGenerator : IIncrementalGenerator
             static (provider, _) => provider.AreSourceGeneratorsDisabled()
         );
 
-        // A syntax provider's transform cannot see the opt-out flag, so it only hands the class and its model on;
-        // the symbol lookup and member walk run after the flag gate, and never run when generation is disabled.
-        // Roslyn re-runs the transform on every compilation, so the model passed on is always the current one.
+        // Roslyn re-runs a syntax provider's transform on every compilation, so only value-equal results may leave it:
+        // a SemanticModel or symbol would root old compilations and never compare equal. The transform's array compares
+        // by reference, so it is flattened into value-equal records at once; when those match the previous run, the
+        // collect, the opt-out gate and the source output are all reused.
         IncrementalValueProvider<ImmutableArray<ProtectedMemberInfo>> allMembers = context
             .SyntaxProvider.CreateSyntaxProvider(
                 predicate: static (node, _) =>
                     node is ClassDeclarationSyntax classDecl && !classDecl.Modifiers.Any(SyntaxKind.SealedKeyword),
-                transform: static (ctx, _) => (Class: (ClassDeclarationSyntax)ctx.Node, Model: ctx.SemanticModel)
+                transform: static (ctx, ct) =>
+                    CollectProtectedMembers((ClassDeclarationSyntax)ctx.Node, ctx.SemanticModel, ct)
             )
-            .Combine(sourceGeneratorsDisabled)
-            .Where(static item => !item.Right)
-            .Select(static (item, ct) => CollectProtectedMembers(item.Left.Class, item.Left.Model, ct))
+            .SelectMany(static (members, _) => members)
             .WithTrackingName(CollectProtectedMembersStep)
-            .Where(static items => !items.IsEmpty)
             .Collect()
-            .Select(static (allArrays, _) => allArrays.SelectMany(static arr => arr).Distinct().ToImmutableArray());
+            .Combine(sourceGeneratorsDisabled)
+            .Select(static (item, _) => item.Right ? [] : item.Left.Distinct().ToImmutableArray());
 
         context.RegisterSourceOutput(allMembers, GenerateSuppressions);
     }
