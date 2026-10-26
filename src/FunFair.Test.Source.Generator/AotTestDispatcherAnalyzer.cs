@@ -64,7 +64,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         title: "AOT test dispatcher case builder does not include its parent's cases",
         messageFormat: "'{0}."
             + BUILDER_METHOD_NAME
-            + "' does not spread '{1}."
+            + "' does not include '{1}."
             + BUILDER_METHOD_NAME
             + "' - "
             + "leaf classes delegating to it will not run the inherited [DispatchedTest] methods",
@@ -226,50 +226,72 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        Location location = builderSyntax.Identifier.GetLocation();
-
-        ReportMissingParentCaseBuilderSpread(
-            context,
-            typeSymbol: typeSymbol,
-            builderSyntax: builderSyntax,
-            location: location
-        );
-
-        ImmutableArray<string> dispatchedTestNames = dispatchedTestNamesByBaseType.GetOrAdd(
-            baseType: typeSymbol,
-            symbols: symbols
-        );
-
-        if (dispatchedTestNames.IsEmpty)
-        {
-            return;
-        }
-
-        HashSet<string>? caseNames = CollectCaseNames(
+        CaseCompositionShape shape = CaseCompositionShape.Read(
             methodSyntax: builderSyntax,
             semanticModel: context.SemanticModel,
             symbols: symbols,
             cancellationToken: context.CancellationToken
         );
 
-        if (caseNames is null)
+        // Both checks are errors that cannot be suppressed, so a composition they cannot follow (a helper method, a
+        // mutated local, an unrecognised LINQ operator, ...) must not fail a build whose cases may well be complete.
+        if (!shape.IsRecognised)
         {
             return;
         }
 
-        foreach (string testName in dispatchedTestNames.Where(testName => !caseNames.Contains(testName)))
+        Location location = builderSyntax.Identifier.GetLocation();
+
+        ReportMissingParentCaseBuilderSpread(context, typeSymbol: typeSymbol, shape: shape, location: location);
+
+        ReportIncompleteCaseBuilder(
+            context,
+            typeSymbol: typeSymbol,
+            shape: shape,
+            location: location,
+            symbols: symbols,
+            dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
+        );
+    }
+
+    private static void ReportIncompleteCaseBuilder(
+        in SyntaxNodeAnalysisContext context,
+        INamedTypeSymbol typeSymbol,
+        CaseCompositionShape shape,
+        Location location,
+        WellKnownSymbols symbols,
+        DispatchedTestNameCache dispatchedTestNamesByBaseType
+    )
+    {
+        ImmutableArray<string> dispatchedTestNames = dispatchedTestNamesByBaseType.GetOrAdd(
+            baseType: typeSymbol,
+            symbols: symbols
+        );
+
+        // Only an ancestor's builder is known to hold none of this type's own cases; any other builder composed in
+        // (an unrelated type's, or this one's own) could list them, so the check abstains rather than guess.
+        if (
+            dispatchedTestNames.IsEmpty
+            || shape.HasUnknowableCaseName
+            || !shape.ComposedBuilders.All(builder => IsAncestorOf(ancestor: builder.ContainingType, type: typeSymbol))
+        )
+        {
+            return;
+        }
+
+        foreach (string testName in dispatchedTestNames.Where(testName => !shape.ListsCase(testName)))
         {
             context.ReportDiagnostic(Diagnostic.Create(IncompleteCaseBuilderRule, location, typeSymbol.Name, testName));
         }
     }
 
-    // A parent's [DispatchedTest] methods are covered by spreading the parent's own builder, which is checked
+    // A parent's [DispatchedTest] methods are covered by composing in the parent's own builder, which is checked
     // against those methods where the parent itself is compiled; so a derived builder only has to list the methods
-    // it declares, provided it spreads the nearest ancestor builder.
+    // it declares, provided it composes in the nearest ancestor builder.
     private static void ReportMissingParentCaseBuilderSpread(
         in SyntaxNodeAnalysisContext context,
         INamedTypeSymbol typeSymbol,
-        MethodDeclarationSyntax builderSyntax,
+        CaseCompositionShape shape,
         Location location
     )
     {
@@ -280,22 +302,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        SemanticModel semanticModel = context.SemanticModel;
-        CancellationToken cancellationToken = context.CancellationToken;
-
-        bool spreadsParentBuilder = builderSyntax
-            .DescendantNodes()
-            .OfType<SpreadElementSyntax>()
-            .Any(spread =>
-                IsCaseBuilderOf(
-                    expression: spread.Expression,
-                    builderOwner: parentWithBuilder,
-                    semanticModel: semanticModel,
-                    cancellationToken: cancellationToken
-                )
-            );
-
-        if (!spreadsParentBuilder)
+        if (!shape.ComposedBuilders.Any(builder => IsBuilderOwnedBy(builder: builder, owner: parentWithBuilder)))
         {
             context.ReportDiagnostic(
                 Diagnostic.Create(MissingParentCaseBuilderSpreadRule, location, typeSymbol.Name, parentWithBuilder.Name)
@@ -319,194 +326,20 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     // Resolved rather than matched by name, so a grandparent's, an unrelated type's or the builder's own
     // BuildDispatcherCases (a copy-paste slip that drops the parent's cases or recurses forever) is not mistaken for
     // the parent's.
-    private static bool IsCaseBuilderOf(
-        ExpressionSyntax expression,
-        INamedTypeSymbol builderOwner,
-        SemanticModel semanticModel,
-        CancellationToken cancellationToken
-    )
+    private static bool IsBuilderOwnedBy(IMethodSymbol builder, INamedTypeSymbol owner)
     {
-        return semanticModel.GetSymbolInfo(expression, cancellationToken).Symbol is IMethodSymbol method
-            && StringComparer.Ordinal.Equals(method.Name, BUILDER_METHOD_NAME)
-            && SymbolEqualityComparer.Default.Equals(
-                method.ContainingType.OriginalDefinition,
-                builderOwner.OriginalDefinition
+        return SymbolEqualityComparer.Default.Equals(
+            builder.ContainingType.OriginalDefinition,
+            owner.OriginalDefinition
+        );
+    }
+
+    private static bool IsAncestorOf(INamedTypeSymbol ancestor, INamedTypeSymbol type)
+    {
+        return CollectBaseChain(type)
+            .Any(baseType =>
+                SymbolEqualityComparer.Default.Equals(baseType.OriginalDefinition, ancestor.OriginalDefinition)
             );
-    }
-
-    // Null means a case's name cannot be known at compile time (a non-constant expressionText), so the caller abstains:
-    // these diagnostics are errors that cannot be suppressed, so guessing would risk failing a build whose cases are
-    // in fact complete.
-    private static HashSet<string>? CollectCaseNames(
-        MethodDeclarationSyntax methodSyntax,
-        SemanticModel semanticModel,
-        WellKnownSymbols symbols,
-        CancellationToken cancellationToken
-    )
-    {
-        HashSet<string> names = new(StringComparer.Ordinal);
-
-        foreach (
-            InvocationExpressionSyntax invocation in ReturnedCollectionElements(
-                    methodSyntax: methodSyntax,
-                    semanticModel: semanticModel,
-                    symbols: symbols,
-                    cancellationToken: cancellationToken
-                )
-                .OfType<InvocationExpressionSyntax>()
-        )
-        {
-            if (
-                semanticModel.GetOperation(invocation, cancellationToken) is not IInvocationOperation caseInvocation
-                || !IsDispatcherCaseDataMethod(
-                    method: caseInvocation.TargetMethod,
-                    methodName: CASE_METHOD_NAME,
-                    symbols: symbols
-                )
-            )
-            {
-                continue;
-            }
-
-            if (!TryGetCaseExpressionText(caseInvocation: caseInvocation, expressionText: out string? expressionText))
-            {
-                return null;
-            }
-
-            string? name = expressionText is null ? null : ExtractCaseName(expressionText);
-
-            if (name is not null)
-            {
-                names.Add(name);
-            }
-        }
-
-        return names;
-    }
-
-    // Resolves the text DispatcherCaseData.Case parses at runtime: an explicitly passed expressionText wins over the
-    // CallerArgumentExpression of the action argument, wherever either sits in the argument list. False means the
-    // text is only known at runtime; a true result with null text is an explicit null, which never dispatches.
-    private static bool TryGetCaseExpressionText(IInvocationOperation caseInvocation, out string? expressionText)
-    {
-        IArgumentOperation? explicitExpressionText = FindArgument(
-            caseInvocation: caseInvocation,
-            parameterName: CASE_EXPRESSION_TEXT_PARAMETER_NAME
-        );
-
-        if (explicitExpressionText is { ArgumentKind: ArgumentKind.Explicit })
-        {
-            Optional<object?> constant = explicitExpressionText.Value.ConstantValue;
-            expressionText = constant.HasValue ? constant.Value as string : null;
-
-            return constant.HasValue;
-        }
-
-        // ArgumentSyntax.Expression drops any "action:" name, matching what CallerArgumentExpression captures.
-        expressionText = (
-            FindArgument(caseInvocation: caseInvocation, parameterName: CASE_ACTION_PARAMETER_NAME)?.Syntax
-            as ArgumentSyntax
-        )?.Expression.ToString();
-
-        return true;
-    }
-
-    private static IArgumentOperation? FindArgument(IInvocationOperation caseInvocation, string parameterName)
-    {
-        return caseInvocation.Arguments.FirstOrDefault(argument =>
-            StringComparer.Ordinal.Equals(argument.Parameter?.Name, parameterName)
-        );
-    }
-
-    // Only the elements of the collection the method itself returns are dispatched; a Case(...) evaluated anywhere
-    // else (a discard, or the body of a lambda or local function) never reaches a leaf class's [MemberData].
-    // Yields each element's expression, or the SpreadElementSyntax itself for a spread.
-    private static IEnumerable<SyntaxNode> ReturnedCollectionElements(
-        MethodDeclarationSyntax methodSyntax,
-        SemanticModel semanticModel,
-        WellKnownSymbols symbols,
-        CancellationToken cancellationToken
-    )
-    {
-        return methodSyntax
-            .DescendantNodes(descendIntoChildren: static node =>
-                node is not (AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax)
-            )
-            .Select(static node =>
-                node switch
-                {
-                    ReturnStatementSyntax returnStatement => returnStatement.Expression,
-                    ArrowExpressionClauseSyntax expressionBody => expressionBody.Expression,
-                    _ => null,
-                }
-            )
-            .OfType<ExpressionSyntax>()
-            .Select(returned =>
-                UnwrapToTheoryData(
-                    returned: returned,
-                    semanticModel: semanticModel,
-                    symbols: symbols,
-                    cancellationToken: cancellationToken
-                )
-            )
-            .SelectMany(CollectionElements);
-    }
-
-    // A [MemberData] provider converts its case collection with "<collection>.ToTheoryData()", so the cases are the
-    // receiver's elements.
-    private static ExpressionSyntax UnwrapToTheoryData(
-        ExpressionSyntax returned,
-        SemanticModel semanticModel,
-        WellKnownSymbols symbols,
-        CancellationToken cancellationToken
-    )
-    {
-        return
-            returned is InvocationExpressionSyntax { Expression: MemberAccessExpressionSyntax memberAccess } invocation
-            && semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is IMethodSymbol method
-            && IsDispatcherCaseDataMethod(
-                method: method.ReducedFrom ?? method,
-                methodName: TO_THEORY_DATA_METHOD_NAME,
-                symbols: symbols
-            )
-            ? memberAccess.Expression
-            : returned;
-    }
-
-    private static IEnumerable<SyntaxNode> CollectionElements(ExpressionSyntax collection)
-    {
-        return collection switch
-        {
-            CollectionExpressionSyntax collectionExpression => collectionExpression.Elements.Select(
-                static SyntaxNode (element) =>
-                    element is ExpressionElementSyntax expressionElement ? expressionElement.Expression : element
-            ),
-            ArrayCreationExpressionSyntax { Initializer: { } initializer } => initializer.Expressions,
-            ImplicitArrayCreationExpressionSyntax implicitArray => implicitArray.Initializer.Expressions,
-            _ => [],
-        };
-    }
-
-    private static bool IsDispatcherCaseDataMethod(IMethodSymbol method, string methodName, WellKnownSymbols symbols)
-    {
-        return StringComparer.Ordinal.Equals(method.Name, methodName)
-            && SymbolEqualityComparer.Default.Equals(method.ContainingType, symbols.DispatcherCaseDataType);
-    }
-
-    // Mirrors DispatcherCaseData.Case's own parsing of its CallerArgumentExpression text, so the name checked here
-    // is exactly the name the case is dispatched under at runtime (e.g. "t => t.X().Y()" dispatches as "Y").
-    private static string? ExtractCaseName(string expressionText)
-    {
-        int openParen = expressionText.LastIndexOf('(');
-
-        if (openParen < 0)
-        {
-            return null;
-        }
-
-        int dot = expressionText.LastIndexOf(value: '.', startIndex: openParen);
-
-        return expressionText.Substring(startIndex: dot + 1, length: openParen - dot - 1);
     }
 
     private static void ReportMissingDispatcher(
@@ -687,8 +520,8 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     }
 
     // Null means the provider's cases cannot be listed from its own source, so the check abstains: a provider that
-    // delegates with "BuildDispatcherCases<TSelf>().ToTheoryData()" (or spreads it) gets its cases from a base
-    // builder, whose completeness FTS003 checks where that base is declared.
+    // delegates with "BuildDispatcherCases<TSelf>().ToTheoryData()" (or spreads or concatenates it) gets its cases from
+    // a base builder, whose completeness FTS003 checks where that base is declared.
     private static HashSet<string>? TryGetDeclaredCaseNames(
         MethodDeclarationSyntax providerSyntax,
         SemanticModel semanticModel,
@@ -696,32 +529,19 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         CancellationToken cancellationToken
     )
     {
-        bool spreadsOtherCases = ReturnedCollectionElements(
-                methodSyntax: providerSyntax,
-                semanticModel: semanticModel,
-                symbols: symbols,
-                cancellationToken: cancellationToken
-            )
-            .OfType<SpreadElementSyntax>()
-            .Any();
-
-        if (spreadsOtherCases)
-        {
-            return null;
-        }
-
-        HashSet<string>? names = CollectCaseNames(
+        CaseCompositionShape shape = CaseCompositionShape.Read(
             methodSyntax: providerSyntax,
             semanticModel: semanticModel,
             symbols: symbols,
             cancellationToken: cancellationToken
         );
 
-        if (names is null)
+        if (!shape.IsRecognised || shape.HasUnknowableCaseName || shape.ComposedBuilders.Count != 0)
         {
             return null;
         }
 
+        HashSet<string> names = new(shape.CaseNames, StringComparer.Ordinal);
         names.UnionWith(CollectNameofTargets(providerSyntax));
 
         return names.Count == 0 ? null : names;
@@ -754,6 +574,405 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         };
     }
 
+    // How a case builder or [MemberData] provider composes the cases it returns. Recognised: collection expressions,
+    // array creations and argument-less collection initialisers (whose elements are read), spreads, Concat, Append,
+    // Prepend, ToArray, ToList and Empty from System.Linq.Enumerable, Array.Empty, DispatcherCaseData.ToTheoryData, a
+    // static BuildDispatcherCases call (recorded, not read into) and a local initialised with any of these that is
+    // read nowhere else. Anything else leaves the shape unrecognised, so every check built on it abstains: they are
+    // errors that cannot be suppressed, and a guess could fail a build whose cases are complete. An element that is
+    // not a DispatcherCaseData.Case call adds no name but leaves the shape recognised, as it always has.
+    private sealed class CaseCompositionShape
+    {
+        private const string EMPTY_METHOD_NAME = "Empty";
+
+        private const string TO_ARRAY_METHOD_NAME = "ToArray";
+
+        private const string TO_LIST_METHOD_NAME = "ToList";
+
+        private const string CONCAT_METHOD_NAME = "Concat";
+
+        private const string APPEND_METHOD_NAME = "Append";
+
+        private const string PREPEND_METHOD_NAME = "Prepend";
+
+        private readonly CancellationToken _cancellationToken;
+
+        private readonly HashSet<string> _caseNames = new(StringComparer.Ordinal);
+
+        private readonly List<IMethodSymbol> _composedBuilders = [];
+
+        private readonly MethodDeclarationSyntax _methodSyntax;
+
+        private readonly SemanticModel _semanticModel;
+
+        private readonly WellKnownSymbols _symbols;
+
+        private CaseCompositionShape(
+            MethodDeclarationSyntax methodSyntax,
+            SemanticModel semanticModel,
+            WellKnownSymbols symbols,
+            CancellationToken cancellationToken
+        )
+        {
+            this._methodSyntax = methodSyntax;
+            this._semanticModel = semanticModel;
+            this._symbols = symbols;
+            this._cancellationToken = cancellationToken;
+            this.IsRecognised = true;
+        }
+
+        public bool IsRecognised { get; private set; }
+
+        // A case whose name is only known at runtime (a non-constant expressionText): the shape is still followed,
+        // but a check that needs every name must abstain.
+        public bool HasUnknowableCaseName { get; private set; }
+
+        public IEnumerable<string> CaseNames => this._caseNames;
+
+        public IReadOnlyList<IMethodSymbol> ComposedBuilders => this._composedBuilders;
+
+        public bool ListsCase(string testName)
+        {
+            return this._caseNames.Contains(testName);
+        }
+
+        public static CaseCompositionShape Read(
+            MethodDeclarationSyntax methodSyntax,
+            SemanticModel semanticModel,
+            WellKnownSymbols symbols,
+            CancellationToken cancellationToken
+        )
+        {
+            CaseCompositionShape shape = new(
+                methodSyntax: methodSyntax,
+                semanticModel: semanticModel,
+                symbols: symbols,
+                cancellationToken: cancellationToken
+            );
+
+            foreach (ExpressionSyntax returned in ReturnedExpressions(methodSyntax))
+            {
+                shape.ReadSequence(returned);
+            }
+
+            return shape;
+        }
+
+        // Only what the method itself returns is dispatched; a Case(...) evaluated anywhere else (a discard, or the
+        // body of a lambda or local function) never reaches a leaf class's [MemberData]. An iterator has no such
+        // return, so it composes nothing and a provider's nameof(...) names are left to speak for it.
+        private static IEnumerable<ExpressionSyntax> ReturnedExpressions(MethodDeclarationSyntax methodSyntax)
+        {
+            return methodSyntax
+                .DescendantNodes(descendIntoChildren: static node =>
+                    node is not (AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax)
+                )
+                .Select(static node =>
+                    node switch
+                    {
+                        ReturnStatementSyntax returnStatement => returnStatement.Expression,
+                        ArrowExpressionClauseSyntax expressionBody => expressionBody.Expression,
+                        _ => null,
+                    }
+                )
+                .OfType<ExpressionSyntax>();
+        }
+
+        private void ReadSequence(ExpressionSyntax? sequence)
+        {
+            switch (sequence)
+            {
+                case CollectionExpressionSyntax collection:
+                    this.ReadCollectionExpression(collection);
+
+                    break;
+                case ArrayCreationExpressionSyntax { Initializer: { } initializer }:
+                    this.ReadElements(initializer.Expressions);
+
+                    break;
+                case ImplicitArrayCreationExpressionSyntax implicitArray:
+                    this.ReadElements(implicitArray.Initializer.Expressions);
+
+                    break;
+                case BaseObjectCreationExpressionSyntax creation:
+                    this.ReadObjectCreation(creation);
+
+                    break;
+                case IdentifierNameSyntax identifier:
+                    this.ReadLocal(identifier);
+
+                    break;
+                case InvocationExpressionSyntax invocation:
+                    this.ReadInvocation(invocation);
+
+                    break;
+                default:
+                    this.IsRecognised = false;
+
+                    break;
+            }
+        }
+
+        private void ReadCollectionExpression(CollectionExpressionSyntax collection)
+        {
+            foreach (CollectionElementSyntax element in collection.Elements)
+            {
+                if (element is SpreadElementSyntax spread)
+                {
+                    this.ReadSequence(spread.Expression);
+                }
+                else if (element is ExpressionElementSyntax expressionElement)
+                {
+                    this.ReadElement(expressionElement.Expression);
+                }
+            }
+        }
+
+        // Constructor arguments (a source collection, say) or an object initialiser could add cases unseen, so only
+        // an argument-less constructor with at most a collection initialiser is followed.
+        private void ReadObjectCreation(BaseObjectCreationExpressionSyntax creation)
+        {
+            if (
+                creation.ArgumentList is { Arguments.Count: > 0 }
+                || creation.Initializer?.IsKind(SyntaxKind.CollectionInitializerExpression) == false
+            )
+            {
+                this.IsRecognised = false;
+
+                return;
+            }
+
+            if (creation.Initializer is { } initializer)
+            {
+                this.ReadElements(initializer.Expressions);
+            }
+        }
+
+        // A local is followed only when its initialiser is all it ever holds: read once, here, with no other reference
+        // (an Add(...), a reassignment, a ref) that could change its cases unseen.
+        private void ReadLocal(IdentifierNameSyntax identifier)
+        {
+            if (
+                this._semanticModel.GetSymbolInfo(identifier, this._cancellationToken).Symbol is ILocalSymbol local
+                && this.FindDeclarator(local) is { Initializer.Value: { } initialValue }
+                && this.IsReferencedOnce(local)
+            )
+            {
+                this.ReadSequence(initialValue);
+
+                return;
+            }
+
+            this.IsRecognised = false;
+        }
+
+        // Null for a local that is not declared by a plain declarator in this method (a foreach or pattern variable,
+        // an out var), which has no initialiser to follow.
+        private VariableDeclaratorSyntax? FindDeclarator(ILocalSymbol local)
+        {
+            return this
+                ._methodSyntax.DescendantNodes()
+                .OfType<VariableDeclaratorSyntax>()
+                .FirstOrDefault(declarator =>
+                    SymbolEqualityComparer.Default.Equals(
+                        this._semanticModel.GetDeclaredSymbol(declarator, this._cancellationToken),
+                        local
+                    )
+                );
+        }
+
+        private bool IsReferencedOnce(ILocalSymbol local)
+        {
+            return this._methodSyntax.DescendantNodes()
+                    .OfType<IdentifierNameSyntax>()
+                    .Where(identifier =>
+                        StringComparer.Ordinal.Equals(identifier.Identifier.ValueText, local.Name)
+                        && SymbolEqualityComparer.Default.Equals(
+                            this._semanticModel.GetSymbolInfo(identifier, this._cancellationToken).Symbol,
+                            local
+                        )
+                    )
+                    .Take(2)
+                    .Count() == 1;
+        }
+
+        private void ReadInvocation(InvocationExpressionSyntax invocation)
+        {
+            if (
+                this._semanticModel.GetOperation(invocation, this._cancellationToken)
+                is not IInvocationOperation operation
+            )
+            {
+                this.IsRecognised = false;
+
+                return;
+            }
+
+            IMethodSymbol method = operation.TargetMethod.ReducedFrom ?? operation.TargetMethod;
+
+            if (method.IsStatic && StringComparer.Ordinal.Equals(method.Name, BUILDER_METHOD_NAME))
+            {
+                this._composedBuilders.Add(method);
+
+                return;
+            }
+
+            if (!this.IsSequenceOperatorOwner(method.ContainingType))
+            {
+                this.IsRecognised = false;
+
+                return;
+            }
+
+            this.ReadSequenceOperator(operation: operation, methodName: method.Name);
+        }
+
+        // Matched by owning type as well as name, so a same-named method anywhere else is not mistaken for one.
+        private bool IsSequenceOperatorOwner(INamedTypeSymbol type)
+        {
+            return type.SpecialType == SpecialType.System_Array
+                || SymbolEqualityComparer.Default.Equals(type, this._symbols.EnumerableType)
+                || SymbolEqualityComparer.Default.Equals(type, this._symbols.DispatcherCaseDataType);
+        }
+
+        private void ReadSequenceOperator(IInvocationOperation operation, string methodName)
+        {
+            switch (methodName)
+            {
+                case EMPTY_METHOD_NAME:
+                    break;
+                case TO_ARRAY_METHOD_NAME or TO_LIST_METHOD_NAME or TO_THEORY_DATA_METHOD_NAME:
+                    this.ReadSequence(Operand(operation: operation, ordinal: 0));
+
+                    break;
+                case CONCAT_METHOD_NAME:
+                    this.ReadSequence(Operand(operation: operation, ordinal: 0));
+                    this.ReadSequence(Operand(operation: operation, ordinal: 1));
+
+                    break;
+                case APPEND_METHOD_NAME or PREPEND_METHOD_NAME:
+                    this.ReadSequence(Operand(operation: operation, ordinal: 0));
+                    this.ReadElement(Operand(operation: operation, ordinal: 1));
+
+                    break;
+                default:
+                    this.IsRecognised = false;
+
+                    break;
+            }
+        }
+
+        // By parameter rather than position, so "x.Concat(y)", "Enumerable.Concat(x, y)" and named arguments in any
+        // order all read the same operands; an extension method's receiver is its first argument.
+        private static ExpressionSyntax? Operand(IInvocationOperation operation, int ordinal)
+        {
+            SyntaxNode? syntax = operation
+                .Arguments.FirstOrDefault(candidate => candidate.Parameter?.Ordinal == ordinal)
+                ?.Syntax;
+
+            return syntax is ArgumentSyntax argument ? argument.Expression : syntax as ExpressionSyntax;
+        }
+
+        private void ReadElements(IEnumerable<ExpressionSyntax> elements)
+        {
+            foreach (ExpressionSyntax element in elements)
+            {
+                this.ReadElement(element);
+            }
+        }
+
+        private void ReadElement(ExpressionSyntax? element)
+        {
+            if (
+                element is null
+                || this._semanticModel.GetOperation(element, this._cancellationToken)
+                    is not IInvocationOperation caseInvocation
+                || !IsDispatcherCaseDataMethod(
+                    method: caseInvocation.TargetMethod,
+                    methodName: CASE_METHOD_NAME,
+                    symbols: this._symbols
+                )
+            )
+            {
+                return;
+            }
+
+            if (!TryGetCaseExpressionText(caseInvocation: caseInvocation, expressionText: out string? expressionText))
+            {
+                this.HasUnknowableCaseName = true;
+
+                return;
+            }
+
+            string? name = expressionText is null ? null : ExtractCaseName(expressionText);
+
+            if (name is not null)
+            {
+                this._caseNames.Add(name);
+            }
+        }
+
+        // Resolves the text DispatcherCaseData.Case parses at runtime: an explicitly passed expressionText wins over
+        // the CallerArgumentExpression of the action argument, wherever either sits in the argument list. False means
+        // the text is only known at runtime; a true result with null text is an explicit null, which never dispatches.
+        private static bool TryGetCaseExpressionText(IInvocationOperation caseInvocation, out string? expressionText)
+        {
+            IArgumentOperation? explicitExpressionText = FindArgument(
+                caseInvocation: caseInvocation,
+                parameterName: CASE_EXPRESSION_TEXT_PARAMETER_NAME
+            );
+
+            if (explicitExpressionText is { ArgumentKind: ArgumentKind.Explicit })
+            {
+                Optional<object?> constant = explicitExpressionText.Value.ConstantValue;
+                expressionText = constant.HasValue ? constant.Value as string : null;
+
+                return constant.HasValue;
+            }
+
+            // ArgumentSyntax.Expression drops any "action:" name, matching what CallerArgumentExpression captures.
+            expressionText = (
+                FindArgument(caseInvocation: caseInvocation, parameterName: CASE_ACTION_PARAMETER_NAME)?.Syntax
+                as ArgumentSyntax
+            )?.Expression.ToString();
+
+            return true;
+        }
+
+        private static IArgumentOperation? FindArgument(IInvocationOperation caseInvocation, string parameterName)
+        {
+            return caseInvocation.Arguments.FirstOrDefault(argument =>
+                StringComparer.Ordinal.Equals(argument.Parameter?.Name, parameterName)
+            );
+        }
+
+        private static bool IsDispatcherCaseDataMethod(
+            IMethodSymbol method,
+            string methodName,
+            WellKnownSymbols symbols
+        )
+        {
+            return StringComparer.Ordinal.Equals(method.Name, methodName)
+                && SymbolEqualityComparer.Default.Equals(method.ContainingType, symbols.DispatcherCaseDataType);
+        }
+
+        // Mirrors DispatcherCaseData.Case's own parsing of its CallerArgumentExpression text, so the name checked
+        // here is exactly the name the case is dispatched under at runtime (e.g. "t => t.X().Y()" dispatches as "Y").
+        private static string? ExtractCaseName(string expressionText)
+        {
+            int openParen = expressionText.LastIndexOf('(');
+
+            if (openParen < 0)
+            {
+                return null;
+            }
+
+            int dot = expressionText.LastIndexOf(value: '.', startIndex: openParen);
+
+            return expressionText.Substring(startIndex: dot + 1, length: openParen - dot - 1);
+        }
+    }
+
     private sealed class WellKnownSymbols
     {
         public WellKnownSymbols(Compilation compilation)
@@ -765,6 +984,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             this.MemberDataAttribute = compilation.GetTypeByMetadataName("Xunit.MemberDataAttribute");
             this.ActionType = compilation.GetTypeByMetadataName("System.Action`1");
             this.DispatcherCaseDataType = compilation.GetTypeByMetadataName("FunFair.Test.Common.DispatcherCaseData");
+            this.EnumerableType = compilation.GetTypeByMetadataName("System.Linq.Enumerable");
         }
 
         public INamedTypeSymbol? DispatchedTestAttribute { get; }
@@ -776,6 +996,8 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         public INamedTypeSymbol? ActionType { get; }
 
         public INamedTypeSymbol? DispatcherCaseDataType { get; }
+
+        public INamedTypeSymbol? EnumerableType { get; }
 
         public bool IsComplete =>
             this.TheoryAttribute is not null && this.MemberDataAttribute is not null && this.ActionType is not null;
