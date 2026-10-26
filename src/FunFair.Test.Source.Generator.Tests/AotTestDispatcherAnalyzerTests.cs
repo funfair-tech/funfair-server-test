@@ -1367,6 +1367,239 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
         Assert.Contains("'EquatableObjectTestBase.", diagnostic.GetMessage(), StringComparison.Ordinal);
     }
 
+    [Theory]
+    [InlineData(
+        "return EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>().Concat([Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactThree())]).ToArray();"
+    )]
+    [InlineData(
+        "return EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>().Append(Case<TSelf>(t => t.FactTwo())).Append(Case<TSelf>(t => t.FactThree())).ToArray();"
+    )]
+    [InlineData(
+        "return [.. Enumerable.Concat(EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>(), new[] { Case<TSelf>(t => t.FactTwo()) }).Prepend(Case<TSelf>(t => t.FactThree()))];"
+    )]
+    [InlineData(
+        "return EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>().Concat(Enumerable.Empty<(string Name, Action<TSelf> Action)>()).ToList().Concat([Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactThree())]).ToArray();"
+    )]
+    [InlineData(
+        "(string Name, Action<TSelf> Action)[] own = [Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactThree())]; return [.. EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>(), .. own];"
+    )]
+    [InlineData(
+        "var own = new List<(string Name, Action<TSelf> Action)> { Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactThree()) }; return [.. EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>(), .. own];"
+    )]
+    // CA1822: see the comment on
+    // ProtectedMemberSuppressionGeneratorTests.ClassWithProtectedMembers_GeneratesSuppressionForEach.
+    public static async Task DerivedBuilderComposingParentCasesInSupportedShape_ReportsNothingAsync(string derivedBody)
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDerivedBuilderSource(members: "", derivedBody: derivedBody)
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Theory]
+    [InlineData(
+        "return EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>().Append(Case<TSelf>(t => t.FactTwo())).ToArray();"
+    )]
+    [InlineData(
+        "return EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>().Concat([Case<TSelf>(t => t.FactTwo())]).ToArray();"
+    )]
+    [InlineData(
+        "(string Name, Action<TSelf> Action)[] own = [Case<TSelf>(t => t.FactTwo())]; return [.. EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>(), .. own];"
+    )]
+    [InlineData(
+        "var own = new List<(string Name, Action<TSelf> Action)> { Case<TSelf>(t => t.FactTwo()) }; return [.. EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>(), .. own];"
+    )]
+    // CA1822: see the comment on
+    // ProtectedMemberSuppressionGeneratorTests.ClassWithProtectedMembers_GeneratesSuppressionForEach.
+    public static async Task DerivedBuilderComposingParentCasesInSupportedShapeMissingCase_ReportsIncompleteBuilderAsync(
+        string derivedBody
+    )
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDerivedBuilderSource(members: "", derivedBody: derivedBody)
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactThree");
+    }
+
+    [Theory]
+    [InlineData(
+        "return UnrelatedCases.BuildDispatcherCases<TSelf>().Concat([Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactThree())]).ToArray();"
+    )]
+    [InlineData(
+        "return BuildDispatcherCases<TSelf>().Append(Case<TSelf>(t => t.FactTwo())).Append(Case<TSelf>(t => t.FactThree())).ToArray();"
+    )]
+    [InlineData(
+        "var inherited = UnrelatedCases.BuildDispatcherCases<TSelf>(); return [.. inherited, Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactThree())];"
+    )]
+    // CA1822: see the comment on
+    // ProtectedMemberSuppressionGeneratorTests.ClassWithProtectedMembers_GeneratesSuppressionForEach.
+    public static async Task DerivedBuilderComposingWrongBuilderInSupportedShape_ReportsMissingParentSpreadAsync(
+        string derivedBody
+    )
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDerivedBuilderSource(members: "", derivedBody: derivedBody)
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS004", actual: diagnostic.Id);
+        Assert.Contains("'ComparableObjectTestBase.", diagnostic.GetMessage(), StringComparison.Ordinal);
+        Assert.Contains("'EquatableObjectTestBase.", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
+    [Theory]
+    [InlineData(
+        "private static (string Name, Action<TSelf> Action)[] OwnCases<TSelf>() where TSelf : ComparableObjectTestBase<T> => [.. EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>(), Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactThree())];",
+        "return OwnCases<TSelf>();"
+    )]
+    [InlineData(
+        "",
+        "List<(string Name, Action<TSelf> Action)> own = [Case<TSelf>(t => t.FactTwo())]; own.Add(Case<TSelf>(t => t.FactThree())); return [.. EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>(), .. own];"
+    )]
+    [InlineData(
+        "",
+        "return [.. new List<(string Name, Action<TSelf> Action)>(EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>()) { Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactThree()) }];"
+    )]
+    [InlineData(
+        "",
+        "return EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>().Concat([Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactThree())]).Where(_ => true).ToArray();"
+    )]
+    [InlineData(
+        "",
+        "return DateTime.UtcNow.Ticks > 0 ? [.. EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>(), Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactThree())] : [];"
+    )]
+    [InlineData("", "return ((dynamic)EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>()).Clone();")]
+    // CA1822: see the comment on
+    // ProtectedMemberSuppressionGeneratorTests.ClassWithProtectedMembers_GeneratesSuppressionForEach.
+    public static async Task DerivedBuilderComposingCasesInUnrecognisedShape_AbstainsFromBothBuilderChecksAsync(
+        string members,
+        string derivedBody
+    )
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDerivedBuilderSource(members: members, derivedBody: derivedBody)
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task DerivedBuilderAlsoComposingNonAncestorBuilder_AbstainsFromIncompleteBuilderCheckAsync()
+    {
+        // UnrelatedCases' builder could list FactThree, so FactThree's absence from the literal proves nothing.
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDerivedBuilderSource(
+                members: "",
+                derivedBody: "return [.. EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>(), .. UnrelatedCases.BuildDispatcherCases<TSelf>(), Case<TSelf>(t => t.FactTwo())];"
+            )
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task DispatcherWithProviderConcatenatingBaseBuilderWithLocalCase_AbstainsFromCompletenessCheckAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : EquatableObjectTestBase<T>
+                    {
+                        return [Case<TSelf>(t => t.FactOne())];
+                    }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using System.Linq;
+                using Xunit;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    public void Extra() { }
+
+                    public static TheoryData<string, Action<Leaf>> Cases() =>
+                        BuildDispatcherCases<Leaf>().Concat([Case<Leaf>(t => t.Extra())]).ToTheoryData();
+
+                    [Theory]
+                    [MemberData(nameof(Cases))]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    private static string BuildDerivedBuilderSource(string members, string derivedBody)
+    {
+        return $$"""
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using System.Collections.Generic;
+                using System.Linq;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public static class UnrelatedCases
+                {
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>() => [];
+                }
+
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : EquatableObjectTestBase<T>
+                    {
+                        return [Case<TSelf>(t => t.FactOne())];
+                    }
+                }
+
+                public abstract class ComparableObjectTestBase<T> : EquatableObjectTestBase<T>
+                {
+                    {{members}}
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactThree() { }
+
+                    public static new (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : ComparableObjectTestBase<T>
+                    {
+                        {{derivedBody}}
+                    }
+                }
+            }
+            """;
+    }
+
     [Fact]
     public async Task BaseBuilderCaseOutsideReturnedCollection_ReportsIncompleteBuilderAsync()
     {
