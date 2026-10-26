@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
 using FunFair.Test.Common;
 using Microsoft.CodeAnalysis;
@@ -1037,5 +1038,66 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
         );
 
         Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task CompilationWithoutFunFairTestCommonReference_WithSourceDeclaredDispatchedTestAttribute_ReportsBothChecksAsync()
+    {
+        // Control for the test below: the same source does fire both checks once
+        // FunFair.Test.Common.DispatchedTestAttribute resolves, so that test's silence is down to the attribute alone.
+        ImmutableArray<Diagnostic> diagnostics =
+            await GeneratorTestHelpers.RunAnalyzerWithoutFunFairTestCommonReferenceAsync(
+                analyzer: new AotTestDispatcherAnalyzer(),
+                source: BuildSourceWithDispatchedTestAttributeIn("FunFair.Test.Common")
+            );
+
+        string[] expectedIds = ["FTS001", "FTS003"];
+        Assert.Equal(
+            expected: expectedIds,
+            actual: diagnostics.Select(d => d.Id).Order(StringComparer.Ordinal),
+            comparer: StringComparer.Ordinal
+        );
+    }
+
+    [Fact]
+    public async Task CompilationWithoutDispatchedTestAttribute_ReportsNothingAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics =
+            await GeneratorTestHelpers.RunAnalyzerWithoutFunFairTestCommonReferenceAsync(
+                analyzer: new AotTestDispatcherAnalyzer(),
+                source: BuildSourceWithDispatchedTestAttributeIn("Sample.Unrelated")
+            );
+
+        Assert.Empty(diagnostics);
+    }
+
+    private static string BuildSourceWithDispatchedTestAttributeIn(string attributeNamespace)
+    {
+        return $$"""
+            namespace {{attributeNamespace}}
+            {
+                public sealed class DispatchedTestAttribute : System.Attribute
+                {
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+
+                public abstract class AffectedBase<T>
+                {
+                    [{{attributeNamespace}}.DispatchedTest]
+                    public void FactOne() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : AffectedBase<T> => [];
+                }
+
+                public sealed class Leaf : AffectedBase<string>
+                {
+                }
+            }
+            """;
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FunFair.Test.Source.Generator.Tests.Helpers;
@@ -17,6 +18,10 @@ internal static class GeneratorTestHelpers
 
     private static readonly Lazy<IReadOnlyList<MetadataReference>> ReferencesWithoutXunit = new(
         BuildReferencesWithoutXunit
+    );
+
+    private static readonly Lazy<IReadOnlyList<MetadataReference>> ReferencesWithoutFunFairTestCommon = new(
+        BuildReferencesWithoutFunFairTestCommon
     );
 
     private static Compilation CreateCompilation(string source)
@@ -56,6 +61,19 @@ internal static class GeneratorTestHelpers
         [
             .. References.Value.Where(reference =>
                 reference.Display?.Contains("xunit", StringComparison.OrdinalIgnoreCase) != true
+            ),
+        ];
+    }
+
+    private static IReadOnlyList<MetadataReference> BuildReferencesWithoutFunFairTestCommon()
+    {
+        return
+        [
+            .. References.Value.Where(reference =>
+                !StringComparer.OrdinalIgnoreCase.Equals(
+                    x: Path.GetFileNameWithoutExtension(reference.Display),
+                    y: "FunFair.Test.Common"
+                )
             ),
         ];
     }
@@ -117,6 +135,20 @@ internal static class GeneratorTestHelpers
     )
     {
         return RunAnalyzerAsync(analyzer: analyzer, source: source, references: ReferencesWithoutXunit.Value);
+    }
+
+    // Simulates the analyzer running on a project that does not reference FunFair.Test.Common, so
+    // FunFair.Test.Common.DispatchedTestAttribute only resolves if the source under test declares it.
+    public static Task<ImmutableArray<Diagnostic>> RunAnalyzerWithoutFunFairTestCommonReferenceAsync(
+        DiagnosticAnalyzer analyzer,
+        string source
+    )
+    {
+        return RunAnalyzerAsync(
+            analyzer: analyzer,
+            source: source,
+            references: ReferencesWithoutFunFairTestCommon.Value
+        );
     }
 
     private static Task<ImmutableArray<Diagnostic>> RunAnalyzerAsync(
