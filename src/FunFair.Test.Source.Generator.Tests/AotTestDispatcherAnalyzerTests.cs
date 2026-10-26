@@ -695,6 +695,158 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
+    public async Task DispatcherWithExpressionBodiedPropertyProviderMissingCase_ReportsMissingCaseAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDataMemberProviderSource(
+                "public static TheoryData<string, Action<Leaf>> Cases => new() { { nameof(FactOne), t => t.FactOne() } };"
+            )
+        );
+
+        AssertMissingDispatcherCases(diagnostics: diagnostics, expectedTestNames: ["FactTwo"]);
+    }
+
+    [Fact]
+    public async Task DispatcherWithGetterBodiedPropertyProviderMissingCase_ReportsMissingCaseAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDataMemberProviderSource(
+                "public static TheoryData<string, Action<Leaf>> Cases { get { return new() { { nameof(FactOne), t => t.FactOne() } }; } }"
+            )
+        );
+
+        AssertMissingDispatcherCases(diagnostics: diagnostics, expectedTestNames: ["FactTwo"]);
+    }
+
+    [Fact]
+    public async Task DispatcherWithGetterOnlyAutoPropertyProviderMissingCase_ReportsMissingCaseAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDataMemberProviderSource(
+                "public static TheoryData<string, Action<Leaf>> Cases { get; } = new() { { nameof(FactOne), t => t.FactOne() } };"
+            )
+        );
+
+        AssertMissingDispatcherCases(diagnostics: diagnostics, expectedTestNames: ["FactTwo"]);
+    }
+
+    [Fact]
+    public async Task DispatcherWithFieldProviderMissingCase_ReportsMissingCaseAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDataMemberProviderSource(
+                "public static readonly TheoryData<string, Action<Leaf>> Other = new(), Cases = new() { { nameof(FactOne), t => t.FactOne() } };"
+            )
+        );
+
+        AssertMissingDispatcherCases(diagnostics: diagnostics, expectedTestNames: ["FactTwo"]);
+    }
+
+    [Fact]
+    public async Task DispatcherWithPropertyProviderUsingConstantCaseNamesMissingCase_ReportsMissingCaseAsync()
+    {
+        // No nameof(...) anywhere, so the missing case is only found if each { name, action } element's name is read.
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDataMemberProviderSource(
+                "private const string FACT_ONE = \"FactOne\";"
+                    + "public static TheoryData<string, Action<Leaf>> Cases => new() { { FACT_ONE, t => t.FactOne() } };"
+            )
+        );
+
+        AssertMissingDispatcherCases(diagnostics: diagnostics, expectedTestNames: ["FactTwo"]);
+    }
+
+    [Fact]
+    public async Task DispatcherWithCompletePropertyProvider_ReportsNothingAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDataMemberProviderSource(
+                "public static TheoryData<string, Action<Leaf>> Cases => new() { { nameof(FactOne), t => t.FactOne() }, { nameof(FactTwo), t => t.FactTwo() } };"
+            )
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Theory]
+    [InlineData(
+        "private static TheoryData<string, Action<Leaf>> Build() => new() { { nameof(FactOne), t => t.FactOne() } };"
+            + "public static TheoryData<string, Action<Leaf>> Cases => Build();"
+    )]
+    [InlineData(
+        "private static readonly string FactTwoName = \"FactTwo\";"
+            + "public static TheoryData<string, Action<Leaf>> Cases => new() { { nameof(FactOne), t => t.FactOne() }, { FactTwoName, t => t.FactTwo() } };"
+    )]
+    [InlineData(
+        "public static TheoryData<string, Action<Leaf>, int> Cases => new() { { nameof(FactOne), t => t.FactOne(), 1 } };"
+    )]
+    [InlineData(
+        "public static TheoryData<string, Action<Leaf>> Cases { get; set; } = new() { { nameof(FactOne), t => t.FactOne() } };"
+    )]
+    [InlineData("public static TheoryData<string, Action<Leaf>> Cases { get; }")]
+    [InlineData(
+        "public static TheoryData<string, Action<Leaf>> Cases = new() { { nameof(FactOne), t => t.FactOne() } };"
+    )]
+    [InlineData("public static readonly TheoryData<string, Action<Leaf>> Cases;")]
+    [InlineData("public TheoryData<string, Action<Leaf>> Cases => new() { { nameof(FactOne), t => t.FactOne() } };")]
+    [InlineData(
+        "public readonly TheoryData<string, Action<Leaf>> Cases = new() { { nameof(FactOne), t => t.FactOne() } };"
+    )]
+    // CA1822: see the comment on
+    // ProtectedMemberSuppressionGeneratorTests.ClassWithProtectedMembers_GeneratesSuppressionForEach.
+    public static async Task DispatcherWithDataMemberProviderOfUnfollowableShape_AbstainsFromCompletenessCheckAsync(
+        string provider
+    )
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDataMemberProviderSource(provider)
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    private static string BuildDataMemberProviderSource(string provider)
+    {
+        return """
+                namespace FunFair.Test.Common
+                {
+                    public abstract class EquatableObjectTestBase<T>
+                    {
+                        [FunFair.Test.Common.DispatchedTest]
+                        public void FactOne() { }
+
+                        [FunFair.Test.Common.DispatchedTest]
+                        public void FactTwo() { }
+                    }
+                }
+
+                namespace Sample
+                {
+                    using System;
+                    using Xunit;
+
+                    public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                    {
+                """
+            + provider
+            + """
+
+                        [Theory]
+                        [MemberData(nameof(Cases))]
+                        public void CommonTests(string name, Action<Leaf> action) { }
+                    }
+                }
+                """;
+    }
+
+    [Fact]
     public async Task DispatcherWithProviderDelegatingToBaseBuilder_ReportsNothingAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
