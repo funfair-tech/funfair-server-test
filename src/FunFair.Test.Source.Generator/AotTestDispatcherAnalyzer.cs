@@ -418,23 +418,27 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        HashSet<string>? declaredCaseNames = TryGetDeclaredCaseNames(
+        HashSet<string>? coveredCaseNames = TryGetCoveredCaseNames(
             providerSyntax: providerSyntax,
             semanticModel: context.SemanticModel,
+            classSymbol: classSymbol,
             symbols: symbols,
+            dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
             cancellationToken: context.CancellationToken
         );
 
-        if (declaredCaseNames is null)
+        if (coveredCaseNames is null)
         {
             return;
         }
 
+        // A method a composed builder does not cover is reported with the same message as an unlisted one: either way
+        // the leaf's case list has no entry for it, and listing it locally fixes both.
         foreach (
             string testName in CollectBaseChain(classSymbol)
                 .SelectMany(bt => dispatchedTestNamesByBaseType.GetOrAdd(baseType: bt, symbols: symbols))
                 .Distinct(StringComparer.Ordinal)
-                .Where(testName => !declaredCaseNames.Contains(testName))
+                .Where(testName => !coveredCaseNames.Contains(testName))
         )
         {
             context.ReportDiagnostic(
@@ -506,13 +510,15 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         );
     }
 
-    // Null means the provider's cases cannot be listed from its own source, so the check abstains: a provider that
-    // delegates with "BuildDispatcherCases<TSelf>().ToTheoryData()" (or spreads or concatenates it) gets its cases from
-    // a base builder, whose completeness FTS003 checks where that base is declared.
-    private static HashSet<string>? TryGetDeclaredCaseNames(
+    // The [DispatchedTest] names the provider's cases cover: those it lists itself, plus those of every builder it
+    // composes in (a provider that delegates with "BuildDispatcherCases<TSelf>().ToTheoryData()", or spreads or
+    // concatenates it). Null means the cover cannot be worked out from the provider's own source, so the check abstains.
+    private static HashSet<string>? TryGetCoveredCaseNames(
         MethodDeclarationSyntax providerSyntax,
         SemanticModel semanticModel,
+        INamedTypeSymbol classSymbol,
         WellKnownSymbols symbols,
+        DispatchedTestNameCache dispatchedTestNamesByBaseType,
         CancellationToken cancellationToken
     )
     {
@@ -523,7 +529,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             cancellationToken: cancellationToken
         );
 
-        if (!shape.IsRecognised || shape.HasUnknowableCaseName || shape.ComposedBuilders.Count != 0)
+        if (!shape.IsRecognised || shape.HasUnknowableCaseName)
         {
             return null;
         }
@@ -531,7 +537,50 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         HashSet<string> names = new(shape.CaseNames, StringComparer.Ordinal);
         names.UnionWith(CollectNameofTargets(providerSyntax));
 
-        return names.Count == 0 ? null : names;
+        if (shape.ComposedBuilders.Count == 0)
+        {
+            return names.Count == 0 ? null : names;
+        }
+
+        // Only a builder owned by the leaf or one of its ancestors is known to hold nothing but that chain's cases; any
+        // other (an unrelated type's) could list anything, so the check abstains rather than guess.
+        if (!shape.ComposedBuilders.All(builder => IsBuilderInChainOf(builder: builder, classSymbol: classSymbol)))
+        {
+            return null;
+        }
+
+        names.UnionWith(
+            shape.ComposedBuilders.SelectMany(builder =>
+                CollectBuilderCover(
+                    owner: builder.ContainingType,
+                    symbols: symbols,
+                    dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
+                )
+            )
+        );
+
+        return names;
+    }
+
+    private static bool IsBuilderInChainOf(IMethodSymbol builder, INamedTypeSymbol classSymbol)
+    {
+        return IsBuilderOwnedBy(builder: builder, owner: classSymbol)
+            || IsAncestorOf(ancestor: builder.ContainingType, type: classSymbol);
+    }
+
+    // FTS003 and FTS004 hold each builder to listing its own type's [DispatchedTest] methods and composing in its
+    // parent's builder, so a builder covers its owner's methods and, through that chain, every ancestor's. A type
+    // between the leaf and the owner is not covered, which is how a delegation that skips past a nearer ancestor's
+    // [DispatchedTest] methods is caught.
+    private static IEnumerable<string> CollectBuilderCover(
+        INamedTypeSymbol owner,
+        WellKnownSymbols symbols,
+        DispatchedTestNameCache dispatchedTestNamesByBaseType
+    )
+    {
+        return CollectBaseChain(owner)
+            .Prepend(owner)
+            .SelectMany(type => dispatchedTestNamesByBaseType.GetOrAdd(baseType: type, symbols: symbols));
     }
 
     private static IEnumerable<string> CollectNameofTargets(MethodDeclarationSyntax providerSyntax)
