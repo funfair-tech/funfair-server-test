@@ -66,10 +66,15 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        FactNameCache factNamesByBaseType = new();
+        DispatchedTestNameCache dispatchedTestNamesByBaseType = new();
 
         context.RegisterSymbolAction(
-            symbolContext => AnalyzeClass(symbolContext, symbols: symbols, factNamesByBaseType: factNamesByBaseType),
+            symbolContext =>
+                AnalyzeClass(
+                    symbolContext,
+                    symbols: symbols,
+                    dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
+                ),
             SymbolKind.NamedType
         );
     }
@@ -77,7 +82,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     private static void AnalyzeClass(
         in SymbolAnalysisContext context,
         WellKnownSymbols symbols,
-        FactNameCache factNamesByBaseType
+        DispatchedTestNameCache dispatchedTestNamesByBaseType
     )
     {
         if (
@@ -113,7 +118,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             dispatcher: dispatcher,
             baseChain: commonBaseChain,
             symbols: symbols,
-            factNamesByBaseType: factNamesByBaseType
+            dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
         );
     }
 
@@ -139,17 +144,17 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         IMethodSymbol dispatcher,
         IReadOnlyList<INamedTypeSymbol> baseChain,
         WellKnownSymbols symbols,
-        FactNameCache factNamesByBaseType
+        DispatchedTestNameCache dispatchedTestNamesByBaseType
     )
     {
-        IReadOnlyCollection<string> baseFactNames =
+        IReadOnlyCollection<string> baseDispatchedTestNames =
         [
             .. baseChain
-                .SelectMany(bt => factNamesByBaseType.GetOrAdd(baseType: bt, symbols: symbols))
+                .SelectMany(bt => dispatchedTestNamesByBaseType.GetOrAdd(baseType: bt, symbols: symbols))
                 .Distinct(StringComparer.Ordinal),
         ];
 
-        if (baseFactNames.Count == 0)
+        if (baseDispatchedTestNames.Count == 0)
         {
             return;
         }
@@ -166,14 +171,14 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        foreach (string factName in baseFactNames.Where(factName => !declaredCaseNames.Contains(factName)))
+        foreach (string testName in baseDispatchedTestNames.Where(testName => !declaredCaseNames.Contains(testName)))
         {
             context.ReportDiagnostic(
                 Diagnostic.Create(
                     IncompleteDispatcherRule,
                     dispatcher.Locations.FirstOrDefault() ?? Location.None,
                     classSymbol.Name,
-                    factName
+                    testName
                 )
             );
         }
@@ -354,13 +359,15 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     {
         public WellKnownSymbols(Compilation compilation)
         {
-            this.FactAttribute = compilation.GetTypeByMetadataName("Xunit.FactAttribute");
+            this.DispatchedTestAttribute = compilation.GetTypeByMetadataName(
+                "FunFair.Test.Common.DispatchedTestAttribute"
+            );
             this.TheoryAttribute = compilation.GetTypeByMetadataName("Xunit.TheoryAttribute");
             this.MemberDataAttribute = compilation.GetTypeByMetadataName("Xunit.MemberDataAttribute");
             this.ActionType = compilation.GetTypeByMetadataName("System.Action`1");
         }
 
-        public INamedTypeSymbol? FactAttribute { get; }
+        public INamedTypeSymbol? DispatchedTestAttribute { get; }
 
         public INamedTypeSymbol? TheoryAttribute { get; }
 
@@ -369,13 +376,10 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         public INamedTypeSymbol? ActionType { get; }
 
         public bool IsComplete =>
-            this.FactAttribute is not null
-            && this.TheoryAttribute is not null
-            && this.MemberDataAttribute is not null
-            && this.ActionType is not null;
+            this.TheoryAttribute is not null && this.MemberDataAttribute is not null && this.ActionType is not null;
     }
 
-    private sealed class FactNameCache
+    private sealed class DispatchedTestNameCache
     {
         private ImmutableDictionary<INamedTypeSymbol, ImmutableArray<string>> _cache = ImmutableDictionary.Create<
             INamedTypeSymbol,
@@ -391,7 +395,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                     [
                         .. key.GetMembers()
                             .OfType<IMethodSymbol>()
-                            .Where(m => IsFactOrTheory(method: m, symbols: s))
+                            .Where(m => IsDispatchedTest(method: m, symbols: s))
                             .Select(m => m.Name)
                             .Distinct(StringComparer.Ordinal),
                     ],
@@ -399,11 +403,9 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             );
         }
 
-        private static bool IsFactOrTheory(IMethodSymbol method, WellKnownSymbols symbols)
+        private static bool IsDispatchedTest(IMethodSymbol method, WellKnownSymbols symbols)
         {
-            return method
-                .GetAttributes()
-                .Any(a => IsAttributeOfType(a, symbols.FactAttribute) || IsAttributeOfType(a, symbols.TheoryAttribute));
+            return method.GetAttributes().Any(a => IsAttributeOfType(a, symbols.DispatchedTestAttribute));
         }
     }
 }
