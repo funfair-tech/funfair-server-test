@@ -225,7 +225,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             .OfType<SpreadElementSyntax>()
             .Any(spread =>
                 spread.Expression is InvocationExpressionSyntax invocation
-                && StringComparer.Ordinal.Equals(GetInvokedMethodName(invocation), BUILDER_METHOD_NAME)
+                && StringComparer.Ordinal.Equals(ExtractSimpleName(invocation.Expression), BUILDER_METHOD_NAME)
             );
 
         if (!spreadsParentBuilder)
@@ -260,7 +260,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         )
         {
             if (
-                !StringComparer.Ordinal.Equals(GetInvokedMethodName(invocation), CASE_METHOD_NAME)
+                !StringComparer.Ordinal.Equals(ExtractSimpleName(invocation.Expression), CASE_METHOD_NAME)
                 || invocation.ArgumentList.Arguments.Count == 0
             )
             {
@@ -292,16 +292,6 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         int dot = expressionText.LastIndexOf(value: '.', startIndex: openParen);
 
         return expressionText.Substring(startIndex: dot + 1, length: openParen - dot - 1);
-    }
-
-    private static string? GetInvokedMethodName(InvocationExpressionSyntax invocation)
-    {
-        return invocation.Expression switch
-        {
-            SimpleNameSyntax name => name.Identifier.Text,
-            MemberAccessExpressionSyntax memberAccess => memberAccess.Name.Identifier.Text,
-            _ => null,
-        };
     }
 
     private static void ReportMissingDispatcher(
@@ -523,7 +513,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     {
         return expression switch
         {
-            IdentifierNameSyntax identifier => identifier.Identifier.Text,
+            SimpleNameSyntax name => name.Identifier.Text,
             MemberAccessExpressionSyntax memberAccess => memberAccess.Name.Identifier.Text,
             _ => null,
         };
