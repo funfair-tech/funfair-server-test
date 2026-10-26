@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
+using FunFair.Test.Shared;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -987,9 +988,12 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                 return;
             }
 
-            string? name = expressionText is null ? null : ExtractCaseName(expressionText);
-
-            if (name is not null)
+            // DispatcherCaseName is the same source DispatcherCaseData.Case parses with at runtime, so the name checked
+            // here is exactly the name the case is dispatched under.
+            if (
+                expressionText is not null
+                && DispatcherCaseName.TryGetCaseName(expressionText: expressionText, out string name)
+            )
             {
                 this._caseNames.Add(name);
             }
@@ -1037,22 +1041,6 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         {
             return StringComparer.Ordinal.Equals(method.Name, methodName)
                 && SymbolEqualityComparer.Default.Equals(method.ContainingType, symbols.DispatcherCaseDataType);
-        }
-
-        // Mirrors DispatcherCaseData.Case's own parsing of its CallerArgumentExpression text, so the name checked
-        // here is exactly the name the case is dispatched under at runtime (e.g. "t => t.X().Y()" dispatches as "Y").
-        private static string? ExtractCaseName(string expressionText)
-        {
-            int openParen = expressionText.LastIndexOf('(');
-
-            if (openParen < 0)
-            {
-                return null;
-            }
-
-            int dot = expressionText.LastIndexOf(value: '.', startIndex: openParen);
-
-            return expressionText.Substring(startIndex: dot + 1, length: openParen - dot - 1);
         }
     }
 
