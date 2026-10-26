@@ -199,7 +199,12 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        HashSet<string> caseNames = CollectCaseNames(builderSyntax);
+        HashSet<string> caseNames = CollectCaseNames(
+            builderSyntax: builderSyntax,
+            semanticModel: context.SemanticModel,
+            symbols: symbols,
+            cancellationToken: context.CancellationToken
+        );
 
         foreach (string testName in dispatchedTestNames.Where(testName => !caseNames.Contains(testName)))
         {
@@ -224,12 +229,19 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
+        SemanticModel semanticModel = context.SemanticModel;
+        CancellationToken cancellationToken = context.CancellationToken;
+
         bool spreadsParentBuilder = builderSyntax
             .DescendantNodes()
             .OfType<SpreadElementSyntax>()
             .Any(spread =>
-                spread.Expression is InvocationExpressionSyntax invocation
-                && StringComparer.Ordinal.Equals(ExtractSimpleName(invocation.Expression), BUILDER_METHOD_NAME)
+                IsCaseBuilderOf(
+                    expression: spread.Expression,
+                    builderOwner: parentWithBuilder,
+                    semanticModel: semanticModel,
+                    cancellationToken: cancellationToken
+                )
             );
 
         if (!spreadsParentBuilder)
@@ -253,19 +265,42 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         return null;
     }
 
-    private static HashSet<string> CollectCaseNames(MethodDeclarationSyntax builderSyntax)
+    // Resolved rather than matched by name, so a grandparent's, an unrelated type's or the builder's own
+    // BuildDispatcherCases (a copy-paste slip that drops the parent's cases or recurses forever) is not mistaken for
+    // the parent's.
+    private static bool IsCaseBuilderOf(
+        ExpressionSyntax expression,
+        INamedTypeSymbol builderOwner,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken
+    )
+    {
+        return semanticModel.GetSymbolInfo(expression, cancellationToken).Symbol is IMethodSymbol method
+            && StringComparer.Ordinal.Equals(method.Name, BUILDER_METHOD_NAME)
+            && SymbolEqualityComparer.Default.Equals(
+                method.ContainingType.OriginalDefinition,
+                builderOwner.OriginalDefinition
+            );
+    }
+
+    private static HashSet<string> CollectCaseNames(
+        MethodDeclarationSyntax builderSyntax,
+        SemanticModel semanticModel,
+        WellKnownSymbols symbols,
+        CancellationToken cancellationToken
+    )
     {
         HashSet<string> names = new(StringComparer.Ordinal);
 
-        foreach (
-            InvocationExpressionSyntax invocation in builderSyntax
-                .DescendantNodes()
-                .OfType<InvocationExpressionSyntax>()
-        )
+        foreach (InvocationExpressionSyntax invocation in ReturnedCollectionInvocations(builderSyntax))
         {
             if (
-                !StringComparer.Ordinal.Equals(ExtractSimpleName(invocation.Expression), CASE_METHOD_NAME)
-                || invocation.ArgumentList.Arguments.Count == 0
+                !IsDispatcherCase(
+                    invocation: invocation,
+                    semanticModel: semanticModel,
+                    symbols: symbols,
+                    cancellationToken: cancellationToken
+                )
             )
             {
                 continue;
@@ -280,6 +315,42 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         }
 
         return names;
+    }
+
+    // Only the elements of the collection the builder itself returns are dispatched; a Case(...) evaluated anywhere
+    // else (a discard, or the body of a lambda or local function) never reaches a leaf class's [MemberData].
+    private static IEnumerable<InvocationExpressionSyntax> ReturnedCollectionInvocations(
+        MethodDeclarationSyntax builderSyntax
+    )
+    {
+        return builderSyntax
+            .DescendantNodes(descendIntoChildren: static node =>
+                node is not (AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax)
+            )
+            .Select(static node =>
+                node switch
+                {
+                    ReturnStatementSyntax returnStatement => returnStatement.Expression,
+                    ArrowExpressionClauseSyntax expressionBody => expressionBody.Expression,
+                    _ => null,
+                }
+            )
+            .OfType<CollectionExpressionSyntax>()
+            .SelectMany(static collection => collection.Elements.OfType<ExpressionElementSyntax>())
+            .Select(static element => element.Expression)
+            .OfType<InvocationExpressionSyntax>();
+    }
+
+    private static bool IsDispatcherCase(
+        InvocationExpressionSyntax invocation,
+        SemanticModel semanticModel,
+        WellKnownSymbols symbols,
+        CancellationToken cancellationToken
+    )
+    {
+        return semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is IMethodSymbol method
+            && StringComparer.Ordinal.Equals(method.Name, CASE_METHOD_NAME)
+            && SymbolEqualityComparer.Default.Equals(method.ContainingType, symbols.DispatcherCaseDataType);
     }
 
     // Mirrors DispatcherCaseData.Case's own parsing of its CallerArgumentExpression text, so the name checked here
@@ -531,6 +602,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             this.TheoryAttribute = compilation.GetTypeByMetadataName("Xunit.TheoryAttribute");
             this.MemberDataAttribute = compilation.GetTypeByMetadataName("Xunit.MemberDataAttribute");
             this.ActionType = compilation.GetTypeByMetadataName("System.Action`1");
+            this.DispatcherCaseDataType = compilation.GetTypeByMetadataName("FunFair.Test.Common.DispatcherCaseData");
         }
 
         public INamedTypeSymbol? DispatchedTestAttribute { get; }
@@ -540,6 +612,8 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         public INamedTypeSymbol? MemberDataAttribute { get; }
 
         public INamedTypeSymbol? ActionType { get; }
+
+        public INamedTypeSymbol? DispatcherCaseDataType { get; }
 
         public bool IsComplete =>
             this.TheoryAttribute is not null && this.MemberDataAttribute is not null && this.ActionType is not null;
