@@ -17,7 +17,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Correct wrong logger category in LoggingFolderCleanupTestBaseTests.LoggingOutputs
 - Correct misleading test names, reversed/incorrect assertion messages in shared test base classes (renames may affect consumer test filters/quarantines)
 - Avoid unnecessary StringBuilder allocation in XUnitLoggerBase.Log on the common no-option, no-exception path, and pre-size the StringBuilder from the formatted message length on the remaining path
-- TBD - to be finalized after review
+- Shared test base classes (Equatable, Comparable, JsonConverter and Validator) now use the new [DispatchedTest] attribute instead of [Fact], so xunit.analyzers 2.2.0 xUnit1072 no longer fires on consuming Native AOT test classes and per-class suppressions are no longer needed; FTS002 now checks dispatcher completeness against [DispatchedTest] methods and the FTS001 message is updated
 ### Changed
 - Dependencies - Updated Microsoft.Sbom.Targets to 4.1.13
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.35.0.4138
@@ -32,6 +32,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Nullable.Extended.Analyzer to 1.17.0
 - Dependencies - Updated xunit.v3 to 4.0.2
 - SDK - Updated DotNet SDK to 10.0.403
+- BREAKING - inherited shared base-class tests are no longer discovered directly by reflection based (non-AOT) xunit discovery; they now run only through the FTS001-required dispatcher in each consuming test class
 ### Deprecated
 ### Removed
 ### Deployment Changes
