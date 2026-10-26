@@ -12,6 +12,12 @@ public sealed class ProtectedMemberSuppressionGeneratorTests : TestBase
 {
     private const string SUPPRESSIONS_HINT_NAME = "ProtectedMemberSuppressions.generated.cs";
 
+    private static readonly IncrementalStepRunReason[] ReusedReasons =
+    [
+        IncrementalStepRunReason.Cached,
+        IncrementalStepRunReason.Unchanged,
+    ];
+
     [Theory]
     [InlineData(
         """
@@ -181,39 +187,48 @@ public sealed class ProtectedMemberSuppressionGeneratorTests : TestBase
         Assert.Empty(result.Results.Single().GeneratedSources);
     }
 
-    [Theory]
-    [InlineData("true", false)]
-    [InlineData("false", true)]
-    // CA1822: see the comment on ClassWithProtectedMembers_GeneratesSuppressionForEach above.
-    public static void BuildProperty_DecidesWhetherProtectedMembersAreCollected(
-        string disableSourceGenerators,
-        bool expectCollected
-    )
+    [Fact]
+    public void RerunAfterUnrelatedEdit_ReusesCollectedMembersAndGeneratedSource()
     {
-        GeneratorDriverRunResult result = GeneratorTestHelpers.RunGeneratorTrackingSteps(
-            generator: new ProtectedMemberSuppressionGenerator(),
-            source: """
-            namespace Sample;
+        // A sealed class fails the predicate, so the edit adds nothing to the pipeline; it only forces a new compilation.
+        GeneratorRunResult result = GeneratorTestHelpers
+            .RerunGeneratorAfterAddingSource(
+                generator: new ProtectedMemberSuppressionGenerator(),
+                source: """
+                namespace Sample;
 
-            public abstract class Example
-            {
-                protected void DoSomething() { }
-            }
-            """,
-            globalOptions: new Dictionary<string, string>(StringComparer.Ordinal)
-            {
-                ["build_property.FunFairTestDisableSourceGenerators"] = disableSourceGenerators,
-            }
+                public abstract class Example
+                {
+                    protected void DoSomething() { }
+                }
+                """,
+                addedSource: """
+                namespace Sample;
+
+                public sealed class Unrelated
+                {
+                }
+                """
+            )
+            .Results.Single();
+
+        AssertAllOutputsReused(result.TrackedSteps[ProtectedMemberSuppressionGenerator.CollectProtectedMembersStep]);
+        AssertAllOutputsReused(result.TrackedOutputSteps[WellKnownGeneratorOutputs.SourceOutput]);
+
+        Assert.Contains(
+            result.GeneratedSources,
+            source => StringComparer.Ordinal.Equals(x: source.HintName, y: SUPPRESSIONS_HINT_NAME)
         );
+    }
 
-        bool collected =
-            result
-                .Results.Single()
-                .TrackedSteps.TryGetValue(
-                    key: ProtectedMemberSuppressionGenerator.CollectProtectedMembersStep,
-                    out ImmutableArray<IncrementalGeneratorRunStep> steps
-                ) && steps.Any(step => !step.Outputs.IsEmpty);
+    private static void AssertAllOutputsReused(in ImmutableArray<IncrementalGeneratorRunStep> steps)
+    {
+        IncrementalStepRunReason[] reasons =
+        [
+            .. steps.SelectMany(step => step.Outputs).Select(output => output.Reason),
+        ];
 
-        Assert.Equal(expected: expectCollected, actual: collected);
+        Assert.NotEmpty(reasons);
+        Assert.All(reasons, reason => Assert.Contains(reason, ReusedReasons));
     }
 }

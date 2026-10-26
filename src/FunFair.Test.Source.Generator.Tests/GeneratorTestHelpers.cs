@@ -107,22 +107,35 @@ internal static class GeneratorTestHelpers
         );
     }
 
-    // Records each named pipeline step, so a test can prove whether a step ran at all, not just what it emitted.
-    public static GeneratorDriverRunResult RunGeneratorTrackingSteps(
+    // Runs the same driver twice, the second time after adding a source file, and records each named pipeline step,
+    // so a test can check which steps the second run reused rather than re-ran.
+    public static GeneratorDriverRunResult RerunGeneratorAfterAddingSource(
         IIncrementalGenerator generator,
         string source,
-        IReadOnlyDictionary<string, string> globalOptions
+        string addedSource
     )
     {
-        return RunGenerator(
+        GeneratorDriver driver = CreateDriver(
             generator: generator,
-            source: source,
-            optionsProvider: new TestAnalyzerConfigOptionsProvider(new TestAnalyzerConfigOptions(globalOptions)),
+            optionsProvider: null,
             driverOptions: new GeneratorDriverOptions(
                 disabledOutputs: IncrementalGeneratorOutputKind.None,
                 trackIncrementalGeneratorSteps: true
             )
         );
+
+        Compilation compilation = CreateCompilation(source);
+
+        driver = driver.RunGenerators(compilation, cancellationToken: TestContext.Current.CancellationToken);
+
+        driver = driver.RunGenerators(
+            compilation.AddSyntaxTrees(
+                CSharpSyntaxTree.ParseText(text: addedSource, cancellationToken: TestContext.Current.CancellationToken)
+            ),
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+
+        return GetRunResult(driver);
     }
 
     private static GeneratorDriverRunResult RunGenerator(
@@ -131,27 +144,10 @@ internal static class GeneratorTestHelpers
         AnalyzerConfigOptionsProvider? optionsProvider
     )
     {
-        return RunGenerator(
+        GeneratorDriver driver = CreateDriver(
             generator: generator,
-            source: source,
             optionsProvider: optionsProvider,
             driverOptions: default
-        );
-    }
-
-    private static GeneratorDriverRunResult RunGenerator(
-        IIncrementalGenerator generator,
-        string source,
-        AnalyzerConfigOptionsProvider? optionsProvider,
-        in GeneratorDriverOptions driverOptions
-    )
-    {
-        GeneratorDriver driver = CSharpGeneratorDriver.Create(
-            generators: [generator.AsSourceGenerator()],
-            additionalTexts: null,
-            parseOptions: null,
-            optionsProvider: optionsProvider,
-            driverOptions: driverOptions
         );
 
         driver = driver.RunGenerators(
@@ -159,6 +155,26 @@ internal static class GeneratorTestHelpers
             cancellationToken: TestContext.Current.CancellationToken
         );
 
+        return GetRunResult(driver);
+    }
+
+    private static GeneratorDriver CreateDriver(
+        IIncrementalGenerator generator,
+        AnalyzerConfigOptionsProvider? optionsProvider,
+        in GeneratorDriverOptions driverOptions
+    )
+    {
+        return CSharpGeneratorDriver.Create(
+            generators: [generator.AsSourceGenerator()],
+            additionalTexts: null,
+            parseOptions: null,
+            optionsProvider: optionsProvider,
+            driverOptions: driverOptions
+        );
+    }
+
+    private static GeneratorDriverRunResult GetRunResult(GeneratorDriver driver)
+    {
         GeneratorDriverRunResult result = driver.GetRunResult();
 
         Assert.Empty(result.Diagnostics);
