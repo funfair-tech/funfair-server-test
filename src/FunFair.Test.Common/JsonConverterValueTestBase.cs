@@ -75,7 +75,7 @@ public abstract class JsonConverterValueTestBase<
     }
 
     // Single source of truth for the AOT dispatcher case table (see FunFair.Test.Source.Generator's
-    // AotTestDispatcherAnalyzer, FTS002); see EquatableObjectTestBase<TObject>.BuildDispatcherCases for why this
+    // AotTestDispatcherAnalyzer, FTS003); see EquatableObjectTestBase<TObject>.BuildDispatcherCases for why this
     // must stay an ordinary static generic method rather than a [MemberData] provider itself.
     [SuppressMessage(
         category: "Microsoft.Design",
