@@ -23,4 +23,14 @@ public sealed class DispatcherCaseDataTests : TestBase
 
         Assert.Equal(expected: "expressionText", actual: exception.ParamName);
     }
+
+    [Fact]
+    public void CaseThrowsWhenTheActionIsAnEmptyBlockWithParenthesisedParameters()
+    {
+        ArgumentException exception = Assert.Throws<ArgumentException>(testCode: static () =>
+            DispatcherCaseData.Case<string>(static (_) => { })
+        );
+
+        Assert.Equal(expected: "expressionText", actual: exception.ParamName);
+    }
 }

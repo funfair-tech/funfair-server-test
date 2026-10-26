@@ -1510,6 +1510,35 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
+    public async Task BaseBuilderCaseWhoseArgumentMakesACall_CountsTheDispatchedTestAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne(object value) { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : EquatableObjectTestBase<T>
+                    {
+                        return [Case<TSelf>(t => t.FactOne(new object()))];
+                    }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
     public async Task CompleteBaseBuilder_ReportsNothingAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
@@ -2420,6 +2449,93 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
         AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactOne");
     }
 
+    // Mirrors DispatcherCaseNameTests through the analyzer, so the name FTS003 checks is shown to be the one
+    // DispatcherCaseData.Case dispatches under for each shape of lambda text.
+    [Theory]
+    [InlineData("FactOne()")]
+    [InlineData("t => FactOne()")]
+    [InlineData("t => t.FactOne(1, 2)")]
+    [InlineData("t => t.Inner.FactOne()")]
+    [InlineData("t => t.First().FactOne()")]
+    [InlineData("t => t?.FactOne()")]
+    [InlineData("t => t . FactOne ()")]
+    [InlineData("t => t.FactOne<int>()")]
+    [InlineData("t => t.FactOne<List<int>>()")]
+    [InlineData("t => t.FactOne<Dictionary<string, List<int>>>()")]
+    [InlineData("t => t.FactOne(new Foo())")]
+    [InlineData("t => t.FactOne(x.Get())")]
+    [InlineData("t => t.FactOne(t.Items[0].Get())")]
+    [InlineData("t => t.FactOne(x => x.Get())")]
+    [InlineData("t => t.FactOne(x => { x.Get(); })")]
+    [InlineData("t => t.FactOne(new Foo { Bar = 1 })")]
+    [InlineData("t => t.FactOne(\"a(b\")")]
+    [InlineData("t => t.FactOne(\"a\\\"(b\")")]
+    [InlineData("t => t.FactOne(@\"a\"\"(b\")")]
+    [InlineData("t => t.FactOne('(')")]
+    [InlineData("t => t.FactOne('\\'')")]
+    [InlineData("t => t.FactOne(a / b)")]
+    [InlineData("(t) => t.FactOne()")]
+    [InlineData("static (t) => t.FactOne()")]
+    [InlineData("(Foo t) => t.FactOne()")]
+    [InlineData("static async (t) => await t.FactOne()")]
+    [InlineData("t => { t.FactOne(); }")]
+    [InlineData("t => {t.FactOne() ;}")]
+    // CA1822: see the comment on
+    // ProtectedMemberSuppressionGeneratorTests.ClassWithProtectedMembers_GeneratesSuppressionForEach.
+    public static async Task BaseBuilderCaseWithExpressionTextCallingFactOne_CountsFactOneAsync(string expressionText)
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(
+                members: "",
+                cases: "Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactOne(), expressionText: "
+                    + ToVerbatimLiteral(expressionText)
+                    + ")"
+            )
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Theory]
+    [InlineData("_ => { }")]
+    [InlineData("(t) => { }")]
+    [InlineData("static (t) => { }")]
+    [InlineData("t => { ; }")]
+    [InlineData("t => { t.FactOne() }")]
+    [InlineData("t => { t.FactTwo(); t.FactOne(); }")]
+    [InlineData("t => { { t.FactOne(); } }")]
+    [InlineData("t => t.FactOne() + 1")]
+    [InlineData("t => (t.FactOne)()")]
+    [InlineData("t => new FactOne()")]
+    [InlineData("t => t.FactOne>()")]
+    [InlineData("t => t.FactOne(")]
+    [InlineData("t => t.FactOne())")]
+    [InlineData("t => t.FactOne(\"a)")]
+    [InlineData("t => t.FactOne('a)")]
+    [InlineData("t => t.FactOne($\"a{b}\")")]
+    [InlineData("t => t.FactOne($@\"a{b}\")")]
+    [InlineData("t => t.FactOne(@$\"a{b}\")")]
+    [InlineData("t => t.FactOne(\"\"\"a(b\"\"\")")]
+    [InlineData("t => t.FactOne(/* ( */ 1)")]
+    [InlineData("t => t.FactOne(1) // )")]
+    // CA1822: see the comment on
+    // ProtectedMemberSuppressionGeneratorTests.ClassWithProtectedMembers_GeneratesSuppressionForEach.
+    public static async Task BaseBuilderCaseWithUnparseableExpressionText_CountsNoNameAsync(string expressionText)
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(
+                members: "",
+                cases: "Case<TSelf>(t => t.FactTwo()), Case<TSelf>(t => t.FactOne(), expressionText: "
+                    + ToVerbatimLiteral(expressionText)
+                    + ")"
+            )
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactOne");
+    }
+
     [Fact]
     public async Task BaseBuilderCaseWithNonConstantExpressionText_AbstainsFromCompletenessCheckAsync()
     {
@@ -2899,6 +3015,11 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
         Diagnostic diagnostic = Assert.Single(diagnostics);
         Assert.Equal(expected: "FTS003", actual: diagnostic.Id);
         Assert.Contains($"'{testName}'", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
+    private static string ToVerbatimLiteral(string text)
+    {
+        return "@\"" + text.Replace(oldValue: "\"", newValue: "\"\"", comparisonType: StringComparison.Ordinal) + "\"";
     }
 
     private static string BuildBaseBuilderSource(string members, string cases)
