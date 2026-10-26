@@ -277,7 +277,7 @@ public abstract class EquatableObjectTestBase<TObject> : TestBase
     }
 
     // Single source of truth for the AOT dispatcher case table (see FunFair.Test.Source.Generator's
-    // AotTestDispatcherAnalyzer, FTS002): every leaf class deriving from this base delegates its own
+    // AotTestDispatcherAnalyzer, FTS003): every leaf class deriving from this base delegates its own
     // BaseCaseData() to this method instead of hand-copying the nameof/lambda table. Must stay an ordinary
     // static generic method - not itself a [MemberData] provider - because xUnit v3's AOT test generator
     // fails at runtime ("No data found") when the provider is declared on an open generic type; the leaf's
