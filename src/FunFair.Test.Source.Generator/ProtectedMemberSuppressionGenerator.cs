@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using System.Linq;
 using Credfeto.SourceGeneration.Helpers.Builders;
 using FunFair.Test.Source.Generator.Extensions;
@@ -44,16 +44,8 @@ public sealed class ProtectedMemberSuppressionGenerator : IIncrementalGenerator
         );
 
         context.RegisterSourceOutput(
-            allMembers.Combine(sourceGeneratorsDisabled),
-            static (ctx, item) =>
-            {
-                if (item.Right)
-                {
-                    return;
-                }
-
-                GenerateSuppressions(ctx: ctx, members: item.Left);
-            }
+            allMembers.Combine(sourceGeneratorsDisabled).Select(static (item, _) => item.Right ? [] : item.Left),
+            GenerateSuppressions
         );
     }
 
@@ -91,10 +83,7 @@ public sealed class ProtectedMemberSuppressionGenerator : IIncrementalGenerator
         return members.ToImmutable();
     }
 
-    private static void GenerateSuppressions(
-        in SourceProductionContext ctx,
-        in ImmutableArray<ProtectedMemberInfo> members
-    )
+    private static void GenerateSuppressions(SourceProductionContext ctx, ImmutableArray<ProtectedMemberInfo> members)
     {
         if (members.IsEmpty)
         {
