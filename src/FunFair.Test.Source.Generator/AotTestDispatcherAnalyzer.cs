@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace FunFair.Test.Source.Generator;
 
@@ -18,6 +19,10 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     private const string BUILDER_METHOD_NAME = "BuildDispatcherCases";
 
     private const string CASE_METHOD_NAME = "Case";
+
+    private const string CASE_ACTION_PARAMETER_NAME = "action";
+
+    private const string CASE_EXPRESSION_TEXT_PARAMETER_NAME = "expressionText";
 
     private const string TO_THEORY_DATA_METHOD_NAME = "ToTheoryData";
 
@@ -240,12 +245,17 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        HashSet<string> caseNames = CollectCaseNames(
+        HashSet<string>? caseNames = CollectCaseNames(
             methodSyntax: builderSyntax,
             semanticModel: context.SemanticModel,
             symbols: symbols,
             cancellationToken: context.CancellationToken
         );
+
+        if (caseNames is null)
+        {
+            return;
+        }
 
         foreach (string testName in dispatchedTestNames.Where(testName => !caseNames.Contains(testName)))
         {
@@ -324,7 +334,10 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             );
     }
 
-    private static HashSet<string> CollectCaseNames(
+    // Null means a case's name cannot be known at compile time (a non-constant expressionText), so the caller abstains:
+    // these diagnostics are errors that cannot be suppressed, so guessing would risk failing a build whose cases are
+    // in fact complete.
+    private static HashSet<string>? CollectCaseNames(
         MethodDeclarationSyntax methodSyntax,
         SemanticModel semanticModel,
         WellKnownSymbols symbols,
@@ -344,18 +357,23 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         )
         {
             if (
-                !IsDispatcherCase(
-                    invocation: invocation,
-                    semanticModel: semanticModel,
-                    symbols: symbols,
-                    cancellationToken: cancellationToken
+                semanticModel.GetOperation(invocation, cancellationToken) is not IInvocationOperation caseInvocation
+                || !IsDispatcherCaseDataMethod(
+                    method: caseInvocation.TargetMethod,
+                    methodName: CASE_METHOD_NAME,
+                    symbols: symbols
                 )
             )
             {
                 continue;
             }
 
-            string? name = ExtractCaseName(invocation.ArgumentList.Arguments[0].Expression.ToString());
+            if (!TryGetCaseExpressionText(caseInvocation: caseInvocation, expressionText: out string? expressionText))
+            {
+                return null;
+            }
+
+            string? name = expressionText is null ? null : ExtractCaseName(expressionText);
 
             if (name is not null)
             {
@@ -364,6 +382,40 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         }
 
         return names;
+    }
+
+    // Resolves the text DispatcherCaseData.Case parses at runtime: an explicitly passed expressionText wins over the
+    // CallerArgumentExpression of the action argument, wherever either sits in the argument list. False means the
+    // text is only known at runtime; a true result with null text is an explicit null, which never dispatches.
+    private static bool TryGetCaseExpressionText(IInvocationOperation caseInvocation, out string? expressionText)
+    {
+        IArgumentOperation? explicitExpressionText = FindArgument(
+            caseInvocation: caseInvocation,
+            parameterName: CASE_EXPRESSION_TEXT_PARAMETER_NAME
+        );
+
+        if (explicitExpressionText is { ArgumentKind: ArgumentKind.Explicit })
+        {
+            Optional<object?> constant = explicitExpressionText.Value.ConstantValue;
+            expressionText = constant.HasValue ? constant.Value as string : null;
+
+            return constant.HasValue;
+        }
+
+        // ArgumentSyntax.Expression drops any "action:" name, matching what CallerArgumentExpression captures.
+        expressionText = (
+            FindArgument(caseInvocation: caseInvocation, parameterName: CASE_ACTION_PARAMETER_NAME)?.Syntax
+            as ArgumentSyntax
+        )?.Expression.ToString();
+
+        return true;
+    }
+
+    private static IArgumentOperation? FindArgument(IInvocationOperation caseInvocation, string parameterName)
+    {
+        return caseInvocation.Arguments.FirstOrDefault(argument =>
+            StringComparer.Ordinal.Equals(argument.Parameter?.Name, parameterName)
+        );
     }
 
     // Only the elements of the collection the method itself returns are dispatched; a Case(...) evaluated anywhere
@@ -433,17 +485,6 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             ImplicitArrayCreationExpressionSyntax implicitArray => implicitArray.Initializer.Expressions,
             _ => [],
         };
-    }
-
-    private static bool IsDispatcherCase(
-        InvocationExpressionSyntax invocation,
-        SemanticModel semanticModel,
-        WellKnownSymbols symbols,
-        CancellationToken cancellationToken
-    )
-    {
-        return semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is IMethodSymbol method
-            && IsDispatcherCaseDataMethod(method: method, methodName: CASE_METHOD_NAME, symbols: symbols);
     }
 
     private static bool IsDispatcherCaseDataMethod(IMethodSymbol method, string methodName, WellKnownSymbols symbols)
@@ -669,12 +710,17 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return null;
         }
 
-        HashSet<string> names = CollectCaseNames(
+        HashSet<string>? names = CollectCaseNames(
             methodSyntax: providerSyntax,
             semanticModel: semanticModel,
             symbols: symbols,
             cancellationToken: cancellationToken
         );
+
+        if (names is null)
+        {
+            return null;
+        }
 
         names.UnionWith(CollectNameofTargets(providerSyntax));
 
