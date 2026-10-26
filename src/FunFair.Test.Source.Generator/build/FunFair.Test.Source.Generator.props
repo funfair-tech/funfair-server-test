@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Project>
+  <!-- NuGet imports this into every project that references the FunFair.Test.Source.Generator package directly, so
+       setting <FunFairTestDisableSourceGenerators>true</FunFairTestDisableSourceGenerators> reaches the generators as
+       build_property.FunFairTestDisableSourceGenerators without each consumer declaring it themselves. -->
+  <ItemGroup>
+    <CompilerVisibleProperty Include="FunFairTestDisableSourceGenerators" />
+  </ItemGroup>
+</Project>

@@ -104,8 +104,13 @@ public sealed class TestAssemblyCodeGeneratorTests : TestBase
         Assert.Empty(result.Results.Single().GeneratedSources);
     }
 
-    [Fact]
-    public void GeneratorsNotDisabledByBuildProperty_GeneratesAssemblySettings()
+    [Theory]
+    [InlineData("false")]
+    // The package's build/ props make the property compiler-visible, so a consumer that never sets it passes "".
+    [InlineData("")]
+    // CA1822: see the comment on
+    // ProtectedMemberSuppressionGeneratorTests.ClassWithProtectedMembers_GeneratesSuppressionForEach.
+    public static void GeneratorsNotDisabledByBuildProperty_GeneratesAssemblySettings(string value)
     {
         GeneratorDriverRunResult result = GeneratorTestHelpers.RunGenerator(
             generator: new TestAssemblyCodeGenerator(),
@@ -116,7 +121,7 @@ public sealed class TestAssemblyCodeGeneratorTests : TestBase
             """,
             globalOptions: new Dictionary<string, string>(StringComparer.Ordinal)
             {
-                ["build_property.FunFairTestDisableSourceGenerators"] = "false",
+                ["build_property.FunFairTestDisableSourceGenerators"] = value,
             }
         );
 
