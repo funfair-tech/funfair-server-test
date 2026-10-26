@@ -323,13 +323,6 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         DispatchedTestNameCache dispatchedTestNamesByBaseType
     )
     {
-        IReadOnlyCollection<string> baseDispatchedTestNames =
-        [
-            .. baseChain
-                .SelectMany(bt => dispatchedTestNamesByBaseType.GetOrAdd(baseType: bt, symbols: symbols))
-                .Distinct(StringComparer.Ordinal),
-        ];
-
         HashSet<string>? declaredCaseNames = TryGetLocallyDeclaredCaseNames(
             classSymbol: classSymbol,
             dispatcher: dispatcher,
@@ -342,7 +335,12 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        foreach (string testName in baseDispatchedTestNames.Where(testName => !declaredCaseNames.Contains(testName)))
+        foreach (
+            string testName in baseChain
+                .SelectMany(bt => dispatchedTestNamesByBaseType.GetOrAdd(baseType: bt, symbols: symbols))
+                .Distinct(StringComparer.Ordinal)
+                .Where(testName => !declaredCaseNames.Contains(testName))
+        )
         {
             context.ReportDiagnostic(
                 Diagnostic.Create(
