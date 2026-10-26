@@ -79,7 +79,11 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
     public override void Initialize(AnalysisContext context)
     {
-        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+        // Generated code is analysed, so a [MemberData] provider in a generated partial is still checked against its
+        // leaf's dispatcher, but never reported on: a diagnostic located in generated code is dropped, as the user
+        // cannot fix it there. Only FTS002 can land outside the code it analyses (on the dispatcher), so the other
+        // checks skip generated code outright rather than do work whose diagnostics would be dropped.
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze);
         context.EnableConcurrentExecution();
         context.RegisterCompilationStartAction(OnCompilationStart);
     }
@@ -95,16 +99,15 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         }
 
         DispatchedTestNameCache dispatchedTestNamesByBaseType = new();
+        DispatcherCache dispatchersByLeafType = new();
 
-        // Not gated on IsComplete: the base classes' own compilation (FunFair.Test.Common) is where this check has to
-        // run, as consumers only see the builders as metadata, and it does not necessarily reference the xunit types
-        // the leaf-class checks below need.
         context.RegisterSyntaxNodeAction(
             nodeContext =>
-                AnalyzeDispatcherCaseBuilder(
+                AnalyzeMethodDeclaration(
                     nodeContext,
                     symbols: symbols,
-                    dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
+                    dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
+                    dispatchersByLeafType: dispatchersByLeafType
                 ),
             SyntaxKind.MethodDeclaration
         );
@@ -119,32 +122,74 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                 AnalyzeClass(
                     symbolContext,
                     symbols: symbols,
-                    dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
+                    dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
+                    dispatchersByLeafType: dispatchersByLeafType
                 ),
             SymbolKind.NamedType
         );
+    }
+
+    // One callback for both method checks, so each static method's symbol is resolved once between them.
+    private static void AnalyzeMethodDeclaration(
+        in SyntaxNodeAnalysisContext context,
+        WellKnownSymbols symbols,
+        DispatchedTestNameCache dispatchedTestNamesByBaseType,
+        DispatcherCache dispatchersByLeafType
+    )
+    {
+        // Case builders and [MemberData] providers are both static, so the cheap syntactic check filters out almost
+        // every method.
+        if (
+            context.Node is not MethodDeclarationSyntax methodSyntax
+            || !methodSyntax.Modifiers.Any(SyntaxKind.StaticKeyword)
+            || context.SemanticModel.GetDeclaredSymbol(methodSyntax, context.CancellationToken)
+                is not { ContainingType: { } containingType } methodSymbol
+        )
+        {
+            return;
+        }
+
+        // Not gated on IsComplete: the base classes' own compilation (FunFair.Test.Common) is where this check has to
+        // run, as consumers only see the builders as metadata, and it does not necessarily reference the xunit types
+        // the leaf-class checks need.
+        if (
+            !context.IsGeneratedCode && StringComparer.Ordinal.Equals(methodSyntax.Identifier.Text, BUILDER_METHOD_NAME)
+        )
+        {
+            AnalyzeDispatcherCaseBuilder(
+                context,
+                builderSyntax: methodSyntax,
+                typeSymbol: containingType,
+                symbols: symbols,
+                dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
+            );
+        }
 
         // Checked from the provider's own declaration rather than the leaf's symbol action: only a syntax node action
         // has a SemanticModel to resolve each Case(...) through, and Compilation.GetSemanticModel is off-limits in an
         // analyzer (RS1030).
-        context.RegisterSyntaxNodeAction(
-            nodeContext =>
-                AnalyzeDispatcherCaseProvider(
-                    nodeContext,
-                    symbols: symbols,
-                    dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
-                ),
-            SyntaxKind.MethodDeclaration
-        );
+        if (symbols.IsComplete)
+        {
+            AnalyzeDispatcherCaseProvider(
+                context,
+                providerSyntax: methodSyntax,
+                providerMethod: methodSymbol,
+                providerType: containingType,
+                symbols: symbols,
+                dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
+                dispatchersByLeafType: dispatchersByLeafType
+            );
+        }
     }
 
     private static void AnalyzeClass(
         in SymbolAnalysisContext context,
         WellKnownSymbols symbols,
-        DispatchedTestNameCache dispatchedTestNamesByBaseType
+        DispatchedTestNameCache dispatchedTestNamesByBaseType,
+        DispatcherCache dispatchersByLeafType
     )
     {
-        if (context.Symbol is not INamedTypeSymbol classSymbol || !IsLeafClass(classSymbol))
+        if (context.IsGeneratedCode || context.Symbol is not INamedTypeSymbol classSymbol || !IsLeafClass(classSymbol))
         {
             return;
         }
@@ -157,7 +202,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        if (FindDispatcher(classSymbol: classSymbol, symbols: symbols) is null)
+        if (dispatchersByLeafType.GetOrAdd(classSymbol: classSymbol, symbols: symbols) is null)
         {
             ReportMissingDispatcher(context, classSymbol: classSymbol, affectedBaseType: affectedBaseType);
         }
@@ -170,21 +215,14 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
     private static void AnalyzeDispatcherCaseProvider(
         in SyntaxNodeAnalysisContext context,
+        MethodDeclarationSyntax providerSyntax,
+        IMethodSymbol providerMethod,
+        INamedTypeSymbol providerType,
         WellKnownSymbols symbols,
-        DispatchedTestNameCache dispatchedTestNamesByBaseType
+        DispatchedTestNameCache dispatchedTestNamesByBaseType,
+        DispatcherCache dispatchersByLeafType
     )
     {
-        // [MemberData] only binds to static members, so the cheap syntactic check filters out almost every method.
-        if (
-            context.Node is not MethodDeclarationSyntax providerSyntax
-            || !providerSyntax.Modifiers.Any(SyntaxKind.StaticKeyword)
-            || context.SemanticModel.GetDeclaredSymbol(providerSyntax, context.CancellationToken)
-                is not { ContainingType: { } providerType } providerMethod
-        )
-        {
-            return;
-        }
-
         // A local provider is declared on the leaf itself or on a type nested directly inside it.
         ReportIncompleteDispatcherCases(
             context,
@@ -192,7 +230,8 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             providerMethod: providerMethod,
             providerSyntax: providerSyntax,
             symbols: symbols,
-            dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
+            dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
+            dispatchersByLeafType: dispatchersByLeafType
         );
 
         if (providerType.ContainingType is { } outerType)
@@ -203,30 +242,20 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                 providerMethod: providerMethod,
                 providerSyntax: providerSyntax,
                 symbols: symbols,
-                dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType
+                dispatchedTestNamesByBaseType: dispatchedTestNamesByBaseType,
+                dispatchersByLeafType: dispatchersByLeafType
             );
         }
     }
 
     private static void AnalyzeDispatcherCaseBuilder(
         in SyntaxNodeAnalysisContext context,
+        MethodDeclarationSyntax builderSyntax,
+        INamedTypeSymbol typeSymbol,
         WellKnownSymbols symbols,
         DispatchedTestNameCache dispatchedTestNamesByBaseType
     )
     {
-        if (context.Node is not MethodDeclarationSyntax { Identifier.Text: BUILDER_METHOD_NAME } builderSyntax)
-        {
-            return;
-        }
-
-        if (
-            context.SemanticModel.GetDeclaredSymbol(builderSyntax, context.CancellationToken)
-            is not { IsStatic: true, ContainingType: { } typeSymbol }
-        )
-        {
-            return;
-        }
-
         CaseCompositionShape shape = CaseCompositionShape.Read(
             methodSyntax: builderSyntax,
             semanticModel: context.SemanticModel,
@@ -365,7 +394,8 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         IMethodSymbol providerMethod,
         MethodDeclarationSyntax providerSyntax,
         WellKnownSymbols symbols,
-        DispatchedTestNameCache dispatchedTestNamesByBaseType
+        DispatchedTestNameCache dispatchedTestNamesByBaseType,
+        DispatcherCache dispatchersByLeafType
     )
     {
         if (!IsLeafClass(classSymbol))
@@ -373,7 +403,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        IMethodSymbol? dispatcher = FindDispatcher(classSymbol: classSymbol, symbols: symbols);
+        IMethodSymbol? dispatcher = dispatchersByLeafType.GetOrAdd(classSymbol: classSymbol, symbols: symbols);
 
         if (
             dispatcher is null
@@ -441,50 +471,6 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     {
         return attributeType is not null
             && SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, attributeType);
-    }
-
-    private static IMethodSymbol? FindDispatcher(INamedTypeSymbol classSymbol, WellKnownSymbols symbols)
-    {
-        return classSymbol
-            .GetMembers()
-            .OfType<IMethodSymbol>()
-            .FirstOrDefault(method =>
-                IsDispatcherShape(method: method, classSymbol: classSymbol, symbols: symbols)
-                && IsTheoryWithMemberData(method: method, symbols: symbols)
-            );
-    }
-
-    private static bool IsTheoryWithMemberData(IMethodSymbol method, WellKnownSymbols symbols)
-    {
-        ImmutableArray<AttributeData> attributes = method.GetAttributes();
-
-        return attributes.Any(a => IsAttributeOfType(a, symbols.TheoryAttribute))
-            && attributes.Any(a => IsAttributeOfType(a, symbols.MemberDataAttribute));
-    }
-
-    private static bool IsDispatcherShape(IMethodSymbol method, INamedTypeSymbol classSymbol, WellKnownSymbols symbols)
-    {
-        if (method.Parameters.Length != 2)
-        {
-            return false;
-        }
-
-        if (method.Parameters[0].Type.SpecialType != SpecialType.System_String)
-        {
-            return false;
-        }
-
-        if (method.Parameters[1].Type is not INamedTypeSymbol { TypeArguments.Length: 1 } actionType)
-        {
-            return false;
-        }
-
-        bool isActionDelegate = SymbolEqualityComparer.Default.Equals(
-            actionType.OriginalDefinition,
-            symbols.ActionType
-        );
-
-        return isActionDelegate && SymbolEqualityComparer.Default.Equals(actionType.TypeArguments[0], classSymbol);
     }
 
     // The caller only passes the leaf itself or a type nested directly inside it as the provider's owner, so matching
@@ -1101,6 +1087,75 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         private static bool IsDispatchedTest(IMethodSymbol method, WellKnownSymbols symbols)
         {
             return method.GetAttributes().Any(a => IsAttributeOfType(a, symbols.DispatchedTestAttribute));
+        }
+    }
+
+    // FTS001 looks up a leaf's dispatcher once, but FTS002 does so for every static method declared on the leaf or a
+    // type nested in it, so the member and attribute scan is done once per type for the whole compilation. A null
+    // value records that the type has no dispatcher.
+    private sealed class DispatcherCache
+    {
+        private ImmutableDictionary<INamedTypeSymbol, IMethodSymbol?> _cache = ImmutableDictionary.Create<
+            INamedTypeSymbol,
+            IMethodSymbol?
+        >(SymbolEqualityComparer.Default);
+
+        public IMethodSymbol? GetOrAdd(INamedTypeSymbol classSymbol, WellKnownSymbols symbols)
+        {
+            return ImmutableInterlocked.GetOrAdd(
+                location: ref this._cache,
+                key: classSymbol,
+                valueFactory: static (key, s) => FindDispatcher(classSymbol: key, symbols: s),
+                factoryArgument: symbols
+            );
+        }
+
+        private static IMethodSymbol? FindDispatcher(INamedTypeSymbol classSymbol, WellKnownSymbols symbols)
+        {
+            return classSymbol
+                .GetMembers()
+                .OfType<IMethodSymbol>()
+                .FirstOrDefault(method =>
+                    IsDispatcherShape(method: method, classSymbol: classSymbol, symbols: symbols)
+                    && IsTheoryWithMemberData(method: method, symbols: symbols)
+                );
+        }
+
+        private static bool IsTheoryWithMemberData(IMethodSymbol method, WellKnownSymbols symbols)
+        {
+            ImmutableArray<AttributeData> attributes = method.GetAttributes();
+
+            return attributes.Any(a => IsAttributeOfType(a, symbols.TheoryAttribute))
+                && attributes.Any(a => IsAttributeOfType(a, symbols.MemberDataAttribute));
+        }
+
+        private static bool IsDispatcherShape(
+            IMethodSymbol method,
+            INamedTypeSymbol classSymbol,
+            WellKnownSymbols symbols
+        )
+        {
+            if (method.Parameters.Length != 2)
+            {
+                return false;
+            }
+
+            if (method.Parameters[0].Type.SpecialType != SpecialType.System_String)
+            {
+                return false;
+            }
+
+            if (method.Parameters[1].Type is not INamedTypeSymbol { TypeArguments.Length: 1 } actionType)
+            {
+                return false;
+            }
+
+            bool isActionDelegate = SymbolEqualityComparer.Default.Equals(
+                actionType.OriginalDefinition,
+                symbols.ActionType
+            );
+
+            return isActionDelegate && SymbolEqualityComparer.Default.Equals(actionType.TypeArguments[0], classSymbol);
         }
     }
 }
