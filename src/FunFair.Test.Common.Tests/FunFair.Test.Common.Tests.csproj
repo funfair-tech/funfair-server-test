@@ -39,9 +39,15 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)UnitTests.props" Condition="Exists('$(SolutionDir)UnitTests.props')" />
   <!--  <Import Project="$(SolutionDir)KeepGeneratedFiles.props" Condition="Exists('$(SolutionDir)KeepGeneratedFiles.props')" />-->
+  <!-- Build-only: runs AotTestDispatcherAnalyzer over this project's own leaf test classes, so FTS001/FTS002 check
+       them the same way they check a consumer's. ReferenceOutputAssembly="false" and PrivateAssets="all" keep it out
+       of this project's compile references. The test-assembly generators are left on, as they are for a consumer's
+       test project: this assembly declares no [assembly: ...] attributes of its own, so the generated
+       AssemblySettings.generated.cs and ProtectedMemberSuppressions.generated.cs duplicate nothing. -->
   <ItemGroup>
     <ProjectReference Include="../FunFair.Test.Common.Mocks/FunFair.Test.Common.Mocks.csproj" />
     <ProjectReference Include="../FunFair.Test.Common/FunFair.Test.Common.csproj" />
+    <ProjectReference Include="../FunFair.Test.Source.Generator/FunFair.Test.Source.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NSubstitute" Version="6.2.0" IncludeAssets="compile;runtime" />
