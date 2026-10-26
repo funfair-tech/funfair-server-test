@@ -19,7 +19,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
                 }
             }
@@ -49,10 +49,10 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
 
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactTwo() { }
                 }
             }
@@ -92,10 +92,10 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
 
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactTwo() { }
                 }
             }
@@ -127,6 +127,48 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
+    public async Task BaseMethodWithXunitFactButNoDispatchedTestMarker_IsNotRequiredInCaseListAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    [Xunit.Fact]
+                    public void FactTwo() { }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using System.Collections.Generic;
+                using Xunit;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    public static IEnumerable<object[]> Cases()
+                    {
+                        yield return [nameof(FactOne), (Action<Leaf>)(t => { })];
+                    }
+
+                    [Theory]
+                    [MemberData(nameof(Cases))]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
     public async Task DispatcherWithProviderUsingStringLiteralCaseNames_AbstainsFromCompletenessCheckAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
@@ -136,7 +178,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
                 }
             }
@@ -175,7 +217,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
                 }
             }
@@ -221,7 +263,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
                 }
             }
@@ -259,7 +301,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
                         yield return [nameof(FactOne)];
                     }
 
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
                 }
             }
@@ -295,10 +337,10 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
 
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactTwo() { }
                 }
             }
@@ -340,13 +382,13 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
                 }
 
                 public abstract class ComparableObjectTestBase<T> : EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactTwo() { }
                 }
             }
@@ -387,10 +429,10 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
 
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactTwo() { }
                 }
             }
@@ -443,7 +485,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
-    public async Task AffectedBaseWithNoFactOrTheoryMethods_ReportsNothingAsync()
+    public async Task AffectedBaseWithNoDispatchedTestMethods_ReportsNothingAsync()
     {
         ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
             analyzer: new AotTestDispatcherAnalyzer(),
@@ -489,7 +531,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
                 }
             }
@@ -522,7 +564,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
                 }
             }
@@ -555,7 +597,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
                 }
             }
@@ -588,7 +630,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
             {
                 public abstract class EquatableObjectTestBase<T>
                 {
-                    [Xunit.Fact]
+                    [FunFair.Test.Common.DispatchedTest]
                     public void FactOne() { }
                 }
             }
