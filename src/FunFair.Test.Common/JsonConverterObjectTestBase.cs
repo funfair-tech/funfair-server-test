@@ -38,7 +38,7 @@ public abstract class JsonConverterObjectTestBase<
 
     protected abstract TObject CreateInstance();
 
-    [Fact]
+    [DispatchedTest]
     public void RoundTrip()
     {
         TObject instance = this.CreateInstance();
@@ -56,7 +56,7 @@ public abstract class JsonConverterObjectTestBase<
         Assert.Equal(expected: sourceModel, actual: mod);
     }
 
-    [Fact]
+    [DispatchedTest]
     public void Serializes()
     {
         TObject instance = this.CreateInstance();
@@ -69,7 +69,7 @@ public abstract class JsonConverterObjectTestBase<
         this.Output.WriteLine($"Serialized model as: {doc}");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void ShouldNotDeserialize()
     {
         string doc = JsonSerializer.Serialize(new { value = this.InvalidValue }, options: this._options);

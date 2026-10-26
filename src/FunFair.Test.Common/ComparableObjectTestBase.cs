@@ -38,7 +38,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         return cmp.CompareTo(r);
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanOrEqualToNullObjectIsNotGreaterThanOrEquivalentToValue1()
     {
         Assert.False(
@@ -47,19 +47,19 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanNullObjectIsNotGreaterThanValue2()
     {
         Assert.False(this.OperatorGreaterThan(l: this.NullObject, r: this.Value2), userMessage: "NullObject > Value2");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanNullObjectIsNotGreaterThanValue1()
     {
         Assert.False(this.OperatorGreaterThan(l: this.NullObject, r: this.Value1), userMessage: "NullObject > Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanOrEqualToNullObjectIsNotGreaterThanOrEquivalentToValue2()
     {
         Assert.False(
@@ -68,7 +68,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToValue1()
     {
         Assert.True(
@@ -77,7 +77,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToNullObject()
     {
         Assert.True(
@@ -86,13 +86,13 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToItself()
     {
         Assert.True(this.OperatorGreaterThanOrEqualTo(l: this.Value1, r: this.Value1), userMessage: "Value1 >= Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToValue2()
     {
         Assert.False(
@@ -101,13 +101,13 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanOrEqualToValue2IsGreaterThanOrEquivalentToValue1()
     {
         Assert.True(this.OperatorGreaterThanOrEqualTo(l: this.Value2, r: this.Value1), userMessage: "Value2 >= Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanOrEqualToValue2IsGreaterThanOrEquivalentToNullObject()
     {
         Assert.True(
@@ -116,37 +116,37 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanValue1IsGreaterThanNullObject()
     {
         Assert.True(this.OperatorGreaterThan(l: this.Value1, r: this.NullObject), userMessage: "Value1 > NullObject");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanValue1IsNotGreaterThanValue1()
     {
         Assert.False(this.OperatorGreaterThan(l: this.Value1, r: this.Value1), userMessage: "Value1 > Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanValue1IsNotGreaterThanValue2()
     {
         Assert.False(this.OperatorGreaterThan(l: this.Value1, r: this.Value2), userMessage: "Value1 > Value2");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanValue2IsGreaterThanValue1()
     {
         Assert.True(this.OperatorGreaterThan(l: this.Value2, r: this.Value1), userMessage: "Value2 > Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanValue2IsGreaterThanNullObject()
     {
         Assert.True(this.OperatorGreaterThan(l: this.Value2, r: this.NullObject), userMessage: "Value2 > NullObject");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanOrEqualToNullObjectIsLessThanOrEquivalentToValue1()
     {
         Assert.True(
@@ -155,19 +155,19 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanNullObjectIsLessThanValue1()
     {
         Assert.True(this.OperatorLessThan(l: this.NullObject, r: this.Value1), userMessage: "NullObject < Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanNullObjectIsLessThanValue2()
     {
         Assert.True(this.OperatorLessThan(l: this.NullObject, r: this.Value2), userMessage: "NullObject < Value2");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanOrEqualToNullObjectIsLessThanOrEquivalentToValue2()
     {
         Assert.True(
@@ -176,7 +176,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanOrEqualToValue1IsNotLessThanOrEquivalentToNullObject()
     {
         Assert.False(
@@ -185,7 +185,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToValue1()
     {
         Assert.True(
@@ -194,19 +194,19 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToValue2()
     {
         Assert.True(this.OperatorLessThanOrEqualTo(l: this.Value1, r: this.Value2), userMessage: "Value1 <= Value2");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToItself()
     {
         Assert.True(this.OperatorLessThanOrEqualTo(l: this.Value1, r: this.Value1), userMessage: "Value1 <= Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanOrEqualToValue2IsNotLessThanOrEquivalentToNullObject()
     {
         Assert.False(
@@ -215,43 +215,43 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanOrEqualToValue2IsNotLessThanOrEquivalentToValue1()
     {
         Assert.False(this.OperatorLessThanOrEqualTo(l: this.Value2, r: this.Value1), userMessage: "Value2 <= Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanValue1IsNotLessThanNullObject()
     {
         Assert.False(this.OperatorLessThan(l: this.Value1, r: this.NullObject), userMessage: "Value1 < NullObject");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanValue1IsLessThanValue2()
     {
         Assert.True(this.OperatorLessThan(l: this.Value1, r: this.Value2), userMessage: "Value1 < Value2");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanValue1IsNotLessThanValue1()
     {
         Assert.False(this.OperatorLessThan(l: this.Value1, r: this.Value1), userMessage: "Value1 < Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanValue2IsNotLessThanNullObject()
     {
         Assert.False(this.OperatorLessThan(l: this.Value2, r: this.NullObject), userMessage: "Value2 < NullObject");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanValue2IsNotLessThanValue1()
     {
         Assert.False(this.OperatorLessThan(l: this.Value2, r: this.Value1), userMessage: "Value2 < Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void TypedCompareToValue1EqualToEquivalentToValue1()
     {
         Assert.True(
@@ -260,25 +260,25 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void TypedCompareToValue1GreaterThanNullObject()
     {
         Assert.True(TypedCompareTo(l: this.Value1, r: this.NullObject) > 0, userMessage: "Should be greater than 0");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void TypedCompareToValue1LessThanValue2()
     {
         Assert.True(TypedCompareTo(l: this.Value1, r: this.Value2) < 0, userMessage: "Should be less than 0");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void TypedCompareToValue2GreaterThanValue1()
     {
         Assert.True(TypedCompareTo(l: this.Value2, r: this.Value1) > 0, userMessage: "Should be greater than 0");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue1EqualsUnTypedValue1Alias()
     {
         Assert.True(
@@ -287,7 +287,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue1EqualToEquivalentToValue1()
     {
         Assert.True(
@@ -296,19 +296,19 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue1GreaterThanToNullObject()
     {
         Assert.True(UntypedCompareTo(l: this.Value1, r: this.NullObject) > 0, userMessage: "Should be greater than 0");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue1LessThanValue2()
     {
         Assert.True(UntypedCompareTo(l: this.Value1, r: this.Value2) < 0, userMessage: "Should be less than 0");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue1ToOtherTypedObjectThrowsArgumentException()
     {
         ArgumentException exception = Assert.Throws<ArgumentException>(testCode: () =>
@@ -317,7 +317,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         UnusedVariable(exception);
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue2GreaterThanUnTypedValue1Alias()
     {
         Assert.True(
@@ -326,7 +326,7 @@ public abstract class ComparableObjectTestBase<TObject> : EquatableObjectTestBas
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue2GreaterThanValue1()
     {
         Assert.True(UntypedCompareTo(l: this.Value2, r: this.Value1) > 0, userMessage: "Should be greater than 0");
