@@ -25,7 +25,7 @@ public abstract class ValidatorTestBase<
         return this._validator;
     }
 
-    [Fact]
+    [DispatchedTest]
     protected abstract void EverythingValid();
 
     // Single source of truth for the AOT dispatcher case table (see FunFair.Test.Source.Generator's
