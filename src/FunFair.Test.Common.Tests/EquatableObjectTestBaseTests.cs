@@ -1,16 +1,10 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using FunFair.Test.Common;
 using Xunit;
 
 namespace FunFair.Test.Common.Tests;
 
-[SuppressMessage(
-    category: "xUnit",
-    checkId: "xUnit1072",
-    Justification = "Shared test base classes are intentionally declared in a referenced assembly"
-)]
 public sealed class EquatableObjectTestBaseTests : EquatableObjectTestBase<string>
 {
     public EquatableObjectTestBaseTests()
