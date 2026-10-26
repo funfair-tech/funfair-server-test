@@ -578,9 +578,11 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     // array creations and argument-less collection initialisers (whose elements are read), spreads, Concat, Append,
     // Prepend, ToArray, ToList and Empty from System.Linq.Enumerable, Array.Empty, DispatcherCaseData.ToTheoryData, a
     // static BuildDispatcherCases call (recorded, not read into) and a local initialised with any of these that is
-    // read nowhere else. Anything else leaves the shape unrecognised, so every check built on it abstains: they are
-    // errors that cannot be suppressed, and a guess could fail a build whose cases are complete. An element that is
-    // not a DispatcherCaseData.Case call adds no name but leaves the shape recognised, as it always has.
+    // read nowhere else; an iterator's "yield return" elements are read the same way. Anything else leaves the shape
+    // unrecognised, so every check built on it abstains: they are errors that cannot be suppressed, and a guess could
+    // fail a build whose cases are complete. An element is read when it is a DispatcherCaseData.Case call or a
+    // (name, action) tuple literal; any other tuple-typed element leaves the shape unrecognised, except as
+    // MayHoldUnseenCase describes.
     private sealed class CaseCompositionShape
     {
         private const string EMPTY_METHOD_NAME = "Empty";
@@ -655,18 +657,36 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                 shape.ReadSequence(returned);
             }
 
+            bool isIterator = false;
+
+            foreach (ExpressionSyntax yielded in YieldedExpressions(methodSyntax))
+            {
+                isIterator = true;
+                shape.ReadElement(element: yielded, isYielded: true);
+            }
+
+            // A yield inside a loop can forward another builder's cases one at a time, so a yielded name only known at
+            // runtime may be any of a parent's: FTS004 cannot tell that from a missing parent, so the shape is unknown.
+            if (isIterator && shape.HasUnknowableCaseName)
+            {
+                shape.IsRecognised = false;
+            }
+
             return shape;
         }
 
-        // Only what the method itself returns is dispatched; a Case(...) evaluated anywhere else (a discard, or the
-        // body of a lambda or local function) never reaches a leaf class's [MemberData]. An iterator has no such
-        // return, so it composes nothing and a provider's nameof(...) names are left to speak for it.
+        // Only what the method itself returns or yields is dispatched; a Case(...) evaluated anywhere else (a discard,
+        // or the body of a lambda or local function) never reaches a leaf class's [MemberData].
+        private static IEnumerable<SyntaxNode> OwnBodyNodes(MethodDeclarationSyntax methodSyntax)
+        {
+            return methodSyntax.DescendantNodes(descendIntoChildren: static node =>
+                node is not (AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax)
+            );
+        }
+
         private static IEnumerable<ExpressionSyntax> ReturnedExpressions(MethodDeclarationSyntax methodSyntax)
         {
-            return methodSyntax
-                .DescendantNodes(descendIntoChildren: static node =>
-                    node is not (AnonymousFunctionExpressionSyntax or LocalFunctionStatementSyntax)
-                )
+            return OwnBodyNodes(methodSyntax)
                 .Select(static node =>
                     node switch
                     {
@@ -675,6 +695,17 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                         _ => null,
                     }
                 )
+                .OfType<ExpressionSyntax>();
+        }
+
+        // Each "yield return" is one element; a provider's yielded object[] rows add no name, leaving its nameof(...)
+        // names to speak for it as before.
+        private static IEnumerable<ExpressionSyntax> YieldedExpressions(MethodDeclarationSyntax methodSyntax)
+        {
+            return OwnBodyNodes(methodSyntax)
+                .OfType<YieldStatementSyntax>()
+                .Where(static yieldStatement => yieldStatement.IsKind(SyntaxKind.YieldReturnStatement))
+                .Select(static yieldStatement => yieldStatement.Expression)
                 .OfType<ExpressionSyntax>();
         }
 
@@ -723,7 +754,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                 }
                 else if (element is ExpressionElementSyntax expressionElement)
                 {
-                    this.ReadElement(expressionElement.Expression);
+                    this.ReadElement(element: expressionElement.Expression, isYielded: false);
                 }
             }
         }
@@ -852,7 +883,10 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
                     break;
                 case APPEND_METHOD_NAME or PREPEND_METHOD_NAME:
                     this.ReadSequence(Operand(operation: operation, ordinal: 0));
-                    this.ReadElement(Operand(operation: operation, ordinal: 1));
+                    if (Operand(operation: operation, ordinal: 1) is { } element)
+                    {
+                        this.ReadElement(element: element, isYielded: false);
+                    }
 
                     break;
                 default:
@@ -877,26 +911,75 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         {
             foreach (ExpressionSyntax element in elements)
             {
-                this.ReadElement(element);
+                this.ReadElement(element: element, isYielded: false);
             }
         }
 
-        private void ReadElement(ExpressionSyntax? element)
+        private void ReadElement(ExpressionSyntax element, bool isYielded)
         {
+            // Checked on syntax: a tuple literal holding a lambda has no natural type for the fallback below to see.
+            if (element is TupleExpressionSyntax { Arguments.Count: 2 } tuple)
+            {
+                this.ReadTupleLiteral(tuple);
+
+                return;
+            }
+
             if (
-                element is null
-                || this._semanticModel.GetOperation(element, this._cancellationToken)
-                    is not IInvocationOperation caseInvocation
-                || !IsDispatcherCaseDataMethod(
+                this._semanticModel.GetOperation(element, this._cancellationToken)
+                    is IInvocationOperation caseInvocation
+                && IsDispatcherCaseDataMethod(
                     method: caseInvocation.TargetMethod,
                     methodName: CASE_METHOD_NAME,
                     symbols: this._symbols
                 )
             )
             {
+                this.ReadCase(caseInvocation);
+
                 return;
             }
 
+            if (this.MayHoldUnseenCase(element: element, isYielded: isYielded))
+            {
+                this.IsRecognised = false;
+            }
+        }
+
+        // ToTheoryData dispatches a (name, action) tuple under its first element verbatim, whatever the action calls;
+        // tuple element labels do not reorder it, so the name is always the first argument.
+        private void ReadTupleLiteral(TupleExpressionSyntax tuple)
+        {
+            Optional<object?> name = this._semanticModel.GetConstantValue(
+                tuple.Arguments[0].Expression,
+                this._cancellationToken
+            );
+
+            if (!name.HasValue)
+            {
+                this.HasUnknowableCaseName = true;
+
+                return;
+            }
+
+            if (name.Value is string caseName)
+            {
+                this._caseNames.Add(caseName);
+            }
+        }
+
+        // A tuple-typed variable, member, conditional or cast may hold any case, so it cannot be read. Another type's
+        // method returning a tuple is left adding no name in a collection, as before; yielded, it may be forwarding a
+        // parent's cases inside a loop, so it too is unknown there. Elements of any other type (a provider's object[]
+        // row, say) never were cases.
+        private bool MayHoldUnseenCase(ExpressionSyntax element, bool isYielded)
+        {
+            return (isYielded || element is not InvocationExpressionSyntax)
+                && this._semanticModel.GetTypeInfo(element, this._cancellationToken).Type is { IsTupleType: true };
+        }
+
+        private void ReadCase(IInvocationOperation caseInvocation)
+        {
             if (!TryGetCaseExpressionText(caseInvocation: caseInvocation, expressionText: out string? expressionText))
             {
                 this.HasUnknowableCaseName = true;

@@ -10,6 +10,9 @@ namespace FunFair.Test.Source.Generator.Tests;
 
 public sealed class AotTestDispatcherAnalyzerTests : TestBase
 {
+    private const string ITERATOR_CASE_RETURN_TYPE =
+        "System.Collections.Generic.IEnumerable<(string Name, Action<TSelf> Action)>";
+
     [Fact]
     public async Task SealedClassDerivingFromAffectedBaseWithNoDispatcher_ReportsMissingDispatcherAsync()
     {
@@ -1555,6 +1558,15 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
 
     private static string BuildDerivedBuilderSource(string members, string derivedBody)
     {
+        return BuildDerivedBuilderSource(
+            members: members,
+            derivedReturnType: "(string Name, Action<TSelf> Action)[]",
+            derivedBody: derivedBody
+        );
+    }
+
+    private static string BuildDerivedBuilderSource(string members, string derivedReturnType, string derivedBody)
+    {
         return $$"""
             namespace FunFair.Test.Common
             {
@@ -1590,7 +1602,7 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
                     [FunFair.Test.Common.DispatchedTest]
                     public void FactThree() { }
 
-                    public static new (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                    public static new {{derivedReturnType}} BuildDispatcherCases<TSelf>()
                         where TSelf : ComparableObjectTestBase<T>
                     {
                         {{derivedBody}}
@@ -1989,6 +2001,143 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
         AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactOne");
     }
 
+    [Theory]
+    [InlineData("Case<TSelf>(t => t.FactOne()), (\"FactTwo\", t => t.FactTwo())")]
+    [InlineData("(Name: nameof(FactOne), Action: t => t.FactOne()), (\"FactTwo\", t => t.FactTwo())")]
+    // CA1822: see the comment on
+    // ProtectedMemberSuppressionGeneratorTests.ClassWithProtectedMembers_GeneratesSuppressionForEach.
+    public static async Task CompleteBaseBuilderWithTupleLiteralCases_ReportsNothingAsync(string cases)
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(members: "", cases: cases)
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task BaseBuilderTupleLiteralCase_CountsItsNameNotItsActionAsync()
+    {
+        // ToTheoryData dispatches a tuple under its first element, whatever its action calls.
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(members: "", cases: "(\"FactOne\", t => t.FactTwo())")
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactTwo");
+    }
+
+    [Theory]
+    [InlineData(
+        "private static readonly string FactTwoName = \"FactTwo\";",
+        "return [Case<TSelf>(t => t.FactOne()), (FactTwoName, t => t.FactTwo())];"
+    )]
+    [InlineData(
+        "",
+        "(string Name, Action<TSelf> Action) two = Case<TSelf>(t => t.FactTwo()); return [Case<TSelf>(t => t.FactOne()), two];"
+    )]
+    [InlineData(
+        "",
+        "return [Case<TSelf>(t => t.FactOne()), DateTime.UtcNow.Ticks > 0 ? Case<TSelf>(t => t.FactTwo()) : Case<TSelf>(t => t.FactTwo())];"
+    )]
+    // CA1822: see the comment on
+    // ProtectedMemberSuppressionGeneratorTests.ClassWithProtectedMembers_GeneratesSuppressionForEach.
+    public static async Task BaseBuilderWithCaseOnlyKnownAtRuntime_AbstainsFromCompletenessCheckAsync(
+        string members,
+        string body
+    )
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(
+                members: members,
+                returnType: "(string Name, Action<TSelf> Action)[]",
+                body: body
+            )
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task CompleteIteratorBaseBuilder_ReportsNothingAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(
+                members: "",
+                returnType: ITERATOR_CASE_RETURN_TYPE,
+                body: "yield return Case<TSelf>(t => t.FactOne()); yield return (\"FactTwo\", t => t.FactTwo()); yield break;"
+            )
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task IteratorBaseBuilderMissingDispatchedTestCase_ReportsIncompleteBuilderAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(
+                members: "",
+                returnType: ITERATOR_CASE_RETURN_TYPE,
+                body: "yield return Case<TSelf>(t => t.FactOne());"
+            )
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactTwo");
+    }
+
+    [Theory]
+    [InlineData(
+        "",
+        "foreach (var inherited in EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>()) { yield return inherited; } yield return Case<TSelf>(t => t.FactTwo()); yield return Case<TSelf>(t => t.FactThree());"
+    )]
+    [InlineData(
+        "",
+        "foreach ((string name, Action<TSelf> action) in EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>()) { yield return (name, action); } yield return Case<TSelf>(t => t.FactTwo()); yield return Case<TSelf>(t => t.FactThree());"
+    )]
+    [InlineData(
+        "private static (string Name, Action<TSelf> Action) Forward<TSelf>((string Name, Action<TSelf> Action) inherited) => inherited;",
+        "foreach (var inherited in EquatableObjectTestBase<T>.BuildDispatcherCases<TSelf>()) { yield return Forward(inherited); } yield return Case<TSelf>(t => t.FactTwo()); yield return Case<TSelf>(t => t.FactThree());"
+    )]
+    // CA1822: see the comment on
+    // ProtectedMemberSuppressionGeneratorTests.ClassWithProtectedMembers_GeneratesSuppressionForEach.
+    public static async Task DerivedIteratorBuilderForwardingParentCases_AbstainsFromBothBuilderChecksAsync(
+        string members,
+        string derivedBody
+    )
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDerivedBuilderSource(
+                members: members,
+                derivedReturnType: ITERATOR_CASE_RETURN_TYPE,
+                derivedBody: derivedBody
+            )
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task DerivedIteratorBuilderYieldingOnlyOwnCases_ReportsMissingParentSpreadAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildDerivedBuilderSource(
+                members: "",
+                derivedReturnType: ITERATOR_CASE_RETURN_TYPE,
+                derivedBody: "yield return Case<TSelf>(t => t.FactTwo()); yield return Case<TSelf>(t => t.FactThree());"
+            )
+        );
+
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS004", actual: diagnostic.Id);
+    }
+
     private static void AssertSingleIncompleteBuilderFor(in ImmutableArray<Diagnostic> diagnostics, string testName)
     {
         Diagnostic diagnostic = Assert.Single(diagnostics);
@@ -1997,6 +2146,15 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     private static string BuildBaseBuilderSource(string members, string cases)
+    {
+        return BuildBaseBuilderSource(
+            members: members,
+            returnType: "(string Name, Action<TSelf> Action)[]",
+            body: $"return [{cases}];"
+        );
+    }
+
+    private static string BuildBaseBuilderSource(string members, string returnType, string body)
     {
         return $$"""
             namespace FunFair.Test.Common
@@ -2014,10 +2172,10 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
                     [FunFair.Test.Common.DispatchedTest]
                     public void FactTwo() { }
 
-                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                    public static {{returnType}} BuildDispatcherCases<TSelf>()
                         where TSelf : EquatableObjectTestBase<T>
                     {
-                        return [{{cases}}];
+                        {{body}}
                     }
                 }
             }
