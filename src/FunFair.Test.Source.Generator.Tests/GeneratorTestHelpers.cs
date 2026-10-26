@@ -96,17 +96,51 @@ internal static class GeneratorTestHelpers
         );
     }
 
+    // Records each named pipeline step, so a test can prove whether a step ran at all, not just what it emitted.
+    public static GeneratorDriverRunResult RunGeneratorTrackingSteps(
+        IIncrementalGenerator generator,
+        string source,
+        IReadOnlyDictionary<string, string> globalOptions
+    )
+    {
+        return RunGenerator(
+            generator: generator,
+            source: source,
+            optionsProvider: new TestAnalyzerConfigOptionsProvider(new TestAnalyzerConfigOptions(globalOptions)),
+            driverOptions: new GeneratorDriverOptions(
+                disabledOutputs: IncrementalGeneratorOutputKind.None,
+                trackIncrementalGeneratorSteps: true
+            )
+        );
+    }
+
     private static GeneratorDriverRunResult RunGenerator(
         IIncrementalGenerator generator,
         string source,
         AnalyzerConfigOptionsProvider? optionsProvider
     )
     {
+        return RunGenerator(
+            generator: generator,
+            source: source,
+            optionsProvider: optionsProvider,
+            driverOptions: default
+        );
+    }
+
+    private static GeneratorDriverRunResult RunGenerator(
+        IIncrementalGenerator generator,
+        string source,
+        AnalyzerConfigOptionsProvider? optionsProvider,
+        in GeneratorDriverOptions driverOptions
+    )
+    {
         GeneratorDriver driver = CSharpGeneratorDriver.Create(
             generators: [generator.AsSourceGenerator()],
             additionalTexts: null,
             parseOptions: null,
-            optionsProvider: optionsProvider
+            optionsProvider: optionsProvider,
+            driverOptions: driverOptions
         );
 
         driver = driver.RunGenerators(
