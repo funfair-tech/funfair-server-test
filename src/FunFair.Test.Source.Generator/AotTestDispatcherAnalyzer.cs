@@ -174,9 +174,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         // Not gated on IsComplete: the base classes' own compilation (FunFair.Test.Common) is where this check has to
         // run, as consumers only see the builders as metadata, and it does not necessarily reference the xunit types
         // the leaf-class checks need.
-        if (
-            !context.IsGeneratedCode && StringComparer.Ordinal.Equals(methodSyntax.Identifier.Text, BUILDER_METHOD_NAME)
-        )
+        if (!context.IsGeneratedCode && IsCaseBuilder(method: methodSymbol, symbols: symbols))
         {
             AnalyzeDispatcherCaseBuilder(
                 context,
@@ -370,7 +368,13 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
         Location location = builderSyntax.Identifier.GetLocation();
 
-        ReportMissingParentCaseBuilderSpread(context, typeSymbol: typeSymbol, shape: shape, location: location);
+        ReportMissingParentCaseBuilderSpread(
+            context,
+            typeSymbol: typeSymbol,
+            shape: shape,
+            location: location,
+            symbols: symbols
+        );
 
         ReportIncompleteCaseBuilder(
             context,
@@ -393,7 +397,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
     {
         IReadOnlyList<string> dispatchedTestNames =
         [
-            .. CollectBuilderSlice(typeSymbol)
+            .. CollectBuilderSlice(typeSymbol: typeSymbol, symbols: symbols)
                 .SelectMany(type => dispatchedTestNamesByBaseType.GetOrAdd(baseType: type, symbols: symbols))
                 .Distinct(StringComparer.Ordinal),
         ];
@@ -423,10 +427,14 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         in SyntaxNodeAnalysisContext context,
         INamedTypeSymbol typeSymbol,
         CaseCompositionShape shape,
-        Location location
+        Location location,
+        WellKnownSymbols symbols
     )
     {
-        INamedTypeSymbol? parentWithBuilder = FindNearestAncestorWithCaseBuilder(typeSymbol);
+        INamedTypeSymbol? parentWithBuilder = FindNearestAncestorWithCaseBuilder(
+            typeSymbol: typeSymbol,
+            symbols: symbols
+        );
 
         if (parentWithBuilder is null)
         {
@@ -441,22 +449,86 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static INamedTypeSymbol? FindNearestAncestorWithCaseBuilder(INamedTypeSymbol typeSymbol)
+    private static INamedTypeSymbol? FindNearestAncestorWithCaseBuilder(
+        INamedTypeSymbol typeSymbol,
+        WellKnownSymbols symbols
+    )
     {
-        return CollectBaseChain(typeSymbol).FirstOrDefault(HasCaseBuilder);
+        return CollectBaseChain(typeSymbol).FirstOrDefault(type => HasCaseBuilder(type: type, symbols: symbols));
     }
 
     // The types whose [DispatchedTest] methods a builder declared on typeSymbol must list itself: its own and those of
     // every ancestor up to, but not including, the nearest one with a builder of its own. Nothing else lists an
     // intermediate without a builder, so leaving it to the ancestor builder would drop its methods from every leaf.
-    private static IEnumerable<INamedTypeSymbol> CollectBuilderSlice(INamedTypeSymbol typeSymbol)
+    private static IEnumerable<INamedTypeSymbol> CollectBuilderSlice(
+        INamedTypeSymbol typeSymbol,
+        WellKnownSymbols symbols
+    )
     {
-        return CollectBaseChain(typeSymbol).TakeWhile(type => !HasCaseBuilder(type)).Prepend(typeSymbol);
+        return CollectBaseChain(typeSymbol)
+            .TakeWhile(type => !HasCaseBuilder(type: type, symbols: symbols))
+            .Prepend(typeSymbol);
     }
 
-    private static bool HasCaseBuilder(INamedTypeSymbol type)
+    private static bool HasCaseBuilder(INamedTypeSymbol type, WellKnownSymbols symbols)
     {
-        return type.GetMembers(BUILDER_METHOD_NAME).OfType<IMethodSymbol>().Any(method => method.IsStatic);
+        return type.GetMembers(BUILDER_METHOD_NAME)
+            .OfType<IMethodSymbol>()
+            .Any(method => IsCaseBuilder(method: method, symbols: symbols));
+    }
+
+    // A case builder has exactly the shape of every FunFair.Test.Common base class's builder:
+    // "static IEnumerable<(string, Action<TSelf>)> BuildDispatcherCases<TSelf>() where TSelf : DeclaringType", with
+    // any enumerable return type (an array, a list, an iterator's IEnumerable) and any tuple element names. TSelf
+    // being constrained to the declaring type is what lets FTS003 and FTS004 hold it to its own slice of the chain, so
+    // anything else of that name (a leaf's [MemberData] provider, say) is not a builder, and is left to FTS002 when it
+    // is a provider.
+    private static bool IsCaseBuilder(IMethodSymbol method, WellKnownSymbols symbols)
+    {
+        IMethodSymbol definition = method.OriginalDefinition;
+
+        return definition is { IsStatic: true, Parameters.IsEmpty: true, TypeParameters.Length: 1 }
+            && StringComparer.Ordinal.Equals(definition.Name, BUILDER_METHOD_NAME)
+            && IsConstrainedTo(typeParameter: definition.TypeParameters[0], type: definition.ContainingType)
+            && EnumeratedType(definition.ReturnType) is { } caseType
+            && IsCaseTuple(caseType: caseType, selfType: definition.TypeParameters[0], symbols: symbols);
+    }
+
+    private static bool IsConstrainedTo(ITypeParameterSymbol typeParameter, INamedTypeSymbol type)
+    {
+        return typeParameter.ConstraintTypes.Any(constraint =>
+            SymbolEqualityComparer.Default.Equals(constraint.OriginalDefinition, type.OriginalDefinition)
+        );
+    }
+
+    // An interface's AllInterfaces does not include itself, so an IEnumerable<T> return type is matched directly.
+    private static ITypeSymbol? EnumeratedType(ITypeSymbol type)
+    {
+        if (type is IArrayTypeSymbol { IsSZArray: true } array)
+        {
+            return array.ElementType;
+        }
+
+        INamedTypeSymbol? enumerable =
+            type is INamedTypeSymbol named && IsGenericEnumerable(named)
+                ? named
+                : type.AllInterfaces.FirstOrDefault(IsGenericEnumerable);
+
+        return enumerable?.TypeArguments[0];
+    }
+
+    private static bool IsGenericEnumerable(INamedTypeSymbol type)
+    {
+        return type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T;
+    }
+
+    private static bool IsCaseTuple(ITypeSymbol caseType, ITypeParameterSymbol selfType, WellKnownSymbols symbols)
+    {
+        return caseType is INamedTypeSymbol { IsTupleType: true, TupleElements.Length: 2 } tupleType
+            && tupleType.TupleElements[0].Type.SpecialType == SpecialType.System_String
+            && tupleType.TupleElements[1].Type is INamedTypeSymbol actionType
+            && SymbolEqualityComparer.Default.Equals(actionType.OriginalDefinition, symbols.ActionType)
+            && SymbolEqualityComparer.Default.Equals(actionType.TypeArguments[0], selfType);
     }
 
     // Resolved rather than matched by name, so a grandparent's, an unrelated type's or the builder's own
@@ -688,10 +760,10 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
         for (
             INamedTypeSymbol? builderOwner = owner;
             builderOwner is not null;
-            builderOwner = FindNearestAncestorWithCaseBuilder(builderOwner)
+            builderOwner = FindNearestAncestorWithCaseBuilder(typeSymbol: builderOwner, symbols: symbols)
         )
         {
-            foreach (INamedTypeSymbol type in CollectBuilderSlice(builderOwner))
+            foreach (INamedTypeSymbol type in CollectBuilderSlice(typeSymbol: builderOwner, symbols: symbols))
             {
                 foreach (string testName in dispatchedTestNamesByBaseType.GetOrAdd(baseType: type, symbols: symbols))
                 {
@@ -1039,6 +1111,8 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
             IMethodSymbol method = operation.TargetMethod.ReducedFrom ?? operation.TargetMethod;
 
+            // Recorded by name, not by IsCaseBuilder's shape: composing in something that only looks like a builder
+            // (another type's, say) still leaves out the parent's cases, which is what FTS004 reports.
             if (method.IsStatic && StringComparer.Ordinal.Equals(method.Name, BUILDER_METHOD_NAME))
             {
                 this._composedBuilders.Add(method);
