@@ -1554,6 +1554,244 @@ public sealed class AotTestDispatcherAnalyzerTests : TestBase
     }
 
     [Fact]
+    public async Task BaseBuilderCaseWithNamedExpressionTextAfterAction_CountsExpressionTextNameAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(
+                members: "",
+                cases: "Case<TSelf>(action: t => t.FactTwo(), expressionText: \"t => t.FactOne()\")"
+            )
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactTwo");
+    }
+
+    [Fact]
+    public async Task BaseBuilderCaseWithNamedExpressionTextBeforeAction_CountsExpressionTextNameAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(
+                members: "",
+                cases: "Case<TSelf>(expressionText: \"t => t.FactOne()\", action: t => t.FactTwo())"
+            )
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactTwo");
+    }
+
+    [Fact]
+    public async Task BaseBuilderCaseWithConstantExpressionTextBeforeAction_CountsConstantsNameAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(
+                members: "private const string FactOneText = \"t => t.FactOne()\";",
+                cases: "Case<TSelf>(expressionText: FactOneText, action: t => t.FactTwo())"
+            )
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactTwo");
+    }
+
+    [Fact]
+    public async Task BaseBuilderCaseWithPositionalExpressionText_CountsExpressionTextNameAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(members: "", cases: "Case<TSelf>(t => t.FactTwo(), \"t => t.FactOne()\")")
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactTwo");
+    }
+
+    [Fact]
+    public async Task BaseBuilderCaseWithNamedActionOnly_CountsActionNameAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(members: "", cases: "Case<TSelf>(action: t => t.FactOne())")
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactTwo");
+    }
+
+    [Fact]
+    public async Task BaseBuilderCaseWithNullExpressionText_CountsNoNameAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(
+                members: "",
+                cases: "Case<TSelf>(t => t.FactOne(), expressionText: null), Case<TSelf>(t => t.FactTwo())"
+            )
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactOne");
+    }
+
+    [Fact]
+    public async Task BaseBuilderCaseWithExpressionTextWithoutCall_CountsNoNameAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(
+                members: "",
+                cases: "Case<TSelf>(t => t.FactOne(), expressionText: \"FactOne\"), Case<TSelf>(t => t.FactTwo())"
+            )
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactOne");
+    }
+
+    [Fact]
+    public async Task BaseBuilderCaseWithNonConstantExpressionText_AbstainsFromCompletenessCheckAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(
+                members: "private static readonly string FactOneText = \"t => t.FactOne()\";",
+                cases: "Case<TSelf>(t => t.FactTwo(), expressionText: FactOneText)"
+            )
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task DispatcherWithProviderCaseWithNonConstantExpressionText_AbstainsFromCompletenessCheckAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: """
+            namespace FunFair.Test.Common
+            {
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+                }
+            }
+
+            namespace Sample
+            {
+                using System;
+                using Xunit;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public sealed class Leaf : FunFair.Test.Common.EquatableObjectTestBase<string>
+                {
+                    private static readonly string FactOneText = "t => t.FactOne()";
+
+                    public static TheoryData<string, Action<Leaf>> Cases() =>
+                        new[] { Case<Leaf>(t => t.FactTwo(), expressionText: FactOneText) }.ToTheoryData();
+
+                    [Theory]
+                    [MemberData(nameof(Cases))]
+                    public void CommonTests(string name, Action<Leaf> action) { }
+                }
+            }
+            """
+        );
+
+        Assert.Empty(diagnostics);
+    }
+
+    [Fact]
+    public async Task BaseBuilderDynamicInvocation_IsNotTreatedAsCaseAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics = await GeneratorTestHelpers.RunAnalyzerAsync(
+            analyzer: new AotTestDispatcherAnalyzer(),
+            source: BuildBaseBuilderSource(members: "", cases: "Case<TSelf>(t => t.FactOne()), ((dynamic)null).Case()")
+        );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactTwo");
+    }
+
+    [Fact]
+    public async Task BaseBuilderCaseOverloadsWithoutExpressionTextOrActionArgument_CountNoNameAsync()
+    {
+        ImmutableArray<Diagnostic> diagnostics =
+            await GeneratorTestHelpers.RunAnalyzerWithoutFunFairTestCommonReferenceAsync(
+                analyzer: new AotTestDispatcherAnalyzer(),
+                source: """
+                namespace FunFair.Test.Common
+                {
+                    using System;
+                    using static FunFair.Test.Common.DispatcherCaseData;
+
+                    public sealed class DispatchedTestAttribute : Attribute
+                    {
+                    }
+
+                    public static class DispatcherCaseData
+                    {
+                        public static (string Name, Action<TSelf> Action) Case<TSelf>(Action<TSelf> action = null) =>
+                            ("FactOne", action);
+
+                        public static (string Name, Action<TSelf> Action) Case<TSelf>(string other) => (other, null);
+
+                        public static (string Name, Action<object> Action) Case(__arglist) => ("FactOne", null);
+                    }
+
+                    public abstract class EquatableObjectTestBase<T>
+                    {
+                        [FunFair.Test.Common.DispatchedTest]
+                        public void FactOne() { }
+
+                        public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                            where TSelf : EquatableObjectTestBase<T>
+                        {
+                            return [Case<TSelf>(), Case<TSelf>("t => t.FactOne()"), Case(__arglist(1))];
+                        }
+                    }
+                }
+                """
+            );
+
+        AssertSingleIncompleteBuilderFor(diagnostics: diagnostics, testName: "FactOne");
+    }
+
+    private static void AssertSingleIncompleteBuilderFor(in ImmutableArray<Diagnostic> diagnostics, string testName)
+    {
+        Diagnostic diagnostic = Assert.Single(diagnostics);
+        Assert.Equal(expected: "FTS003", actual: diagnostic.Id);
+        Assert.Contains($"'{testName}'", diagnostic.GetMessage(), StringComparison.Ordinal);
+    }
+
+    private static string BuildBaseBuilderSource(string members, string cases)
+    {
+        return $$"""
+            namespace FunFair.Test.Common
+            {
+                using System;
+                using static FunFair.Test.Common.DispatcherCaseData;
+
+                public abstract class EquatableObjectTestBase<T>
+                {
+                    {{members}}
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactOne() { }
+
+                    [FunFair.Test.Common.DispatchedTest]
+                    public void FactTwo() { }
+
+                    public static (string Name, Action<TSelf> Action)[] BuildDispatcherCases<TSelf>()
+                        where TSelf : EquatableObjectTestBase<T>
+                    {
+                        return [{{cases}}];
+                    }
+                }
+            }
+            """;
+    }
+
+    [Fact]
     public async Task CompilationWithoutFunFairTestCommonReference_WithSourceDeclaredDispatchedTestAttribute_ReportsBothChecksAsync()
     {
         // Control for the test below: the same source does fire both checks once
