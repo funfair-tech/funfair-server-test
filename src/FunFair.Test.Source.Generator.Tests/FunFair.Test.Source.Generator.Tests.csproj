@@ -59,11 +59,9 @@
        BeforeTargets="CoreCompile", which runs after RAR) does not stop the warning from being logged - only from
        reaching Csc. Strip all of them from the candidate reference items before RAR itself runs, so it never sees
        the conflict at all; net11.0 doesn't need any of them. System.Collections.Immutable and
-       System.Reflection.Metadata (_NetStandardRoslynDependencyAssemblyNames) arrive the same way as Roslyn's
-       netstandard2.0 package dependencies, versioned with the runtime Roslyn was built against, so they collide
-       (MSB3243, then CS0433 on ImmutableArray<T>) once this project targets a newer runtime. Unlike the facades,
-       the in-box copies are the real implementations this project compiles against, so these are stripped only
-       from the project-reference paths and never from the framework Reference items. -->
+       System.Reflection.Metadata (Roslyn's netstandard2.0 dependencies, versioned with the runtime Roslyn was built
+       against) collide the same way; their in-box copies are the real implementations, so they are stripped only
+       from project-reference paths, never from Reference. -->
   <Target Name="RemoveNetStandardCompatFacades" BeforeTargets="ResolveAssemblyReferences">
     <ItemGroup>
       <Reference Remove="@(Reference)" Condition="$(_NetStandardCompatFacadeAssemblyNames.Contains(';%(Reference.FileName);'))" />
