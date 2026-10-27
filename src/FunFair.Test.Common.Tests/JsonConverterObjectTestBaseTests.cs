@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using FunFair.Test.Common;
 using FunFair.Test.Common.Mocks.Converters;
 using FunFair.Test.Common.Mocks.Converters.JsonConverter;
@@ -7,11 +6,6 @@ using Xunit;
 
 namespace FunFair.Test.Common.Tests;
 
-[SuppressMessage(
-    category: "xUnit",
-    checkId: "xUnit1072",
-    Justification = "Shared test base classes are intentionally declared in a referenced assembly"
-)]
 public sealed class JsonConverterObjectTestBaseTests : JsonConverterObjectTestBase<ModelConverter, Model>
 {
     public JsonConverterObjectTestBaseTests(ITestOutputHelper output)

@@ -56,7 +56,7 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
         return DoUntypedCompareTo(l: l, r: r);
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToValue1()
     {
         Assert.True(
@@ -65,13 +65,13 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanOrEqualToValue1IsGreaterThanOrEquivalentToItself()
     {
         Assert.True(this.OperatorGreaterThanOrEqualTo(l: this.Value1, r: this.Value1), userMessage: "Value1 >= Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanOrEqualToValue1IsNotGreaterThanOrEquivalentToValue2()
     {
         Assert.False(
@@ -80,31 +80,31 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanOrEqualToValue2IsGreaterThanOrEquivalentToValue1()
     {
         Assert.True(this.OperatorGreaterThanOrEqualTo(l: this.Value2, r: this.Value1), userMessage: "Value2 >= Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanValue1IsNotGreaterThanValue1()
     {
         Assert.False(this.OperatorGreaterThan(l: this.Value1, r: this.Value1), userMessage: "Value1 > Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanValue1IsNotGreaterThanValue2()
     {
         Assert.False(this.OperatorGreaterThan(l: this.Value1, r: this.Value2), userMessage: "Value1 > Value2");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorGreaterThanValue2IsGreaterThanValue1()
     {
         Assert.True(this.OperatorGreaterThan(l: this.Value2, r: this.Value1), userMessage: "Value2 > Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToValue1()
     {
         Assert.True(
@@ -113,43 +113,43 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToValue2()
     {
         Assert.True(this.OperatorLessThanOrEqualTo(l: this.Value1, r: this.Value2), userMessage: "Value1 <= Value2");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanOrEqualToValue1IsLessThanOrEquivalentToItself()
     {
         Assert.True(this.OperatorLessThanOrEqualTo(l: this.Value1, r: this.Value1), userMessage: "Value1 <= Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanOrEqualToValue2IsNotLessThanOrEquivalentToValue1()
     {
         Assert.False(this.OperatorLessThanOrEqualTo(l: this.Value2, r: this.Value1), userMessage: "Value2 <= Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanValue1IsLessThanValue2()
     {
         Assert.True(this.OperatorLessThan(l: this.Value1, r: this.Value2), userMessage: "Value1 < Value2");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanValue1IsNotLessThanValue1()
     {
         Assert.False(this.OperatorLessThan(l: this.Value1, r: this.Value1), userMessage: "Value1 < Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorLessThanValue2IsNotLessThanValue1()
     {
         Assert.False(this.OperatorLessThan(l: this.Value2, r: this.Value1), userMessage: "Value2 < Value1");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void TypedCompareToValue1EqualToEquivalentToValue1()
     {
         Assert.True(
@@ -158,19 +158,19 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void TypedCompareToValue1LessThanValue2()
     {
         Assert.True(TypedCompareTo(l: this.Value1, r: this.Value2) < 0, userMessage: "Should be less than 0");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void TypedCompareToValue2GreaterThanValue1()
     {
         Assert.True(TypedCompareTo(l: this.Value2, r: this.Value1) > 0, userMessage: "Should be greater than 0");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue1EqualsUnTypedValue1Alias()
     {
         Assert.True(
@@ -179,7 +179,7 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue1EqualToEquivalentToValue1()
     {
         Assert.True(
@@ -188,19 +188,19 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue1LessThanValue2()
     {
         Assert.True(UntypedCompareTo(l: this.Value1, r: this.Value2) < 0, userMessage: "Should be less than 0");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue1ToOtherTypedObjectThrowsArgumentException()
     {
         Assert.Throws<ArgumentException>(testCode: () => UntypedCompareTo(l: this.Value1, Guid.NewGuid()));
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue2GreaterThanUnTypedValue1Alias()
     {
         Assert.True(
@@ -209,14 +209,14 @@ public abstract class ComparableValueTestBase<TObject> : EquatableValueTestBase<
         );
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedCompareToValue2GreaterThanValue1()
     {
         Assert.True(UntypedCompareTo(l: this.Value2, r: this.Value1) > 0, userMessage: "Should be greater than 0");
     }
 
     // Single source of truth for the AOT dispatcher case table (see FunFair.Test.Source.Generator's
-    // AotTestDispatcherAnalyzer, FTS002); see EquatableObjectTestBase<TObject>.BuildDispatcherCases for why this
+    // AotTestDispatcherAnalyzer, FTS003); see EquatableObjectTestBase<TObject>.BuildDispatcherCases for why this
     // must stay an ordinary static generic method rather than a [MemberData] provider itself.
     [SuppressMessage(
         category: "Meziantou.Analyzer",

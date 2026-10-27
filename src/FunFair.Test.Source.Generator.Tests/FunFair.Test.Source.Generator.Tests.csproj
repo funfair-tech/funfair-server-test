@@ -40,12 +40,13 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)UnitTests.props" Condition="Exists('$(SolutionDir)UnitTests.props')" />
   <!-- FunFair.Test.Source.Generator targets netstandard2.0 (required for Roslyn generator host compatibility).
-       Every other project in this repo references it with OutputItemType="Analyzer" ReferenceOutputAssembly="false",
-       which is enough when the generator only needs to run as an analyzer. This project additionally instantiates
+       The other projects in this repo that reference it (FunFair.Test.Common and FunFair.Test.Common.Tests) do so
+       with OutputItemType="Analyzer" ReferenceOutputAssembly="false", which is enough when the generator only needs
+       to run as an analyzer. This project additionally instantiates
        the generator types directly (to drive them via CSharpGeneratorDriver in tests), which needs
        ReferenceOutputAssembly="true" (the default) alongside OutputItemType="Analyzer" so both roles are kept:
        generator-as-analyzer (emitting AssemblySettings.generated.cs/ProtectedMemberSuppressions.generated.cs for
-       this project too, same as its siblings) and generator-as-compile-time-type. ReferenceOutputAssembly="true"
+       this project too, same as FunFair.Test.Common.Tests; FunFair.Test.Common opts out of them) and generator-as-compile-time-type. ReferenceOutputAssembly="true"
        also pulls FunFair.Test.Source.Generator's netstandard2.0 compile-time reference-assembly facades (part of
        the netstandard2.0 contract, not normal transitive NuGet packages) into this net10.0 project's
        compile-reference closure. net10.0 already provides all of these in-box at a higher version, so MSBuild logs

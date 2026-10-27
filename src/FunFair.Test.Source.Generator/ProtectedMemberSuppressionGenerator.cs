@@ -1,5 +1,6 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using Credfeto.SourceGeneration.Helpers.Builders;
 using FunFair.Test.Source.Generator.Extensions;
 using FunFair.Test.Source.Generator.Models;
@@ -12,34 +13,45 @@ namespace FunFair.Test.Source.Generator;
 [Generator(LanguageNames.CSharp)]
 public sealed class ProtectedMemberSuppressionGenerator : IIncrementalGenerator
 {
+    public const string CollectProtectedMembersStep = "CollectProtectedMembers";
+
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
+        IncrementalValueProvider<bool> sourceGeneratorsDisabled = context.AnalyzerConfigOptionsProvider.Select(
+            static (provider, _) => provider.AreSourceGeneratorsDisabled()
+        );
+
+        // Roslyn re-runs a syntax provider's transform on every compilation, so only value-equal results may leave it:
+        // a SemanticModel or symbol would root old compilations and never compare equal. The transform's array compares
+        // by reference, so it is flattened into value-equal records at once; when those match the previous run, the
+        // collect, the opt-out gate and the source output are all reused.
         IncrementalValueProvider<ImmutableArray<ProtectedMemberInfo>> allMembers = context
             .SyntaxProvider.CreateSyntaxProvider(
-                predicate: static (node, _) => node is ClassDeclarationSyntax,
+                predicate: static (node, _) =>
+                    node is ClassDeclarationSyntax classDecl && !classDecl.Modifiers.Any(SyntaxKind.SealedKeyword),
                 transform: static (ctx, ct) =>
-                {
-                    ct.ThrowIfCancellationRequested();
-                    ClassDeclarationSyntax classDecl = (ClassDeclarationSyntax)ctx.Node;
-
-                    if (classDecl.Modifiers.Any(SyntaxKind.SealedKeyword))
-                    {
-                        return [];
-                    }
-
-                    if (ctx.SemanticModel.GetDeclaredSymbol(classDecl, ct) is not INamedTypeSymbol typeSymbol)
-                    {
-                        return [];
-                    }
-
-                    return CollectProtectedMembers(typeSymbol);
-                }
+                    CollectProtectedMembers((ClassDeclarationSyntax)ctx.Node, ctx.SemanticModel, ct)
             )
-            .Where(static items => !items.IsEmpty)
+            .SelectMany(static (members, _) => members)
+            .WithTrackingName(CollectProtectedMembersStep)
             .Collect()
-            .Select(static (allArrays, _) => allArrays.SelectMany(static arr => arr).Distinct().ToImmutableArray());
+            .Combine(sourceGeneratorsDisabled)
+            .Select(static (item, _) => item.Right ? [] : item.Left.Distinct().ToImmutableArray());
 
         context.RegisterSourceOutput(allMembers, GenerateSuppressions);
+    }
+
+    private static ImmutableArray<ProtectedMemberInfo> CollectProtectedMembers(
+        ClassDeclarationSyntax classDecl,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken
+    )
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return semanticModel.GetDeclaredSymbol(classDecl, cancellationToken) is { } typeSymbol
+            ? CollectProtectedMembers(typeSymbol)
+            : [];
     }
 
     private static ImmutableArray<ProtectedMemberInfo> CollectProtectedMembers(INamedTypeSymbol typeSymbol)

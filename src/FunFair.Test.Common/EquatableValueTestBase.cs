@@ -56,7 +56,7 @@ public abstract class EquatableValueTestBase<TObject> : TestBase
 
     protected abstract bool OperatorNotEquals(in TObject x, in TObject y);
 
-    [Fact]
+    [DispatchedTest]
     public void GetHashCodeSameNoMatterHowManyTimesCalled()
     {
         int referenceHashCode = this.Value1.GetHashCode();
@@ -81,140 +81,140 @@ public abstract class EquatableValueTestBase<TObject> : TestBase
         return hashCodes;
     }
 
-    [Fact]
+    [DispatchedTest]
     public void GetHashCodeValue1ObjectIsSameAsEquivalentToValue1Object()
     {
         Assert.Equal(this.Value1.GetHashCode(), this.EquivalentToValue1.GetHashCode());
     }
 
-    [Fact]
+    [DispatchedTest]
     public void GetHashCodeValue1ObjectIsSameAsValue1AliasObject()
     {
         Assert.Equal(this.Value1.GetHashCode(), this.Value1Alias.GetHashCode());
     }
 
-    [Fact]
+    [DispatchedTest]
     public void GetHashCodeValue1ObjectIsSameAsValue1Object()
     {
         Assert.Equal(this.Value1.GetHashCode(), this.Value1.GetHashCode());
     }
 
-    [Fact]
+    [DispatchedTest]
     public void GetHashCodeZeroObjectIsSameAsZeroObject()
     {
         Assert.Equal(this.ZeroObject.GetHashCode(), this.ZeroObject.GetHashCode());
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorEqualsValue1ObjectIsSameAsEquivalentToValue1Object()
     {
         Assert.True(this.OperatorEquals(x: this.Value1, y: this.EquivalentToValue1), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorEqualsValue1ObjectIsSameAsValue1AliasObject()
     {
         Assert.True(this.OperatorEquals(x: this.Value1, y: this.Value1Alias), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorEqualsValue1ObjectIsSameAsValue1Object()
     {
         Assert.True(this.OperatorEquals(x: this.Value1, y: this.Value1), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorEqualsZeroObjectIsSameAsZeroObject()
     {
         Assert.True(this.OperatorEquals(x: this.ZeroObject, y: this.ZeroObject), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorNotEqualsValue1ObjectIsSameAsEquivalentToValue1Object()
     {
         Assert.False(this.OperatorNotEquals(x: this.Value1, y: this.EquivalentToValue1), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorNotEqualsValue1ObjectIsSameAsValue1AliasObject()
     {
         Assert.False(this.OperatorNotEquals(x: this.Value1, y: this.Value1Alias), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorNotEqualsValue1ObjectIsSameAsValue1Object()
     {
         Assert.False(this.OperatorNotEquals(x: this.Value1, y: this.Value1), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void OperatorNotEqualsZeroObjectIsSameAsZeroObject()
     {
         Assert.False(this.OperatorNotEquals(x: this.ZeroObject, y: this.ZeroObject), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void TypedEqualsValue1ObjectIsSameAsEquivalentToValue1Object()
     {
         Assert.True(TypedEquals(x: this.Value1, y: this.EquivalentToValue1), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void TypedEqualsValue1ObjectIsSameAsValue1AliasObject()
     {
         Assert.True(TypedEquals(x: this.Value1, y: this.Value1Alias), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void TypedEqualsValue1ObjectIsSameAsValue1Object()
     {
         Assert.True(TypedEquals(x: this.Value1, y: this.Value1), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void TypedEqualsZeroObjectIsSameAsZeroObject()
     {
         Assert.True(TypedEquals(x: this.ZeroObject, y: this.ZeroObject), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedEqualsValue1ObjectIsSameAsEquivalentToValue1Object()
     {
         Assert.True(UntypedEquals(x: this.Value1, y: this.EquivalentToValue1), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedEqualsValue1ObjectIsSameAsEquivalentToValue1ObjectAsObject()
     {
         Assert.True(UntypedEquals(x: this.Value1, y: this.EquivalentToValue1AsObject), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedEqualsValue1ObjectIsSameAsValue1AliasObject()
     {
         Assert.True(UntypedEquals(x: this.Value1, y: this.Value1Alias), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedEqualsValue1ObjectIsSameAsValue1Object()
     {
         Assert.True(UntypedEquals(x: this.Value1, y: this.Value1), userMessage: "Should Be Same");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedEqualsZeroObjectDifferentToAnotherTypeOfObject()
     {
         Assert.False(UntypedEquals(x: this.ZeroObject, Guid.NewGuid()), userMessage: "Should Be different");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void UntypedEqualsZeroObjectIsSameAsZeroObject()
     {
         Assert.True(UntypedEquals(x: this.ZeroObject, y: this.ZeroObject), userMessage: "Should Be Same");
     }
 
     // Single source of truth for the AOT dispatcher case table (see FunFair.Test.Source.Generator's
-    // AotTestDispatcherAnalyzer, FTS002); see EquatableObjectTestBase<TObject>.BuildDispatcherCases for why this
+    // AotTestDispatcherAnalyzer, FTS003); see EquatableObjectTestBase<TObject>.BuildDispatcherCases for why this
     // must stay an ordinary static generic method rather than a [MemberData] provider itself.
     [SuppressMessage(
         category: "Meziantou.Analyzer",

@@ -10,6 +10,11 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ## [Unreleased]
 ### Security
 ### Added
+- FTS003 analyzer rule requires a base class's BuildDispatcherCases to list its own [DispatchedTest] methods and those of any builder-less intermediate base
+- FTS004 analyzer rule requires a base class's BuildDispatcherCases to compose its nearest builder-owning ancestor's builder; FTS003 and FTS004 run in any compilation that declares builders and references FunFair.Test.Source.Generator
+- FunFairTestDisableSourceGenerators MSBuild property opts out of the FunFair.Test.Source.Generator generators, made visible to the compiler by the generator package's build props
+- Shared case-name parser, so DispatcherCaseData.Case now throws ArgumentException for an action that makes no call
+- [DispatchedTest] attribute to mark shared base-class test methods that run through each leaf test class's [Theory] dispatcher instead of xunit discovery
 ### Fixed
 - Use forward-slash path separators in MSBuild files for cross-platform compatibility
 - Rename async test methods to end in Async in AotTestDispatcherAnalyzerTests
@@ -17,6 +22,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Correct wrong logger category in LoggingFolderCleanupTestBaseTests.LoggingOutputs
 - Correct misleading test names, reversed/incorrect assertion messages in shared test base classes (renames may affect consumer test filters/quarantines)
 - Avoid unnecessary StringBuilder allocation in XUnitLoggerBase.Log on the common no-option, no-exception path, and pre-size the StringBuilder from the formatted message length on the remaining path
+- Shared base classes in FunFair.Test.Common now mark tests [DispatchedTest] instead of [Fact], so xunit.analyzers 2.2.0 xUnit1072 no longer fires on consuming Native AOT test classes and per-class suppressions are not needed
 ### Changed
 - Dependencies - Updated Microsoft.Sbom.Targets to 4.1.13
 - Dependencies - Updated SonarAnalyzer.CSharp to 10.35.0.4138
@@ -31,6 +37,9 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - Dependencies - Updated Nullable.Extended.Analyzer to 1.17.0
 - Dependencies - Updated xunit.v3 to 4.0.2
 - SDK - Updated DotNet SDK to 10.0.403
+- FTS001 and FTS002 now detect affected bases by [DispatchedTest] rather than a hardcoded list, and walk through consumer-owned intermediate bases (BREAKING - such a leaf without a dispatcher now gets FTS001)
+- FTS002 now checks Case(...)-form, property/field and generated-code providers, and which ancestor builder a delegating provider composes; the rules abstain on shapes they cannot follow
+- BREAKING - inherited base-class tests are no longer discovered by reflection based (non-AOT) xunit discovery and run only through a dispatcher; FTS001 and FTS002 enforce that dispatcher only where FunFair.Test.Source.Generator is referenced
 ### Deprecated
 ### Removed
 ### Deployment Changes

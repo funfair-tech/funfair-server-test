@@ -38,7 +38,7 @@ public abstract class JsonConverterObjectTestBase<
 
     protected abstract TObject CreateInstance();
 
-    [Fact]
+    [DispatchedTest]
     public void RoundTrip()
     {
         TObject instance = this.CreateInstance();
@@ -56,7 +56,7 @@ public abstract class JsonConverterObjectTestBase<
         Assert.Equal(expected: sourceModel, actual: mod);
     }
 
-    [Fact]
+    [DispatchedTest]
     public void Serializes()
     {
         TObject instance = this.CreateInstance();
@@ -69,7 +69,7 @@ public abstract class JsonConverterObjectTestBase<
         this.Output.WriteLine($"Serialized model as: {doc}");
     }
 
-    [Fact]
+    [DispatchedTest]
     public void ShouldNotDeserialize()
     {
         string doc = JsonSerializer.Serialize(new { value = this.InvalidValue }, options: this._options);
@@ -83,7 +83,7 @@ public abstract class JsonConverterObjectTestBase<
     }
 
     // Single source of truth for the AOT dispatcher case table (see FunFair.Test.Source.Generator's
-    // AotTestDispatcherAnalyzer, FTS002); see EquatableObjectTestBase<TObject>.BuildDispatcherCases for why this
+    // AotTestDispatcherAnalyzer, FTS003); see EquatableObjectTestBase<TObject>.BuildDispatcherCases for why this
     // must stay an ordinary static generic method rather than a [MemberData] provider itself.
     [SuppressMessage(
         category: "Microsoft.Design",

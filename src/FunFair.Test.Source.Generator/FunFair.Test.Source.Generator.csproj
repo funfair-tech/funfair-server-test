@@ -53,8 +53,17 @@
   <Import Project="$(SolutionDir)FunFair.props" Condition="Exists('$(SolutionDir)FunFair.props')" />
   <Import Project="$(SolutionDir)SourceGenerator.props" Condition="Exists('$(SolutionDir)SourceGenerator.props')" />
   <ItemGroup>
+    <!-- Also compiled into FunFair.Test.Common, so DispatcherCaseData.Case names cases with the same parser. -->
+    <Compile Include="../Shared/DispatcherCaseName.cs" Link="Shared/DispatcherCaseName.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
     <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- build/ rather than buildTransitive/: the analyzers only reach direct references, so the property that
+         controls them is made compiler-visible in exactly the same projects. -->
+    <None Update="build/FunFair.Test.Source.Generator.props" Pack="true" PackagePath="build/FunFair.Test.Source.Generator.props" />
   </ItemGroup>
   <ItemGroup>
     <!-- error NU1903: Warning As Error: Package 'System.Private.Uri' 4.3.0 has a known high severity vulnerability -->

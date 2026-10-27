@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using FunFair.Test.Shared;
 using Xunit;
 
 namespace FunFair.Test.Common;
@@ -22,10 +23,15 @@ public static class DispatcherCaseData
         [CallerArgumentExpression(nameof(action))] string expressionText = ""
     )
     {
-        int openParen = expressionText.LastIndexOf('(');
-        int dot = expressionText.LastIndexOf('.', openParen);
+        if (!DispatcherCaseName.TryGetCaseName(expressionText: expressionText, out string name))
+        {
+            throw new ArgumentException(
+                message: "The action must be a lambda that calls the method the case is named after.",
+                paramName: nameof(expressionText)
+            );
+        }
 
-        return (expressionText[(dot + 1)..openParen], action);
+        return (name, action);
     }
 
     public static TheoryData<string, Action<TSelf>> ToTheoryData<TSelf>(
