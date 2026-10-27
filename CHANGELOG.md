@@ -10,6 +10,18 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ## [Unreleased]
 ### Security
 ### Added
+### Fixed
+### Changed
+### Deprecated
+### Removed
+### Deployment Changes
+
+<!--
+Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
+-->
+
+## [6.4.7] - 2026-10-27
+### Added
 - FTS003 analyzer rule requires a base class's BuildDispatcherCases to list its own [DispatchedTest] methods and those of any builder-less intermediate base
 - FTS004 analyzer rule requires a base class's BuildDispatcherCases to compose its nearest builder-owning ancestor's builder; FTS003 and FTS004 run in any compilation that declares builders and references FunFair.Test.Source.Generator
 - FunFairTestDisableSourceGenerators MSBuild property opts out of the FunFair.Test.Source.Generator generators, made visible to the compiler by the generator package's build props
@@ -40,13 +52,6 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - FTS001 and FTS002 now detect affected bases by [DispatchedTest] rather than a hardcoded list, and walk through consumer-owned intermediate bases (BREAKING - such a leaf without a dispatcher now gets FTS001)
 - FTS002 now checks Case(...)-form, property/field and generated-code providers, and which ancestor builder a delegating provider composes; the rules abstain on shapes they cannot follow
 - BREAKING - inherited base-class tests are no longer discovered by reflection based (non-AOT) xunit discovery and run only through a dispatcher; FTS001 and FTS002 enforce that dispatcher only where FunFair.Test.Source.Generator is referenced
-### Deprecated
-### Removed
-### Deployment Changes
-
-<!--
-Releases that have at least been deployed to staging, BUT NOT necessarily released to live.  Changes should be moved from [Unreleased] into here as they are merged into the appropriate release branch
--->
 
 ## [6.4.6] - 2026-09-10
 ### Changed
