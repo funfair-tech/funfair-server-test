@@ -827,7 +827,7 @@ public sealed class AotTestDispatcherAnalyzer : DiagnosticAnalyzer
 
         private readonly CancellationToken _cancellationToken;
 
-        private readonly HashSet<string> _caseNames = new(StringComparer.Ordinal);
+        private readonly HashSet<string> _caseNames = [with(StringComparer.Ordinal)];
 
         private readonly List<IMethodSymbol> _composedBuilders = [];
 
