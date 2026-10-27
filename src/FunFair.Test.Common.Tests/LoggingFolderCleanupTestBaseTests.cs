@@ -75,4 +75,26 @@ public sealed class LoggingFolderCleanupTestBaseTests : LoggingFolderCleanupTest
 
         Assert.Equal(expected: source, actual: written);
     }
+
+    [Fact]
+    public void DisposeDeletesTempFolder()
+    {
+        string tempFolder;
+
+        using (TempFolderProbe probe = new(this.Output))
+        {
+            tempFolder = probe.ExposedTempFolder;
+            Assert.True(Directory.Exists(tempFolder), $"Temp folder {tempFolder} doesn't exist before dispose");
+        }
+
+        Assert.False(Directory.Exists(tempFolder), $"Temp folder {tempFolder} still exists after dispose");
+    }
+
+    private sealed class TempFolderProbe : LoggingFolderCleanupTestBase
+    {
+        public TempFolderProbe(ITestOutputHelper output)
+            : base(output) { }
+
+        public string ExposedTempFolder => this.TempFolder;
+    }
 }
