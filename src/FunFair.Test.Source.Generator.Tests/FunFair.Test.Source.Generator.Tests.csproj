@@ -67,8 +67,7 @@
   <Target Name="RemoveNetStandardCompatFacades" BeforeTargets="ResolveAssemblyReferences">
     <ItemGroup>
       <Reference Remove="@(Reference)" Condition="$(_NetStandardCompatFacadeAssemblyNames.Contains(';%(Reference.FileName);'))" />
-      <_ResolvedProjectReferencePaths Remove="@(_ResolvedProjectReferencePaths)" Condition="$(_NetStandardCompatFacadeAssemblyNames.Contains(';%(_ResolvedProjectReferencePaths.FileName);'))" />
-      <_ResolvedProjectReferencePaths Remove="@(_ResolvedProjectReferencePaths)" Condition="$(_NetStandardRoslynDependencyAssemblyNames.Contains(';%(_ResolvedProjectReferencePaths.FileName);'))" />
+      <_ResolvedProjectReferencePaths Remove="@(_ResolvedProjectReferencePaths)" Condition="$(_NetStandardCompatFacadeAssemblyNames.Contains(';%(_ResolvedProjectReferencePaths.FileName);')) Or $(_NetStandardRoslynDependencyAssemblyNames.Contains(';%(_ResolvedProjectReferencePaths.FileName);'))" />
     </ItemGroup>
   </Target>
   <ItemGroup>
