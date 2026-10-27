@@ -4,7 +4,7 @@ namespace FunFair.Test.Shared;
 // FunFair.Test.Source.Generator (AotTestDispatcherAnalyzer checks the names at build time), so the name the analyzer
 // checks can never drift from the name a case is dispatched under. Must stay netstandard2.0-compatible for the
 // analyzer, and free of Roslyn for the runtime: no range or index operators, just string scanning. Spans of the text
-// are passed as index bounds rather than cut out with Substring, which net10.0's analyzers would want as ranges.
+// are passed as index bounds rather than cut out with Substring, which the runtime target's analyzers would want as ranges.
 internal static class DispatcherCaseName
 {
     private const int ARROW_LENGTH = 2;
