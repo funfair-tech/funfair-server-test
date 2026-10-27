@@ -16,7 +16,10 @@ internal static class BenchmarkingHelpers
         CancellationToken cancellationToken
     )
     {
-        cancellationToken.ThrowIfCancellationRequested();
+        if (cancellationToken.IsCancellationRequested)
+        {
+            return ValueTask.FromCanceled<(Summary summary, AccumulationLogger logger)>(cancellationToken);
+        }
 
         return ValueTask.FromResult(
             (
