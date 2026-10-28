@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
 using Credfeto.SourceGeneration.Helpers.Builders;
 using FunFair.Test.Source.Generator.Extensions;
 using FunFair.Test.Source.Generator.Helpers;
@@ -22,74 +20,33 @@ public sealed class TestAssemblyCodeGenerator : IIncrementalGenerator
         context.RegisterSourceOutput(ExtractNamespaces(context), action: GenerateVersionInformation);
     }
 
-    private static IncrementalValuesProvider<(
+    // The generator instance outlives a single compilation in IDE and build-server hosts, so the pipeline must be
+    // stateless: each stage yields value-equal data derived only from the current compilation, and generating once
+    // per assembly falls out of reducing every namespace declaration to a single flag.
+    private static IncrementalValueProvider<(
         NamespaceError Left,
         AnalyzerConfigOptionsProvider Right
     )> ExtractNamespaces(in IncrementalGeneratorInitializationContext context)
     {
-        HashSet<string> assembliesToGenerateVersionInformation = new(StringComparer.Ordinal);
-
-        return context
+        IncrementalValueProvider<bool> hasNamespace = context
             .SyntaxProvider.CreateSyntaxProvider(
                 predicate: static (syntaxNode, _) =>
                     syntaxNode is NamespaceDeclarationSyntax or FileScopedNamespaceDeclarationSyntax,
-                transform: (generatorSyntaxContext, cancellationToken) =>
-                    GetNamespace(
-                        generatorSyntaxContext: generatorSyntaxContext,
-                        generated: assembliesToGenerateVersionInformation,
-                        cancellationToken: cancellationToken
-                    )
+                transform: static (_, _) => true
+            )
+            .Collect()
+            .Select(static (namespaces, _) => !namespaces.IsEmpty);
+
+        IncrementalValueProvider<string?> assemblyName = context.CompilationProvider.Select(
+            static (compilation, _) => compilation.AssemblyName
+        );
+
+        return assemblyName
+            .Combine(hasNamespace)
+            .Select(
+                static (item, _) => item.Right ? new NamespaceError(new NamespaceGeneration(item.Left)) : IgnoreResult
             )
             .Combine(context.AnalyzerConfigOptionsProvider);
-    }
-
-    private static NamespaceError GetNamespace(
-        in GeneratorSyntaxContext generatorSyntaxContext,
-        HashSet<string> generated,
-        CancellationToken cancellationToken
-    )
-    {
-        try
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            if (
-                generatorSyntaxContext.Node
-                is not NamespaceDeclarationSyntax
-                    and not FileScopedNamespaceDeclarationSyntax
-            )
-            {
-                return IgnoreResult;
-            }
-
-            Compilation compilation = generatorSyntaxContext.SemanticModel.Compilation;
-
-            AssemblyIdentity assembly = GetAssembly(compilation);
-
-            if (!generated.Add(assembly.Name))
-            {
-                return IgnoreResult;
-            }
-
-            return new(new NamespaceGeneration(assembly: assembly));
-        }
-        catch (Exception exception) when (exception is not OperationCanceledException)
-        {
-            return UnhandledException(generatorSyntaxContext: generatorSyntaxContext, exception: exception);
-        }
-    }
-
-    private static NamespaceError UnhandledException(
-        in GeneratorSyntaxContext generatorSyntaxContext,
-        Exception exception
-    )
-    {
-        return new(new ErrorInfo(generatorSyntaxContext.Node.GetLocation(), exception: exception));
-    }
-
-    private static AssemblyIdentity GetAssembly(Compilation compilation)
-    {
-        return compilation.Assembly.Identity;
     }
 
     private static void ReportException(Location location, in SourceProductionContext context, Exception exception)

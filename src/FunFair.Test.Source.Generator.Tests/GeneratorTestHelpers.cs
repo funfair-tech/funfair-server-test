@@ -138,6 +138,31 @@ internal static class GeneratorTestHelpers
         return GetRunResult(driver);
     }
 
+    // Runs the same driver over two separate compilations of one assembly, as an IDE or build server does when it keeps
+    // the generator alive between edits, returning each run's result so a test can check both.
+    public static (GeneratorDriverRunResult First, GeneratorDriverRunResult Second) RerunGeneratorWithChangedSource(
+        IIncrementalGenerator generator,
+        string source,
+        string changedSource
+    )
+    {
+        GeneratorDriver driver = CreateDriver(generator: generator, optionsProvider: null, driverOptions: default);
+
+        driver = driver.RunGenerators(
+            CreateCompilation(source),
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+
+        GeneratorDriverRunResult first = GetRunResult(driver);
+
+        driver = driver.RunGenerators(
+            CreateCompilation(changedSource),
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+
+        return (First: first, Second: GetRunResult(driver));
+    }
+
     private static GeneratorDriverRunResult RunGenerator(
         IIncrementalGenerator generator,
         string source,

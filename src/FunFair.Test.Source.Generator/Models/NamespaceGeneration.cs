@@ -1,17 +1,14 @@
 using System.Diagnostics;
-using Microsoft.CodeAnalysis;
 
 namespace FunFair.Test.Source.Generator.Models;
 
-[DebuggerDisplay("{Namespace}")]
+[DebuggerDisplay("{AssemblyName}")]
 public readonly record struct NamespaceGeneration
 {
-    public NamespaceGeneration(AssemblyIdentity assembly)
+    public NamespaceGeneration(string? assemblyName)
     {
-        this.Assembly = assembly;
+        this.AssemblyName = assemblyName;
     }
 
-    public string Namespace => this.Assembly.Name;
-
-    public AssemblyIdentity Assembly { get; }
+    public string? AssemblyName { get; }
 }

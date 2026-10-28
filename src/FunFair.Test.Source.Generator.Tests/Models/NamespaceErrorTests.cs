@@ -20,7 +20,7 @@ public sealed class NamespaceErrorTests : TestBase
     [Fact]
     public void Constructor_WithNamespaceGeneration_ExposesNamespaceInfoAndNoErrorInfo()
     {
-        NamespaceGeneration namespaceInfo = new(assembly: new(name: "SampleAssembly"));
+        NamespaceGeneration namespaceInfo = new(assemblyName: "SampleAssembly");
 
         NamespaceError result = new(namespaceInfo);
 
