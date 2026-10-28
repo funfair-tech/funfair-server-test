@@ -14,7 +14,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ### Fixed
 - LoggingTestBase now implements IDisposable so handlers, service provider and temp folders are cleaned up per test (#460)
 ### Changed
-- TBD - to be finalized after review
+- Test Common - JSON converter test bases now share cached JsonSerializerOptions per converter type and context instead of rebuilding them for every test instance, reducing test setup cost
 ### Deprecated
 ### Removed
 ### Deployment Changes
