@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using FunFair.Test.Common;
 using FunFair.Test.Common.Mocks.Converters;
 using FunFair.Test.Common.Mocks.Converters.JsonConverter;
@@ -27,5 +28,20 @@ public sealed class JsonConverterObjectTestBaseTests : JsonConverterObjectTestBa
     {
         Assert.NotEmpty(name);
         action(this);
+    }
+
+    [Fact]
+    public void OptionsAreSharedAcrossInstancesOfSameClosedType()
+    {
+        FieldInfo field = AssertReallyNotNull(
+            typeof(JsonConverterObjectTestBase<ModelConverter, Model>).GetField(
+                name: "_options",
+                bindingAttr: BindingFlags.Instance | BindingFlags.NonPublic
+            )
+        );
+
+        using JsonConverterObjectTestBaseTests other = new(this.Output);
+
+        Assert.Same(expected: field.GetValue(this), actual: field.GetValue(other));
     }
 }
