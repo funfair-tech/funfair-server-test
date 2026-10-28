@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ## [Unreleased]
 ### Security
 ### Added
+- IHttpClientFactory.MockCreateClientWithSequentialResponses test helpers to return a different canned response on each successive request (#447)
 ### Fixed
 - LoggingTestBase now implements IDisposable so handlers, service provider and temp folders are cleaned up per test (#460)
 ### Changed

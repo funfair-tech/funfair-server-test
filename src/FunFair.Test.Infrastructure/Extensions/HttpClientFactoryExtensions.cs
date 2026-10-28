@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -180,6 +181,141 @@ public static class HttpClientFactoryExtensions
             responseMessage: response,
             headers: headers
         );
+    }
+
+    public static void MockCreateClientWithSequentialResponses(
+        this IHttpClientFactory httpClientFactory,
+        string clientName,
+        IReadOnlyList<(HttpStatusCode httpStatusCode, string responseMessage)> responses
+    )
+    {
+        httpClientFactory.MockCreateClientWithSequentialResponses(
+            clientName: clientName,
+            responses: [.. responses.Select(response => (response.httpStatusCode, response.responseMessage, NoHeaders))]
+        );
+    }
+
+    [SuppressMessage(
+        category: "Microsoft.Reliability",
+        checkId: "CA2000:Dispose objects before losing scope",
+        Justification = "For unit tests caller to dispose"
+    )]
+    [SuppressMessage(
+        category: "codecracker.CSharp",
+        checkId: "CC0022:Dispose objects before losing scope",
+        Justification = "For unit tests caller to dispose"
+    )]
+    public static void MockCreateClientWithSequentialResponses(
+        this IHttpClientFactory httpClientFactory,
+        string clientName,
+        IReadOnlyList<(
+            HttpStatusCode httpStatusCode,
+            string responseMessage,
+            IReadOnlyDictionary<string, string> headers
+        )> responses
+    )
+    {
+        HttpClient client = new(new SequentialFakeHttpMessageHandler(responses)) { BaseAddress = LocalHostUri };
+
+        _ = httpClientFactory.CreateClient(clientName).Returns(client);
+    }
+
+    public static void MockCreateClientWithSequentialResponses<T>(
+        this IHttpClientFactory httpClientFactory,
+        string clientName,
+        IReadOnlyList<(HttpStatusCode httpStatusCode, T responseObject)> responses
+    )
+    {
+        httpClientFactory.MockCreateClientWithSequentialResponses(
+            clientName: clientName,
+            responses: responses,
+            jsonSerializerOptions: SerializerOptions
+        );
+    }
+
+    public static void MockCreateClientWithSequentialResponses<T>(
+        this IHttpClientFactory httpClientFactory,
+        string clientName,
+        IReadOnlyList<(HttpStatusCode httpStatusCode, T responseObject)> responses,
+        JsonSerializerOptions jsonSerializerOptions
+    )
+    {
+        httpClientFactory.MockCreateClientWithSequentialResponses(
+            clientName: clientName,
+            responses:
+            [
+                .. responses.Select(response =>
+                    (
+                        response.httpStatusCode,
+                        JsonSerializer.Serialize(value: response.responseObject, options: jsonSerializerOptions),
+                        NoHeaders
+                    )
+                ),
+            ]
+        );
+    }
+
+    [DebuggerDisplay("HTTP: {_index} of {_responses.Count}")]
+    private sealed class SequentialFakeHttpMessageHandler : HttpMessageHandler
+    {
+        private readonly IReadOnlyList<(
+            HttpStatusCode httpStatusCode,
+            string responseMessage,
+            IReadOnlyDictionary<string, string> headers
+        )> _responses;
+
+        private int _index;
+
+        public SequentialFakeHttpMessageHandler(
+            IReadOnlyList<(
+                HttpStatusCode httpStatusCode,
+                string responseMessage,
+                IReadOnlyDictionary<string, string> headers
+            )> responses
+        )
+        {
+            if (responses.Count == 0)
+            {
+                throw new ArgumentException(
+                    message: "At least one response must be supplied.",
+                    paramName: nameof(responses)
+                );
+            }
+
+            this._responses = [.. responses];
+            this._index = -1;
+        }
+
+        protected override Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken
+        )
+        {
+            int index = Math.Min(Interlocked.Increment(ref this._index), this._responses.Count - 1);
+
+            return Task.FromResult(CreateHttpResponseMessage(this._responses[index]));
+        }
+
+        private static HttpResponseMessage CreateHttpResponseMessage(
+            (
+                HttpStatusCode httpStatusCode,
+                string responseMessage,
+                IReadOnlyDictionary<string, string> headers
+            ) response
+        )
+        {
+            HttpResponseMessage httpResponseMessage = new(response.httpStatusCode)
+            {
+                Content = new StringContent(response.responseMessage),
+            };
+
+            foreach ((string key, string value) in response.headers)
+            {
+                httpResponseMessage.Headers.Add(name: key, value: value);
+            }
+
+            return httpResponseMessage;
+        }
     }
 
     [DebuggerDisplay("HTTP: {_statusCode}: {_responseMessage}")]
