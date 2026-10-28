@@ -8,13 +8,7 @@ using Xunit;
 
 namespace FunFair.Test.Common;
 
-[SuppressMessage(
-    category: "Microsoft.Usage",
-    checkId: "CA2213:DisposableFieldsShouldBeDisposed",
-    MessageId = nameof(_loggerFactory),
-    Justification = "If Disposed then tests can and will report errors"
-)]
-public abstract class LoggingTestBase : TestBase
+public abstract class LoggingTestBase : TestBase, IDisposable
 {
     private readonly ILoggerFactory _loggerFactory;
 
@@ -75,12 +69,25 @@ public abstract class LoggingTestBase : TestBase
         return serviceCollection;
     }
 
+    public void Dispose()
+    {
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
     protected virtual void Dispose(bool disposing)
     {
-        // note do not dispose _loggerFactory in this method
-        this._loggerFactory.Dispose();
-
         TaskScheduler.UnobservedTaskException -= this.ReportUnhandledException;
+
+        if (disposing)
+        {
+            this._loggerFactory.Dispose();
+
+            if (this._serviceProvider is IDisposable disposableServiceProvider)
+            {
+                disposableServiceProvider.Dispose();
+            }
+        }
     }
 
     protected internal T GetServiceFromDependencyInjection<T>()

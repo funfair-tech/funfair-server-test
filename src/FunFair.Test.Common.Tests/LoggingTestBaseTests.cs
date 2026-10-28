@@ -75,4 +75,18 @@ public sealed class LoggingTestBaseTests : LoggingTestBase
 
         fake.ForEach(item => this.Output.WriteLine($"* {item.Name}"));
     }
+
+    [Fact]
+    public void DisposingTwiceDoesNotThrow()
+    {
+        DisposeProbe probe = new(this.Output);
+        probe.Dispose();
+        probe.Dispose();
+    }
+
+    private sealed class DisposeProbe : LoggingTestBase
+    {
+        public DisposeProbe(ITestOutputHelper output)
+            : base(output) { }
+    }
 }
