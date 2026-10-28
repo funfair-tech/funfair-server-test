@@ -274,6 +274,14 @@ public static class HttpClientFactoryExtensions
             )> responses
         )
         {
+            if (responses.Count == 0)
+            {
+                throw new ArgumentException(
+                    message: "At least one response must be supplied.",
+                    paramName: nameof(responses)
+                );
+            }
+
             this._responses = [.. responses];
             this._index = -1;
         }

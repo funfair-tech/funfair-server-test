@@ -311,6 +311,22 @@ public sealed class HttpClientFactoryExtensionsTests : TestBase
         );
     }
 
+    [Fact]
+    public void MockCreateClientWithSequentialResponsesWithNoResponsesThrows()
+    {
+        const string clientName = "TestExample";
+
+        IReadOnlyList<(HttpStatusCode httpStatusCode, string responseMessage)> responses = [];
+
+        IHttpClientFactory httpClientFactory = GetSubstitute<IHttpClientFactory>();
+
+        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
+            httpClientFactory.MockCreateClientWithSequentialResponses(clientName: clientName, responses: responses)
+        );
+
+        Assert.Equal(expected: "responses", actual: exception.ParamName);
+    }
+
     private async Task AssertNextResponseAsync(
         HttpClient client,
         HttpStatusCode expectedStatusCode,
