@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
 using FunFair.Test.Infrastructure.Helpers;
 using Xunit;
 using static FunFair.Test.Common.DispatcherCaseData;
@@ -15,23 +16,34 @@ public abstract class JsonConverterObjectTestBase<
     where TConverter : JsonConverter<TObject>, new()
     where TObject : class
 {
+    private static readonly Lazy<JsonSerializerOptions> SharedOptions = new(
+        valueFactory: static () => JsonOptions.CreateDefault(new TConverter()),
+        mode: LazyThreadSafetyMode.ExecutionAndPublication
+    );
+
     private readonly JsonSerializerOptions _options;
 
     protected JsonConverterObjectTestBase(ITestOutputHelper output)
         : this(output: output, context: null) { }
 
-    [SuppressMessage(
-        category: "ReSharper",
-        checkId: "UnusedParameter.Local",
-        Justification = "Used in conditional implementations"
-    )]
     protected JsonConverterObjectTestBase(ITestOutputHelper output, JsonSerializerContext? context)
         : base(output)
     {
-        JsonConverter converter = new TConverter();
-        this._options = JsonOptions.CreateDefault(converter);
+        this._options = context is null
+            ? SharedOptions.Value
+            : JsonSerializerOptionsCache.GetOrAdd(
+                owner: typeof(JsonConverterObjectTestBase<TConverter, TObject>),
+                context: context,
+                factory: CreateOptionsWithContext
+            );
+    }
 
-        JsonOptions.AddContext(options: this._options, context: context);
+    private static JsonSerializerOptions CreateOptionsWithContext(JsonSerializerContext context)
+    {
+        JsonSerializerOptions options = JsonOptions.CreateDefault(new TConverter());
+        JsonOptions.AddContext(options: options, context: context);
+
+        return options;
     }
 
     protected virtual string InvalidValue { get; } = Guid.NewGuid().ToString();

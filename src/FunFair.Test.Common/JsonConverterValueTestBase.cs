@@ -15,13 +15,14 @@ public abstract class JsonConverterValueTestBase<
     where TConverter : JsonConverter<TObject>, new()
     where TObject : struct
 {
+    private static readonly JsonSerializerOptions SharedOptions = JsonOptions.CreateDefault(new TConverter());
+
     private readonly JsonSerializerOptions _options;
 
     protected JsonConverterValueTestBase(ITestOutputHelper output)
         : base(output)
     {
-        JsonConverter converter = new TConverter();
-        this._options = JsonOptions.CreateDefault(converter);
+        this._options = SharedOptions;
     }
 
     protected virtual string InvalidValue { get; } = Guid.NewGuid().ToString();
