@@ -69,6 +69,37 @@ public sealed class TestAssemblyCodeGeneratorTests : TestBase
     }
 
     [Fact]
+    public void RecompilationWithSameDriver_GeneratesAssemblySettingsOnBothRuns()
+    {
+        (GeneratorDriverRunResult first, GeneratorDriverRunResult second) =
+            GeneratorTestHelpers.RerunGeneratorWithChangedSource(
+                generator: new TestAssemblyCodeGenerator(),
+                source: """
+                namespace Sample;
+
+                public sealed class Example { }
+                """,
+                changedSource: """
+                namespace Sample;
+
+                public sealed class Example
+                {
+                    public int Value { get; }
+                }
+                """
+            );
+
+        Assert.Single(
+            first.Results.Single().GeneratedSources,
+            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: ASSEMBLY_SETTINGS_HINT_NAME)
+        );
+        Assert.Single(
+            second.Results.Single().GeneratedSources,
+            predicate: source => StringComparer.Ordinal.Equals(x: source.HintName, y: ASSEMBLY_SETTINGS_HINT_NAME)
+        );
+    }
+
+    [Fact]
     public void NoNamespaceDeclaration_GeneratesNothing()
     {
         GeneratorDriverRunResult result = GeneratorTestHelpers.RunGenerator(
