@@ -10,6 +10,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 ## [Unreleased]
 ### Security
 ### Added
+- TBD - to be finalized after review
 ### Fixed
 - LoggingTestBase now implements IDisposable so handlers, service provider and temp folders are cleaned up per test (#460)
 ### Changed
