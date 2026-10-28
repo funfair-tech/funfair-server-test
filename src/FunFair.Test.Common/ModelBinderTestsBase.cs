@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using FunFair.Test.Infrastructure.Mocks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NSubstitute;
 using Xunit;
@@ -27,7 +28,22 @@ public abstract class ModelBinderTestsBase<TBinder, TDataType> : TestBase
 
     private SimpleDefaultModelBindingContext MockBindingContext()
     {
-        return new() { ModelName = MODEL_NAME, ValueProvider = this._valueProvider };
+        ModelStateDictionary modelState = new();
+
+        return new()
+        {
+            ActionContext = new(
+                httpContext: new DefaultHttpContext(),
+                routeData: new(),
+                actionDescriptor: new(),
+                modelState: modelState
+            ),
+            ModelMetadata = new EmptyModelMetadataProvider().GetMetadataForType(typeof(TDataType)),
+            ModelName = MODEL_NAME,
+            ModelState = modelState,
+            ValidationState = [],
+            ValueProvider = this._valueProvider,
+        };
     }
 
     protected async Task MustConvertAsync(string value, TDataType expected)
