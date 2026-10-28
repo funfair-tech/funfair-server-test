@@ -25,6 +25,7 @@ public sealed class ModelBinder : IModelBinder
             return Task.CompletedTask;
         }
 
+        bindingContext.ModelState.TryAddModelError(key: bindingContext.ModelName, errorMessage: "Invalid model colour");
         bindingContext.Result = ModelBindingResult.Failed();
 
         return Task.CompletedTask;
