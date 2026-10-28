@@ -13,6 +13,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - IHttpClientFactory.MockCreateClientWithSequentialResponses test helpers to return a different canned response on each successive request (#447)
 ### Fixed
 - LoggingTestBase now implements IDisposable so handlers, service provider and temp folders are cleaned up per test (#460)
+- TestAssemblyCodeGenerator: removed shared mutable HashSet and per-node Compilation access from the incremental generator pipeline (#464)
 ### Changed
 - Test Common - JSON converter test bases now share cached JsonSerializerOptions per converter type and context instead of rebuilding them for every test instance, reducing test setup cost
 ### Deprecated
