@@ -19,8 +19,10 @@ public sealed class JsonConverterObjectTestBaseTests : JsonConverterObjectTestBa
         return new() { Value = ModelColor.BLUE };
     }
 
-    public static TheoryData<string, Action<JsonConverterObjectTestBaseTests>> BaseCaseData() =>
-        BuildDispatcherCases<JsonConverterObjectTestBaseTests>().ToTheoryData();
+    public static TheoryData<string, Action<JsonConverterObjectTestBaseTests>> BaseCaseData()
+    {
+        return BuildDispatcherCases<JsonConverterObjectTestBaseTests>().ToTheoryData();
+    }
 
     [Theory]
     [MemberData(nameof(BaseCaseData))]
