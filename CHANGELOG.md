@@ -15,6 +15,7 @@ Please ADD ALL Changes to the UNRELEASED SECTION and not a specific release
 - LoggingTestBase now implements IDisposable so handlers, service provider and temp folders are cleaned up per test (#460)
 - TestAssemblyCodeGenerator: the incremental generator pipeline is now stateless, with no shared mutable state or per-node Compilation access, and NamespaceGeneration carries the assembly name (#464)
 - ModelBinderTestsBase.MockBindingContext now initialises ModelState, ActionContext, ValidationState and ModelMetadata so binders reporting model errors no longer throw NullReferenceException (#463)
+- SimpleDefaultModelBindingContext: EnterNestedScope no longer corrupts outer scope state (State is now a struct) (#462)
 ### Changed
 - Test Common - JSON converter test bases now share cached JsonSerializerOptions per converter type and context instead of rebuilding them for every test instance, reducing test setup cost
 - SDK - Updated DotNet SDK to 11.0.100-rc.1
