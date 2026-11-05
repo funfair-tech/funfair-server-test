@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
@@ -13,32 +14,32 @@ public sealed class SimpleDefaultModelBindingContext : ModelBindingContext
     private readonly Stack<State> _stack = [];
     private int? _maxModelBindingRecursionDepth;
 
-    private State _state = new();
+    private State _state;
 
     public override ActionContext ActionContext { get; set; } = default!;
 
     public override string FieldName
     {
         get => this._state.FieldName;
-        set => this._state.FieldName = value;
+        set => this._state = this._state with { FieldName = value };
     }
 
     public override object? Model
     {
         get => this._state.Model;
-        set => this._state.Model = value;
+        set => this._state = this._state with { Model = value };
     }
 
     public override ModelMetadata ModelMetadata
     {
         get => this._state.ModelMetadata;
-        set => this._state.ModelMetadata = value;
+        set => this._state = this._state with { ModelMetadata = value };
     }
 
     public override string ModelName
     {
         get => this._state.ModelName;
-        set => this._state.ModelName = value;
+        set => this._state = this._state with { ModelName = value };
     }
 
     public override ModelStateDictionary ModelState { get; set; } = default!;
@@ -46,19 +47,19 @@ public sealed class SimpleDefaultModelBindingContext : ModelBindingContext
     public override string? BinderModelName
     {
         get => this._state.BinderModelName;
-        set => this._state.BinderModelName = value;
+        set => this._state = this._state with { BinderModelName = value };
     }
 
     public override BindingSource? BindingSource
     {
         get => this._state.BindingSource;
-        set => this._state.BindingSource = value;
+        set => this._state = this._state with { BindingSource = value };
     }
 
     public override bool IsTopLevelObject
     {
         get => this._state.IsTopLevelObject;
-        set => this._state.IsTopLevelObject = value;
+        set => this._state = this._state with { IsTopLevelObject = value };
     }
 
     public IValueProvider OriginalValueProvider { get; init; } = default!;
@@ -66,13 +67,13 @@ public sealed class SimpleDefaultModelBindingContext : ModelBindingContext
     public override IValueProvider ValueProvider
     {
         get => this._state.ValueProvider;
-        set => this._state.ValueProvider = value;
+        set => this._state = this._state with { ValueProvider = value };
     }
 
     public override Func<ModelMetadata, bool>? PropertyFilter
     {
         get => this._state.PropertyFilter;
-        set => this._state.PropertyFilter = value;
+        set => this._state = this._state with { PropertyFilter = value };
     }
 
     public override ValidationStateDictionary ValidationState { get; set; } = default!;
@@ -80,7 +81,7 @@ public sealed class SimpleDefaultModelBindingContext : ModelBindingContext
     public override ModelBindingResult Result
     {
         get => this._state.Result;
-        set => this._state.Result = value;
+        set => this._state = this._state with { Result = value };
     }
 
     private int MaxModelBindingRecursionDepth
@@ -186,26 +187,27 @@ public sealed class SimpleDefaultModelBindingContext : ModelBindingContext
         return valueProvider;
     }
 
-    private sealed class State
+    [DebuggerDisplay("{ModelName}: {FieldName}")]
+    private readonly record struct State
     {
-        public string FieldName { get; set; } = default!;
+        public string FieldName { get; init; }
 
-        public object? Model { get; set; }
+        public object? Model { get; init; }
 
-        public ModelMetadata ModelMetadata { get; set; } = default!;
+        public ModelMetadata ModelMetadata { get; init; }
 
-        public string ModelName { get; set; } = default!;
+        public string ModelName { get; init; }
 
-        public IValueProvider ValueProvider { get; set; } = default!;
+        public IValueProvider ValueProvider { get; init; }
 
-        public Func<ModelMetadata, bool>? PropertyFilter { get; set; }
+        public Func<ModelMetadata, bool>? PropertyFilter { get; init; }
 
-        public string? BinderModelName { get; set; }
+        public string? BinderModelName { get; init; }
 
-        public BindingSource? BindingSource { get; set; }
+        public BindingSource? BindingSource { get; init; }
 
-        public bool IsTopLevelObject { get; set; }
+        public bool IsTopLevelObject { get; init; }
 
-        public ModelBindingResult Result { get; set; }
+        public ModelBindingResult Result { get; init; }
     }
 }
