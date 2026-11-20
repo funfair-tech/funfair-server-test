@@ -10,16 +10,18 @@ namespace FunFair.Test.Common;
 
 public abstract class LoggingTestBase : TestBase, IDisposable
 {
-    private readonly ILoggerFactory _loggerFactory;
+    private static readonly Func<IServiceCollection, IServiceCollection> NoRegistration =
+        NoDependencyInjectionConfiguration;
 
-    private readonly IServiceProvider _serviceProvider;
+    private static readonly Action<IServiceProvider> NoInitialization = NoDependencyInjectionInitialization;
+
+    private readonly Lazy<ILogger> _logger;
+
+    private readonly Lazy<(IServiceProvider ServiceProvider, ILoggerFactory LoggerFactory)> _services;
 
     protected LoggingTestBase(ITestOutputHelper output)
-        : this(
-            output: output,
-            dependencyInjectionRegistration: NoDependencyInjectionConfiguration,
-            initializeServices: NoDependencyInjectionInitialization
-        ) { }
+        : this(output: output, dependencyInjectionRegistration: NoRegistration, initializeServices: NoInitialization)
+    { }
 
     protected LoggingTestBase(
         ITestOutputHelper output,
@@ -28,7 +30,7 @@ public abstract class LoggingTestBase : TestBase, IDisposable
         : this(
             output: output,
             dependencyInjectionRegistration: dependencyInjectionRegistration,
-            initializeServices: NoDependencyInjectionInitialization
+            initializeServices: NoInitialization
         ) { }
 
     [SuppressMessage(
@@ -44,17 +46,33 @@ public abstract class LoggingTestBase : TestBase, IDisposable
     {
         TaskScheduler.UnobservedTaskException += this.ReportUnhandledException;
 
-        this._serviceProvider = dependencyInjectionRegistration(new ServiceCollection().AddLoggingSupport())
-            .BuildServiceProvider();
-
-        this._loggerFactory = this._serviceProvider.GetRequiredService<ILoggerFactory>();
-        LoggingStartup.InitializeLogging(loggerFactory: this._loggerFactory, output: output);
         this.Output = output;
-        this.Logger = this.GetTypedLogger<LoggingTestBase>();
-        initializeServices(this._serviceProvider);
+
+        this._services = new Lazy<(IServiceProvider ServiceProvider, ILoggerFactory LoggerFactory)>(() =>
+        {
+            IServiceProvider serviceProvider = dependencyInjectionRegistration(
+                    new ServiceCollection().AddLoggingSupport()
+                )
+                .BuildServiceProvider();
+            ILoggerFactory loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+            LoggingStartup.InitializeLogging(loggerFactory: loggerFactory, output: output);
+
+            return (serviceProvider, loggerFactory);
+        });
+
+        this._logger = new Lazy<ILogger>(this.GetTypedLogger<LoggingTestBase>);
+
+        if (
+            !ReferenceEquals(dependencyInjectionRegistration, NoRegistration)
+            || !ReferenceEquals(initializeServices, NoInitialization)
+        )
+        {
+            // Consumer supplied registration/initialisation: preserve eager semantics.
+            initializeServices(this._services.Value.ServiceProvider);
+        }
     }
 
-    protected ILogger Logger { get; }
+    protected ILogger Logger => this._logger.Value;
 
     protected ITestOutputHelper Output { get; }
 
@@ -81,11 +99,14 @@ public abstract class LoggingTestBase : TestBase, IDisposable
 
         if (disposing)
         {
-            this._loggerFactory.Dispose();
-
-            if (this._serviceProvider is IDisposable disposableServiceProvider)
+            if (this._services.IsValueCreated)
             {
-                disposableServiceProvider.Dispose();
+                this._services.Value.LoggerFactory.Dispose();
+
+                if (this._services.Value.ServiceProvider is IDisposable disposableServiceProvider)
+                {
+                    disposableServiceProvider.Dispose();
+                }
             }
         }
     }
@@ -93,17 +114,17 @@ public abstract class LoggingTestBase : TestBase, IDisposable
     protected internal T GetServiceFromDependencyInjection<T>()
         where T : notnull
     {
-        return this._serviceProvider.GetRequiredService<T>();
+        return this._services.Value.ServiceProvider.GetRequiredService<T>();
     }
 
     protected internal IServiceProvider RetrieveDependencyInjectionServiceProvider()
     {
-        return this._serviceProvider;
+        return this._services.Value.ServiceProvider;
     }
 
     protected sealed override ILogger<T> GetTypedLogger<T>()
     {
-        return this._loggerFactory.CreateLogger<T>();
+        return this._services.Value.LoggerFactory.CreateLogger<T>();
     }
 
     private void ReportUnhandledException(object? sender, UnobservedTaskExceptionEventArgs args)
